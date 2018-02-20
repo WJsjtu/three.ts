@@ -137,7 +137,13 @@ export class BufferGeometry extends EventDispatcher {
         return offset;
     }
 
-    //TODO setFromObject
+    /**
+     * TODO setFromObject
+     * @param object
+     */
+    public setFromObject(object: Object3D): BufferGeometry {
+        return this;
+    }
 
     public setFromPoints(points: Array<Vector3>): BufferGeometry {
         const position: Array<number> = [];
@@ -149,7 +155,14 @@ export class BufferGeometry extends EventDispatcher {
         return this;
     }
 
-    //TODO updateFromObject
+    /**
+     * TODO updateFromObject
+     * @param object
+     * @returns {BufferGeometry}
+     */
+    public updateFromObject(object: Object3D): BufferGeometry {
+        return this;
+    }
 
     public fromGeometry(geometry: Geometry): BufferGeometry {
         geometry.directGeometry = new DirectGeometry().fromGeometry(geometry);

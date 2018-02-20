@@ -35,6 +35,13 @@ export interface MorphTarget {
 let geometryId: number = 0;
 
 export class Geometry extends EventDispatcher {
+
+    /**
+     * Used in WebGLGeometries
+     * @type {BufferGeometry}
+     */
+    public bufferGeometry?: BufferGeometry = null;
+
     public readonly id: number = geometryId += 2;
     public readonly uuid: string = MathUtil.generateUUID();
     public name: string = "";
