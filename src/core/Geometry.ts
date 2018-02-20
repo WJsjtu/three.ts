@@ -11,7 +11,9 @@ import {Matrix3} from "../math/Matrix3";
 import {Object3D} from "./Object3D";
 import {Triangle} from "../math/Triangle";
 import {Vector2} from "../math/Vector2";
-import {DirectGeometry} from "./DirectGeometry";
+import {DirectGeometry, Group} from "./DirectGeometry";
+import {BufferAttribute, TypedArray} from "./BufferAttribute";
+import {BufferGeometry} from "./BufferGeometry";
 
 export class GeometryFace extends Face3 {
     public id?: number;
@@ -111,7 +113,82 @@ export class Geometry extends EventDispatcher {
         return this.applyMatrix(new Object3D().lookAt(vector).matrix);
     }
 
-    //TODO: fromBufferGeometry
+    public fromBufferGeometry(geometry: BufferGeometry): Geometry {
+        const indices: TypedArray = geometry.index !== null ? geometry.index.array : undefined;
+        const attributes: { [key: string]: BufferAttribute; } = geometry.attributes;
+        const positions: TypedArray = attributes.position.array;
+        const normals: TypedArray = attributes.normal !== undefined ? attributes.normal.array : undefined;
+        const colors: TypedArray = attributes.color !== undefined ? attributes.color.array : undefined;
+        const uvs: TypedArray = attributes.uv !== undefined ? attributes.uv.array : undefined;
+        const uvs2: TypedArray = attributes.uv2 !== undefined ? attributes.uv2.array : undefined;
+
+        if (uvs2 !== undefined) this.faceVertexUvs[1] = [];
+        const tempNormals: Array<Vector3> = [];
+        const tempUVs: Array<Vector2> = [];
+        const tempUVs2: Array<Vector2> = [];
+
+        for (let i: number = 0, j: number = 0; i < positions.length; i += 3, j += 2) {
+            this.vertices.push(new Vector3(positions[i], positions[i + 1], positions[i + 2]));
+            if (normals !== undefined) {
+                tempNormals.push(new Vector3(normals[i], normals[i + 1], normals[i + 2]));
+            }
+            if (colors !== undefined) {
+                this.colors.push(new Color(colors[i], colors[i + 1], colors[i + 2]));
+            }
+            if (uvs !== undefined) {
+                tempUVs.push(new Vector2(uvs[j], uvs[j + 1]));
+            }
+            if (uvs2 !== undefined) {
+                tempUVs2.push(new Vector2(uvs2[j], uvs2[j + 1]));
+            }
+        }
+        const addFace = (a: number, b: number, c: number, materialIndex?: number): void => {
+            const vertexNormals: Array<Vector3> = normals !== undefined ? [tempNormals[a].clone(), tempNormals[b].clone(), tempNormals[c].clone()] : [];
+            const vertexColors: Array<Color> = colors !== undefined ? [this.colors[a].clone(), this.colors[b].clone(), this.colors[c].clone()] : [];
+            const face: Face3 = new Face3(a, b, c, vertexNormals, vertexColors, materialIndex);
+            this.faces.push(face);
+            if (uvs !== undefined) {
+                this.faceVertexUvs[0].push([tempUVs[a].clone(), tempUVs[b].clone(), tempUVs[c].clone()]);
+            }
+            if (uvs2 !== undefined) {
+                this.faceVertexUvs[1].push([tempUVs2[a].clone(), tempUVs2[b].clone(), tempUVs2[c].clone()]);
+            }
+        };
+
+        const groups: Array<Group> = geometry.groups;
+        if (groups.length > 0) {
+            for (let i: number = 0; i < groups.length; i++) {
+                const group: Group = groups[i];
+                const start: number = group.start;
+                const count: number = group.count;
+                for (let j: number = start, jl: number = start + count; j < jl; j += 3) {
+                    if (indices !== undefined) {
+                        addFace(indices[j], indices[j + 1], indices[j + 2], group.materialIndex);
+                    } else {
+                        addFace(j, j + 1, j + 2, group.materialIndex);
+                    }
+                }
+            }
+        } else {
+            if (indices !== undefined) {
+                for (let i: number = 0; i < indices.length; i += 3) {
+                    addFace(indices[i], indices[i + 1], indices[i + 2]);
+                }
+            } else {
+                for (let i: number = 0; i < positions.length / 3; i += 3) {
+                    addFace(i, i + 1, i + 2);
+                }
+            }
+        }
+        this.computeFaceNormals();
+        if (geometry.boundingBox !== null) {
+            this.boundingBox = geometry.boundingBox.clone();
+        }
+        if (geometry.boundingSphere !== null) {
+            this.boundingSphere = geometry.boundingSphere.clone();
+        }
+        return this;
+    }
 
     public center(): Vector3 {
         this.computeBoundingBox();

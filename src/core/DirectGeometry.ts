@@ -4,8 +4,8 @@ import {Color} from "../math/Color";
 import {Geometry, GeometryFace, MorphNormal, MorphTarget} from "./Geometry";
 import {Vector2} from "../math/Vector2";
 import {Triangle} from "../math/Triangle";
-import {Sphere} from "../math/Sphere";
-import {Box3} from "../math/Box3";
+// import {Sphere} from "../math/Sphere";
+// import {Box3} from "../math/Box3";
 
 export interface Group {
     start: number,
@@ -16,7 +16,7 @@ export interface Group {
 export class DirectGeometry {
 
     /**
-     * TODO question
+     * TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
      * public indices: Array<number> = [];
      */
 
@@ -37,7 +37,7 @@ export class DirectGeometry {
     public skinIndices: Array<Vector4> = [];
 
     /*
-     TODO question
+     TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
      public boundingSphere: Sphere = null;
      public boundingBox: Box3 = null;
      */

@@ -97,7 +97,11 @@ export class BufferAttribute {
         return this;
     }
 
-    public copyIndicesArray(indices: Array<Face3>): BufferAttribute {
+    /**
+     * TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
+     * @param indices
+     * @returns {BufferAttribute}
+     public copyIndicesArray(indices: Array<Face3>): BufferAttribute {
         const array: TypedArray = this.array;
         let offset: number = 0;
         for (let i: number = 0, l: number = indices.length; i < l; i++) {
@@ -108,6 +112,7 @@ export class BufferAttribute {
         }
         return this;
     }
+     */
 
     public copyVector2sArray(vectors: Array<Vector2>): BufferAttribute {
         const array: TypedArray = this.array;

@@ -176,7 +176,7 @@ export class BufferGeometry extends EventDispatcher {
             this.addAttribute("uv2", new BufferAttribute(uvs2, 2).copyVector2sArray(geometry.uvs2));
         }
         /**
-         * TODO question
+         * TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
          if (geometry.indices.length > 0) {
             const indices: Uint32Array | Uint16Array = new (arrayMax(geometry.indices) > 65535 ? Uint32Array : Uint16Array)(geometry.indices.length * 3);
             this.setIndex(new BufferAttribute(indices, 1).copyIndicesArray(geometry.indices));
@@ -206,7 +206,7 @@ export class BufferGeometry extends EventDispatcher {
         }
 
         /**
-         * TODO question
+         * TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
 
          if (geometry.boundingSphere !== null) {
             this.boundingSphere = geometry.boundingSphere.clone();
