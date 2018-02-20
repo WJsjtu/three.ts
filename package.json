@@ -1,0 +1,23 @@
+{
+  "name": "three.ts",
+  "version": "0.0.1",
+  "description": "three.ts",
+  "scripts": {
+  },
+  "files": [
+    "src"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+  },
+  "dependencies": {},
+  "author": {
+    "name": "王健（Jason Wang）",
+    "email": "jasonwang0421@gmail.com",
+    "url": "http://github.com/wjsjtu"
+  },
+  "homepage": "http://wjsjtu.github.io/",
+  "keywords": [
+    "three"
+  ]
+}
