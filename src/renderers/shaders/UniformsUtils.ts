@@ -10,11 +10,12 @@ export type BaseUniformType = number | Color | Matrix3 | Matrix4 | Vector2 | Vec
 
 export type Uniform = {
     value?: BaseUniformType | Array<BaseUniformType>,
+    properties?: object,
     type?: string
 }
 
 export class UniformsUtils {
-    static merge(uniforms: Array<{ [key: string]: Uniform; }>) {
+    static merge(uniforms: Array<{ [key: string]: Uniform; }>): { [key: string]: Uniform; } {
         const merged: { [key: string]: Uniform; } = {};
         for (let u: number = 0; u < uniforms.length; u++) {
             let tmp = this.clone(uniforms[u]);
