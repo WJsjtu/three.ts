@@ -1,8 +1,6 @@
 import {Geometry} from "../core/Geometry";
 import {BufferGeometry} from "../core/BufferGeometry";
 import {Float32BufferAttribute} from "../core/BufferAttribute";
-import {Vector2} from "../math/Vector2";
-import {Vector3} from "../math/Vector3";
 
 export interface CircleGeometryParameters {
     radius: number,
@@ -55,17 +53,11 @@ export class CircleBufferGeometry extends BufferGeometry {
         for (let s: number = 0, i: number = 3; s <= segments; s++, i += 3) {
             const segment: number = thetaStart + s / segments * thetaLength;
             // vertex
-            const vertex: Vector3 = new Vector3();
-            vertex.x = radius * Math.cos(segment);
-            vertex.y = radius * Math.sin(segment);
-            vertices.push(vertex.x, vertex.y, vertex.z);
+            vertices.push(radius * Math.cos(segment), radius * Math.sin(segment), 0);
             // normal
             normals.push(0, 0, 1);
             // uvs
-            const uv: Vector2 = new Vector2();
-            uv.x = ( vertices[i] / radius + 1 ) / 2;
-            uv.y = ( vertices[i + 1] / radius + 1 ) / 2;
-            uvs.push(uv.x, uv.y);
+            uvs.push((vertices[i] / radius + 1) / 2, (vertices[i + 1] / radius + 1) / 2);
         }
         // indices
         for (let i: number = 1; i <= segments; i++) {

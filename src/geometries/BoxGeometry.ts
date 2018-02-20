@@ -62,7 +62,7 @@ export class BoxBufferGeometry extends BufferGeometry {
         let numberOfVertices: number = 0;
         let groupStart: number = 0;
 
-        const buildPlane = (u: string, v: string, w: string, uDir: number, vDir: number, width: number, height: number, depth: number, gridX: number, gridY: number, materialIndex: number) => {
+        const buildPlane = (u: string, v: string, w: string, uDir: number, vDir: number, width: number, height: number, depth: number, gridX: number, gridY: number, materialIndex: number): void => {
 
             const segmentWidth: number = width / gridX;
             const segmentHeight: number = height / gridY;
@@ -77,7 +77,6 @@ export class BoxBufferGeometry extends BufferGeometry {
             let vertexCounter: number = 0;
             let groupCount: number = 0;
 
-            const vector: Vector3 = new Vector3();
 
             // generate vertices, normals and uvs
 
@@ -87,6 +86,7 @@ export class BoxBufferGeometry extends BufferGeometry {
 
                 for (let ix: number = 0; ix < gridX1; ix++) {
                     const x: number = ix * segmentWidth - widthHalf;
+                    const vector: Vector3 = new Vector3();
                     // set values to correct vector component
                     vector[u] = x * uDir;
                     vector[v] = y * vDir;
@@ -101,7 +101,7 @@ export class BoxBufferGeometry extends BufferGeometry {
                     normals.push(vector.x, vector.y, vector.z);
                     // uvs
                     uvs.push(ix / gridX);
-                    uvs.push(1 - ( iy / gridY ));
+                    uvs.push(1 - iy / gridY);
                     // counters
                     vertexCounter += 1;
                 }
@@ -130,7 +130,7 @@ export class BoxBufferGeometry extends BufferGeometry {
             groupStart += groupCount;
             // update total number of vertices
             numberOfVertices += vertexCounter;
-        }
+        };
 
         // build each side of the box geometry
         buildPlane("z", "y", "x", -1, -1, depth, height, width, depthSegments, heightSegments, 0); // px
