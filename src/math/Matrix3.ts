@@ -1,14 +1,19 @@
 import {Matrix4} from "./Matrix4";
 
 export class Matrix3 {
+    protected elements: number[] = [1, 0, 0, 0, 1, 0, 0, 0, 1];
 
-    protected elements: number[] = [
-        1, 0, 0,
-        0, 1, 0,
-        0, 0, 1
-    ];
-
-    public set(n11: number, n12: number, n13: number, n21: number, n22: number, n23: number, n31: number, n32: number, n33: number): this {
+    public set(
+        n11: number,
+        n12: number,
+        n13: number,
+        n21: number,
+        n22: number,
+        n23: number,
+        n31: number,
+        n32: number,
+        n33: number,
+    ): this {
         const te: number[] = this.elements;
         te[0] = n11;
         te[1] = n21;
@@ -23,11 +28,7 @@ export class Matrix3 {
     }
 
     public identity(): this {
-        return this.set(
-            1, 0, 0,
-            0, 1, 0,
-            0, 0, 1
-        );
+        return this.set(1, 0, 0, 0, 1, 0, 0, 0, 1);
     }
 
     public copy(mat3: Matrix3): this {
@@ -38,9 +39,15 @@ export class Matrix3 {
     public setFromMatrix4(mat4: Matrix4): this {
         const me: number[] = mat4.toArray();
         return this.set(
-            me[0], me[4], me[8],
-            me[1], me[5], me[9],
-            me[2], me[6], me[10]
+            me[0],
+            me[4],
+            me[8],
+            me[1],
+            me[5],
+            me[9],
+            me[2],
+            me[6],
+            me[10],
         );
     }
 
@@ -57,13 +64,25 @@ export class Matrix3 {
         const be: number[] = b.toArray();
         const te: number[] = this.elements;
 
-        const a11: number = ae[0], a12: number = ae[3], a13: number = ae[6];
-        const a21: number = ae[1], a22: number = ae[4], a23: number = ae[7];
-        const a31: number = ae[2], a32: number = ae[5], a33: number = ae[8];
+        const a11: number = ae[0],
+            a12: number = ae[3],
+            a13: number = ae[6];
+        const a21: number = ae[1],
+            a22: number = ae[4],
+            a23: number = ae[7];
+        const a31: number = ae[2],
+            a32: number = ae[5],
+            a33: number = ae[8];
 
-        const b11: number = be[0], b12: number = be[3], b13: number = be[6];
-        const b21: number = be[1], b22: number = be[4], b23: number = be[7];
-        const b31: number = be[2], b32: number = be[5], b33: number = be[8];
+        const b11: number = be[0],
+            b12: number = be[3],
+            b13: number = be[6];
+        const b21: number = be[1],
+            b22: number = be[4],
+            b23: number = be[7];
+        const b31: number = be[2],
+            b32: number = be[5],
+            b33: number = be[8];
 
         te[0] = a11 * b11 + a12 * b21 + a13 * b31;
         te[3] = a11 * b12 + a12 * b22 + a13 * b32;
@@ -96,24 +115,43 @@ export class Matrix3 {
 
     public determinant(): number {
         const te: number[] = this.elements;
-        const a: number = te[0], b: number = te[1], c: number = te[2],
-            d: number = te[3], e: number = te[4], f: number = te[5],
-            g: number = te[6], h: number = te[7], i: number = te[8];
-        return a * e * i - a * f * h - b * d * i + b * f * g + c * d * h - c * e * g;
-
+        const a: number = te[0],
+            b: number = te[1],
+            c: number = te[2],
+            d: number = te[3],
+            e: number = te[4],
+            f: number = te[5],
+            g: number = te[6],
+            h: number = te[7],
+            i: number = te[8];
+        return (
+            a * e * i -
+            a * f * h -
+            b * d * i +
+            b * f * g +
+            c * d * h -
+            c * e * g
+        );
     }
 
-    public getInverse(matrix: Matrix3, throwOnDegenerate: boolean = false): this {
-        const me: number[] = matrix.toArray(), te: number[] = this.elements,
-
-            n11: number = me[0], n21: number = me[1], n31: number = me[2],
-            n12: number = me[3], n22: number = me[4], n32: number = me[5],
-            n13: number = me[6], n23: number = me[7], n33: number = me[8],
-
+    public getInverse(
+        matrix: Matrix3,
+        throwOnDegenerate: boolean = false,
+    ): this {
+        const me: number[] = matrix.toArray(),
+            te: number[] = this.elements,
+            n11: number = me[0],
+            n21: number = me[1],
+            n31: number = me[2],
+            n12: number = me[3],
+            n22: number = me[4],
+            n32: number = me[5],
+            n13: number = me[6],
+            n23: number = me[7],
+            n33: number = me[8],
             t11: number = n33 * n22 - n32 * n23,
             t12: number = n32 * n13 - n33 * n12,
             t13: number = n23 * n12 - n22 * n13,
-
             det: number = n11 * t11 + n21 * t12 + n31 * t13;
 
         if (det === 0) {
@@ -129,19 +167,18 @@ export class Matrix3 {
         const detInv: number = 1 / det;
 
         te[0] = t11 * detInv;
-        te[1] = ( n31 * n23 - n33 * n21 ) * detInv;
-        te[2] = ( n32 * n21 - n31 * n22 ) * detInv;
+        te[1] = (n31 * n23 - n33 * n21) * detInv;
+        te[2] = (n32 * n21 - n31 * n22) * detInv;
 
         te[3] = t12 * detInv;
-        te[4] = ( n33 * n11 - n31 * n13 ) * detInv;
-        te[5] = ( n31 * n12 - n32 * n11 ) * detInv;
+        te[4] = (n33 * n11 - n31 * n13) * detInv;
+        te[5] = (n31 * n12 - n32 * n11) * detInv;
 
         te[6] = t13 * detInv;
-        te[7] = ( n21 * n13 - n23 * n11 ) * detInv;
-        te[8] = ( n22 * n11 - n21 * n12 ) * detInv;
+        te[7] = (n21 * n13 - n23 * n11) * detInv;
+        te[8] = (n22 * n11 - n21 * n12) * detInv;
 
         return this;
-
     }
 
     public transpose(): this {
@@ -161,16 +198,32 @@ export class Matrix3 {
     }
 
     public getNormalMatrix(matrix4: Matrix4): this {
-        return this.setFromMatrix4(matrix4).getInverse(this).transpose();
+        return this.setFromMatrix4(matrix4)
+            .getInverse(this)
+            .transpose();
     }
 
-    public setUvTransform(tx: number, ty: number, sx: number, sy: number, rotation: number, cx: number, cy: number): this {
+    public setUvTransform(
+        tx: number,
+        ty: number,
+        sx: number,
+        sy: number,
+        rotation: number,
+        cx: number,
+        cy: number,
+    ): this {
         const c = Math.cos(rotation);
         const s = Math.sin(rotation);
         return this.set(
-            sx * c, sx * s, -sx * ( c * cx + s * cy ) + cx + tx,
-            -sy * s, sy * c, -sy * ( -s * cx + c * cy ) + cy + ty,
-            0, 0, 1
+            sx * c,
+            sx * s,
+            -sx * (c * cx + s * cy) + cx + tx,
+            -sy * s,
+            sy * c,
+            -sy * (-s * cx + c * cy) + cy + ty,
+            0,
+            0,
+            1,
         );
     }
 
@@ -186,14 +239,17 @@ export class Matrix3 {
     }
 
     public rotate(theta: number): this {
-
         const c: number = Math.cos(theta);
         const s: number = Math.sin(theta);
 
         const te: number[] = this.elements;
 
-        const a11: number = te[0], a12: number = te[3], a13: number = te[6];
-        const a21: number = te[1], a22: number = te[4], a23: number = te[7];
+        const a11: number = te[0],
+            a12: number = te[3],
+            a13: number = te[6];
+        const a21: number = te[1],
+            a22: number = te[4],
+            a23: number = te[7];
 
         te[0] = c * a11 + s * a21;
         te[3] = c * a12 + s * a22;
@@ -204,7 +260,6 @@ export class Matrix3 {
         te[7] = -s * a13 + c * a23;
 
         return this;
-
     }
 
     public translate(tx: number, ty: number): this {
@@ -250,11 +305,9 @@ export class Matrix3 {
         array[offset + 8] = te[8];
 
         return array;
-
     }
 
     public clone(): Matrix3 {
-        return ((new (this.constructor as () => void)()) as Matrix3).copy(this);
+        return (new (this.constructor as () => void)() as Matrix3).copy(this);
     }
-
 }

@@ -12,7 +12,14 @@ export class SpotLight extends Light {
     public decay: number = 0;
     public shadow: SpotLightShadow = null;
 
-    constructor(color: Color, intensity: number, distance: number = 0, angle: number = Math.PI / 3, penumbra: number = 0, decay: number = 1) {
+    constructor(
+        color: Color,
+        intensity: number,
+        distance: number = 0,
+        angle: number = Math.PI / 3,
+        penumbra: number = 0,
+        decay: number = 1,
+    ) {
         super(color, intensity);
         this.position = Object3D.DefaultUp.clone();
         this.distance = distance;
@@ -20,7 +27,6 @@ export class SpotLight extends Light {
         this.penumbra = penumbra;
         this.decay = decay;
         this.shadow = new SpotLightShadow();
-
     }
 
     get power(): number {

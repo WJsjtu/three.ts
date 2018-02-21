@@ -1,19 +1,32 @@
 import {Texture} from "./Texture";
 
 export class CompressedTexture extends Texture {
-    constructor(mipmaps: Array<{ data: any, width: number, height: number }>,
-                width: number,
-                height: number,
-                mapping?: number,
-                wrapS?: number,
-                wrapT?: number,
-                magFilter?: number,
-                minFilter?: number,
-                format?: number,
-                type?: number,
-                anisotropy?: number,
-                encoding?: number) {
-        super(null, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding);
+    constructor(
+        mipmaps: Array<{data: any; width: number; height: number}>,
+        width: number,
+        height: number,
+        mapping?: number,
+        wrapS?: number,
+        wrapT?: number,
+        magFilter?: number,
+        minFilter?: number,
+        format?: number,
+        type?: number,
+        anisotropy?: number,
+        encoding?: number,
+    ) {
+        super(
+            null,
+            mapping,
+            wrapS,
+            wrapT,
+            magFilter,
+            minFilter,
+            format,
+            type,
+            anisotropy,
+            encoding,
+        );
         this.image = {width: width, height: height};
         this.mipmaps = mipmaps;
 

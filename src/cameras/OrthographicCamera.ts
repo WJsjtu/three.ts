@@ -3,7 +3,6 @@ import {Camera, IFrustumView} from "./Camera";
 export class OrthographicCamera extends Camera {
     public readonly type: string = "OrthographicCamera";
 
-
     protected _left: number = 0;
     protected _right: number = 0;
     protected _top: number = 0;
@@ -13,7 +12,14 @@ export class OrthographicCamera extends Camera {
     protected _far: number = 2000;
     protected _view: IFrustumView = null;
 
-    constructor(left: number = 0, right: number = 0, top: number = 0, bottom: number = 0, near: number = 0.1, far: number = 2000) {
+    constructor(
+        left: number = 0,
+        right: number = 0,
+        top: number = 0,
+        bottom: number = 0,
+        near: number = 0.1,
+        far: number = 2000,
+    ) {
         super();
 
         this._left = left;
@@ -94,7 +100,14 @@ export class OrthographicCamera extends Camera {
         return this._view;
     }
 
-    public setViewOffset(fullWidth: number, fullHeight: number, x: number, y: number, width: number, height: number): this {
+    public setViewOffset(
+        fullWidth: number,
+        fullHeight: number,
+        x: number,
+        y: number,
+        width: number,
+        height: number,
+    ): this {
         this._view = {
             enabled: true,
             fullWidth: fullWidth,
@@ -102,7 +115,7 @@ export class OrthographicCamera extends Camera {
             offsetX: x,
             offsetY: y,
             width: width,
-            height: height
+            height: height,
         };
         return this.updateProjectionMatrix();
     }
@@ -131,12 +144,19 @@ export class OrthographicCamera extends Camera {
             const scaleW = (this.right - this.left) / this._view.width;
             const scaleH = (this.top - this.bottom) / this._view.height;
             left += scaleW * (this.view.offsetX / zoomW);
-            right = left + scaleW * ( this.view.width / zoomW);
+            right = left + scaleW * (this.view.width / zoomW);
             top -= scaleH * (this.view.offsetY / zoomH);
             bottom = top - scaleH * (this.view.height / zoomH);
         }
 
-        this.projectionMatrix.makeOrthographic(left, right, top, bottom, this.near, this.far);
+        this.projectionMatrix.makeOrthographic(
+            left,
+            right,
+            top,
+            bottom,
+            this.near,
+            this.far,
+        );
         return this;
     }
 

@@ -10,7 +10,8 @@ export interface IBufferRange {
     count: number;
 }
 
-export type TypedArray = Int8Array
+export type TypedArray =
+    | Int8Array
     | Uint8Array
     | Uint8ClampedArray
     | Int16Array
@@ -31,7 +32,11 @@ export class BufferAttribute {
     public updateRange: IBufferRange = {offset: 0, count: -1};
     public version: number = 0;
 
-    constructor(array: TypedArray | undefined, itemSize: number = 0, normalized: boolean = false) {
+    constructor(
+        array: TypedArray | undefined,
+        itemSize: number = 0,
+        normalized: boolean = false,
+    ) {
         this.array = array;
         this.itemSize = itemSize;
         this.count = array !== undefined ? array.length / itemSize : 0;
@@ -54,7 +59,9 @@ export class BufferAttribute {
     }
 
     public copy(source: BufferAttribute): this {
-        this.array = (new ((source.array as any).constructor as (TypedArray) => void)(source.array)) as TypedArray;
+        this.array = new ((source.array as any).constructor as (
+            TypedArray,
+        ) => void)(source.array) as TypedArray;
         this.itemSize = source.itemSize;
         this.count = source.count;
         this.normalized = source.normalized;
@@ -71,7 +78,11 @@ export class BufferAttribute {
         return this.array.slice(offset, length);
     }
 
-    public copyAt(index1: number, attribute: BufferAttribute, index2: number): this {
+    public copyAt(
+        index1: number,
+        attribute: BufferAttribute,
+        index2: number,
+    ): this {
         index1 *= this.itemSize;
         index2 *= attribute.itemSize;
         for (let i: number = 0, l: number = this.itemSize; i < l; i++) {
@@ -85,7 +96,7 @@ export class BufferAttribute {
         return this;
     }
 
-    public copyColorsArray(colors: Array<Color>): this {
+    public copyColorsArray(colors: Color[]): this {
         const array: TypedArray = this.array;
         let offset: number = 0;
         for (let i: number = 0, l: number = colors.length; i < l; i++) {
@@ -101,7 +112,7 @@ export class BufferAttribute {
      * TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
      * @param indices
      * @returns {BufferAttribute}
-     public copyIndicesArray(indices: Array<Face3>): BufferAttribute {
+     public copyIndicesArray(indices: Face3[]): BufferAttribute {
         const array: TypedArray = this.array;
         let offset: number = 0;
         for (let i: number = 0, l: number = indices.length; i < l; i++) {
@@ -114,7 +125,7 @@ export class BufferAttribute {
     }
      */
 
-    public copyVector2sArray(vectors: Array<Vector2>): this {
+    public copyVector2sArray(vectors: Vector2[]): this {
         const array: TypedArray = this.array;
         let offset: number = 0;
         for (let i: number = 0, l: number = vectors.length; i < l; i++) {
@@ -137,7 +148,7 @@ export class BufferAttribute {
         return this;
     }
 
-    public copyVector4sArray(vectors: Array<Vector4>): this {
+    public copyVector4sArray(vectors: Vector4[]): this {
         const array: TypedArray = this.array;
         let offset: number = 0;
         for (let i: number = 0, l: number = vectors.length; i < l; i++) {
@@ -150,59 +161,129 @@ export class BufferAttribute {
         return this;
     }
 
-    public setProperty(index: number, property: string, value: Vector2 | Vector3 | Vector4 | number): this {
+    public setProperty(
+        index: number,
+        property: string,
+        value: Vector2 | Vector3 | Vector4 | number,
+    ): this {
         property = property.toLowerCase();
-        if (property && property.length <= 4 && property.replace(/[xyzw]/g, "").length === 0) {
+        if (
+            property &&
+            property.length <= 4 &&
+            property.replace(/[xyzw]/g, "").length === 0
+        ) {
             const offsetMap = {x: 0, y: 1, z: 2};
             if (property.length === 1 && typeof value === "number") {
-                this.array[index * this.itemSize + offsetMap[property.charAt(0)]] = value;
+                this.array[
+                    index * this.itemSize + offsetMap[property.charAt(0)]
+                ] = value;
             } else if (property.length === 2 && value instanceof Vector2) {
-                this.array[index * this.itemSize + offsetMap[property.charAt(0)]] = value.x;
-                this.array[index * this.itemSize + offsetMap[property.charAt(1)]] = value.y;
+                this.array[
+                    index * this.itemSize + offsetMap[property.charAt(0)]
+                ] =
+                    value.x;
+                this.array[
+                    index * this.itemSize + offsetMap[property.charAt(1)]
+                ] =
+                    value.y;
             } else if (property.length === 3 && value instanceof Vector3) {
-                this.array[index * this.itemSize + offsetMap[property.charAt(0)]] = value.x;
-                this.array[index * this.itemSize + offsetMap[property.charAt(1)]] = value.y;
-                this.array[index * this.itemSize + offsetMap[property.charAt(2)]] = value.z;
+                this.array[
+                    index * this.itemSize + offsetMap[property.charAt(0)]
+                ] =
+                    value.x;
+                this.array[
+                    index * this.itemSize + offsetMap[property.charAt(1)]
+                ] =
+                    value.y;
+                this.array[
+                    index * this.itemSize + offsetMap[property.charAt(2)]
+                ] =
+                    value.z;
             } else if (property.length === 4 && value instanceof Vector4) {
-                this.array[index * this.itemSize + offsetMap[property.charAt(0)]] = value.x;
-                this.array[index * this.itemSize + offsetMap[property.charAt(1)]] = value.y;
-                this.array[index * this.itemSize + offsetMap[property.charAt(2)]] = value.z;
-                this.array[index * this.itemSize + offsetMap[property.charAt(3)]] = value.w;
+                this.array[
+                    index * this.itemSize + offsetMap[property.charAt(0)]
+                ] =
+                    value.x;
+                this.array[
+                    index * this.itemSize + offsetMap[property.charAt(1)]
+                ] =
+                    value.y;
+                this.array[
+                    index * this.itemSize + offsetMap[property.charAt(2)]
+                ] =
+                    value.z;
+                this.array[
+                    index * this.itemSize + offsetMap[property.charAt(3)]
+                ] =
+                    value.w;
             }
         }
         return this;
     }
 
-    public getProperty(index: number, property: string): Vector2 | Vector3 | Vector4 | number {
+    public getProperty(
+        index: number,
+        property: string,
+    ): Vector2 | Vector3 | Vector4 | number {
         property = property.toLowerCase();
-        if (property && property.length <= 4 && property.replace(/[xyzw]/g, "").length === 0) {
+        if (
+            property &&
+            property.length <= 4 &&
+            property.replace(/[xyzw]/g, "").length === 0
+        ) {
             const offsetMap = {x: 0, y: 1, z: 2};
             if (property.length === 1) {
-                return this.array[index * this.itemSize + offsetMap[property.charAt(0)]];
+                return this.array[
+                    index * this.itemSize + offsetMap[property.charAt(0)]
+                ];
             } else if (property.length === 2) {
                 return new Vector2(
-                    this.array[index * this.itemSize + offsetMap[property.charAt(0)]],
-                    this.array[index * this.itemSize + offsetMap[property.charAt(1)]]
+                    this.array[
+                        index * this.itemSize + offsetMap[property.charAt(0)]
+                    ],
+                    this.array[
+                        index * this.itemSize + offsetMap[property.charAt(1)]
+                    ],
                 );
             } else if (property.length === 3) {
                 return new Vector3(
-                    this.array[index * this.itemSize + offsetMap[property.charAt(0)]],
-                    this.array[index * this.itemSize + offsetMap[property.charAt(1)]],
-                    this.array[index * this.itemSize + offsetMap[property.charAt(2)]]
+                    this.array[
+                        index * this.itemSize + offsetMap[property.charAt(0)]
+                    ],
+                    this.array[
+                        index * this.itemSize + offsetMap[property.charAt(1)]
+                    ],
+                    this.array[
+                        index * this.itemSize + offsetMap[property.charAt(2)]
+                    ],
                 );
             } else if (property.length === 4) {
                 return new Vector4(
-                    this.array[index * this.itemSize + offsetMap[property.charAt(0)]],
-                    this.array[index * this.itemSize + offsetMap[property.charAt(1)]],
-                    this.array[index * this.itemSize + offsetMap[property.charAt(2)]],
-                    this.array[index * this.itemSize + offsetMap[property.charAt(3)]]
+                    this.array[
+                        index * this.itemSize + offsetMap[property.charAt(0)]
+                    ],
+                    this.array[
+                        index * this.itemSize + offsetMap[property.charAt(1)]
+                    ],
+                    this.array[
+                        index * this.itemSize + offsetMap[property.charAt(2)]
+                    ],
+                    this.array[
+                        index * this.itemSize + offsetMap[property.charAt(3)]
+                    ],
                 );
             }
         }
     }
 
     public clone(): BufferAttribute {
-        return ((new (this.constructor as (array: TypedArray, itemSize: number, normalized: boolean) => void)(this.array, this.itemSize, true)) as BufferAttribute).copy(this);
+        return (new (this.constructor as (
+            array: TypedArray,
+            itemSize: number,
+            normalized: boolean,
+        ) => void)(this.array, this.itemSize, true) as BufferAttribute).copy(
+            this,
+        );
     }
 }
 
@@ -261,7 +342,7 @@ export class Float64BufferAttribute extends BufferAttribute {
 }
 
 export type TypedBufferAttribute =
-    Int8BufferAttribute
+    | Int8BufferAttribute
     | Uint8BufferAttribute
     | Uint8ClampedBufferAttribute
     | Int16BufferAttribute

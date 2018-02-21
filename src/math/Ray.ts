@@ -6,11 +6,13 @@ import {Triangle} from "./Triangle";
 import {Matrix4} from "./Matrix4";
 
 export class Ray {
-
     public origin: Vector3 = new Vector3();
     public direction: Vector3 = new Vector3();
 
-    constructor(origin: Vector3 = new Vector3(), direction: Vector3 = new Vector3()) {
+    constructor(
+        origin: Vector3 = new Vector3(),
+        direction: Vector3 = new Vector3(),
+    ) {
         this.origin = origin;
         this.direction = direction;
     }
@@ -32,11 +34,17 @@ export class Ray {
     }
 
     public at(t: number): Vector3 {
-        return new Vector3().copy(this.direction).multiplyScalar(t).add(this.origin);
+        return new Vector3()
+            .copy(this.direction)
+            .multiplyScalar(t)
+            .add(this.origin);
     }
 
     public lookAt(v: Vector3): this {
-        this.direction.copy(v).sub(this.origin).normalize();
+        this.direction
+            .copy(v)
+            .sub(this.origin)
+            .normalize();
         return this;
     }
 
@@ -51,7 +59,10 @@ export class Ray {
         if (directionDistance < 0) {
             return result.copy(this.origin);
         }
-        return result.copy(this.direction).multiplyScalar(directionDistance).add(this.origin);
+        return result
+            .copy(this.direction)
+            .multiplyScalar(directionDistance)
+            .add(this.origin);
     }
 
     public distanceToPoint(point: Vector3): number {
@@ -59,15 +70,27 @@ export class Ray {
     }
 
     public distanceSquaredToPoint(point: Vector3): number {
-        const directionDistance: number = new Vector3().copy(point).sub(this.origin).dot(this.direction);
+        const directionDistance: number = new Vector3()
+            .copy(point)
+            .sub(this.origin)
+            .dot(this.direction);
         // point behind the ray
         if (directionDistance < 0) {
             return this.origin.distanceToSquared(point);
         }
-        return new Vector3().copy(this.direction).multiplyScalar(directionDistance).add(this.origin).distanceToSquared(point);
+        return new Vector3()
+            .copy(this.direction)
+            .multiplyScalar(directionDistance)
+            .add(this.origin)
+            .distanceToSquared(point);
     }
 
-    public distanceSqToSegment(v0: Vector3, v1: Vector3, optionalPointOnRay?: Vector3, optionalPointOnSegment?: Vector3): number {
+    public distanceSqToSegment(
+        v0: Vector3,
+        v1: Vector3,
+        optionalPointOnRay?: Vector3,
+        optionalPointOnSegment?: Vector3,
+    ): number {
         const segCenter: Vector3 = new Vector3();
         const segDir: Vector3 = new Vector3();
         const diff: Vector3 = new Vector3();
@@ -78,8 +101,14 @@ export class Ray {
         // - The closest point on the ray
         // - The closest point on the segment
 
-        segCenter.copy(v0).add(v1).multiplyScalar(0.5);
-        segDir.copy(v1).sub(v0).normalize();
+        segCenter
+            .copy(v0)
+            .add(v1)
+            .multiplyScalar(0.5);
+        segDir
+            .copy(v1)
+            .sub(v0)
+            .normalize();
         diff.copy(this.origin).sub(segCenter);
 
         const segExtent: number = v0.distanceTo(v1) * 0.5;
@@ -103,48 +132,63 @@ export class Ray {
                         const invDet: number = 1 / det;
                         s0 *= invDet;
                         s1 *= invDet;
-                        sqrDist = s0 * ( s0 + a01 * s1 + 2 * b0 ) + s1 * ( a01 * s0 + s1 + 2 * b1 ) + c;
+                        sqrDist =
+                            s0 * (s0 + a01 * s1 + 2 * b0) +
+                            s1 * (a01 * s0 + s1 + 2 * b1) +
+                            c;
                     } else {
                         // region 1
                         s1 = segExtent;
-                        s0 = Math.max(0, -( a01 * s1 + b0 ));
-                        sqrDist = -s0 * s0 + s1 * ( s1 + 2 * b1 ) + c;
+                        s0 = Math.max(0, -(a01 * s1 + b0));
+                        sqrDist = -s0 * s0 + s1 * (s1 + 2 * b1) + c;
                     }
                 } else {
                     // region 5
                     s1 = -segExtent;
-                    s0 = Math.max(0, -( a01 * s1 + b0 ));
-                    sqrDist = -s0 * s0 + s1 * ( s1 + 2 * b1 ) + c;
+                    s0 = Math.max(0, -(a01 * s1 + b0));
+                    sqrDist = -s0 * s0 + s1 * (s1 + 2 * b1) + c;
                 }
             } else {
                 if (s1 <= -extDet) {
                     // region 4
-                    s0 = Math.max(0, -( -a01 * segExtent + b0 ));
-                    s1 = ( s0 > 0 ) ? -segExtent : Math.min(Math.max(-segExtent, -b1), segExtent);
-                    sqrDist = -s0 * s0 + s1 * ( s1 + 2 * b1 ) + c;
+                    s0 = Math.max(0, -(-a01 * segExtent + b0));
+                    s1 =
+                        s0 > 0
+                            ? -segExtent
+                            : Math.min(Math.max(-segExtent, -b1), segExtent);
+                    sqrDist = -s0 * s0 + s1 * (s1 + 2 * b1) + c;
                 } else if (s1 <= extDet) {
                     // region 3
                     s0 = 0;
                     s1 = Math.min(Math.max(-segExtent, -b1), segExtent);
-                    sqrDist = s1 * ( s1 + 2 * b1 ) + c;
+                    sqrDist = s1 * (s1 + 2 * b1) + c;
                 } else {
                     // region 2
-                    s0 = Math.max(0, -( a01 * segExtent + b0 ));
-                    s1 = ( s0 > 0 ) ? segExtent : Math.min(Math.max(-segExtent, -b1), segExtent);
-                    sqrDist = -s0 * s0 + s1 * ( s1 + 2 * b1 ) + c;
+                    s0 = Math.max(0, -(a01 * segExtent + b0));
+                    s1 =
+                        s0 > 0
+                            ? segExtent
+                            : Math.min(Math.max(-segExtent, -b1), segExtent);
+                    sqrDist = -s0 * s0 + s1 * (s1 + 2 * b1) + c;
                 }
             }
         } else {
             // Ray and segment are parallel.
-            s1 = ( a01 > 0 ) ? -segExtent : segExtent;
-            s0 = Math.max(0, -( a01 * s1 + b0 ));
-            sqrDist = -s0 * s0 + s1 * ( s1 + 2 * b1 ) + c;
+            s1 = a01 > 0 ? -segExtent : segExtent;
+            s0 = Math.max(0, -(a01 * s1 + b0));
+            sqrDist = -s0 * s0 + s1 * (s1 + 2 * b1) + c;
         }
         if (optionalPointOnRay) {
-            optionalPointOnRay.copy(this.direction).multiplyScalar(s0).add(this.origin);
+            optionalPointOnRay
+                .copy(this.direction)
+                .multiplyScalar(s0)
+                .add(this.origin);
         }
         if (optionalPointOnSegment) {
-            optionalPointOnSegment.copy(segDir).multiplyScalar(s1).add(segCenter);
+            optionalPointOnSegment
+                .copy(segDir)
+                .multiplyScalar(s1)
+                .add(segCenter);
         }
         return sqrDist;
     }
@@ -191,7 +235,8 @@ export class Ray {
             // Null is preferable to undefined since undefined means.... it is undefined
             return Infinity;
         }
-        const t: number = -( this.origin.dot(plane.normal) + plane.constant ) / denominator;
+        const t: number =
+            -(this.origin.dot(plane.normal) + plane.constant) / denominator;
         // Return if the ray never intersects the plane
         return t >= 0 ? t : Infinity;
     }
@@ -219,7 +264,12 @@ export class Ray {
     }
 
     public intersectBox(box: Box3): Vector3 {
-        let tmin: number, tmax: number, tymin: number, tymax: number, tzmin: number, tzmax: number;
+        let tmin: number,
+            tmax: number,
+            tymin: number,
+            tymax: number,
+            tzmin: number,
+            tzmax: number;
         const invdirx: number = 1 / this.direction.x,
             invdiry: number = 1 / this.direction.y,
             invdirz: number = 1 / this.direction.z;
@@ -238,7 +288,7 @@ export class Ray {
             tymin = (box.max.y - origin.y) * invdiry;
             tymax = (box.min.y - origin.y) * invdiry;
         }
-        if ((tmin > tymax) || (tymin > tmax)) return null;
+        if (tmin > tymax || tymin > tmax) return null;
         // These lines also handle the case where tmin or tmax is NaN
         // (result of 0 * Infinity). x !== x returns true if x is NaN
         if (tymin > tmin || tmin !== tmin) tmin = tymin;
@@ -250,7 +300,7 @@ export class Ray {
             tzmin = (box.max.z - origin.z) * invdirz;
             tzmax = (box.min.z - origin.z) * invdirz;
         }
-        if ((tmin > tzmax) || (tzmin > tmax)) return null;
+        if (tmin > tzmax || tzmin > tmax) return null;
         if (tzmin > tmin || tmin !== tmin) tmin = tzmin;
         if (tzmax < tmax || tmax !== tmax) tmax = tzmax;
         //return point closest to the ray (positive side)
@@ -262,9 +312,14 @@ export class Ray {
         return this.intersectBox(box) !== null;
     }
 
-    public intersectTriangle(triangle: Triangle, backFaceCulling: boolean = false): Vector3 {
+    public intersectTriangle(
+        triangle: Triangle,
+        backFaceCulling: boolean = false,
+    ): Vector3 {
         // Compute the offset origin, edges, and normal.
-        const a: Vector3 = triangle.a, b: Vector3 = triangle.b, c: Vector3 = triangle.c;
+        const a: Vector3 = triangle.a,
+            b: Vector3 = triangle.b,
+            c: Vector3 = triangle.c;
         const edge1: Vector3 = new Vector3().copy(b).sub(a);
         const edge2: Vector3 = new Vector3().copy(c).sub(a);
         const normal: Vector3 = new Vector3().copy(edge1).cross(edge2);
@@ -285,7 +340,8 @@ export class Ray {
             return null;
         }
         const diff: Vector3 = new Vector3().copy(this.origin).sub(a);
-        const DdQxE2: number = sign * this.direction.dot(edge2.copy(diff).cross(edge2));
+        const DdQxE2: number =
+            sign * this.direction.dot(edge2.copy(diff).cross(edge2));
         // b1 < 0, no intersection
         if (DdQxE2 < 0) {
             return null;
@@ -320,7 +376,9 @@ export class Ray {
     }
 
     public equals(ray: Ray): boolean {
-        return ray.origin.equals(this.origin) && ray.direction.equals(this.direction);
+        return (
+            ray.origin.equals(this.origin) &&
+            ray.direction.equals(this.direction)
+        );
     }
-
 }

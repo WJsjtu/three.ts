@@ -37,9 +37,16 @@ export class LOD extends Object3D {
         return levels[i - 1].object;
     }
 
-    public raycast(raycaster: Raycaster, intersects: Array<IIntersection> = []): Array<IIntersection> {
-        const matrixPosition: Vector3 = new Vector3().setFromMatrixPosition(this.matrixWorld);
-        const distance: number = raycaster.ray.origin.distanceTo(matrixPosition);
+    public raycast(
+        raycaster: Raycaster,
+        intersects: IIntersection[] = [],
+    ): IIntersection[] {
+        const matrixPosition: Vector3 = new Vector3().setFromMatrixPosition(
+            this.matrixWorld,
+        );
+        const distance: number = raycaster.ray.origin.distanceTo(
+            matrixPosition,
+        );
         this.getObjectForDistance(distance).raycast(raycaster, intersects);
         return intersects;
     }
@@ -47,11 +54,16 @@ export class LOD extends Object3D {
     public update(camera: Camera): this {
         const levels: ILODLevel[] = this.levels;
         if (levels.length > 1) {
-            const v1: Vector3 = new Vector3().setFromMatrixPosition(camera.matrixWorld);
-            const v2: Vector3 = new Vector3().setFromMatrixPosition(this.matrixWorld);
+            const v1: Vector3 = new Vector3().setFromMatrixPosition(
+                camera.matrixWorld,
+            );
+            const v2: Vector3 = new Vector3().setFromMatrixPosition(
+                this.matrixWorld,
+            );
             const distance: number = v1.distanceTo(v2);
             levels[0].object.visible = true;
-            let i: number = 1, l: number = levels.length;
+            let i: number = 1;
+            const l: number = levels.length;
             for (; i < l; i++) {
                 if (distance >= levels[i].distance) {
                     levels[i - 1].object.visible = false;
@@ -78,6 +90,6 @@ export class LOD extends Object3D {
     }
 
     public clone(): LOD {
-        return (new (this.constructor as () => void)()).copy(this);
+        return new (this.constructor as () => void)().copy(this);
     }
 }

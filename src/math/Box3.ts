@@ -8,7 +8,10 @@ export class Box3 {
     public min: Vector3 = new Vector3(+Infinity, +Infinity, +Infinity);
     public max: Vector3 = new Vector3(-Infinity, -Infinity, -Infinity);
 
-    constructor(min: Vector3 = new Vector3(+Infinity, +Infinity, +Infinity), max: Vector3 = new Vector3(-Infinity, -Infinity, -Infinity)) {
+    constructor(
+        min: Vector3 = new Vector3(+Infinity, +Infinity, +Infinity),
+        max: Vector3 = new Vector3(-Infinity, -Infinity, -Infinity),
+    ) {
         this.max = max;
         this.min = min;
     }
@@ -20,10 +23,16 @@ export class Box3 {
     }
 
     public setFromArray(array: number[]): this {
-        let minX: number = +Infinity, minY: number = +Infinity, minZ: number = +Infinity;
-        let maxX: number = -Infinity, maxY: number = -Infinity, maxZ: number = -Infinity;
+        let minX: number = +Infinity,
+            minY: number = +Infinity,
+            minZ: number = +Infinity;
+        let maxX: number = -Infinity,
+            maxY: number = -Infinity,
+            maxZ: number = -Infinity;
         for (let i: number = 0, l: number = array.length; i < l; i += 3) {
-            const x: number = array[i], y: number = array[i + 1], z: number = array[i + 2];
+            const x: number = array[i],
+                y: number = array[i + 1],
+                z: number = array[i + 2];
             if (x < minX) minX = x;
             if (y < minY) minY = y;
             if (z < minZ) minZ = z;
@@ -51,7 +60,7 @@ export class Box3 {
         return this;
     }
 
-    public setFromObject(object: Object3D): this{
+    public setFromObject(object: Object3D): this {
         this.makeEmpty();
         return this.expandByObject(object);
     }
@@ -77,19 +86,28 @@ export class Box3 {
      * @returns {boolean}
      */
     public isEmpty(): boolean {
-        return ( this.max.x < this.min.x ) || ( this.max.y < this.min.y ) || ( this.max.z < this.min.z );
+        return (
+            this.max.x < this.min.x ||
+            this.max.y < this.min.y ||
+            this.max.z < this.min.z
+        );
     }
 
     public getCenter(): Vector3 {
         const result: Vector3 = new Vector3();
-        return this.isEmpty() ? result.set(0, 0, 0) : result.copy(this.min).add(this.max).multiplyScalar(0.5);
-
+        return this.isEmpty()
+            ? result.set(0, 0, 0)
+            : result
+                  .copy(this.min)
+                  .add(this.max)
+                  .multiplyScalar(0.5);
     }
 
     public getSize(): Vector3 {
         const result = new Vector3();
-        return this.isEmpty() ? result.set(0, 0, 0) : result.copy(this.max).sub(this.min);
-
+        return this.isEmpty()
+            ? result.set(0, 0, 0)
+            : result.copy(this.max).sub(this.min);
     }
 
     public expandByPoint(point: Vector3): this {
@@ -131,12 +149,14 @@ export class Box3 {
     }
 
     public containsBox(box: Box3): boolean {
-        return this.min.x <= box.min.x &&
+        return (
+            this.min.x <= box.min.x &&
             box.max.x <= this.max.x &&
             this.min.y <= box.min.y &&
             box.max.y <= this.max.y &&
             this.min.z <= box.min.z &&
-            box.max.z <= this.max.z;
+            box.max.z <= this.max.z
+        );
     }
 
     /**
@@ -149,7 +169,7 @@ export class Box3 {
         return result.set(
             (point.x - this.min.x) / (this.max.x - this.min.x),
             (point.y - this.min.y) / (this.max.y - this.min.y),
-            (point.z - this.min.z) / (this.max.z - this.min.z)
+            (point.z - this.min.z) / (this.max.z - this.min.z),
         );
     }
 
@@ -177,7 +197,10 @@ export class Box3 {
      */
     public intersectsSphere(sphere: Sphere): boolean {
         const closestPoint: Vector3 = this.clampPoint(sphere.center);
-        return closestPoint.distanceToSquared(sphere.center) <= ( sphere.radius * sphere.radius );
+        return (
+            closestPoint.distanceToSquared(sphere.center) <=
+            sphere.radius * sphere.radius
+        );
     }
 
     /**
@@ -209,7 +232,7 @@ export class Box3 {
             min += plane.normal.z * this.max.z;
             max += plane.normal.z * this.min.z;
         }
-        return (min <= plane.constant && max >= plane.constant);
+        return min <= plane.constant && max >= plane.constant;
     }
 
     public clampPoint(point: Vector3): Vector3 {
@@ -217,7 +240,9 @@ export class Box3 {
     }
 
     public distanceToPoint(point: Vector3): number {
-        const clampedPoint: Vector3 = new Vector3().copy(point).clamp(this.min, this.max);
+        const clampedPoint: Vector3 = new Vector3()
+            .copy(point)
+            .clamp(this.min, this.max);
         return clampedPoint.sub(point).length();
     }
 
@@ -253,7 +278,7 @@ export class Box3 {
             new Vector3(),
             new Vector3(),
             new Vector3(),
-            new Vector3()
+            new Vector3(),
         ];
         // NOTE: I am using a binary pattern to specify all 2^3 combinations below
         points[0].set(this.min.x, this.min.y, this.min.z).applyMatrix4(matrix); // 000
@@ -263,7 +288,7 @@ export class Box3 {
         points[4].set(this.max.x, this.min.y, this.min.z).applyMatrix4(matrix); // 100
         points[5].set(this.max.x, this.min.y, this.max.z).applyMatrix4(matrix); // 101
         points[6].set(this.max.x, this.max.y, this.min.z).applyMatrix4(matrix); // 110
-        points[7].set(this.max.x, this.max.y, this.max.z).applyMatrix4(matrix);	// 111
+        points[7].set(this.max.x, this.max.y, this.max.z).applyMatrix4(matrix); // 111
         this.setFromPoints(points);
         return this;
     }

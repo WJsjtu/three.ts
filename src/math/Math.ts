@@ -1,6 +1,6 @@
-const lut: Array<string> = [];
+const lut: string[] = [];
 for (let i: number = 0; i < 256; i++) {
-    lut[i] = ( i < 16 ? "0" : "" ) + ( i ).toString(16).toUpperCase();
+    lut[i] = (i < 16 ? "0" : "") + i.toString(16).toUpperCase();
 }
 
 /**
@@ -25,14 +25,32 @@ export class MathUtil {
      * @returns {string}
      */
     public static generateUUID(): string {
-        const d0 = Math.random() * 0xffffffff | 0;
-        const d1 = Math.random() * 0xffffffff | 0;
-        const d2 = Math.random() * 0xffffffff | 0;
-        const d3 = Math.random() * 0xffffffff | 0;
-        return lut[d0 & 0xff] + lut[d0 >> 8 & 0xff] + lut[d0 >> 16 & 0xff] + lut[d0 >> 24 & 0xff] + "-" +
-            lut[d1 & 0xff] + lut[d1 >> 8 & 0xff] + "-" + lut[d1 >> 16 & 0x0f | 0x40] + lut[d1 >> 24 & 0xff] + "-" +
-            lut[d2 & 0x3f | 0x80] + lut[d2 >> 8 & 0xff] + "-" + lut[d2 >> 16 & 0xff] + lut[d2 >> 24 & 0xff] +
-            lut[d3 & 0xff] + lut[d3 >> 8 & 0xff] + lut[d3 >> 16 & 0xff] + lut[d3 >> 24 & 0xff];
+        const d0 = (Math.random() * 0xffffffff) | 0;
+        const d1 = (Math.random() * 0xffffffff) | 0;
+        const d2 = (Math.random() * 0xffffffff) | 0;
+        const d3 = (Math.random() * 0xffffffff) | 0;
+        return (
+            lut[d0 & 0xff] +
+            lut[(d0 >> 8) & 0xff] +
+            lut[(d0 >> 16) & 0xff] +
+            lut[(d0 >> 24) & 0xff] +
+            "-" +
+            lut[d1 & 0xff] +
+            lut[(d1 >> 8) & 0xff] +
+            "-" +
+            lut[((d1 >> 16) & 0x0f) | 0x40] +
+            lut[(d1 >> 24) & 0xff] +
+            "-" +
+            lut[(d2 & 0x3f) | 0x80] +
+            lut[(d2 >> 8) & 0xff] +
+            "-" +
+            lut[(d2 >> 16) & 0xff] +
+            lut[(d2 >> 24) & 0xff] +
+            lut[d3 & 0xff] +
+            lut[(d3 >> 8) & 0xff] +
+            lut[(d3 >> 16) & 0xff] +
+            lut[(d3 >> 24) & 0xff]
+        );
     }
 
     /**
@@ -55,7 +73,7 @@ export class MathUtil {
      * @returns {number}
      */
     public static euclideanModulo(n: number, m: number): number {
-        return ((n % m) + m) % m;
+        return (n % m + m) % m;
     }
 
     /**
@@ -67,7 +85,13 @@ export class MathUtil {
      * @param b2
      * @returns {number}
      */
-    public static mapLinear(x: number, a1: number, a2: number, b1: number, b2: number): number {
+    public static mapLinear(
+        x: number,
+        a1: number,
+        a2: number,
+        b1: number,
+        b2: number,
+    ): number {
         return b1 + (x - a1) * (b2 - b1) / (a2 - a1);
     }
 
@@ -171,7 +195,4 @@ export class MathUtil {
     public static floorPowerOfTwo(value: number): number {
         return Math.pow(2, Math.floor(Math.log(value) / Math.LN2));
     }
-
 }
-
-

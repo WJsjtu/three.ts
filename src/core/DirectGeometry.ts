@@ -14,7 +14,6 @@ export interface IGroup {
 }
 
 export class DirectGeometry {
-
     /**
      * TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
      * public indices: number[] = [];
@@ -22,19 +21,19 @@ export class DirectGeometry {
 
     public vertices: Vector3[] = [];
     public normals: Vector3[] = [];
-    public colors: Array<Color> = [];
-    public uvs: Array<Vector2> = [];
-    public uvs2: Array<Vector2> = [];
+    public colors: Color[] = [];
+    public uvs: Vector2[] = [];
+    public uvs2: Vector2[] = [];
 
-    public groups: Array<IGroup> = [];
+    public groups: IGroup[] = [];
 
     public morphTargets: {
-        position?: Array<Vector3[]>,
-        normal?: Array<Vector3[]>
+        position?: Vector3[][];
+        normal?: Vector3[][];
     } = {};
 
-    public skinWeights: Array<Vector4> = [];
-    public skinIndices: Array<Vector4> = [];
+    public skinWeights: Vector4[] = [];
+    public skinIndices: Vector4[] = [];
 
     /*
      TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
@@ -50,9 +49,9 @@ export class DirectGeometry {
 
     public computeGroups(geometry: Geometry): void {
         let group: IGroup;
-        const groups: Array<IGroup> = [];
+        const groups: IGroup[] = [];
         let materialIndex: number;
-        const faces: Array<GeometryFace> = geometry.faces;
+        const faces: GeometryFace[] = geometry.faces;
         let i: number = 0;
         for (; i < faces.length; i++) {
             const face: GeometryFace = faces[i];
@@ -60,32 +59,34 @@ export class DirectGeometry {
             if (face.materialIndex !== materialIndex) {
                 materialIndex = face.materialIndex;
                 if (group !== undefined) {
-                    group.count = ( i * 3 ) - group.start;
+                    group.count = i * 3 - group.start;
                     groups.push(group);
                 }
                 group = {
                     start: i * 3,
-                    materialIndex: materialIndex
+                    materialIndex: materialIndex,
                 };
             }
         }
         if (group !== undefined) {
-            group.count = (i * 3) - group.start;
+            group.count = i * 3 - group.start;
             groups.push(group);
         }
         this.groups = groups;
     }
 
     public fromGeometry(geometry: Geometry): this {
-        const faces: Array<GeometryFace> = geometry.faces;
+        const faces: GeometryFace[] = geometry.faces;
         const vertices: Vector3[] = geometry.vertices;
-        const faceVertexUvs: Array<Array<Array<Vector2>>> = geometry.faceVertexUvs;
+        const faceVertexUvs: Vector2[][][] = geometry.faceVertexUvs;
 
-        const hasFaceVertexUv: boolean = faceVertexUvs[0] && faceVertexUvs[0].length > 0;
-        const hasFaceVertexUv2: boolean = faceVertexUvs[1] && faceVertexUvs[1].length > 0;
+        const hasFaceVertexUv: boolean =
+            faceVertexUvs[0] && faceVertexUvs[0].length > 0;
+        const hasFaceVertexUv2: boolean =
+            faceVertexUvs[1] && faceVertexUvs[1].length > 0;
 
         // morphs
-        const morphTargets: Array<IMorphTarget> = geometry.morphTargets;
+        const morphTargets: IMorphTarget[] = geometry.morphTargets;
         const morphTargetsLength: number = morphTargets.length;
         if (morphTargetsLength > 0) {
             this.morphTargets.position = [];
@@ -93,7 +94,7 @@ export class DirectGeometry {
                 this.morphTargets.position[i] = [];
             }
         }
-        const morphNormals: Array<IMorphNormal> = geometry.morphNormals;
+        const morphNormals: IMorphNormal[] = geometry.morphNormals;
         const morphNormalsLength: number = morphNormals.length;
         if (morphNormalsLength > 0) {
             this.morphTargets.normal = [];
@@ -102,61 +103,92 @@ export class DirectGeometry {
             }
         }
         // skins
-        const skinIndices: Array<Vector4> = geometry.skinIndices;
-        const skinWeights: Array<Vector4> = geometry.skinWeights;
+        const skinIndices: Vector4[] = geometry.skinIndices;
+        const skinWeights: Vector4[] = geometry.skinWeights;
         const hasSkinIndices: boolean = skinIndices.length === vertices.length;
         const hasSkinWeights: boolean = skinWeights.length === vertices.length;
         for (let i: number = 0; i < faces.length; i++) {
             const face: GeometryFace = faces[i];
-            this.vertices.push(vertices[face.a], vertices[face.b], vertices[face.c]);
+            this.vertices.push(
+                vertices[face.a],
+                vertices[face.b],
+                vertices[face.c],
+            );
             const vertexNormals: Vector3[] = face.vertexNormals;
             if (vertexNormals.length === 3) {
-                this.normals.push(vertexNormals[0], vertexNormals[1], vertexNormals[2]);
+                this.normals.push(
+                    vertexNormals[0],
+                    vertexNormals[1],
+                    vertexNormals[2],
+                );
             } else {
                 const normal: Vector3 = face.normal;
                 this.normals.push(normal, normal, normal);
             }
-            const vertexColors: Array<Color> = face.vertexColors;
+            const vertexColors: Color[] = face.vertexColors;
             if (vertexColors.length === 3) {
-                this.colors.push(vertexColors[0], vertexColors[1], vertexColors[2]);
+                this.colors.push(
+                    vertexColors[0],
+                    vertexColors[1],
+                    vertexColors[2],
+                );
             } else {
                 const color: Color = face.color;
                 this.colors.push(color, color, color);
             }
             if (hasFaceVertexUv === true) {
-                const vertexUvs: Array<Vector2> = faceVertexUvs[0][i];
+                const vertexUvs: Vector2[] = faceVertexUvs[0][i];
                 if (vertexUvs !== undefined) {
                     this.uvs.push(vertexUvs[0], vertexUvs[1], vertexUvs[2]);
                 } else {
-                    console.warn(`THREE.DirectGeometry.fromGeometry(): Undefined vertexUv ${i}`);
+                    console.warn(
+                        `THREE.DirectGeometry.fromGeometry(): Undefined vertexUv ${i}`,
+                    );
                     this.uvs.push(new Vector2(), new Vector2(), new Vector2());
                 }
             }
             if (hasFaceVertexUv2 === true) {
-                const vertexUvs: Array<Vector2> = faceVertexUvs[1][i];
+                const vertexUvs: Vector2[] = faceVertexUvs[1][i];
                 if (vertexUvs !== undefined) {
                     this.uvs2.push(vertexUvs[0], vertexUvs[1], vertexUvs[2]);
                 } else {
-                    console.warn(`THREE.DirectGeometry.fromGeometry(): Undefined vertexUv2 ${i}`);
+                    console.warn(
+                        `THREE.DirectGeometry.fromGeometry(): Undefined vertexUv2 ${i}`,
+                    );
                     this.uvs2.push(new Vector2(), new Vector2(), new Vector2());
                 }
             }
             // morphs
             for (let j: number = 0; j < morphTargetsLength; j++) {
                 const morphTarget: Vector3[] = morphTargets[j].vertices;
-                this.morphTargets.position[j].push(morphTarget[face.a], morphTarget[face.b], morphTarget[face.c]);
+                this.morphTargets.position[j].push(
+                    morphTarget[face.a],
+                    morphTarget[face.b],
+                    morphTarget[face.c],
+                );
             }
             for (let j: number = 0; j < morphNormalsLength; j++) {
                 const morphNormal: Triangle = morphNormals[j].vertexNormals[i];
-                this.morphTargets.normal[j].push(morphNormal.a, morphNormal.b, morphNormal.c);
-
+                this.morphTargets.normal[j].push(
+                    morphNormal.a,
+                    morphNormal.b,
+                    morphNormal.c,
+                );
             }
             // skins
             if (hasSkinIndices) {
-                this.skinIndices.push(skinIndices[face.a], skinIndices[face.b], skinIndices[face.c]);
+                this.skinIndices.push(
+                    skinIndices[face.a],
+                    skinIndices[face.b],
+                    skinIndices[face.c],
+                );
             }
             if (hasSkinWeights) {
-                this.skinWeights.push(skinWeights[face.a], skinWeights[face.b], skinWeights[face.c]);
+                this.skinWeights.push(
+                    skinWeights[face.a],
+                    skinWeights[face.b],
+                    skinWeights[face.c],
+                );
             }
         }
 

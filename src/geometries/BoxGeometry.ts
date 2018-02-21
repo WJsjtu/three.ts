@@ -13,11 +13,17 @@ export interface IBoxGeometryParameters {
 }
 
 export class BoxGeometry extends Geometry {
-
     public readonly type: string = "BoxGeometry";
     public parameters: IBoxGeometryParameters;
 
-    constructor(width?: number, height?: number, depth?: number, widthSegments?: number, heightSegments?: number, depthSegments?: number) {
+    constructor(
+        width?: number,
+        height?: number,
+        depth?: number,
+        widthSegments?: number,
+        heightSegments?: number,
+        depthSegments?: number,
+    ) {
         super();
         this.parameters = {
             width: width,
@@ -25,17 +31,23 @@ export class BoxGeometry extends Geometry {
             depth: depth,
             widthSegments: widthSegments,
             heightSegments: heightSegments,
-            depthSegments: depthSegments
+            depthSegments: depthSegments,
         };
     }
 }
 
 export class BoxBufferGeometry extends BufferGeometry {
-
     public readonly type: string = "BoxBufferGeometry";
     public parameters: IBoxGeometryParameters;
 
-    constructor(width: number = 1, height: number = 1, depth: number = 1, widthSegments: number = 1, heightSegments: number = 1, depthSegments: number = 1) {
+    constructor(
+        width: number = 1,
+        height: number = 1,
+        depth: number = 1,
+        widthSegments: number = 1,
+        heightSegments: number = 1,
+        depthSegments: number = 1,
+    ) {
         super();
         this.parameters = {
             width: width,
@@ -43,7 +55,7 @@ export class BoxBufferGeometry extends BufferGeometry {
             depth: depth,
             widthSegments: widthSegments,
             heightSegments: heightSegments,
-            depthSegments: depthSegments
+            depthSegments: depthSegments,
         };
 
         widthSegments = Math.floor(widthSegments);
@@ -62,8 +74,19 @@ export class BoxBufferGeometry extends BufferGeometry {
         let numberOfVertices: number = 0;
         let groupStart: number = 0;
 
-        const buildPlane = (u: string, v: string, w: string, uDir: number, vDir: number, width2: number, height2: number, depth2: number, gridX: number, gridY: number, materialIndex: number): void => {
-
+        const buildPlane = (
+            u: string,
+            v: string,
+            w: string,
+            uDir: number,
+            vDir: number,
+            width2: number,
+            height2: number,
+            depth2: number,
+            gridX: number,
+            gridY: number,
+            materialIndex: number,
+        ): void => {
             const segmentWidth: number = width2 / gridX;
             const segmentHeight: number = height2 / gridY;
 
@@ -80,7 +103,6 @@ export class BoxBufferGeometry extends BufferGeometry {
             // generate vertices, normals and uvs
 
             for (let iy: number = 0; iy < gridY1; iy++) {
-
                 const y: number = iy * segmentHeight - heightHalf;
 
                 for (let ix: number = 0; ix < gridX1; ix++) {
@@ -110,11 +132,11 @@ export class BoxBufferGeometry extends BufferGeometry {
             // 2. a single segment consists of two faces
             // 3. so we need to generate six (2*3) indices per segment
             for (let iy: number = 0; iy < gridY; iy++) {
-
                 for (let ix: number = 0; ix < gridX; ix++) {
                     const a: number = numberOfVertices + ix + gridX1 * iy;
                     const b: number = numberOfVertices + ix + gridX1 * (iy + 1);
-                    const c: number = numberOfVertices + (ix + 1) + gridX1 * (iy + 1);
+                    const c: number =
+                        numberOfVertices + (ix + 1) + gridX1 * (iy + 1);
                     const d: number = numberOfVertices + (ix + 1) + gridX1 * iy;
                     // faces
                     indices.push(a, b, d);
@@ -132,12 +154,84 @@ export class BoxBufferGeometry extends BufferGeometry {
         };
 
         // build each side of the box geometry
-        buildPlane("z", "y", "x", -1, -1, depth, height, width, depthSegments, heightSegments, 0); // px
-        buildPlane("z", "y", "x", 1, -1, depth, height, -width, depthSegments, heightSegments, 1); // nx
-        buildPlane("x", "z", "y", 1, 1, width, depth, height, widthSegments, depthSegments, 2); // py
-        buildPlane("x", "z", "y", 1, -1, width, depth, -height, widthSegments, depthSegments, 3); // ny
-        buildPlane("x", "y", "z", 1, -1, width, height, depth, widthSegments, heightSegments, 4); // pz
-        buildPlane("x", "y", "z", -1, -1, width, height, -depth, widthSegments, heightSegments, 5); // nz
+        buildPlane(
+            "z",
+            "y",
+            "x",
+            -1,
+            -1,
+            depth,
+            height,
+            width,
+            depthSegments,
+            heightSegments,
+            0,
+        ); // px
+        buildPlane(
+            "z",
+            "y",
+            "x",
+            1,
+            -1,
+            depth,
+            height,
+            -width,
+            depthSegments,
+            heightSegments,
+            1,
+        ); // nx
+        buildPlane(
+            "x",
+            "z",
+            "y",
+            1,
+            1,
+            width,
+            depth,
+            height,
+            widthSegments,
+            depthSegments,
+            2,
+        ); // py
+        buildPlane(
+            "x",
+            "z",
+            "y",
+            1,
+            -1,
+            width,
+            depth,
+            -height,
+            widthSegments,
+            depthSegments,
+            3,
+        ); // ny
+        buildPlane(
+            "x",
+            "y",
+            "z",
+            1,
+            -1,
+            width,
+            height,
+            depth,
+            widthSegments,
+            heightSegments,
+            4,
+        ); // pz
+        buildPlane(
+            "x",
+            "y",
+            "z",
+            -1,
+            -1,
+            width,
+            height,
+            -depth,
+            widthSegments,
+            heightSegments,
+            5,
+        ); // nz
 
         // build geometry
         this.setIndex(indices);

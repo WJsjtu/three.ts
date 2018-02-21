@@ -3,7 +3,6 @@ import {MathUtil} from "./Math";
 import {Matrix4} from "./Matrix4";
 
 export class Line3 {
-
     public start: Vector3 = new Vector3();
     public end: Vector3 = new Vector3();
 
@@ -29,7 +28,10 @@ export class Line3 {
     }
 
     public getCenter(): Vector3 {
-        return new Vector3().copy(this.start).add(this.end).multiplyScalar(0.5);
+        return new Vector3()
+            .copy(this.start)
+            .add(this.end)
+            .multiplyScalar(0.5);
     }
 
     public delta(): Vector3 {
@@ -45,10 +47,15 @@ export class Line3 {
     }
 
     public at(t): Vector3 {
-        return this.delta().multiplyScalar(t).add(this.start);
+        return this.delta()
+            .multiplyScalar(t)
+            .add(this.start);
     }
 
-    public closestPointToPointParameter(point: Vector3, clampToLine: boolean = false): number {
+    public closestPointToPointParameter(
+        point: Vector3,
+        clampToLine: boolean = false,
+    ): number {
         const startP = new Vector3();
         const startEnd = new Vector3();
         startP.copy(point).sub(this.start);
@@ -62,9 +69,14 @@ export class Line3 {
         return t;
     }
 
-    public closestPointToPoint(point: Vector3, clampToLine: boolean = false): Vector3 {
+    public closestPointToPoint(
+        point: Vector3,
+        clampToLine: boolean = false,
+    ): Vector3 {
         const t = this.closestPointToPointParameter(point, clampToLine);
-        return this.delta().multiplyScalar(t).add(this.start);
+        return this.delta()
+            .multiplyScalar(t)
+            .add(this.start);
     }
 
     public applyMatrix4(matrix: Matrix4): this {

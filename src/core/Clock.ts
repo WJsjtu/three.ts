@@ -1,5 +1,4 @@
 export class Clock {
-
     public autoStart: boolean = false;
     protected startTime: number = 0;
     protected oldTime: number = 0;
@@ -11,7 +10,10 @@ export class Clock {
     }
 
     public start(): void {
-        this.startTime = (typeof performance === "undefined" ? Date : performance ).now(); // see #10732
+        this.startTime = (typeof performance === "undefined"
+            ? Date
+            : performance
+        ).now(); // see #10732
         this.oldTime = this.startTime;
         this.elapsedTime = 0;
         this.running = true;
@@ -35,7 +37,10 @@ export class Clock {
             return 0;
         }
         if (this.running) {
-            const newTime: number = ( typeof performance === "undefined" ? Date : performance ).now();
+            const newTime: number = (typeof performance === "undefined"
+                ? Date
+                : performance
+            ).now();
             diff = (newTime - this.oldTime) / 1000;
             this.oldTime = newTime;
             this.elapsedTime += diff;

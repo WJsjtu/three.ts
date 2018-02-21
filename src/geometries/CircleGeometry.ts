@@ -10,11 +10,15 @@ export interface ICircleGeometryParameters {
 }
 
 export class CircleGeometry extends Geometry {
-
     public readonly type: string = "CircleGeometry";
     public parameters: ICircleGeometryParameters;
 
-    constructor(radius?: number, segments?: number, thetaStart?: number, thetaLength?: number) {
+    constructor(
+        radius?: number,
+        segments?: number,
+        thetaStart?: number,
+        thetaLength?: number,
+    ) {
         super();
         this.parameters = {
             radius: radius,
@@ -22,23 +26,29 @@ export class CircleGeometry extends Geometry {
             thetaLength: thetaLength,
             thetaStart: thetaStart,
         };
-        this.fromBufferGeometry(new CircleBufferGeometry(radius, segments, thetaStart, thetaLength));
+        this.fromBufferGeometry(
+            new CircleBufferGeometry(radius, segments, thetaStart, thetaLength),
+        );
         this.mergeVertices();
     }
 }
 
 export class CircleBufferGeometry extends BufferGeometry {
-
     public readonly type: string = "CircleBufferGeometry";
     public parameters: ICircleGeometryParameters;
 
-    constructor(radius: number = 1, segments: number | undefined = undefined, thetaStart: number = 0, thetaLength: number = Math.PI * 2) {
+    constructor(
+        radius: number = 1,
+        segments: number | undefined,
+        thetaStart: number = 0,
+        thetaLength: number = Math.PI * 2,
+    ) {
         super();
         this.parameters = {
             radius: radius,
             segments: segments,
             thetaStart: thetaStart,
-            thetaLength: thetaLength
+            thetaLength: thetaLength,
         };
         segments = segments !== undefined ? Math.max(3, segments) : 8;
         // buffers
@@ -53,11 +63,18 @@ export class CircleBufferGeometry extends BufferGeometry {
         for (let s: number = 0, i: number = 3; s <= segments; s++, i += 3) {
             const segment: number = thetaStart + s / segments * thetaLength;
             // vertex
-            vertices.push(radius * Math.cos(segment), radius * Math.sin(segment), 0);
+            vertices.push(
+                radius * Math.cos(segment),
+                radius * Math.sin(segment),
+                0,
+            );
             // normal
             normals.push(0, 0, 1);
             // uvs
-            uvs.push((vertices[i] / radius + 1) / 2, (vertices[i + 1] / radius + 1) / 2);
+            uvs.push(
+                (vertices[i] / radius + 1) / 2,
+                (vertices[i + 1] / radius + 1) / 2,
+            );
         }
         // indices
         for (let i: number = 1; i <= segments; i++) {
@@ -65,8 +82,8 @@ export class CircleBufferGeometry extends BufferGeometry {
         }
         // build geometry
         this.setIndex(indices);
-        this.addAttribute('position', new Float32BufferAttribute(vertices, 3));
-        this.addAttribute('normal', new Float32BufferAttribute(normals, 3));
-        this.addAttribute('uv', new Float32BufferAttribute(uvs, 2));
+        this.addAttribute("position", new Float32BufferAttribute(vertices, 3));
+        this.addAttribute("normal", new Float32BufferAttribute(normals, 3));
+        this.addAttribute("uv", new Float32BufferAttribute(uvs, 2));
     }
 }

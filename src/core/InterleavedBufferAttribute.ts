@@ -18,7 +18,13 @@ export class InterleavedBufferAttribute {
     public offset: number;
     public normalized: boolean = false;
 
-    constructor(array: TypedArray, stride: number, itemSize: number, offset: number, normalized: boolean = false) {
+    constructor(
+        array: TypedArray,
+        stride: number,
+        itemSize: number,
+        offset: number,
+        normalized: boolean = false,
+    ) {
         this.array = array;
         this.stride = stride;
         this.count = array !== undefined ? array.length / stride : 0;
@@ -43,7 +49,9 @@ export class InterleavedBufferAttribute {
     }
 
     public copy(source: InterleavedBufferAttribute): this {
-        this.array = (new ((source.array as any).constructor as (TypedArray) => void)(source.array)) as TypedArray;
+        this.array = new ((source.array as any).constructor as (
+            TypedArray,
+        ) => void)(source.array) as TypedArray;
         this.stride = source.stride;
         this.count = source.count;
         this.dynamic = source.dynamic;
@@ -59,7 +67,11 @@ export class InterleavedBufferAttribute {
         return this.array.slice(offset, length);
     }
 
-    public copyAt(index1: number, attribute: InterleavedBufferAttribute, index2: number): this {
+    public copyAt(
+        index1: number,
+        attribute: InterleavedBufferAttribute,
+        index2: number,
+    ): this {
         index1 *= this.stride;
         index2 *= attribute.stride;
         for (let i: number = 0, l: number = this.stride; i < l; i++) {
@@ -69,55 +81,164 @@ export class InterleavedBufferAttribute {
     }
 
     public clone(): InterleavedBufferAttribute {
-        return ((new (this.constructor as (array: TypedArray, itemSize: number) => void)(this.array, this.stride)) as InterleavedBufferAttribute).copy(this);
+        return (new (this.constructor as (
+            array: TypedArray,
+            itemSize: number,
+        ) => void)(this.array, this.stride) as InterleavedBufferAttribute).copy(
+            this,
+        );
     }
 
-    public setProperty(index: number, property: string, value: Vector2 | Vector3 | Vector4 | number): this {
+    public setProperty(
+        index: number,
+        property: string,
+        value: Vector2 | Vector3 | Vector4 | number,
+    ): this {
         property = property.toLowerCase();
-        if (property && property.length <= 4 && property.replace(/[xyzw]/g, "").length === 0) {
+        if (
+            property &&
+            property.length <= 4 &&
+            property.replace(/[xyzw]/g, "").length === 0
+        ) {
             const offsetMap = {x: 0, y: 1, z: 2};
             if (property.length === 1 && typeof value === "number") {
-                this.array[index * this.stride + this.offset + offsetMap[property.charAt(0)]] = value;
+                this.array[
+                    index * this.stride +
+                        this.offset +
+                        offsetMap[property.charAt(0)]
+                ] = value;
             } else if (property.length === 2 && value instanceof Vector2) {
-                this.array[index * this.stride + this.offset + offsetMap[property.charAt(0)]] = value.x;
-                this.array[index * this.stride + this.offset + offsetMap[property.charAt(1)]] = value.y;
+                this.array[
+                    index * this.stride +
+                        this.offset +
+                        offsetMap[property.charAt(0)]
+                ] =
+                    value.x;
+                this.array[
+                    index * this.stride +
+                        this.offset +
+                        offsetMap[property.charAt(1)]
+                ] =
+                    value.y;
             } else if (property.length === 3 && value instanceof Vector3) {
-                this.array[index * this.stride + this.offset + offsetMap[property.charAt(0)]] = value.x;
-                this.array[index * this.stride + this.offset + offsetMap[property.charAt(1)]] = value.y;
-                this.array[index * this.stride + this.offset + offsetMap[property.charAt(2)]] = value.z;
+                this.array[
+                    index * this.stride +
+                        this.offset +
+                        offsetMap[property.charAt(0)]
+                ] =
+                    value.x;
+                this.array[
+                    index * this.stride +
+                        this.offset +
+                        offsetMap[property.charAt(1)]
+                ] =
+                    value.y;
+                this.array[
+                    index * this.stride +
+                        this.offset +
+                        offsetMap[property.charAt(2)]
+                ] =
+                    value.z;
             } else if (property.length === 4 && value instanceof Vector4) {
-                this.array[index * this.stride + this.offset + offsetMap[property.charAt(0)]] = value.x;
-                this.array[index * this.stride + this.offset + offsetMap[property.charAt(1)]] = value.y;
-                this.array[index * this.stride + this.offset + offsetMap[property.charAt(2)]] = value.z;
-                this.array[index * this.stride + this.offset + offsetMap[property.charAt(3)]] = value.w;
+                this.array[
+                    index * this.stride +
+                        this.offset +
+                        offsetMap[property.charAt(0)]
+                ] =
+                    value.x;
+                this.array[
+                    index * this.stride +
+                        this.offset +
+                        offsetMap[property.charAt(1)]
+                ] =
+                    value.y;
+                this.array[
+                    index * this.stride +
+                        this.offset +
+                        offsetMap[property.charAt(2)]
+                ] =
+                    value.z;
+                this.array[
+                    index * this.stride +
+                        this.offset +
+                        offsetMap[property.charAt(3)]
+                ] =
+                    value.w;
             }
         }
         return this;
     }
 
-    public getProperty(index: number, property: string): Vector2 | Vector3 | Vector4 | number {
+    public getProperty(
+        index: number,
+        property: string,
+    ): Vector2 | Vector3 | Vector4 | number {
         property = property.toLowerCase();
-        if (property && property.length <= 4 && property.replace(/[xyzw]/g, "").length === 0) {
+        if (
+            property &&
+            property.length <= 4 &&
+            property.replace(/[xyzw]/g, "").length === 0
+        ) {
             const offsetMap = {x: 0, y: 1, z: 2};
             if (property.length === 1) {
-                return this.array[index * this.stride + this.offset + offsetMap[property.charAt(0)]];
+                return this.array[
+                    index * this.stride +
+                        this.offset +
+                        offsetMap[property.charAt(0)]
+                ];
             } else if (property.length === 2) {
                 return new Vector2(
-                    this.array[index * this.stride + this.offset + offsetMap[property.charAt(0)]],
-                    this.array[index * this.stride + this.offset + offsetMap[property.charAt(1)]]
+                    this.array[
+                        index * this.stride +
+                            this.offset +
+                            offsetMap[property.charAt(0)]
+                    ],
+                    this.array[
+                        index * this.stride +
+                            this.offset +
+                            offsetMap[property.charAt(1)]
+                    ],
                 );
             } else if (property.length === 3) {
                 return new Vector3(
-                    this.array[index * this.stride + this.offset + offsetMap[property.charAt(0)]],
-                    this.array[index * this.stride + this.offset + offsetMap[property.charAt(1)]],
-                    this.array[index * this.stride + this.offset + offsetMap[property.charAt(2)]]
+                    this.array[
+                        index * this.stride +
+                            this.offset +
+                            offsetMap[property.charAt(0)]
+                    ],
+                    this.array[
+                        index * this.stride +
+                            this.offset +
+                            offsetMap[property.charAt(1)]
+                    ],
+                    this.array[
+                        index * this.stride +
+                            this.offset +
+                            offsetMap[property.charAt(2)]
+                    ],
                 );
             } else if (property.length === 4) {
                 return new Vector4(
-                    this.array[index * this.stride + this.offset + offsetMap[property.charAt(0)]],
-                    this.array[index * this.stride + this.offset + offsetMap[property.charAt(1)]],
-                    this.array[index * this.stride + this.offset + offsetMap[property.charAt(2)]],
-                    this.array[index * this.stride + this.offset + offsetMap[property.charAt(3)]]
+                    this.array[
+                        index * this.stride +
+                            this.offset +
+                            offsetMap[property.charAt(0)]
+                    ],
+                    this.array[
+                        index * this.stride +
+                            this.offset +
+                            offsetMap[property.charAt(1)]
+                    ],
+                    this.array[
+                        index * this.stride +
+                            this.offset +
+                            offsetMap[property.charAt(2)]
+                    ],
+                    this.array[
+                        index * this.stride +
+                            this.offset +
+                            offsetMap[property.charAt(3)]
+                    ],
                 );
             }
         }

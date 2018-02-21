@@ -56,82 +56,53 @@ export class Vector2 {
     }
 
     public add(v: Vector2): this {
-        return this.set(
-            this.x + v.x,
-            this.y + v.y
-        );
+        return this.set(this.x + v.x, this.y + v.y);
     }
 
     public addScalar(s: number): this {
-        return this.set(
-            this.x + s,
-            this.y + s
-        );
+        return this.set(this.x + s, this.y + s);
     }
 
     public sub(v: Vector2): this {
-        return this.set(
-            this.x - v.x,
-            this.y - v.y
-        );
+        return this.set(this.x - v.x, this.y - v.y);
     }
 
     public subScalar(s: number): this {
-        return this.set(
-            this.x - s,
-            this.y - s
-        );
+        return this.set(this.x - s, this.y - s);
     }
 
     public multiply(v: Vector2): this {
-        return this.set(
-            this.x * v.x,
-            this.y * v.y
-        );
+        return this.set(this.x * v.x, this.y * v.y);
     }
 
     public multiplyScalar(s: number): this {
-        return this.set(
-            this.x * s,
-            this.y * s
-        );
+        return this.set(this.x * s, this.y * s);
     }
 
     public divide(v: Vector2): this {
-        return this.set(
-            this.x / v.x,
-            this.y / v.y
-        );
+        return this.set(this.x / v.x, this.y / v.y);
     }
 
     public divideScalar(s: number): this {
-        return this.set(
-            this.x / s,
-            this.y / s
-        );
+        return this.set(this.x / s, this.y / s);
     }
 
     public applyMatrix3(m: Matrix3): this {
-        const x: number = this.x, y: number = this.y;
+        const x: number = this.x,
+            y: number = this.y;
         const e: number[] = m.toArray();
-        return this.set(
-            e[0] * x + e[3] * y + e[6],
-            e[1] * x + e[4] * y + e[7]
-        );
+        return this.set(e[0] * x + e[3] * y + e[6], e[1] * x + e[4] * y + e[7]);
     }
 
     public clamp(min, max): this {
         return this.set(
             Math.max(min.x, Math.min(max.x, this.x)),
-            Math.max(min.y, Math.min(max.y, this.y))
+            Math.max(min.y, Math.min(max.y, this.y)),
         );
     }
 
     public negate(): this {
-        return this.set(
-            -this.x,
-            -this.y
-        );
+        return this.set(-this.x, -this.y);
     }
 
     public dot(v: Vector2): number {
@@ -160,24 +131,24 @@ export class Vector2 {
 
     public lerp(v: Vector2, alpha: number): this {
         return this.set(
-            this.x + ( v.x - this.x ) * alpha,
-            this.y + ( v.y - this.y ) * alpha
+            this.x + (v.x - this.x) * alpha,
+            this.y + (v.y - this.y) * alpha,
         );
     }
 
     public lerpVectors(v1: Vector2, v2: Vector2, alpha: number): this {
-        return this.copy(v2).sub(v1).multiplyScalar(alpha).add(v1);
+        return this.copy(v2)
+            .sub(v1)
+            .multiplyScalar(alpha)
+            .add(v1);
     }
 
     public equals(v: Vector2): boolean {
-        return (v.x === this.x) && (v.y === this.y);
+        return v.x === this.x && v.y === this.y;
     }
 
     public fromArray(array: number[], offset: number = 0): this {
-        return this.set(
-            array[offset],
-            array[offset + 1]
-        );
+        return this.set(array[offset], array[offset + 1]);
     }
 
     public toArray(array: number[] = [], offset: number = 0): number[] {
@@ -187,16 +158,14 @@ export class Vector2 {
     }
 
     public rotateAround(center: Vector2, angle: number): this {
-        const c: number = Math.cos(angle), s: number = Math.sin(angle);
+        const c: number = Math.cos(angle),
+            s: number = Math.sin(angle);
         const x: number = this.x - center.x;
         const y: number = this.y - center.y;
-        return this.set(
-            x * c - y * s + center.x,
-            x * s + y * c + center.y
-        );
+        return this.set(x * c - y * s + center.x, x * s + y * c + center.y);
     }
 
     public clone(): Vector2 {
-        return ((new (this.constructor as () => void)()) as Vector2).copy(this);
+        return (new (this.constructor as () => void)() as Vector2).copy(this);
     }
 }

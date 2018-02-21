@@ -1,6 +1,5 @@
 import {AudioWrapper} from "./Audio";
 export class AudioAnalyserWrapper {
-
     public analyser: AnalyserNode = null;
     public data: Uint8Array = null;
 

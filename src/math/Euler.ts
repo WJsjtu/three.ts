@@ -9,14 +9,14 @@ export enum EulerOrder {
     ZXY,
     XZY,
     YXZ,
-    ZYX
+    ZYX,
 }
 
 /**
  * TODO: setFromVector3
  */
 export class Euler {
-    static DefaultOrder: EulerOrder = EulerOrder.XYZ;
+    public static DefaultOrder: EulerOrder = EulerOrder.XYZ;
 
     protected _order: EulerOrder = Euler.DefaultOrder;
     protected _x: number;
@@ -70,12 +70,7 @@ export class Euler {
     }
 
     public copy(euler: Euler): this {
-        return this.set(
-            euler.x,
-            euler.y,
-            euler.z,
-            euler.order
-        );
+        return this.set(euler.x, euler.y, euler.z, euler.order);
     }
 
     /**
@@ -84,12 +79,22 @@ export class Euler {
      * @param order
      * @returns {Euler}
      */
-    public setFromRotationMatrix(m: Matrix4, order: EulerOrder = this.order): this {
-        const clamp: (value: number, min: number, max: number) => number = MathUtil.clamp;
+    public setFromRotationMatrix(
+        m: Matrix4,
+        order: EulerOrder = this.order,
+    ): this {
+        const clamp: (value: number, min: number, max: number) => number =
+            MathUtil.clamp;
         const te: number[] = m.toArray();
-        const m11: number = te[0], m12: number = te[4], m13: number = te[8];
-        const m21: number = te[1], m22: number = te[5], m23: number = te[9];
-        const m31: number = te[2], m32: number = te[6], m33: number = te[10];
+        const m11: number = te[0],
+            m12: number = te[4],
+            m13: number = te[8];
+        const m21: number = te[1],
+            m22: number = te[5],
+            m23: number = te[9];
+        const m31: number = te[2],
+            m32: number = te[6],
+            m33: number = te[10];
 
         if (order === EulerOrder.XYZ) {
             this._y = Math.asin(clamp(m13, -1, 1));
@@ -168,14 +173,21 @@ export class Euler {
     }
 
     public equals(euler: Euler): boolean {
-        return (euler.x === this.x) && (euler.y === this.y) && (euler.z === this.z) && (euler.order === this.order);
+        return (
+            euler.x === this.x &&
+            euler.y === this.y &&
+            euler.z === this.z &&
+            euler.order === this.order
+        );
     }
 
-    public fromArray(array: [number, number, number] | [number, number, number, EulerOrder]): this {
+    public fromArray(
+        array: [number, number, number] | [number, number, number, EulerOrder],
+    ): this {
         return this.set(array[0], array[1], array[2], array[3] || this.order);
     }
 
-    public toArray(array: Array<any> = [], offset: number = 0): Array<any> {
+    public toArray(array: any[] = [], offset: number = 0): any[] {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         array[offset + 2] = this.z;
@@ -184,6 +196,6 @@ export class Euler {
     }
 
     public clone(): Euler {
-        return ((new (this.constructor as () => void)()) as Euler).copy(this);
+        return (new (this.constructor as () => void)() as Euler).copy(this);
     }
 }

@@ -3,7 +3,6 @@ import {Color} from "../math/Color";
 import {LightShadow} from "./LightShadow";
 
 export class Light extends Object3D {
-
     public readonly type: string = "Light";
 
     public color: Color = null;

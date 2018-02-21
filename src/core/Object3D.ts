@@ -12,7 +12,6 @@ import {Camera} from "../cameras/Camera";
 let object3DId: number = 0;
 
 export class Object3D extends EventDispatcher {
-
     public static DefaultUp = new Vector3(0, 1, 0);
 
     public readonly id: number = object3DId++;
@@ -20,7 +19,7 @@ export class Object3D extends EventDispatcher {
     public name: string = "";
     public readonly type: string = "Object3D";
     public parent: Object3D | null = null;
-    public children: Array<Object3D> = [];
+    public children: Object3D[] = [];
     public up: Vector3 = new Vector3().copy(Object3D.DefaultUp);
     public matrix: Matrix4 = new Matrix4();
     public matrixWorld: Matrix4 = new Matrix4();
@@ -86,7 +85,10 @@ export class Object3D extends EventDispatcher {
         if (this.parent === null) {
             this.matrixWorld.copy(this.matrix);
         } else {
-            this.matrixWorld.multiplyMatrices(this.parent.matrixWorld, this.matrix);
+            this.matrixWorld.multiplyMatrices(
+                this.parent.matrixWorld,
+                this.matrix,
+            );
         }
         this.children.forEach((child: Object3D) => {
             child.updateMatrix();
@@ -94,7 +96,10 @@ export class Object3D extends EventDispatcher {
         return this;
     }
 
-    public raycast(raycaster: Raycaster, intersections: Array<IIntersection> = []): Array<IIntersection> {
+    public raycast(
+        raycaster: Raycaster,
+        intersections: IIntersection[] = [],
+    ): IIntersection[] {
         return intersections;
     }
 
@@ -153,7 +158,6 @@ export class Object3D extends EventDispatcher {
         q.setFromAxisAngle(axis, angle);
         this._quaternion.multiply(q);
         return this.updateMatrix();
-
     }
 
     /**
@@ -229,7 +233,7 @@ export class Object3D extends EventDispatcher {
         return this.updateMatrix();
     }
 
-    public add(object: Object3D, ...objects: Array<Object3D>): this {
+    public add(object: Object3D, ...objects: Object3D[]): this {
         if (objects.length > 1) {
             for (let i: number = 0; i < objects.length; i++) {
                 this.add(objects[i]);
@@ -237,7 +241,9 @@ export class Object3D extends EventDispatcher {
             return this;
         }
         if (object === this) {
-            console.error(`THREE.Object3D.add: object can't be added as a child of itself. ${object}`);
+            console.error(
+                `THREE.Object3D.add: object can't be added as a child of itself. ${object}`,
+            );
             return this;
         }
         if (object.parent !== null) {
@@ -249,7 +255,7 @@ export class Object3D extends EventDispatcher {
         return this;
     }
 
-    public remove(object: Object3D, ...objects: Array<Object3D>): this {
+    public remove(object: Object3D, ...objects: Object3D[]): this {
         if (objects.length > 1) {
             for (let i: number = 0; i < objects.length; i++) {
                 this.remove(objects[i]);
@@ -278,7 +284,10 @@ export class Object3D extends EventDispatcher {
     }
 
     get worldRotation(): Euler {
-        return new Euler().setFromQuaternion(this.worldQuaternion, this._rotation.order);
+        return new Euler().setFromQuaternion(
+            this.worldQuaternion,
+            this._rotation.order,
+        );
     }
 
     get worldScale(): Vector3 {
@@ -313,11 +322,13 @@ export class Object3D extends EventDispatcher {
             callback(this.parent);
             this.parent.traverseAncestors(callback);
         }
-
     }
 
     public clone(recursive: boolean = false) {
-        return ((new (this.constructor as () => void)()) as Object3D).copy(this, recursive);
+        return (new (this.constructor as () => void)() as Object3D).copy(
+            this,
+            recursive,
+        );
     }
 
     public copy(source: Object3D, recursive: boolean = true): this {
@@ -341,6 +352,5 @@ export class Object3D extends EventDispatcher {
             }
         }
         return this;
-
     }
 }

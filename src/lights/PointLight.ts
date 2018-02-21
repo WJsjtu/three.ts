@@ -9,7 +9,12 @@ export class PointLight extends Light {
     public decay: number = 1;
     public shadow: LightShadow = null;
 
-    constructor(color: Color, intensity: number, distance: number = 0, decay: number = 1) {
+    constructor(
+        color: Color,
+        intensity: number,
+        distance: number = 0,
+        decay: number = 1,
+    ) {
         super(color, intensity);
         this.distance = distance;
         this.decay = decay;

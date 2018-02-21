@@ -1,9 +1,45 @@
 {
-    "extends": "tslint:recommended",
-    "rulesDirectory": [],
-    "rules": {
-        "no-bitwise": false
-    },
-    "jsRules": {
-    }
+  "extends": "tslint:recommended",
+  "rulesDirectory": [],
+  "rules": {
+    "no-bitwise": false,
+    "no-console": false,
+    "object-literal-shorthand": false,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ],
+    "max-line-length": [
+      false
+    ],
+    "curly": [
+      true,
+      "ignore-same-line"
+    ],
+    "max-classes-per-file": [
+      false
+    ],
+    "prefer-for-of": false,
+    "one-variable-per-declaration": false,
+    "jsdoc-format": false
+  },
+  "jsRules": {
+    "no-console": false,
+    "object-literal-shorthand": false,
+    "max-line-length": [
+      false
+    ],
+    "curly": [
+      true,
+      "ignore-same-line"
+    ],
+    "max-classes-per-file": [
+      false
+    ],
+    "prefer-for-of": false,
+    "one-variable-per-declaration": false,
+    "jsdoc-format": false
+  }
 }

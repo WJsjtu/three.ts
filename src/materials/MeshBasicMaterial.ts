@@ -89,5 +89,4 @@ export class MeshBasicMaterial extends Material {
 
         return this;
     }
-
 }

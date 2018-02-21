@@ -1,5 +1,5 @@
 function addLineNumbers(string: string): string {
-    const lines: Array<string> = string.split("\n");
+    const lines: string[] = string.split("\n");
     for (let i: number = 0; i < lines.length; i++) {
         lines[i] = ( i + 1 ) + ": " + lines[i];
     }

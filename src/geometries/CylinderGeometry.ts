@@ -16,11 +16,19 @@ export interface ICylinderGeometryParameters {
 }
 
 export class CylinderGeometry extends Geometry {
-
     public readonly type: string = "CylinderGeometry";
     public parameters: ICylinderGeometryParameters;
 
-    constructor(radiusTop?: number, radiusBottom?: number, height?: number, radialSegments?: number, heightSegments?: number, openEnded?: boolean, thetaStart?: number, thetaLength?: number) {
+    constructor(
+        radiusTop?: number,
+        radiusBottom?: number,
+        height?: number,
+        radialSegments?: number,
+        heightSegments?: number,
+        openEnded?: boolean,
+        thetaStart?: number,
+        thetaLength?: number,
+    ) {
         super();
         this.parameters = {
             radiusTop: radiusTop,
@@ -30,19 +38,38 @@ export class CylinderGeometry extends Geometry {
             heightSegments: heightSegments,
             openEnded: openEnded,
             thetaStart: thetaStart,
-            thetaLength: thetaLength
+            thetaLength: thetaLength,
         };
-        this.fromBufferGeometry(new CylinderBufferGeometry(radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded, thetaStart, thetaLength));
+        this.fromBufferGeometry(
+            new CylinderBufferGeometry(
+                radiusTop,
+                radiusBottom,
+                height,
+                radialSegments,
+                heightSegments,
+                openEnded,
+                thetaStart,
+                thetaLength,
+            ),
+        );
         this.mergeVertices();
     }
 }
 
 export class CylinderBufferGeometry extends BufferGeometry {
-
     public readonly type: string = "CylinderBufferGeometry";
     public parameters: ICylinderGeometryParameters;
 
-    constructor(radiusTop: number = 1, radiusBottom: number = 1, height: number = 1, radialSegments: number = 9, heightSegments: number = 1, openEnded: boolean = false, thetaStart: number = 0, thetaLength: number = Math.PI * 2) {
+    constructor(
+        radiusTop: number = 1,
+        radiusBottom: number = 1,
+        height: number = 1,
+        radialSegments: number = 9,
+        heightSegments: number = 1,
+        openEnded: boolean = false,
+        thetaStart: number = 0,
+        thetaLength: number = Math.PI * 2,
+    ) {
         super();
         this.parameters = {
             radiusTop: radiusTop,
@@ -52,7 +79,7 @@ export class CylinderBufferGeometry extends BufferGeometry {
             heightSegments: heightSegments,
             openEnded: openEnded,
             thetaStart: thetaStart,
-            thetaLength: thetaLength
+            thetaLength: thetaLength,
         };
         radialSegments = Math.floor(radialSegments);
         heightSegments = Math.floor(heightSegments);
@@ -65,7 +92,7 @@ export class CylinderBufferGeometry extends BufferGeometry {
 
         // helper variables
         let index: number = 0;
-        const indexArray: Array<number[]> = [];
+        const indexArray: number[][] = [];
         const halfHeight: number = height / 2;
         let groupStart: number = 0;
 
@@ -99,7 +126,11 @@ export class CylinderBufferGeometry extends BufferGeometry {
                 const sinTheta: number = Math.sin(theta);
                 // vertex
 
-                vertices.push(radius * sinTheta, halfHeight * sign, radius * cosTheta);
+                vertices.push(
+                    radius * sinTheta,
+                    halfHeight * sign,
+                    radius * cosTheta,
+                );
                 // normal
                 normals.push(0, sign, 0);
                 // uv
@@ -135,14 +166,19 @@ export class CylinderBufferGeometry extends BufferGeometry {
                 const indexRow: number[] = [];
                 const v: number = y / heightSegments;
                 // calculate the radius of the current row
-                const radius: number = v * (radiusBottom - radiusTop) + radiusTop;
+                const radius: number =
+                    v * (radiusBottom - radiusTop) + radiusTop;
                 for (let x: number = 0; x <= radialSegments; x++) {
                     const u: number = x / radialSegments;
                     const theta: number = u * thetaLength + thetaStart;
                     const sinTheta: number = Math.sin(theta);
                     const cosTheta: number = Math.cos(theta);
                     // vertex
-                    vertices.push(radius * sinTheta, -v * height + halfHeight, radius * cosTheta);
+                    vertices.push(
+                        radius * sinTheta,
+                        -v * height + halfHeight,
+                        radius * cosTheta,
+                    );
                     // normal
                     const normal: Vector3 = new Vector3();
                     normal.set(sinTheta, slope, cosTheta).normalize();
@@ -174,7 +210,6 @@ export class CylinderBufferGeometry extends BufferGeometry {
             this.addGroup(groupStart, groupCount, 0);
             // calculate new start value for groups
             groupStart += groupCount;
-
         };
         // generate geometry
         generateTorso();
@@ -184,8 +219,8 @@ export class CylinderBufferGeometry extends BufferGeometry {
         }
         // build geometry
         this.setIndex(indices);
-        this.addAttribute('position', new Float32BufferAttribute(vertices, 3));
-        this.addAttribute('normal', new Float32BufferAttribute(normals, 3));
-        this.addAttribute('uv', new Float32BufferAttribute(uvs, 2));
+        this.addAttribute("position", new Float32BufferAttribute(vertices, 3));
+        this.addAttribute("normal", new Float32BufferAttribute(normals, 3));
+        this.addAttribute("uv", new Float32BufferAttribute(uvs, 2));
     }
 }

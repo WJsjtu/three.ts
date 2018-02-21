@@ -1,12 +1,19 @@
 import {MathUtil} from "../math/Math";
 import {
-    BufferAttribute, Uint32BufferAttribute, Uint16BufferAttribute, Float32BufferAttribute,
-    TypedArray
+    BufferAttribute,
+    Uint32BufferAttribute,
+    Uint16BufferAttribute,
+    Float32BufferAttribute,
+    TypedArray,
 } from "./BufferAttribute";
 import {DirectGeometry, IGroup} from "./DirectGeometry";
 import {Box3} from "../math/Box3";
 import {Sphere} from "../math/Sphere";
-import {applyMatrixToBufferAttribute, arrayMax, setBoxFromBufferAttribute} from "../utils";
+import {
+    applyMatrixToBufferAttribute,
+    arrayMax,
+    setBoxFromBufferAttribute,
+} from "../utils";
 import {Matrix4} from "../math/Matrix4";
 import {Matrix3} from "../math/Matrix3";
 import {Vector3} from "../math/Vector3";
@@ -21,17 +28,17 @@ export interface IDrawRange {
 
 let bufferGeometryId: number = 1;
 export class BufferGeometry extends EventDispatcher {
-    public readonly id: number = bufferGeometryId += 2;
+    public readonly id: number = (bufferGeometryId += 2);
     public readonly uuid: string = MathUtil.generateUUID();
     public name: string = "";
     public readonly type: string = "BufferGeometry";
 
     public index: BufferAttribute = null;
-    public attributes: { [key: string]: BufferAttribute; } = {};
+    public attributes: {[key: string]: BufferAttribute} = {};
 
-    public morphAttributes: { [key: string]: Array<BufferAttribute>; } = {};
+    public morphAttributes: {[key: string]: BufferAttribute[]} = {};
 
-    public groups: Array<IGroup> = [];
+    public groups: IGroup[] = [];
 
     public boundingBox: Box3 = null;
     public boundingSphere: Sphere = null;
@@ -40,7 +47,9 @@ export class BufferGeometry extends EventDispatcher {
 
     public setIndex(index: number[] | BufferAttribute): this {
         if (Array.isArray(index)) {
-            this.index = new (arrayMax(index) > 65535 ? Uint32BufferAttribute : Uint16BufferAttribute)(index, 1);
+            this.index = new (arrayMax(index) > 65535
+                ? Uint32BufferAttribute
+                : Uint16BufferAttribute)(index, 1);
         } else {
             this.index = index;
         }
@@ -65,11 +74,15 @@ export class BufferGeometry extends EventDispatcher {
         return this;
     }
 
-    public addGroup(start: number, count: number, materialIndex: number = 0): this {
+    public addGroup(
+        start: number,
+        count: number,
+        materialIndex: number = 0,
+    ): this {
         this.groups.push({
             start: start,
             count: count,
-            materialIndex: materialIndex
+            materialIndex: materialIndex,
         });
         return this;
     }
@@ -151,7 +164,7 @@ export class BufferGeometry extends EventDispatcher {
             const point: Vector3 = points[i];
             position.push(point.x, point.y, point.z || 0);
         }
-        this.addAttribute('position', new Float32BufferAttribute(position, 3));
+        this.addAttribute("position", new Float32BufferAttribute(position, 3));
         return this;
     }
 
@@ -170,23 +183,50 @@ export class BufferGeometry extends EventDispatcher {
     }
 
     public fromDirectGeometry(geometry: DirectGeometry): this {
-        const positions: Float32Array = new Float32Array(geometry.vertices.length * 3);
-        this.addAttribute("position", new BufferAttribute(positions, 3).copyVector3sArray(geometry.vertices));
+        const positions: Float32Array = new Float32Array(
+            geometry.vertices.length * 3,
+        );
+        this.addAttribute(
+            "position",
+            new BufferAttribute(positions, 3).copyVector3sArray(
+                geometry.vertices,
+            ),
+        );
         if (geometry.normals.length > 0) {
-            const normals: Float32Array = new Float32Array(geometry.normals.length * 3);
-            this.addAttribute("normal", new BufferAttribute(normals, 3).copyVector3sArray(geometry.normals));
+            const normals: Float32Array = new Float32Array(
+                geometry.normals.length * 3,
+            );
+            this.addAttribute(
+                "normal",
+                new BufferAttribute(normals, 3).copyVector3sArray(
+                    geometry.normals,
+                ),
+            );
         }
         if (geometry.colors.length > 0) {
-            const colors: Float32Array = new Float32Array(geometry.colors.length * 3);
-            this.addAttribute("color", new BufferAttribute(colors, 3).copyColorsArray(geometry.colors));
+            const colors: Float32Array = new Float32Array(
+                geometry.colors.length * 3,
+            );
+            this.addAttribute(
+                "color",
+                new BufferAttribute(colors, 3).copyColorsArray(geometry.colors),
+            );
         }
         if (geometry.uvs.length > 0) {
             const uvs: Float32Array = new Float32Array(geometry.uvs.length * 2);
-            this.addAttribute("uv", new BufferAttribute(uvs, 2).copyVector2sArray(geometry.uvs));
+            this.addAttribute(
+                "uv",
+                new BufferAttribute(uvs, 2).copyVector2sArray(geometry.uvs),
+            );
         }
         if (geometry.uvs2.length > 0) {
-            const uvs2: Float32Array = new Float32Array(geometry.uvs2.length * 2);
-            this.addAttribute("uv2", new BufferAttribute(uvs2, 2).copyVector2sArray(geometry.uvs2));
+            const uvs2: Float32Array = new Float32Array(
+                geometry.uvs2.length * 2,
+            );
+            this.addAttribute(
+                "uv2",
+                new BufferAttribute(uvs2, 2).copyVector2sArray(geometry.uvs2),
+            );
         }
         /**
          * TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
@@ -199,23 +239,43 @@ export class BufferGeometry extends EventDispatcher {
         this.groups = geometry.groups;
         // morphs
         for (let name in geometry.morphTargets) {
-            const array: Array<Float32BufferAttribute> = [];
-            const morphTargets: Array<Vector3[]> = geometry.morphTargets[name];
-            for (let i: number = 0, l: number = morphTargets.length; i < l; i++) {
+            if(!geometry.morphTargets.hasOwnProperty(name)) continue;
+            const array: Float32BufferAttribute[] = [];
+            const morphTargets: Vector3[][] = geometry.morphTargets[name];
+            for (
+                let i: number = 0, l: number = morphTargets.length;
+                i < l;
+                i++
+            ) {
                 const morphTarget: Vector3[] = morphTargets[i];
-                const attribute: Float32BufferAttribute = new Float32BufferAttribute(new Array(morphTarget.length * 3), 3);
+                const attribute: Float32BufferAttribute = new Float32BufferAttribute(
+                    new Array(morphTarget.length * 3),
+                    3,
+                );
                 array.push(attribute.copyVector3sArray(morphTarget));
             }
             this.morphAttributes[name] = array;
         }
         // skinning
         if (geometry.skinIndices.length > 0) {
-            const skinIndices: Float32BufferAttribute = new Float32BufferAttribute(new Array(geometry.skinIndices.length * 4), 4);
-            this.addAttribute('skinIndex', skinIndices.copyVector4sArray(geometry.skinIndices));
+            const skinIndices: Float32BufferAttribute = new Float32BufferAttribute(
+                new Array(geometry.skinIndices.length * 4),
+                4,
+            );
+            this.addAttribute(
+                "skinIndex",
+                skinIndices.copyVector4sArray(geometry.skinIndices),
+            );
         }
         if (geometry.skinWeights.length > 0) {
-            const skinWeights: Float32BufferAttribute = new Float32BufferAttribute(new Array(geometry.skinWeights.length * 4), 4);
-            this.addAttribute('skinWeight', skinWeights.copyVector4sArray(geometry.skinWeights));
+            const skinWeights: Float32BufferAttribute = new Float32BufferAttribute(
+                new Array(geometry.skinWeights.length * 4),
+                4,
+            );
+            this.addAttribute(
+                "skinWeight",
+                skinWeights.copyVector4sArray(geometry.skinWeights),
+            );
         }
 
         /**
@@ -241,8 +301,15 @@ export class BufferGeometry extends EventDispatcher {
         } else {
             this.boundingBox.makeEmpty();
         }
-        if (isNaN(this.boundingBox.min.x) || isNaN(this.boundingBox.min.y) || isNaN(this.boundingBox.min.z)) {
-            console.error(`THREE.BufferGeometry.computeBoundingBox: Computed min/max have NaN values. The "position" attribute is likely to have NaN values.`, this);
+        if (
+            isNaN(this.boundingBox.min.x) ||
+            isNaN(this.boundingBox.min.y) ||
+            isNaN(this.boundingBox.min.z)
+        ) {
+            console.error(
+                `THREE.BufferGeometry.computeBoundingBox: Computed min/max have NaN values. The "position" attribute is likely to have NaN values.`,
+                this,
+            );
         }
     }
 
@@ -263,46 +330,70 @@ export class BufferGeometry extends EventDispatcher {
                 vector.x = position.getProperty(i, "x") as number;
                 vector.y = position.getProperty(i, "y") as number;
                 vector.z = position.getProperty(i, "z") as number;
-                maxRadiusSquare = Math.max(maxRadiusSquare, center.distanceToSquared(vector));
+                maxRadiusSquare = Math.max(
+                    maxRadiusSquare,
+                    center.distanceToSquared(vector),
+                );
             }
             this.boundingSphere.radius = Math.sqrt(maxRadiusSquare);
             if (isNaN(this.boundingSphere.radius)) {
-                console.error(`THREE.BufferGeometry.computeBoundingSphere(): Computed radius is NaN. The "position" attribute is likely to have NaN values.`, this);
+                console.error(
+                    `THREE.BufferGeometry.computeBoundingSphere(): Computed radius is NaN. The "position" attribute is likely to have NaN values.`,
+                    this,
+                );
             }
         }
     }
 
     public computeVertexNormals(): void {
         const index: BufferAttribute = this.index;
-        const attributes: { [key: string]: BufferAttribute; } = this.attributes;
-        const groups: Array<IGroup> = this.groups;
+        const attributes: {[key: string]: BufferAttribute} = this.attributes;
+        const groups: IGroup[] = this.groups;
         if (attributes.position) {
             const positions: TypedArray = attributes.position.array;
             if (attributes.normal === undefined) {
-                this.addAttribute("normal", new BufferAttribute(new Float32Array(positions.length), 3));
+                this.addAttribute(
+                    "normal",
+                    new BufferAttribute(new Float32Array(positions.length), 3),
+                );
             } else {
                 // reset existing normals to zero
                 const array: TypedArray = attributes.normal.array;
-                for (let i: number = 0, il: number = array.length; i < il; i++) {
+                for (
+                    let i: number = 0, il: number = array.length;
+                    i < il;
+                    i++
+                ) {
                     array[i] = 0;
                 }
             }
             const normals: TypedArray = attributes.normal.array;
 
             let vA: number, vB: number, vC: number;
-            const pA: Vector3 = new Vector3(), pB: Vector3 = new Vector3(), pC: Vector3 = new Vector3();
-            const cb: Vector3 = new Vector3(), ab: Vector3 = new Vector3();
+            const pA: Vector3 = new Vector3(),
+                pB: Vector3 = new Vector3(),
+                pC: Vector3 = new Vector3();
+            const cb: Vector3 = new Vector3(),
+                ab: Vector3 = new Vector3();
             // indexed elements
             if (index) {
                 const indices: TypedArray = index.array;
                 if (groups.length === 0) {
                     this.addGroup(0, indices.length);
                 }
-                for (let j: number = 0, jl: number = groups.length; j < jl; ++j) {
+                for (
+                    let j: number = 0, jl: number = groups.length;
+                    j < jl;
+                    ++j
+                ) {
                     const group: IGroup = groups[j];
                     const start: number = group.start;
                     const count: number = group.count;
-                    for (let i: number = start, il: number = start + count; i < il; i += 3) {
+                    for (
+                        let i: number = start, il: number = start + count;
+                        i < il;
+                        i += 3
+                    ) {
                         vA = indices[i] * 3;
                         vB = indices[i + 1] * 3;
                         vC = indices[i + 2] * 3;
@@ -325,7 +416,11 @@ export class BufferGeometry extends EventDispatcher {
                 }
             } else {
                 // non-indexed elements (unconnected triangle soup)
-                for (let i: number = 0, il: number = positions.length; i < il; i += 9) {
+                for (
+                    let i: number = 0, il: number = positions.length;
+                    i < il;
+                    i += 9
+                ) {
                     pA.fromArray(positions, i);
                     pB.fromArray(positions, i + 3);
                     pC.fromArray(positions, i + 6);
@@ -362,18 +457,24 @@ export class BufferGeometry extends EventDispatcher {
 
     public toNonIndexed(): BufferGeometry {
         if (this.index === null) {
-            console.warn(`THREE.BufferGeometry.toNonIndexed(): Geometry is already non-indexed.`);
+            console.warn(
+                `THREE.BufferGeometry.toNonIndexed(): Geometry is already non-indexed.`,
+            );
             return this;
         }
         const geometry2: BufferGeometry = new BufferGeometry();
         const indices: TypedArray = this.index.array;
-        const attributes: { [key: string]: BufferAttribute; } = this.attributes;
+        const attributes: {[key: string]: BufferAttribute} = this.attributes;
         for (let name in attributes) {
+            if(!attributes.hasOwnProperty(name)) continue;
             const attribute: BufferAttribute = attributes[name];
             const array: TypedArray = attribute.array;
             const itemSize: number = attribute.itemSize;
-            const array2: TypedArray = (new (array.constructor as (number) => void)(indices.length * itemSize)) as TypedArray;
-            let index: number = 0, index2: number = 0;
+            const array2: TypedArray = new (array.constructor as (
+                number,
+            ) => void)(indices.length * itemSize) as TypedArray;
+            let index: number = 0,
+                index2: number = 0;
             for (let i: number = 0, l: number = indices.length; i < l; i++) {
                 index = indices[i] * itemSize;
                 for (let j: number = 0; j < itemSize; j++) {
@@ -386,7 +487,9 @@ export class BufferGeometry extends EventDispatcher {
     }
 
     public clone(): BufferGeometry {
-        return (new (this.constructor as () => void)() as BufferGeometry).copy(this);
+        return (new (this.constructor as () => void)() as BufferGeometry).copy(
+            this,
+        );
     }
 
     public copy(source): this {
@@ -405,23 +508,30 @@ export class BufferGeometry extends EventDispatcher {
             this.setIndex(index.clone());
         }
         // attributes
-        const attributes: { [key: string]: BufferAttribute; } = source.attributes;
+        const attributes: {[key: string]: BufferAttribute} = source.attributes;
         for (let name in attributes) {
+            if(!attributes.hasOwnProperty(name)) continue;
             const attribute: BufferAttribute = attributes[name];
             this.addAttribute(name, attribute.clone());
         }
         // morph attributes
-        const morphAttributes: { [key: string]: Array<BufferAttribute>; } = source.morphAttributes;
+        const morphAttributes: {[key: string]: BufferAttribute[]} =
+            source.morphAttributes;
         for (let name in morphAttributes) {
-            const array: Array<BufferAttribute> = [];
-            const morphAttribute: Array<BufferAttribute> = morphAttributes[name]; // morphAttribute: array of Float32BufferAttributes
-            for (let i: number = 0, l: number = morphAttribute.length; i < l; i++) {
+            if(!attributes.hasOwnProperty(name)) continue;
+            const array: BufferAttribute[] = [];
+            const morphAttribute: BufferAttribute[] = morphAttributes[name]; // morphAttribute: array of Float32BufferAttributes
+            for (
+                let i: number = 0, l: number = morphAttribute.length;
+                i < l;
+                i++
+            ) {
                 array.push(morphAttribute[i].clone());
             }
             this.morphAttributes[name] = array;
         }
         // groups
-        const groups: Array<IGroup> = source.groups;
+        const groups: IGroup[] = source.groups;
         for (let i: number = 0, l: number = groups.length; i < l; i++) {
             const group: IGroup = groups[i];
             this.addGroup(group.start, group.count, group.materialIndex);

@@ -3,7 +3,6 @@ import {Vector3} from "../math/Vector3";
 import {Matrix4} from "../math/Matrix4";
 
 export class Camera extends Object3D {
-
     public readonly type: string = "Camera";
 
     public matrixWorldInverse: Matrix4 = new Matrix4();
@@ -27,14 +26,15 @@ export class Camera extends Object3D {
     }
 
     get worldDirection(): Vector3 {
-        return new Vector3().set(0, 0, -1).applyQuaternion(this.worldQuaternion);
+        return new Vector3()
+            .set(0, 0, -1)
+            .applyQuaternion(this.worldQuaternion);
     }
 
     public clone() {
-        return ((new (this.constructor as () => void)()) as Camera).copy(this);
+        return (new (this.constructor as () => void)() as Camera).copy(this);
     }
 }
-
 
 export interface IFrustumView {
     fullWidth: number;

@@ -7,7 +7,7 @@ import {
     NoColors,
     NormalBlending,
     OneMinusSrcAlphaFactor,
-    SrcAlphaFactor
+    SrcAlphaFactor,
 } from "../constants";
 import {EventDispatcher} from "../core/EventDispatcher";
 import {Color} from "../math/Color";
@@ -29,11 +29,11 @@ export interface IMaterialParameters {
     blendSrc?: number;
     blendDst?: number;
     blendEquation?: number;
-    blendSrcAlpha?: number ;
+    blendSrcAlpha?: number;
     blendDstAlpha?: number;
     blendEquationAlpha?: number;
     depthFunc?: number;
-    depthTest?: boolean ;
+    depthTest?: boolean;
     depthWrite?: boolean;
     clippingPlanes?: Plane[];
     clipIntersection?: boolean;
@@ -82,7 +82,7 @@ export class Material extends EventDispatcher {
     public depthTest: boolean = true;
     public depthWrite: boolean = true;
 
-    public clippingPlanes: Array<Plane> = [];
+    public clippingPlanes: Plane[] = [];
     public clipIntersection: boolean = false;
     public clipShadows: boolean = false;
 
@@ -126,33 +126,48 @@ export class Material extends EventDispatcher {
 
     public setValues(values: IMaterialParameters): this {
         if (values === undefined) return;
-        for (let key in values) {
+        for (const key in values) {
             if (!values.hasOwnProperty(key)) continue;
             const newValue = values[key];
             if (newValue === undefined) {
-                console.warn(`THREE.Material: "${key}" parameter is undefined.`);
+                console.warn(
+                    `THREE.Material: "${key}" parameter is undefined.`,
+                );
                 continue;
             }
             /**
              * for backward compatability if shading is set in the constructor
              */
             if (key === "shading") {
-                console.warn(`THREE.${this.type}: .shading has been removed. Use the boolean .flatShading instead.`);
+                console.warn(
+                    `THREE.${
+                        this.type
+                    }: .shading has been removed. Use the boolean .flatShading instead.`,
+                );
                 this.flatShading = newValue === FlatShading;
                 continue;
-
             }
 
             const currentValue = this[key];
             if (currentValue === undefined) {
-                console.warn(`THREE.${this.type}: "${key}" is not a property of this material.`);
+                console.warn(
+                    `THREE.${
+                        this.type
+                    }: "${key}" is not a property of this material.`,
+                );
                 continue;
             }
             if (currentValue && currentValue instanceof Color) {
                 if (newValue instanceof Color) currentValue.copy(newValue);
-                else if (typeof newValue === "number") currentValue.setHex(newValue);
-                else if (typeof newValue === "string") currentValue.setStyle(newValue);
-            } else if ((currentValue && currentValue instanceof Vector3) && (newValue && newValue instanceof Vector3)) {
+                else if (typeof newValue === "number")
+                    currentValue.setHex(newValue);
+                else if (typeof newValue === "string")
+                    currentValue.setStyle(newValue);
+            } else if (
+                currentValue &&
+                currentValue instanceof Vector3 &&
+                (newValue && newValue instanceof Vector3)
+            ) {
                 currentValue.copy(newValue);
             } else if (key === "overdraw") {
                 /**
@@ -163,7 +178,6 @@ export class Material extends EventDispatcher {
             } else {
                 this[key] = newValue;
             }
-
         }
         return this;
     }
@@ -204,7 +218,8 @@ export class Material extends EventDispatcher {
         this.userData = JSON.parse(JSON.stringify(source.userData));
         this.clipShadows = source.clipShadows;
         this.clipIntersection = source.clipIntersection;
-        let srcPlanes = source.clippingPlanes, dstPlanes = null;
+        const srcPlanes: Plane[] = source.clippingPlanes;
+        let dstPlanes: Plane[] = null;
         if (srcPlanes !== null) {
             const n: number = srcPlanes.length;
             dstPlanes = new Array(n);

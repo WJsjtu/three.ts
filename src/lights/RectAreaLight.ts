@@ -6,7 +6,12 @@ export class RectAreaLight extends Light {
     public width: number = 10;
     public height: number = 10;
 
-    constructor(color: Color, intensity: number, width: number = 10, height: number = 10) {
+    constructor(
+        color: Color,
+        intensity: number,
+        width: number = 10,
+        height: number = 10,
+    ) {
         super(color, intensity);
         this.width = width;
         this.height = height;

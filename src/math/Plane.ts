@@ -20,7 +20,10 @@ export class Plane {
         return this;
     }
 
-    public setFromNormalAndCoplanarPoint(normal: Vector3, point: Vector3): this {
+    public setFromNormalAndCoplanarPoint(
+        normal: Vector3,
+        point: Vector3,
+    ): this {
         this.normal.copy(normal);
         this.constant = -point.dot(this.normal);
         return this;
@@ -29,7 +32,11 @@ export class Plane {
     public setFromCoplanarPoints(a, b, c): this {
         const v1: Vector3 = new Vector3();
         const v2: Vector3 = new Vector3();
-        const normal: Vector3 = v1.copy(c).sub(b).cross(v2.copy(a).sub(b)).normalize();
+        const normal: Vector3 = v1
+            .copy(c)
+            .sub(b)
+            .cross(v2.copy(a).sub(b))
+            .normalize();
         // Q: should an error be thrown if normal is zero (e.g. degenerate plane)?
         this.setFromNormalAndCoplanarPoint(normal, a);
         return this;
@@ -71,7 +78,10 @@ export class Plane {
     }
 
     public projectPoint(point: Vector3): Vector3 {
-        return new Vector3().copy(this.normal).multiplyScalar(-this.distanceToPoint(point)).add(point);
+        return new Vector3()
+            .copy(this.normal)
+            .multiplyScalar(-this.distanceToPoint(point))
+            .add(point);
     }
 
     public intersectLine(line: Line3): Vector3 | undefined {
@@ -85,18 +95,22 @@ export class Plane {
             // Unsure if this is the correct method to handle this case.
             return undefined;
         }
-        const t: number = -( line.start.dot(this.normal) + this.constant ) / denominator;
+        const t: number =
+            -(line.start.dot(this.normal) + this.constant) / denominator;
         if (t < 0 || t > 1) {
             return undefined;
         }
-        return new Vector3().copy(direction).multiplyScalar(t).add(line.start);
+        return new Vector3()
+            .copy(direction)
+            .multiplyScalar(t)
+            .add(line.start);
     }
 
     public intersectsLine(line: Line3): boolean {
         // Note: this tests if a line intersects the plane, not whether it (or its end-points) are coplanar with it.
         const startSign: number = this.distanceToPoint(line.start);
         const endSign: number = this.distanceToPoint(line.end);
-        return ( startSign < 0 && endSign > 0 ) || ( endSign < 0 && startSign > 0 );
+        return (startSign < 0 && endSign > 0) || (endSign < 0 && startSign > 0);
     }
 
     public intersectsBox(box: Box3): boolean {
@@ -113,8 +127,12 @@ export class Plane {
 
     public applyMatrix4(matrix: Matrix4): this {
         const normalMatrix: Matrix3 = new Matrix3().getNormalMatrix(matrix);
-        const referencePoint: Vector3 = this.coplanarPoint().applyMatrix4(matrix);
-        const normal: Vector3 = this.normal.applyMatrix3(normalMatrix).normalize();
+        const referencePoint: Vector3 = this.coplanarPoint().applyMatrix4(
+            matrix,
+        );
+        const normal: Vector3 = this.normal
+            .applyMatrix3(normalMatrix)
+            .normalize();
         this.constant = -referencePoint.dot(normal);
         return this;
     }
@@ -125,6 +143,8 @@ export class Plane {
     }
 
     public equals(plane: Plane): boolean {
-        return plane.normal.equals(this.normal) && ( plane.constant === this.constant );
+        return (
+            plane.normal.equals(this.normal) && plane.constant === this.constant
+        );
     }
 }

@@ -13,7 +13,7 @@ export class HemisphereLight extends Light {
         this.position = Object3D.DefaultUp.clone();
     }
 
-    copy(source: HemisphereLight): this {
+    public copy(source: HemisphereLight): this {
         super.copy(source);
         this.groundColor.copy(source.groundColor);
         return this;

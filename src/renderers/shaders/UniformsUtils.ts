@@ -9,7 +9,7 @@ import {Texture} from "../../textures/Texture";
 export type BaseUniformType = number | Color | Matrix3 | Matrix4 | Vector2 | Vector3 | Vector4 | Texture;
 
 export type Uniform = {
-    value?: BaseUniformType | Array<BaseUniformType>,
+    value?: BaseUniformType | BaseUniformType[],
     properties?: object,
     type?: string
 }

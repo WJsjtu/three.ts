@@ -15,13 +15,21 @@ export class Line extends Object3D {
     public geometry: BufferGeometry | Geometry = null;
     public material: LineBasicMaterial = null;
 
-    constructor(geometry: BufferGeometry | Geometry = new BufferGeometry(), material: LineBasicMaterial = new LineBasicMaterial({color: Math.random() * 0xffffff})) {
+    constructor(
+        geometry: BufferGeometry | Geometry = new BufferGeometry(),
+        material: LineBasicMaterial = new LineBasicMaterial({
+            color: Math.random() * 0xffffff,
+        }),
+    ) {
         super();
         this.geometry = geometry;
         this.material = material;
     }
 
-    public raycast(raycaster: Raycaster, intersects: Array<IIntersection> = []): Array<IIntersection> {
+    public raycast(
+        raycaster: Raycaster,
+        intersects: IIntersection[] = [],
+    ): IIntersection[] {
         const precision: number = raycaster.linePrecision;
         const precisionSquared: number = precision * precision;
 
@@ -45,45 +53,74 @@ export class Line extends Object3D {
 
         if (geometry instanceof BufferGeometry) {
             const index: BufferAttribute = geometry.index;
-            const attributes: { [key: string]: BufferAttribute; } = geometry.attributes;
+            const attributes: {[key: string]: BufferAttribute} =
+                geometry.attributes;
             const positions: TypedArray = attributes.position.array;
             if (index !== null) {
                 const indices: TypedArray = index.array;
-                for (let i: number = 0, l: number = indices.length - 1; i < l; i += step) {
+                for (
+                    let i: number = 0, l: number = indices.length - 1;
+                    i < l;
+                    i += step
+                ) {
                     const a: number = indices[i];
                     const b: number = indices[i + 1];
                     vStart.fromArray(positions, a * 3);
                     vEnd.fromArray(positions, b * 3);
-                    const distSquared: number = ray.distanceSqToSegment(vStart, vEnd, interRay, interSegment);
+                    const distSquared: number = ray.distanceSqToSegment(
+                        vStart,
+                        vEnd,
+                        interRay,
+                        interSegment,
+                    );
                     if (distSquared > precisionSquared) continue;
                     interRay.applyMatrix4(this.matrixWorld); //Move back to world space for distance calculation
-                    const distance: number = raycaster.ray.origin.distanceTo(interRay);
-                    if (distance < raycaster.near || distance > raycaster.far) continue;
+                    const distance: number = raycaster.ray.origin.distanceTo(
+                        interRay,
+                    );
+                    if (distance < raycaster.near || distance > raycaster.far)
+                        continue;
                     intersects.push({
                         distance: distance,
                         // What do we want? intersection point on the ray or on the segment??
                         // point: raycaster.ray.at( distance ),
-                        point: interSegment.clone().applyMatrix4(this.matrixWorld),
+                        point: interSegment
+                            .clone()
+                            .applyMatrix4(this.matrixWorld),
                         index: i,
-                        object: this
+                        object: this,
                     });
                 }
             } else {
-                for (let i: number = 0, l = positions.length / 3 - 1; i < l; i += step) {
+                for (
+                    let i: number = 0, l = positions.length / 3 - 1;
+                    i < l;
+                    i += step
+                ) {
                     vStart.fromArray(positions, 3 * i);
                     vEnd.fromArray(positions, 3 * i + 3);
-                    const distSquared: number = ray.distanceSqToSegment(vStart, vEnd, interRay, interSegment);
+                    const distSquared: number = ray.distanceSqToSegment(
+                        vStart,
+                        vEnd,
+                        interRay,
+                        interSegment,
+                    );
                     if (distSquared > precisionSquared) continue;
                     interRay.applyMatrix4(this.matrixWorld); //Move back to world space for distance calculation
-                    const distance: number = raycaster.ray.origin.distanceTo(interRay);
-                    if (distance < raycaster.near || distance > raycaster.far) continue;
+                    const distance: number = raycaster.ray.origin.distanceTo(
+                        interRay,
+                    );
+                    if (distance < raycaster.near || distance > raycaster.far)
+                        continue;
                     intersects.push({
                         distance: distance,
                         // What do we want? intersection point on the ray or on the segment??
                         // point: raycaster.ray.at( distance ),
-                        point: interSegment.clone().applyMatrix4(this.matrixWorld),
+                        point: interSegment
+                            .clone()
+                            .applyMatrix4(this.matrixWorld),
                         index: i,
-                        object: this
+                        object: this,
                     });
                 }
             }
@@ -91,18 +128,26 @@ export class Line extends Object3D {
             const vertices: Vector3[] = geometry.vertices;
             const nbVertices: number = vertices.length;
             for (let i: number = 0; i < nbVertices - 1; i += step) {
-                const distSquared: number = ray.distanceSqToSegment(vertices[i], vertices[i + 1], interRay, interSegment);
+                const distSquared: number = ray.distanceSqToSegment(
+                    vertices[i],
+                    vertices[i + 1],
+                    interRay,
+                    interSegment,
+                );
                 if (distSquared > precisionSquared) continue;
                 interRay.applyMatrix4(this.matrixWorld); //Move back to world space for distance calculation
-                const distance: number = raycaster.ray.origin.distanceTo(interRay);
-                if (distance < raycaster.near || distance > raycaster.far) continue;
+                const distance: number = raycaster.ray.origin.distanceTo(
+                    interRay,
+                );
+                if (distance < raycaster.near || distance > raycaster.far)
+                    continue;
                 intersects.push({
                     distance: distance,
                     // What do we want? intersection point on the ray or on the segment??
                     // point: raycaster.ray.at( distance ),
                     point: interSegment.clone().applyMatrix4(this.matrixWorld),
                     index: i,
-                    object: this
+                    object: this,
                 });
             }
         }
@@ -110,6 +155,9 @@ export class Line extends Object3D {
     }
 
     public clone(): Line {
-        return (new (this.constructor as (geometry: BufferGeometry | Geometry, material: LineBasicMaterial) => void)(this.geometry, this.material)).copy(this);
+        return new (this.constructor as (
+            geometry: BufferGeometry | Geometry,
+            material: LineBasicMaterial,
+        ) => void)(this.geometry, this.material).copy(this);
     }
 }

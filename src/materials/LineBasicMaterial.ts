@@ -9,7 +9,6 @@ export interface ILineBasicMaterialParameters extends IMaterialParameters {
 }
 
 export class LineBasicMaterial extends Material {
-
     public readonly type: string = "LineBasicMaterial";
     public color: Color = new Color().setHex(0xffffff);
     public linewidth: number = 1;

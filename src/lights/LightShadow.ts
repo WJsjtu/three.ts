@@ -3,7 +3,6 @@ import {Vector2} from "../math/Vector2";
 import {Matrix4} from "../math/Matrix4";
 
 export class LightShadow {
-
     public camera: Camera = null;
     public bias: number = 0;
     public radius: number = 1;
@@ -24,6 +23,8 @@ export class LightShadow {
     }
 
     public clone(): LightShadow {
-        return (new (this.constructor as () => void)() as LightShadow).copy(this);
+        return (new (this.constructor as () => void)() as LightShadow).copy(
+            this,
+        );
     }
 }

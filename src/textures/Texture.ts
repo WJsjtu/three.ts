@@ -8,7 +8,7 @@ import {
     UVMapping,
     RGBAFormat,
     LinearMipMapLinearFilter,
-    LinearFilter
+    LinearFilter,
 } from "../constants.js";
 import {Vector2} from "../math/Vector2";
 import {Matrix3} from "../math/Matrix3";
@@ -17,19 +17,23 @@ import {EventDispatcher} from "../core/EventDispatcher";
 let textureId: number = 0;
 
 type InnerTextureSource =
-    HTMLImageElement
+    | HTMLImageElement
     | HTMLCanvasElement
     | HTMLVideoElement
-    | { data?: any, width: number, height: number };
+    | {data?: any; width: number; height: number};
 
 export type TextureSource = InnerTextureSource | Array<InnerTextureSource>;
 
 export class Texture extends EventDispatcher {
+
+    public static DEFAULT_IMAGE: HTMLImageElement = null;
+    public static DEFAULT_MAPPING: number = UVMapping;
+
     public readonly id: number = textureId++;
     public readonly uuid: string = MathUtil.generateUUID();
     public name: string = "";
     public image: TextureSource = Texture.DEFAULT_IMAGE;
-    public mipmaps: Array<{ data: any, width: number, height: number }> = [];
+    public mipmaps: Array<{data: any; width: number; height: number}> = [];
     public mapping: number = Texture.DEFAULT_MAPPING;
     public wrapS: number = ClampToEdgeWrapping;
     public wrapT: number = ClampToEdgeWrapping;
@@ -62,19 +66,18 @@ export class Texture extends EventDispatcher {
     public encoding: number = LinearEncoding;
     public version: number = 0;
 
-    public static DEFAULT_IMAGE: HTMLImageElement = null;
-    public static DEFAULT_MAPPING: number = UVMapping;
-
-    constructor(image: TextureSource = Texture.DEFAULT_IMAGE,
-                mapping: number = Texture.DEFAULT_MAPPING,
-                wrapS: number = ClampToEdgeWrapping,
-                wrapT: number = ClampToEdgeWrapping,
-                magFilter: number = LinearFilter,
-                minFilter: number = LinearMipMapLinearFilter,
-                format: number = RGBAFormat,
-                type: number = UnsignedByteType,
-                anisotropy: number = 1,
-                encoding: number = LinearEncoding) {
+    constructor(
+        image: TextureSource = Texture.DEFAULT_IMAGE,
+        mapping: number = Texture.DEFAULT_MAPPING,
+        wrapS: number = ClampToEdgeWrapping,
+        wrapT: number = ClampToEdgeWrapping,
+        magFilter: number = LinearFilter,
+        minFilter: number = LinearMipMapLinearFilter,
+        format: number = RGBAFormat,
+        type: number = UnsignedByteType,
+        anisotropy: number = 1,
+        encoding: number = LinearEncoding,
+    ) {
         super();
         this.image = image;
         this.mapping = mapping;

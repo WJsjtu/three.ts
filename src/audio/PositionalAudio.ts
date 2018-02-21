@@ -4,7 +4,6 @@ import {Vector3} from "../math/Vector3";
 import {Object3D} from "../core/Object3D";
 
 export class PositionalAudio extends AudioWrapper {
-
     public panner: PannerNode = null;
 
     constructor(listener: AudioListenerWrapper) {
@@ -14,7 +13,7 @@ export class PositionalAudio extends AudioWrapper {
     }
 
     public getOutput(): AudioNode {
-        return (this.panner as AudioNode);
+        return this.panner as AudioNode;
     }
 
     public getRefDistance(): number {

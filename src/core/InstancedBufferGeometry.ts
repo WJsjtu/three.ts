@@ -10,6 +10,9 @@ export class InstancedBufferGeometry extends BufferGeometry {
     }
 
     public clone(): InstancedBufferGeometry {
-        return (new (this.constructor as () => void)() as InstancedBufferGeometry).copy(this);
+        return (new (this
+            .constructor as () => void)() as InstancedBufferGeometry).copy(
+            this,
+        );
     }
 }

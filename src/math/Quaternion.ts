@@ -4,7 +4,6 @@ import {Vector3} from "./Vector3";
 import {Vector4} from "./Vector4";
 
 export class Quaternion {
-
     protected _x: number;
     protected _y: number;
     protected _z: number;
@@ -58,12 +57,7 @@ export class Quaternion {
     }
 
     public copy(quaternion: Quaternion): this {
-        return this.set(
-            quaternion.x,
-            quaternion.y,
-            quaternion.z,
-            quaternion.w
-        );
+        return this.set(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
     }
 
     public setFromEuler(euler: Euler): this {
@@ -85,42 +79,42 @@ export class Quaternion {
                 s1 * c2 * c3 + c1 * s2 * s3,
                 c1 * s2 * c3 - s1 * c2 * s3,
                 c1 * c2 * s3 + s1 * s2 * c3,
-                c1 * c2 * c3 - s1 * s2 * s3
+                c1 * c2 * c3 - s1 * s2 * s3,
             );
         } else if (order === EulerOrder.YXZ) {
             return this.set(
                 s1 * c2 * c3 + c1 * s2 * s3,
                 c1 * s2 * c3 - s1 * c2 * s3,
                 c1 * c2 * s3 - s1 * s2 * c3,
-                c1 * c2 * c3 + s1 * s2 * s3
+                c1 * c2 * c3 + s1 * s2 * s3,
             );
         } else if (order === EulerOrder.ZXY) {
             return this.set(
                 s1 * c2 * c3 - c1 * s2 * s3,
                 c1 * s2 * c3 + s1 * c2 * s3,
                 c1 * c2 * s3 + s1 * s2 * c3,
-                c1 * c2 * c3 - s1 * s2 * s3
+                c1 * c2 * c3 - s1 * s2 * s3,
             );
         } else if (order === EulerOrder.ZYX) {
             return this.set(
                 s1 * c2 * c3 - c1 * s2 * s3,
                 c1 * s2 * c3 + s1 * c2 * s3,
                 c1 * c2 * s3 - s1 * s2 * c3,
-                c1 * c2 * c3 + s1 * s2 * s3
+                c1 * c2 * c3 + s1 * s2 * s3,
             );
         } else if (order === EulerOrder.YZX) {
             return this.set(
                 s1 * c2 * c3 + c1 * s2 * s3,
                 c1 * s2 * c3 + s1 * c2 * s3,
                 c1 * c2 * s3 - s1 * s2 * c3,
-                c1 * c2 * c3 - s1 * s2 * s3
+                c1 * c2 * c3 - s1 * s2 * s3,
             );
         } else if (order === EulerOrder.XZY) {
             return this.set(
                 s1 * c2 * c3 - c1 * s2 * s3,
                 c1 * s2 * c3 - s1 * c2 * s3,
                 c1 * c2 * s3 + s1 * s2 * c3,
-                c1 * c2 * c3 + s1 * s2 * s3
+                c1 * c2 * c3 + s1 * s2 * s3,
             );
         }
         return this;
@@ -134,12 +128,13 @@ export class Quaternion {
      * @returns {Quaternion}
      */
     public setFromAxisAngle(axis: Vector3, angle: number): this {
-        const halfAngle = angle / 2, s = Math.sin(halfAngle);
+        const halfAngle = angle / 2,
+            s = Math.sin(halfAngle);
         return this.set(
             axis.x * s,
             axis.y * s,
             axis.z * s,
-            Math.cos(halfAngle)
+            Math.cos(halfAngle),
         );
     }
 
@@ -150,13 +145,16 @@ export class Quaternion {
      * @returns {Quaternion}
      */
     public setFromRotationMatrix(m: Matrix4): this {
-
         const te = m.toArray(),
-
-            m11 = te[0], m12 = te[4], m13 = te[8],
-            m21 = te[1], m22 = te[5], m23 = te[9],
-            m31 = te[2], m32 = te[6], m33 = te[10],
-
+            m11 = te[0],
+            m12 = te[4],
+            m13 = te[8],
+            m21 = te[1],
+            m22 = te[5],
+            m23 = te[9],
+            m31 = te[2],
+            m32 = te[6],
+            m33 = te[10],
             trace = m11 + m22 + m33;
         let s;
 
@@ -166,7 +164,7 @@ export class Quaternion {
                 (m32 - m23) * s,
                 (m13 - m31) * s,
                 (m21 - m12) * s,
-                0.25 / s
+                0.25 / s,
             );
         } else if (m11 > m22 && m11 > m33) {
             s = 2.0 * Math.sqrt(1.0 + m11 - m22 - m33);
@@ -174,7 +172,7 @@ export class Quaternion {
                 0.25 * s,
                 (m12 + m21) / s,
                 (m13 + m31) / s,
-                (m32 - m23) / s
+                (m32 - m23) / s,
             );
         } else if (m22 > m33) {
             s = 2.0 * Math.sqrt(1.0 + m22 - m11 - m33);
@@ -182,7 +180,7 @@ export class Quaternion {
                 (m12 + m21) / s,
                 0.25 * s,
                 (m23 + m32) / s,
-                (m13 - m31) / s
+                (m13 - m31) / s,
             );
         } else {
             s = 2.0 * Math.sqrt(1.0 + m33 - m11 - m22);
@@ -190,11 +188,10 @@ export class Quaternion {
                 (m13 + m31) / s,
                 (m23 + m32) / s,
                 0.25 * s,
-                (m21 - m12) / s
+                (m21 - m12) / s,
             );
         }
     }
-
 
     /**
      * !! assumes direction vectors vFrom and vTo are normalized
@@ -228,16 +225,13 @@ export class Quaternion {
     }
 
     public conjugate(): this {
-        return this.set(
-            this.x * -1,
-            this.y * -1,
-            this.z * -1,
-            this.w
-        );
+        return this.set(this.x * -1, this.y * -1, this.z * -1, this.w);
     }
 
     public dot(vec: Vector4): number {
-        return this.x * vec.x + this.y * vec.y + this.z * vec.z + this.w * vec.w;
+        return (
+            this.x * vec.x + this.y * vec.y + this.z * vec.z + this.w * vec.w
+        );
     }
 
     public lengthSquared(): number {
@@ -274,16 +268,21 @@ export class Quaternion {
      * @returns {Quaternion}
      */
     public multiplyQuaternions(a: Quaternion, b: Quaternion): this {
-        const qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
-        const qbx = b.x, qby = b.y, qbz = b.z, qbw = b.w;
+        const qax = a.x,
+            qay = a.y,
+            qaz = a.z,
+            qaw = a.w;
+        const qbx = b.x,
+            qby = b.y,
+            qbz = b.z,
+            qbw = b.w;
         return this.set(
             qax * qbw + qaw * qbx + qay * qbz - qaz * qby,
             qay * qbw + qaw * qby + qaz * qbx - qax * qbz,
             qaz * qbw + qaw * qbz + qax * qby - qay * qbx,
-            qaw * qbw - qax * qbx - qay * qby - qaz * qbz
+            qaw * qbw - qax * qbx - qay * qby - qaz * qbz,
         );
     }
-
 
     /**
      * http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
@@ -292,7 +291,6 @@ export class Quaternion {
      * @returns {Quaternion}
      */
     public slerp(qb: Quaternion, t: number): this {
-
         if (t === 0) return this;
         if (t === 1) return this.copy(qb);
 
@@ -318,25 +316,30 @@ export class Quaternion {
                 0.5 * (x + this.x),
                 0.5 * (y + this.y),
                 0.5 * (z + this.z),
-                0.5 * (w + this.w)
+                0.5 * (w + this.w),
             );
         }
 
         const halfTheta = Math.atan2(sinHalfTheta, cosHalfTheta);
-        const ratioA = Math.sin(( 1 - t ) * halfTheta) / sinHalfTheta, ratioB = Math.sin(t * halfTheta) / sinHalfTheta;
+        const ratioA = Math.sin((1 - t) * halfTheta) / sinHalfTheta,
+            ratioB = Math.sin(t * halfTheta) / sinHalfTheta;
 
         return this.set(
-            (x * ratioA + this.x * ratioB),
-            (y * ratioA + this.y * ratioB),
-            (z * ratioA + this.z * ratioB),
-            (w * ratioA + this.w * ratioB)
+            x * ratioA + this.x * ratioB,
+            y * ratioA + this.y * ratioB,
+            z * ratioA + this.z * ratioB,
+            w * ratioA + this.w * ratioB,
         );
-
     }
 
     public equals(quaternion: Quaternion): boolean {
         const {x, y, z, w} = this;
-        return (quaternion.x === x ) && ( quaternion.y === y ) && ( quaternion.z === z ) && ( quaternion.w === w);
+        return (
+            quaternion.x === x &&
+            quaternion.y === y &&
+            quaternion.z === z &&
+            quaternion.w === w
+        );
     }
 
     public fromArray(array: number[], offset: number = 0): this {
@@ -344,7 +347,7 @@ export class Quaternion {
             array[offset],
             array[offset + 1],
             array[offset + 2],
-            array[offset + 3]
+            array[offset + 3],
         );
     }
 
@@ -357,6 +360,8 @@ export class Quaternion {
     }
 
     public clone(): Quaternion {
-        return ((new (this.constructor as () => void)()) as Quaternion).copy(this);
+        return (new (this.constructor as () => void)() as Quaternion).copy(
+            this,
+        );
     }
 }

@@ -76,9 +76,9 @@ export class WebGLGeometries {
             this.attributes.update(geometryAttributes[name], this.context.ARRAY_BUFFER);
         }
         // morph targets
-        const morphAttributes: { [key: string]: Array<BufferAttribute>; } = geometry.morphAttributes;
+        const morphAttributes: { [key: string]: BufferAttribute[]; } = geometry.morphAttributes;
         for (let name in morphAttributes) {
-            const array: Array<BufferAttribute> = morphAttributes[name];
+            const array: BufferAttribute[] = morphAttributes[name];
             for (let i: number = 0, l: number = array.length; i < l; i++) {
                 this.attributes.update(array[i], this.context.ARRAY_BUFFER);
             }
