@@ -1,11 +1,11 @@
 import {Object3D} from "../core/Object3D";
 import {BufferGeometry} from "../core/BufferGeometry";
-import {Geometry, MorphTarget} from "../core/Geometry";
+import {Geometry, IMorphTarget} from "../core/Geometry";
 import {Material} from "../materials/Material";
 import {MeshBasicMaterial} from "../materials/MeshBasicMaterial";
 import {DoubleSide, BackSide, TrianglesDrawMode} from "../constants";
 import {BufferAttribute} from "../core/BufferAttribute";
-import {Intersection, Raycaster} from "../core/Raycaster";
+import {IIntersection, Raycaster} from "../core/Raycaster";
 import {Sphere} from "../math/Sphere";
 import {Matrix4} from "../math/Matrix4";
 import {Ray} from "../math/Ray";
@@ -23,7 +23,7 @@ class Mesh extends Object3D {
     public material: MeshBasicMaterial | Array<MeshBasicMaterial> = null;
     public drawMode: number = TrianglesDrawMode;
 
-    public morphTargetInfluences: Array<number> = [];
+    public morphTargetInfluences: number[] = [];
     public morphTargetDictionary: { [key: string]: number; } = {};
 
     constructor(geometry: BufferGeometry | Geometry = new BufferGeometry(), material: MeshBasicMaterial | Array<MeshBasicMaterial> = new MeshBasicMaterial({color: Math.random() * 0xffffff})) {
@@ -54,7 +54,7 @@ class Mesh extends Object3D {
                 }
             }
         } else if (geometry instanceof Geometry) {
-            const morphTargets: Array<MorphTarget> = geometry.morphTargets;
+            const morphTargets: Array<IMorphTarget> = geometry.morphTargets;
             if (morphTargets !== undefined && morphTargets.length > 0) {
                 for (let m: number = 0, ml: number = morphTargets.length; m < ml; m++) {
                     const name: string = morphTargets[m].name || String(m);
@@ -75,7 +75,7 @@ class Mesh extends Object3D {
         return uv1.clone();
     }
 
-    public static checkIntersection(object: Mesh, material: MeshBasicMaterial, raycaster: Raycaster, ray: Ray, pA: Vector3, pB: Vector3, pC: Vector3, point: Vector3): Intersection {
+    public static checkIntersection(object: Mesh, material: MeshBasicMaterial, raycaster: Raycaster, ray: Ray, pA: Vector3, pB: Vector3, pC: Vector3, point: Vector3): IIntersection {
         let intersect: Vector3;
         const intersectionPointWorld: Vector3 = new Vector3();
         if (material.side === BackSide) {
@@ -96,7 +96,7 @@ class Mesh extends Object3D {
         };
     }
 
-    public static checkBufferGeometryIntersection(object: Mesh, raycaster: Raycaster, ray: Ray, position: BufferAttribute, uv: BufferAttribute, a: number, b: number, c: number): Intersection {
+    public static checkBufferGeometryIntersection(object: Mesh, raycaster: Raycaster, ray: Ray, position: BufferAttribute, uv: BufferAttribute, a: number, b: number, c: number): IIntersection {
         var intersectionPoint = new Vector3();
         const vA = vectorFromBufferAttribute(new Vector3(), position, a);
         const vB = vectorFromBufferAttribute(new Vector3(), position, b);
@@ -106,7 +106,7 @@ class Mesh extends Object3D {
             vectorFromBufferAttribute(new Vector3(), position, b),
             vectorFromBufferAttribute(new Vector3(), position, c)
         );
-        const intersection: Intersection = Mesh.checkIntersection(object, object.material as MeshBasicMaterial, raycaster, ray, vA, vB, vC, intersectionPoint);
+        const intersection: IIntersection = Mesh.checkIntersection(object, object.material as MeshBasicMaterial, raycaster, ray, vA, vB, vC, intersectionPoint);
         if (intersection) {
             if (uv) {
                 
@@ -121,7 +121,7 @@ class Mesh extends Object3D {
         return intersection;
     }
 
-    public raycast(raycaster: Raycaster, intersects: Array<Intersection> = []): Array<Intersection> {
+    public raycast(raycaster: Raycaster, intersects: Array<IIntersection> = []): Array<IIntersection> {
         const geometry: BufferGeometry | Geometry = this.geometry;
         const material: MeshBasicMaterial | Array<MeshBasicMaterial> = this.material;
         const matrixWorld: Matrix4 = this.matrixWorld;
@@ -146,7 +146,7 @@ class Mesh extends Object3D {
                     const a: number = index.getProperty(i, "x") as number;
                     const b: number = index.getProperty(i + 1, "x") as number;
                     const c: number = index.getProperty(i + 2, "x") as number;
-                    const intersection: Intersection = Mesh.checkBufferGeometryIntersection(this, raycaster, ray, position, uv, a, b, c);
+                    const intersection: IIntersection = Mesh.checkBufferGeometryIntersection(this, raycaster, ray, position, uv, a, b, c);
                     if (intersection) {
                         intersection.faceIndex = Math.floor(i / 3); // triangle number in indices buffer semantics
                         intersects.push(intersection);
@@ -158,7 +158,7 @@ class Mesh extends Object3D {
                     const a: number = i;
                     const b: number = i + 1;
                     const c: number = i + 2;
-                    const intersection: Intersection = Mesh.checkBufferGeometryIntersection(this, raycaster, ray, position, uv, a, b, c);
+                    const intersection: IIntersection = Mesh.checkBufferGeometryIntersection(this, raycaster, ray, position, uv, a, b, c);
                     if (intersection) {
                         intersection.index = a; // triangle number in positions buffer semantics
                         intersects.push(intersection);
@@ -167,7 +167,7 @@ class Mesh extends Object3D {
             }
 
         } else if (geometry instanceof Geometry) {
-            const vertices: Array<Vector3> = geometry.vertices;
+            const vertices: Vector3[] = geometry.vertices;
             const faces: Array<Face3> = geometry.faces;
             let uvs: Array<Array<Vector2>> | undefined = undefined;
             const faceVertexUvs: Array<Array<Vector2>> = geometry.faceVertexUvs[0];
@@ -180,12 +180,12 @@ class Mesh extends Object3D {
                 let fvB: Vector3 = vertices[face.b];
                 let fvC: Vector3 = vertices[face.c];
                 if (faceMaterial.morphTargets === true) {
-                    var morphTargets: Array<MorphTarget> = geometry.morphTargets;
+                    var morphTargets: Array<IMorphTarget> = geometry.morphTargets;
                     const vA = new Vector3(), vB = new Vector3(), vC = new Vector3();
                     for (let t: number = 0, tl: number = morphTargets.length; t < tl; t++) {
                         const influence: number = this.morphTargetInfluences[t];
                         if (influence === 0) continue;
-                        const targets: Array<Vector3> = morphTargets[t].vertices;
+                        const targets: Vector3[] = morphTargets[t].vertices;
                         vA.add(new Vector3().copy(targets[face.a]).sub(fvA).multiplyScalar(influence));
                         vB.add(new Vector3().copy(targets[face.b]).sub(fvB).multiplyScalar(influence));
                         vC.add(new Vector3().copy(targets[face.c]).sub(fvC).multiplyScalar(influence));
@@ -199,7 +199,7 @@ class Mesh extends Object3D {
                 }
                 
                 const intersectionPoint: Vector3 = new Vector3();
-                const intersection: Intersection = Mesh.checkIntersection(this, faceMaterial, raycaster, ray, fvA, fvB, fvC, intersectionPoint);
+                const intersection: IIntersection = Mesh.checkIntersection(this, faceMaterial, raycaster, ray, fvA, fvB, fvC, intersectionPoint);
                 
                 if (intersection) {
                     if (uvs && uvs[f]) {

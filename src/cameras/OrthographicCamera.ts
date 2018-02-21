@@ -1,4 +1,4 @@
-import {Camera, FrustumView} from "./Camera";
+import {Camera, IFrustumView} from "./Camera";
 
 export class OrthographicCamera extends Camera {
     public readonly type: string = "OrthographicCamera";
@@ -11,7 +11,7 @@ export class OrthographicCamera extends Camera {
     protected _zoom: number = 1;
     protected _near: number = 0.1;
     protected _far: number = 2000;
-    protected _view: FrustumView = null;
+    protected _view: IFrustumView = null;
 
     constructor(left: number = 0, right: number = 0, top: number = 0, bottom: number = 0, near: number = 0.1, far: number = 2000) {
         super();
@@ -90,7 +90,7 @@ export class OrthographicCamera extends Camera {
         this.updateProjectionMatrix();
     }
 
-    get view(): FrustumView {
+    get view(): IFrustumView {
         return this._view;
     }
 

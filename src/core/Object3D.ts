@@ -6,7 +6,7 @@ import {Euler} from "../math/Euler";
 import {Quaternion} from "../math/Quaternion";
 import {Matrix4} from "../math/Matrix4";
 import {Layers} from "./Layers";
-import {Intersection, Raycaster} from "./Raycaster";
+import {IIntersection, Raycaster} from "./Raycaster";
 import {Camera} from "../cameras/Camera";
 
 let object3DId: number = 0;
@@ -94,7 +94,7 @@ export class Object3D extends EventDispatcher {
         return this;
     }
 
-    public raycast(raycaster: Raycaster, intersections: Array<Intersection> = []): Array<Intersection> {
+    public raycast(raycaster: Raycaster, intersections: Array<IIntersection> = []): Array<IIntersection> {
         return intersections;
     }
 

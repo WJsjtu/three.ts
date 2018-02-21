@@ -1,36 +1,36 @@
 import {Vector3} from "../math/Vector3";
 import {Vector4} from "../math/Vector4";
 import {Color} from "../math/Color";
-import {Geometry, GeometryFace, MorphNormal, MorphTarget} from "./Geometry";
+import {Geometry, GeometryFace, IMorphNormal, IMorphTarget} from "./Geometry";
 import {Vector2} from "../math/Vector2";
 import {Triangle} from "../math/Triangle";
 // import {Sphere} from "../math/Sphere";
 // import {Box3} from "../math/Box3";
 
-export interface Group {
-    start: number,
-    materialIndex: number,
-    count?: number
+export interface IGroup {
+    start: number;
+    materialIndex: number;
+    count?: number;
 }
 
 export class DirectGeometry {
 
     /**
      * TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
-     * public indices: Array<number> = [];
+     * public indices: number[] = [];
      */
 
-    public vertices: Array<Vector3> = [];
-    public normals: Array<Vector3> = [];
+    public vertices: Vector3[] = [];
+    public normals: Vector3[] = [];
     public colors: Array<Color> = [];
     public uvs: Array<Vector2> = [];
     public uvs2: Array<Vector2> = [];
 
-    public groups: Array<Group> = [];
+    public groups: Array<IGroup> = [];
 
     public morphTargets: {
-        position?: Array<Array<Vector3>>,
-        normal?: Array<Array<Vector3>>
+        position?: Array<Vector3[]>,
+        normal?: Array<Vector3[]>
     } = {};
 
     public skinWeights: Array<Vector4> = [];
@@ -49,8 +49,8 @@ export class DirectGeometry {
     public groupsNeedUpdate: boolean = false;
 
     public computeGroups(geometry: Geometry): void {
-        let group: Group;
-        const groups: Array<Group> = [];
+        let group: IGroup;
+        const groups: Array<IGroup> = [];
         let materialIndex: number;
         const faces: Array<GeometryFace> = geometry.faces;
         let i: number = 0;
@@ -78,14 +78,14 @@ export class DirectGeometry {
 
     public fromGeometry(geometry: Geometry): this {
         const faces: Array<GeometryFace> = geometry.faces;
-        const vertices: Array<Vector3> = geometry.vertices;
+        const vertices: Vector3[] = geometry.vertices;
         const faceVertexUvs: Array<Array<Array<Vector2>>> = geometry.faceVertexUvs;
 
         const hasFaceVertexUv: boolean = faceVertexUvs[0] && faceVertexUvs[0].length > 0;
         const hasFaceVertexUv2: boolean = faceVertexUvs[1] && faceVertexUvs[1].length > 0;
 
         // morphs
-        const morphTargets: Array<MorphTarget> = geometry.morphTargets;
+        const morphTargets: Array<IMorphTarget> = geometry.morphTargets;
         const morphTargetsLength: number = morphTargets.length;
         if (morphTargetsLength > 0) {
             this.morphTargets.position = [];
@@ -93,7 +93,7 @@ export class DirectGeometry {
                 this.morphTargets.position[i] = [];
             }
         }
-        const morphNormals: Array<MorphNormal> = geometry.morphNormals;
+        const morphNormals: Array<IMorphNormal> = geometry.morphNormals;
         const morphNormalsLength: number = morphNormals.length;
         if (morphNormalsLength > 0) {
             this.morphTargets.normal = [];
@@ -109,7 +109,7 @@ export class DirectGeometry {
         for (let i: number = 0; i < faces.length; i++) {
             const face: GeometryFace = faces[i];
             this.vertices.push(vertices[face.a], vertices[face.b], vertices[face.c]);
-            const vertexNormals: Array<Vector3> = face.vertexNormals;
+            const vertexNormals: Vector3[] = face.vertexNormals;
             if (vertexNormals.length === 3) {
                 this.normals.push(vertexNormals[0], vertexNormals[1], vertexNormals[2]);
             } else {
@@ -143,7 +143,7 @@ export class DirectGeometry {
             }
             // morphs
             for (let j: number = 0; j < morphTargetsLength; j++) {
-                const morphTarget: Array<Vector3> = morphTargets[j].vertices;
+                const morphTarget: Vector3[] = morphTargets[j].vertices;
                 this.morphTargets.position[j].push(morphTarget[face.a], morphTarget[face.b], morphTarget[face.c]);
             }
             for (let j: number = 0; j < morphNormalsLength; j++) {

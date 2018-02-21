@@ -8,17 +8,17 @@ import {OrthographicCamera} from "../cameras/OrthographicCamera";
 import {unprojectVector3onCamera} from "../utils";
 import {Face3} from "./Face3";
 
-export interface Intersection {
-    index?: number,
-    face?: Face3,
-    faceIndex?: number,
-    uv?: Vector2,
-    distance: number,
-    point: Vector3,
-    object: Object3D
+export interface IIntersection {
+    index?: number;
+    face?: Face3;
+    faceIndex?: number;
+    uv?: Vector2;
+    distance: number;
+    point: Vector3;
+    object: Object3D;
 }
 
-function intersectObject(object: Object3D, raycaster: Raycaster, intersects: Array<Intersection>, recursive: boolean = false) {
+function intersectObject(object: Object3D, raycaster: Raycaster, intersects: Array<IIntersection>, recursive: boolean = false) {
     if (object.visible === false) return;
     object.raycast(raycaster, intersects);
     if (recursive === true) {
@@ -71,19 +71,19 @@ export class Raycaster {
         return this;
     }
 
-    public intersectObject(object: Object3D, recursive: boolean = false): Array<Intersection> {
-        const intersects: Array<Intersection> = [];
+    public intersectObject(object: Object3D, recursive: boolean = false): Array<IIntersection> {
+        const intersects: Array<IIntersection> = [];
         intersectObject(object, this, intersects, recursive);
-        intersects.sort((a: Intersection, b: Intersection) => a.distance - b.distance);
+        intersects.sort((a: IIntersection, b: IIntersection) => a.distance - b.distance);
         return intersects;
     }
 
-    public intersectObjects(objects: Array<Object3D>, recursive: boolean = false): Array<Intersection> {
-        const intersects: Array<Intersection> = [];
+    public intersectObjects(objects: Array<Object3D>, recursive: boolean = false): Array<IIntersection> {
+        const intersects: Array<IIntersection> = [];
         for (let i: number = 0, l: number = objects.length; i < l; i++) {
             intersectObject(objects[i], this, intersects, recursive);
         }
-        intersects.sort((a: Intersection, b: Intersection) => a.distance - b.distance);
+        intersects.sort((a: IIntersection, b: IIntersection) => a.distance - b.distance);
         return intersects;
     }
 }

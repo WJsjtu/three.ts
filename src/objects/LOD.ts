@@ -1,19 +1,19 @@
 import {Object3D} from "../core/Object3D";
-import {Intersection, Raycaster} from "../core/Raycaster";
+import {IIntersection, Raycaster} from "../core/Raycaster";
 import {Vector3} from "../math/Vector3";
 import {Camera} from "../cameras/Camera";
 
-export interface LODLevel {
-    object: Object3D,
-    distance: number
+export interface ILODLevel {
+    object: Object3D;
+    distance: number;
 }
 
 export class LOD extends Object3D {
     public readonly type: string = "LOD";
-    public levels: Array<LODLevel> = [];
+    public levels: ILODLevel[] = [];
 
     public addLevel(object: Object3D, distance: number = 0): LOD {
-        const levels: Array<LODLevel> = this.levels;
+        const levels: ILODLevel[] = this.levels;
         distance = Math.abs(distance);
         let l: number = 0;
         for (; l < levels.length; l++) {
@@ -27,9 +27,9 @@ export class LOD extends Object3D {
     }
 
     public getObjectForDistance(distance: number) {
-        const levels: Array<LODLevel> = this.levels;
+        const levels: ILODLevel[] = this.levels;
         let i: number = 1;
-        for (let l: number = levels.length; i < l; i++) {
+        for (const l: number = levels.length; i < l; i++) {
             if (distance < levels[i].distance) {
                 break;
             }
@@ -37,7 +37,7 @@ export class LOD extends Object3D {
         return levels[i - 1].object;
     }
 
-    public raycast(raycaster: Raycaster, intersects: Array<Intersection> = []): Array<Intersection> {
+    public raycast(raycaster: Raycaster, intersects: Array<IIntersection> = []): Array<IIntersection> {
         const matrixPosition: Vector3 = new Vector3().setFromMatrixPosition(this.matrixWorld);
         const distance: number = raycaster.ray.origin.distanceTo(matrixPosition);
         this.getObjectForDistance(distance).raycast(raycaster, intersects);
@@ -45,7 +45,7 @@ export class LOD extends Object3D {
     }
 
     public update(camera: Camera): this {
-        const levels: Array<LODLevel> = this.levels;
+        const levels: ILODLevel[] = this.levels;
         if (levels.length > 1) {
             const v1: Vector3 = new Vector3().setFromMatrixPosition(camera.matrixWorld);
             const v2: Vector3 = new Vector3().setFromMatrixPosition(this.matrixWorld);
@@ -69,9 +69,9 @@ export class LOD extends Object3D {
 
     public copy(source: LOD): this {
         super.copy(source);
-        const levels: Array<LODLevel> = source.levels;
+        const levels: ILODLevel[] = source.levels;
         for (let i: number = 0, l: number = levels.length; i < l; i++) {
-            const level: LODLevel = levels[i];
+            const level: ILODLevel = levels[i];
             this.addLevel(level.object.clone(), level.distance);
         }
         return this;

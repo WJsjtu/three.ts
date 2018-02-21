@@ -1,5 +1,5 @@
 import {MathUtil} from "../math/Math";
-import {BufferRange, TypedArray} from "./BufferAttribute";
+import {IBufferRange, TypedArray} from "./BufferAttribute";
 import {Vector2} from "../math/Vector2";
 import {Vector3} from "../math/Vector3";
 import {Vector4} from "../math/Vector4";
@@ -11,7 +11,7 @@ export class InterleavedBufferAttribute {
     public stride: number = 1;
     public count: number = 0;
     public dynamic: boolean = false;
-    public updateRange: BufferRange = {offset: 0, count: -1};
+    public updateRange: IBufferRange = {offset: 0, count: -1};
     public version: number = 0;
 
     public itemSize: number;
@@ -50,7 +50,7 @@ export class InterleavedBufferAttribute {
         return this;
     }
 
-    public set(value: TypedArray | Array<number>, offset: number = 0): this {
+    public set(value: TypedArray | number[], offset: number = 0): this {
         this.array.set(value, offset);
         return this;
     }

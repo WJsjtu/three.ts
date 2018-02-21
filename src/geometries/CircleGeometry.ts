@@ -1,26 +1,26 @@
-import {Geometry} from "../core/Geometry";
 import {BufferGeometry} from "../core/BufferGeometry";
 import {Float32BufferAttribute} from "../core/BufferAttribute";
+import {Geometry} from "../core/Geometry";
 
-export interface CircleGeometryParameters {
-    radius: number,
-    segments: number,
-    thetaStart: number,
-    thetaLength: number
+export interface ICircleGeometryParameters {
+    radius: number;
+    segments: number;
+    thetaStart: number;
+    thetaLength: number;
 }
 
 export class CircleGeometry extends Geometry {
 
     public readonly type: string = "CircleGeometry";
-    public parameters: CircleGeometryParameters;
+    public parameters: ICircleGeometryParameters;
 
     constructor(radius?: number, segments?: number, thetaStart?: number, thetaLength?: number) {
         super();
         this.parameters = {
             radius: radius,
             segments: segments,
+            thetaLength: thetaLength,
             thetaStart: thetaStart,
-            thetaLength: thetaLength
         };
         this.fromBufferGeometry(new CircleBufferGeometry(radius, segments, thetaStart, thetaLength));
         this.mergeVertices();
@@ -30,7 +30,7 @@ export class CircleGeometry extends Geometry {
 export class CircleBufferGeometry extends BufferGeometry {
 
     public readonly type: string = "CircleBufferGeometry";
-    public parameters: CircleGeometryParameters;
+    public parameters: ICircleGeometryParameters;
 
     constructor(radius: number = 1, segments: number | undefined = undefined, thetaStart: number = 0, thetaLength: number = Math.PI * 2) {
         super();
@@ -42,10 +42,10 @@ export class CircleBufferGeometry extends BufferGeometry {
         };
         segments = segments !== undefined ? Math.max(3, segments) : 8;
         // buffers
-        const indices: Array<number> = [];
-        const vertices: Array<number> = [];
-        const normals: Array<number> = [];
-        const uvs: Array<number> = [];
+        const indices: number[] = [];
+        const vertices: number[] = [];
+        const normals: number[] = [];
+        const uvs: number[] = [];
         // center point
         vertices.push(0, 0, 0);
         normals.push(0, 0, 1);

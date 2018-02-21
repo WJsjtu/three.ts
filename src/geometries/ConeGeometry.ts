@@ -2,20 +2,20 @@ import {Geometry} from "../core/Geometry";
 import {CylinderBufferGeometry, CylinderGeometry} from "./CylinderGeometry";
 import {BufferGeometry} from "../core/BufferGeometry";
 
-export interface ConeGeometryParameters {
-    radius: number,
-    height: number,
-    radialSegments: number,
-    heightSegments: number,
-    openEnded: boolean,
-    thetaStart: number,
-    thetaLength: number
+export interface IConeGeometryParameters {
+    radius: number;
+    height: number;
+    radialSegments: number;
+    heightSegments: number;
+    openEnded: boolean;
+    thetaStart: number;
+    thetaLength: number;
 }
 
 export class ConeGeometry extends Geometry {
 
     public readonly type: string = "ConeGeometry";
-    public parameters: ConeGeometryParameters;
+    public parameters: IConeGeometryParameters;
 
     constructor(radius?: number, height?: number, radialSegments?: number, heightSegments?: number, openEnded?: boolean, thetaStart?: number, thetaLength?: number) {
         super();
@@ -35,7 +35,7 @@ export class ConeGeometry extends Geometry {
 export class ConeBufferGeometry extends BufferGeometry {
 
     public readonly type: string = "ConeBufferGeometry";
-    public parameters: ConeGeometryParameters;
+    public parameters: IConeGeometryParameters;
 
     constructor(radius?: number, height?: number, radialSegments?: number, heightSegments?: number, openEnded?: boolean, thetaStart?: number, thetaLength?: number) {
         super();

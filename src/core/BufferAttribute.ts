@@ -5,9 +5,9 @@ import {Vector4} from "../math/Vector4";
 import {Color} from "../math/Color";
 import {Face3} from "./Face3";
 
-export interface BufferRange {
-    offset: number,
-    count: number
+export interface IBufferRange {
+    offset: number;
+    count: number;
 }
 
 export type TypedArray = Int8Array
@@ -28,7 +28,7 @@ export class BufferAttribute {
     public count: number = 0;
     public normalized: boolean = false;
     public dynamic: boolean = false;
-    public updateRange: BufferRange = {offset: 0, count: -1};
+    public updateRange: IBufferRange = {offset: 0, count: -1};
     public version: number = 0;
 
     constructor(array: TypedArray | undefined, itemSize: number = 0, normalized: boolean = false) {
@@ -62,7 +62,7 @@ export class BufferAttribute {
         return this;
     }
 
-    public set(value: TypedArray | Array<number>, offset: number = 0): this {
+    public set(value: TypedArray | number[], offset: number = 0): this {
         this.array.set(value, offset);
         return this;
     }
@@ -125,7 +125,7 @@ export class BufferAttribute {
         return this;
     }
 
-    public copyVector3sArray(vectors: Array<Vector3>): this {
+    public copyVector3sArray(vectors: Vector3[]): this {
         const array: TypedArray = this.array;
         let offset: number = 0;
         for (let i: number = 0, l: number = vectors.length; i < l; i++) {
@@ -207,55 +207,55 @@ export class BufferAttribute {
 }
 
 export class Int8BufferAttribute extends BufferAttribute {
-    constructor(array: Array<number>, itemSize: number, normalized?: boolean) {
+    constructor(array: number[], itemSize: number, normalized?: boolean) {
         super(new Int8Array(array), itemSize, normalized);
     }
 }
 
 export class Uint8BufferAttribute extends BufferAttribute {
-    constructor(array: Array<number>, itemSize: number, normalized?: boolean) {
+    constructor(array: number[], itemSize: number, normalized?: boolean) {
         super(new Uint8Array(array), itemSize, normalized);
     }
 }
 
 export class Uint8ClampedBufferAttribute extends BufferAttribute {
-    constructor(array: Array<number>, itemSize: number, normalized?: boolean) {
+    constructor(array: number[], itemSize: number, normalized?: boolean) {
         super(new Uint8ClampedArray(array), itemSize, normalized);
     }
 }
 
 export class Int16BufferAttribute extends BufferAttribute {
-    constructor(array: Array<number>, itemSize: number, normalized?: boolean) {
+    constructor(array: number[], itemSize: number, normalized?: boolean) {
         super(new Int16Array(array), itemSize, normalized);
     }
 }
 
 export class Uint16BufferAttribute extends BufferAttribute {
-    constructor(array: Array<number>, itemSize: number, normalized?: boolean) {
+    constructor(array: number[], itemSize: number, normalized?: boolean) {
         super(new Uint16Array(array), itemSize, normalized);
     }
 }
 
 export class Int32BufferAttribute extends BufferAttribute {
-    constructor(array: Array<number>, itemSize: number, normalized?: boolean) {
+    constructor(array: number[], itemSize: number, normalized?: boolean) {
         super(new Int32Array(array), itemSize, normalized);
     }
 }
 
 export class Uint32BufferAttribute extends BufferAttribute {
-    constructor(array: Array<number>, itemSize: number, normalized?: boolean) {
+    constructor(array: number[], itemSize: number, normalized?: boolean) {
         super(new Uint32Array(array), itemSize, normalized);
     }
 }
 
 export class Float32BufferAttribute extends BufferAttribute {
-    constructor(array: Array<number>, itemSize: number, normalized?: boolean) {
+    constructor(array: number[], itemSize: number, normalized?: boolean) {
         super(new Float32Array(array), itemSize, normalized);
     }
 }
 
 export class Float64BufferAttribute extends BufferAttribute {
-    constructor(array: Array<number>, itemSize: number, normalized?: boolean) {
+    constructor(array: number[], itemSize: number, normalized?: boolean) {
         super(new Float64Array(array), itemSize, normalized);
     }
 }

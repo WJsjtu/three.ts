@@ -3,14 +3,20 @@
   "version": "0.0.1",
   "description": "three.ts",
   "scripts": {
+    "test": "tslint -c tslint.json src/**/*.ts",
+    "prettify": "prettier --config ./.prettierrc.json --write src/**/*.ts"
   },
   "files": [
     "src"
   ],
   "license": "MIT",
   "devDependencies": {
+    "tslint": "^5.9.1"
   },
-  "dependencies": {},
+  "dependencies": {
+    "prettier": "^1.10.2",
+    "typescript": "^2.7.2"
+  },
   "author": {
     "name": "王健（Jason Wang）",
     "email": "jasonwang0421@gmail.com",

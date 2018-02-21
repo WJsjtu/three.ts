@@ -1,14 +1,14 @@
-import {Object3D} from "../core/Object3D";
 import {BufferGeometry} from "../core/BufferGeometry";
-import {LineBasicMaterial} from "../materials/LineBasicMaterial";
-import {Intersection, Raycaster} from "../core/Raycaster";
-import {Sphere} from "../math/Sphere";
-import {Matrix4} from "../math/Matrix4";
-import {Ray} from "../math/Ray";
-import {Vector3} from "../math/Vector3";
-import {Geometry} from "../core/Geometry";
 import {BufferAttribute, TypedArray} from "../core/BufferAttribute";
+import {Geometry} from "../core/Geometry";
+import {IIntersection, Raycaster} from "../core/Raycaster";
+import {LineBasicMaterial} from "../materials/LineBasicMaterial";
 import {LineSegments} from "./LineSegments";
+import {Matrix4} from "../math/Matrix4";
+import {Object3D} from "../core/Object3D";
+import {Ray} from "../math/Ray";
+import {Sphere} from "../math/Sphere";
+import {Vector3} from "../math/Vector3";
 
 export class Line extends Object3D {
     public readonly type: string = "Line";
@@ -21,7 +21,7 @@ export class Line extends Object3D {
         this.material = material;
     }
 
-    public raycast(raycaster: Raycaster, intersects: Array<Intersection> = []): Array<Intersection> {
+    public raycast(raycaster: Raycaster, intersects: Array<IIntersection> = []): Array<IIntersection> {
         const precision: number = raycaster.linePrecision;
         const precisionSquared: number = precision * precision;
 
@@ -88,7 +88,7 @@ export class Line extends Object3D {
                 }
             }
         } else if (geometry instanceof Geometry) {
-            const vertices: Array<Vector3> = geometry.vertices;
+            const vertices: Vector3[] = geometry.vertices;
             const nbVertices: number = vertices.length;
             for (let i: number = 0; i < nbVertices - 1; i += step) {
                 const distSquared: number = ray.distanceSqToSegment(vertices[i], vertices[i + 1], interRay, interSegment);

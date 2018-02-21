@@ -15,65 +15,65 @@ import {SpotLightShadow} from "../../lights/SpotLightShadow";
 import {LightShadow} from "../../lights/LightShadow";
 import {PerspectiveCamera} from "../../cameras/PerspectiveCamera";
 
-interface LightShadowUniforms {
-    shadow: boolean,
-    shadowBias: number,
-    shadowRadius: number,
-    shadowMapSize: Vector2
+interface ILightShadowUniforms {
+    shadow: boolean;
+    shadowBias: number;
+    shadowRadius: number;
+    shadowMapSize: Vector2;
 }
 
-export interface DirectionalLightUniforms extends LightShadowUniforms {
-    direction: Vector3,
-    color: Color
+export interface IDirectionalLightUniforms extends ILightShadowUniforms {
+    direction: Vector3;
+    color: Color;
 }
 
-export interface SpotLightUniforms extends LightShadowUniforms {
-    position: Vector3,
-    direction: Vector3,
-    color: Color,
-    distance: number,
-    coneCos: number,
-    penumbraCos: number,
-    decay: number
+export interface ISpotLightUniforms extends ILightShadowUniforms {
+    position: Vector3;
+    direction: Vector3;
+    color: Color;
+    distance: number;
+    coneCos: number;
+    penumbraCos: number;
+    decay: number;
 }
 
-export interface PointLightUniforms extends LightShadowUniforms {
-    position: Vector3,
-    color: Color,
-    distance: number,
-    decay: number,
-    shadowCameraNear: number,
-    shadowCameraFar: number
+export interface IPointLightUniforms extends ILightShadowUniforms {
+    position: Vector3;
+    color: Color;
+    distance: number;
+    decay: number;
+    shadowCameraNear: number;
+    shadowCameraFar: number;
 }
 
-export interface HemisphereLightUniforms {
-    direction: Vector3,
-    skyColor: Color,
-    groundColor: Color
+export interface IHemisphereLightUniforms {
+    direction: Vector3;
+    skyColor: Color;
+    groundColor: Color;
 }
 
-export interface RectAreaLightUniforms {
-    position: Vector3,
-    color: Color,
-    halfWidth: Vector3,
-    halfHeight: Vector3
+export interface IRectAreaLightUniforms {
+    position: Vector3;
+    color: Color;
+    halfWidth: Vector3;
+    halfHeight: Vector3;
 }
 
-export type LightUniforms =
-    LightShadowUniforms
-    | SpotLightUniforms
-    | PointLightUniforms
-    | HemisphereLightUniforms
-    | RectAreaLightUniforms;
+export type ILightUniforms =
+    ILightShadowUniforms
+    | ISpotLightUniforms
+    | IPointLightUniforms
+    | IHemisphereLightUniforms
+    | IRectAreaLightUniforms;
 
 class LightUniformsCache {
     protected lights: { [key: string]: any; } = {};
 
-    public get(light: Light): LightUniforms {
+    public get(light: Light): ILightUniforms {
         if (this.lights[light.id] !== undefined) {
             return this.lights[light.id];
         }
-        let uniforms: LightUniforms;
+        let uniforms: ILightUniforms;
         switch (light.type) {
             case "DirectionalLight":
                 uniforms = {
@@ -136,20 +136,20 @@ class LightUniformsCache {
     }
 }
 
-export interface WebGLLightsState {
+export interface IWebGLLightsState {
     hash: string,
     ambient: [number, number, number],
-    directional: Array<DirectionalLightUniforms>,
+    directional: Array<IDirectionalLightUniforms>,
     directionalShadowMap: Array<DirectionalLightShadow>,
     directionalShadowMatrix: Array<Matrix4>,
-    spot: Array<SpotLightUniforms>,
+    spot: Array<ISpotLightUniforms>,
     spotShadowMap: Array<SpotLightShadow>,
     spotShadowMatrix: Array<Matrix4>,
-    rectArea: Array<RectAreaLightUniforms>,
-    point: Array<PointLightUniforms>,
+    rectArea: Array<IRectAreaLightUniforms>,
+    point: Array<IPointLightUniforms>,
     pointShadowMap: Array<LightShadow>,
     pointShadowMatrix: Array<Matrix4>,
-    hemi: Array<HemisphereLightUniforms>
+    hemi: Array<IHemisphereLightUniforms>
 }
 
 export class WebGLLights {
@@ -203,7 +203,7 @@ export class WebGLLights {
                 g += color.g * intensity;
                 b += color.b * intensity;
             } else if (light instanceof DirectionalLight) {
-                const uniforms: DirectionalLightUniforms = cache.get(light) as DirectionalLightUniforms;
+                const uniforms: IDirectionalLightUniforms = cache.get(light) as IDirectionalLightUniforms;
                 uniforms.color.copy(light.color).multiplyScalar(light.intensity);
                 uniforms.direction.setFromMatrixPosition(light.matrixWorld);
                 vector3.setFromMatrixPosition(light.target.matrixWorld);
@@ -221,7 +221,7 @@ export class WebGLLights {
                 state.directional[directionalLength] = uniforms;
                 directionalLength++;
             } else if (light instanceof SpotLight) {
-                const uniforms: SpotLightUniforms = cache.get(light) as SpotLightUniforms;
+                const uniforms: ISpotLightUniforms = cache.get(light) as ISpotLightUniforms;
                 uniforms.position.setFromMatrixPosition(light.matrixWorld);
                 uniforms.position.applyMatrix4(viewMatrix);
                 uniforms.color.copy(color).multiplyScalar(intensity);
@@ -245,7 +245,7 @@ export class WebGLLights {
                 state.spot[spotLength] = uniforms;
                 spotLength++;
             } else if (light instanceof RectAreaLight) {
-                const uniforms: RectAreaLightUniforms = cache.get(light) as RectAreaLightUniforms;
+                const uniforms: IRectAreaLightUniforms = cache.get(light) as IRectAreaLightUniforms;
 
                 // (a) intensity is the total visible light emitted
                 //uniforms.color.copy( color ).multiplyScalar( intensity / ( light.width * light.height * Math.PI ) );
@@ -274,7 +274,7 @@ export class WebGLLights {
                 rectAreaLength++;
 
             } else if (light instanceof PointLight) {
-                const uniforms: PointLightUniforms = cache.get(light) as PointLightUniforms;
+                const uniforms: IPointLightUniforms = cache.get(light) as IPointLightUniforms;
                 uniforms.position.setFromMatrixPosition(light.matrixWorld);
                 uniforms.position.applyMatrix4(viewMatrix);
                 uniforms.color.copy(light.color).multiplyScalar(light.intensity);
@@ -295,7 +295,7 @@ export class WebGLLights {
                 state.point[pointLength] = uniforms;
                 pointLength++;
             } else if (light instanceof HemisphereLight) {
-                const uniforms: HemisphereLightUniforms = cache.get(light) as HemisphereLightUniforms;
+                const uniforms: IHemisphereLightUniforms = cache.get(light) as IHemisphereLightUniforms;
                 uniforms.direction.setFromMatrixPosition(light.matrixWorld);
                 uniforms.direction.transformDirection(viewMatrix);
                 uniforms.direction.normalize();

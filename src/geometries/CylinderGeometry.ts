@@ -4,21 +4,21 @@ import {Vector2} from "../math/Vector2";
 import {Vector3} from "../math/Vector3";
 import {Float32BufferAttribute} from "../core/BufferAttribute";
 
-export interface CylinderGeometryParameters {
-    radiusTop: number,
-    radiusBottom: number,
-    height: number,
-    radialSegments: number,
-    heightSegments: number,
-    openEnded: boolean,
-    thetaStart: number,
-    thetaLength: number
+export interface ICylinderGeometryParameters {
+    radiusTop: number;
+    radiusBottom: number;
+    height: number;
+    radialSegments: number;
+    heightSegments: number;
+    openEnded: boolean;
+    thetaStart: number;
+    thetaLength: number;
 }
 
 export class CylinderGeometry extends Geometry {
 
     public readonly type: string = "CylinderGeometry";
-    public parameters: CylinderGeometryParameters;
+    public parameters: ICylinderGeometryParameters;
 
     constructor(radiusTop?: number, radiusBottom?: number, height?: number, radialSegments?: number, heightSegments?: number, openEnded?: boolean, thetaStart?: number, thetaLength?: number) {
         super();
@@ -40,7 +40,7 @@ export class CylinderGeometry extends Geometry {
 export class CylinderBufferGeometry extends BufferGeometry {
 
     public readonly type: string = "CylinderBufferGeometry";
-    public parameters: CylinderGeometryParameters;
+    public parameters: ICylinderGeometryParameters;
 
     constructor(radiusTop: number = 1, radiusBottom: number = 1, height: number = 1, radialSegments: number = 9, heightSegments: number = 1, openEnded: boolean = false, thetaStart: number = 0, thetaLength: number = Math.PI * 2) {
         super();
@@ -58,14 +58,14 @@ export class CylinderBufferGeometry extends BufferGeometry {
         heightSegments = Math.floor(heightSegments);
 
         // buffers
-        const indices: Array<number> = [];
-        const vertices: Array<number> = [];
-        const normals: Array<number> = [];
-        const uvs: Array<number> = [];
+        const indices: number[] = [];
+        const vertices: number[] = [];
+        const normals: number[] = [];
+        const uvs: number[] = [];
 
         // helper variables
         let index: number = 0;
-        const indexArray: Array<Array<number>> = [];
+        const indexArray: Array<number[]> = [];
         const halfHeight: number = height / 2;
         let groupStart: number = 0;
 
@@ -132,7 +132,7 @@ export class CylinderBufferGeometry extends BufferGeometry {
             const slope: number = (radiusBottom - radiusTop) / height;
             // generate vertices, normals and uvs
             for (let y: number = 0; y <= heightSegments; y++) {
-                const indexRow: Array<number> = [];
+                const indexRow: number[] = [];
                 const v: number = y / heightSegments;
                 // calculate the radius of the current row
                 const radius: number = v * (radiusBottom - radiusTop) + radiusTop;

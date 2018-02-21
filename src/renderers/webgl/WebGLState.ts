@@ -349,7 +349,7 @@ export class WebGLState {
     public currentBlendSrcAlpha: number = null;
     public currentBlendDstAlpha: number = null;
 
-    public compressedTextureFormats: Array<number> = null;
+    public compressedTextureFormats: number[] = null;
 
     public currentProgram: WebGLProgram = null;
 
@@ -680,14 +680,14 @@ export class WebGLState {
         return this;
     }
 
-    public getCompressedTextureFormats(): Array<number> {
+    public getCompressedTextureFormats(): number[] {
         if (this.compressedTextureFormats === null) {
             this.compressedTextureFormats = [];
             if (this.extensions.get("WEBGL_compressed_texture_pvrtc") ||
                 this.extensions.get("WEBGL_compressed_texture_s3tc") ||
                 this.extensions.get("WEBGL_compressed_texture_etc1") ||
                 this.extensions.get("WEBGL_compressed_texture_astc")) {
-                const formats: Array<number> = this.context.getParameter(this.context.COMPRESSED_TEXTURE_FORMATS);
+                const formats: number[] = this.context.getParameter(this.context.COMPRESSED_TEXTURE_FORMATS);
                 for (let i: number = 0; i < formats.length; i++) {
                     this.compressedTextureFormats.push(formats[i]);
                 }

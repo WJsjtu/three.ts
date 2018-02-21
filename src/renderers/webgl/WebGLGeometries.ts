@@ -1,11 +1,11 @@
 import {WebGLAttributes} from "./WebGLAttributes";
-import {InfoMemory} from "./WebGLRenderer";
+import {IInfoMemory} from "./WebGLRenderer";
 import {BufferGeometry} from "../../core/BufferGeometry";
 import {Geometry} from "../../core/Geometry";
 import {Object3D} from "../../core/Object3D";
 import {BufferAttribute, TypedArray, Uint16BufferAttribute, Uint32BufferAttribute} from "../../core/BufferAttribute";
 import {arrayMax} from "../../utils";
-import {EventObject} from "../../core/EventDispatcher";
+import {IEventObject} from "../../core/EventDispatcher";
 
 
 export class WebGLGeometries {
@@ -14,15 +14,15 @@ export class WebGLGeometries {
     protected wireframeAttributes: { [key: number]: BufferAttribute } = {};
     protected context: WebGLRenderingContext = null;
     protected attributes: WebGLAttributes = null;
-    protected infoMemory: InfoMemory = null;
+    protected infoMemory: IInfoMemory = null;
 
-    constructor(context: WebGLRenderingContext, attributes: WebGLAttributes, infoMemory: InfoMemory) {
+    constructor(context: WebGLRenderingContext, attributes: WebGLAttributes, infoMemory: IInfoMemory) {
         this.context = context;
         this.attributes = attributes;
         this.infoMemory = infoMemory;
     }
 
-    protected onGeometryDispose(event: EventObject): void {
+    protected onGeometryDispose(event: IEventObject): void {
         const geometry: Geometry = event.target as Geometry;
         const bufferGeometry: BufferGeometry = this.geometries[geometry.id];
         if (bufferGeometry.index !== null) {
@@ -89,7 +89,7 @@ export class WebGLGeometries {
     public getWireframeAttribute(geometry: BufferGeometry): BufferAttribute {
         let attribute: BufferAttribute = this.wireframeAttributes[geometry.id];
         if (attribute) return attribute;
-        const indices: Array<number> = [];
+        const indices: number[] = [];
         if (geometry.index !== null) {
             const array: TypedArray = geometry.index.array;
             for (let i: number = 0, l: number = array.length; i < l; i += 3) {

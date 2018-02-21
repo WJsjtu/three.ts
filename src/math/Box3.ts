@@ -19,7 +19,7 @@ export class Box3 {
         return this;
     }
 
-    public setFromArray(array: Array<number>): this {
+    public setFromArray(array: number[]): this {
         let minX: number = +Infinity, minY: number = +Infinity, minZ: number = +Infinity;
         let maxX: number = -Infinity, maxY: number = -Infinity, maxZ: number = -Infinity;
         for (let i: number = 0, l: number = array.length; i < l; i += 3) {
@@ -36,7 +36,7 @@ export class Box3 {
         return this;
     }
 
-    public setFromPoints(points: Array<Vector3>): this {
+    public setFromPoints(points: Vector3[]): this {
         this.makeEmpty();
         for (let i: number = 0, il: number = points.length; i < il; i++) {
             this.expandByPoint(points[i]);
@@ -245,7 +245,7 @@ export class Box3 {
     public applyMatrix4(matrix: Matrix4): this {
         // transform of empty box is an empty box.
         if (this.isEmpty()) return this;
-        const points: Array<Vector3> = [
+        const points: Vector3[] = [
             new Vector3(),
             new Vector3(),
             new Vector3(),

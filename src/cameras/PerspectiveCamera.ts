@@ -1,4 +1,4 @@
-import {Camera, FrustumView} from "./Camera";
+import {Camera, IFrustumView} from "./Camera";
 import {MathUtil} from "../math/Math";
 
 export class PerspectiveCamera extends Camera {
@@ -8,7 +8,7 @@ export class PerspectiveCamera extends Camera {
     protected _near: number = 0.1;
     protected _far: number = 2000;
     protected _aspect: number = 1;
-    protected _view: FrustumView = null;
+    protected _view: IFrustumView = null;
 
     /**
      * width of the film (default in millimeters)
@@ -69,7 +69,7 @@ export class PerspectiveCamera extends Camera {
         this.updateProjectionMatrix();
     }
 
-    get view(): FrustumView {
+    get view(): IFrustumView {
         return this._view;
     }
 
@@ -203,7 +203,7 @@ export class PerspectiveCamera extends Camera {
         let height: number = 2 * top;
         let width: number = this.aspect * height;
         let left: number = -0.5 * width;
-        const view: FrustumView = this.view;
+        const view: IFrustumView = this.view;
         if (this.view !== null && this.view.enabled) {
             const fullWidth: number = view.fullWidth, fullHeight: number = view.fullHeight;
             left += view.offsetX * width / fullWidth;

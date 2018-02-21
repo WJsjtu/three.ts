@@ -1,4 +1,4 @@
-export interface InfoMemory {
-    geometries: 0,
-    textures: 0
+export interface IInfoMemory {
+    geometries: 0;
+    textures: 0;
 }

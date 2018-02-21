@@ -7,7 +7,7 @@ import {Camera} from "./cameras/Camera";
 import {Vector2} from "./math/Vector2";
 import {Vector4} from "./math/Vector4";
 
-export function arrayMin(array: Array<number>): number {
+export function arrayMin(array: number[]): number {
     if (array.length === 0) return Infinity;
     let min: number = array[0];
     for (let i: number = 1, l: number = array.length; i < l; ++i) {
@@ -16,7 +16,7 @@ export function arrayMin(array: Array<number>): number {
     return min;
 }
 
-export function arrayMax(array: Array<number>): number {
+export function arrayMax(array: number[]): number {
     if (array.length === 0) return -Infinity;
     let max: number = array[0];
     for (let i: number = 1, l: number = array.length; i < l; ++i) {

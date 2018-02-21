@@ -3,7 +3,7 @@ import {
     BufferAttribute, Uint32BufferAttribute, Uint16BufferAttribute, Float32BufferAttribute,
     TypedArray
 } from "./BufferAttribute";
-import {DirectGeometry, Group} from "./DirectGeometry";
+import {DirectGeometry, IGroup} from "./DirectGeometry";
 import {Box3} from "../math/Box3";
 import {Sphere} from "../math/Sphere";
 import {applyMatrixToBufferAttribute, arrayMax, setBoxFromBufferAttribute} from "../utils";
@@ -14,9 +14,9 @@ import {Object3D} from "./Object3D";
 import {Geometry} from "./Geometry";
 import {EventDispatcher} from "./EventDispatcher";
 
-export interface DrawRange {
-    start: number,
-    count: number
+export interface IDrawRange {
+    start: number;
+    count: number;
 }
 
 let bufferGeometryId: number = 1;
@@ -31,14 +31,14 @@ export class BufferGeometry extends EventDispatcher {
 
     public morphAttributes: { [key: string]: Array<BufferAttribute>; } = {};
 
-    public groups: Array<Group> = [];
+    public groups: Array<IGroup> = [];
 
     public boundingBox: Box3 = null;
     public boundingSphere: Sphere = null;
 
-    public drawRange: DrawRange = {start: 0, count: Infinity};
+    public drawRange: IDrawRange = {start: 0, count: Infinity};
 
-    public setIndex(index: Array<number> | BufferAttribute): this {
+    public setIndex(index: number[] | BufferAttribute): this {
         if (Array.isArray(index)) {
             this.index = new (arrayMax(index) > 65535 ? Uint32BufferAttribute : Uint16BufferAttribute)(index, 1);
         } else {
@@ -145,8 +145,8 @@ export class BufferGeometry extends EventDispatcher {
         return this;
     }
 
-    public setFromPoints(points: Array<Vector3>): this {
-        const position: Array<number> = [];
+    public setFromPoints(points: Vector3[]): this {
+        const position: number[] = [];
         for (let i: number = 0, l: number = points.length; i < l; i++) {
             const point: Vector3 = points[i];
             position.push(point.x, point.y, point.z || 0);
@@ -200,9 +200,9 @@ export class BufferGeometry extends EventDispatcher {
         // morphs
         for (let name in geometry.morphTargets) {
             const array: Array<Float32BufferAttribute> = [];
-            const morphTargets: Array<Array<Vector3>> = geometry.morphTargets[name];
+            const morphTargets: Array<Vector3[]> = geometry.morphTargets[name];
             for (let i: number = 0, l: number = morphTargets.length; i < l; i++) {
-                const morphTarget: Array<Vector3> = morphTargets[i];
+                const morphTarget: Vector3[] = morphTargets[i];
                 const attribute: Float32BufferAttribute = new Float32BufferAttribute(new Array(morphTarget.length * 3), 3);
                 array.push(attribute.copyVector3sArray(morphTarget));
             }
@@ -275,7 +275,7 @@ export class BufferGeometry extends EventDispatcher {
     public computeVertexNormals(): void {
         const index: BufferAttribute = this.index;
         const attributes: { [key: string]: BufferAttribute; } = this.attributes;
-        const groups: Array<Group> = this.groups;
+        const groups: Array<IGroup> = this.groups;
         if (attributes.position) {
             const positions: TypedArray = attributes.position.array;
             if (attributes.normal === undefined) {
@@ -299,7 +299,7 @@ export class BufferGeometry extends EventDispatcher {
                     this.addGroup(0, indices.length);
                 }
                 for (let j: number = 0, jl: number = groups.length; j < jl; ++j) {
-                    const group: Group = groups[j];
+                    const group: IGroup = groups[j];
                     const start: number = group.start;
                     const count: number = group.count;
                     for (let i: number = start, il: number = start + count; i < il; i += 3) {
@@ -421,9 +421,9 @@ export class BufferGeometry extends EventDispatcher {
             this.morphAttributes[name] = array;
         }
         // groups
-        const groups: Array<Group> = source.groups;
+        const groups: Array<IGroup> = source.groups;
         for (let i: number = 0, l: number = groups.length; i < l; i++) {
-            const group: Group = groups[i];
+            const group: IGroup = groups[i];
             this.addGroup(group.start, group.count, group.materialIndex);
         }
         // bounding box

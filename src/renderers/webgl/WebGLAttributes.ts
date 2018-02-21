@@ -1,13 +1,13 @@
-import {BufferAttribute, BufferRange, TypedArray} from "../../core/BufferAttribute";
+import {BufferAttribute, IBufferRange, TypedArray} from "../../core/BufferAttribute";
 import {InstancedBufferAttribute} from "../../core/InstancedBufferAttribute";
 import {InterleavedBufferAttribute} from "../../core/InterleavedBufferAttribute";
 import {InstancedInterleavedBufferAttribute} from "../../core/InstancedInterleavedBufferAttribute";
 
-export interface WebGLBufferWrapper {
-    buffer: WebGLBuffer,
-    type: number,
-    bytesPerElement: number,
-    version: number
+export interface IWebGLBufferWrapper {
+    buffer: WebGLBuffer;
+    type: number;
+    bytesPerElement: number;
+    version: number;
 }
 
 export type TypedBufferAttribute =
@@ -20,13 +20,13 @@ export class WebGLAttributes {
 
     protected context: WebGLRenderingContext = null;
 
-    protected buffers: { [key: string]: WebGLBufferWrapper; } = {};
+    protected buffers: { [key: string]: IWebGLBufferWrapper; } = {};
 
     constructor(context: WebGLRenderingContext) {
         this.context = context;
     }
 
-    protected createBuffer(attribute: TypedBufferAttribute, bufferType: number): WebGLBufferWrapper {
+    protected createBuffer(attribute: TypedBufferAttribute, bufferType: number): IWebGLBufferWrapper {
         const gl: WebGLRenderingContext = this.context;
         const array: TypedArray = attribute.array;
         const usage: number = attribute.dynamic ? gl.DYNAMIC_DRAW : gl.STATIC_DRAW;
@@ -66,7 +66,7 @@ export class WebGLAttributes {
     protected updateBuffer(buffer, attribute, bufferType): this {
         const gl: WebGLRenderingContext = this.context;
         const array: TypedArray = attribute.array;
-        const updateRange: BufferRange = attribute.updateRange;
+        const updateRange: IBufferRange = attribute.updateRange;
         gl.bindBuffer(bufferType, buffer);
         if (attribute.dynamic === false) {
             gl.bufferData(bufferType, array, gl.STATIC_DRAW);
@@ -86,7 +86,7 @@ export class WebGLAttributes {
         return this;
     }
 
-    public get(attribute: TypedBufferAttribute): WebGLBufferWrapper {
+    public get(attribute: TypedBufferAttribute): IWebGLBufferWrapper {
         return this.buffers[attribute.uuid];
     }
 

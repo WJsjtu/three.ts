@@ -20,32 +20,32 @@ export class Vector4 {
         return this._x;
     }
 
+    set x(x: number) {
+        this._x = x;
+    }
+
     get y(): number {
         return this._y;
+    }
+
+    set y(y: number) {
+        this._y = y;
     }
 
     get z(): number {
         return this._z;
     }
 
+    set z(z: number) {
+        this._z = z;
+    }
+
     get w(): number {
         return this._w;
     }
 
-    set x(_x: number) {
-        this._x = _x;
-    }
-
-    set y(_y: number) {
-        this._y = _y;
-    }
-
-    set z(_z: number) {
-        this._z = _z;
-    }
-
-    set w(_w: number) {
-        this._w = _w;
+    set w(w: number) {
+        this._w = w;
     }
 
     public set(x: number, y: number, z: number, w: number): this {
@@ -130,7 +130,7 @@ export class Vector4 {
 
     public applyMatrix4(m: Matrix4): this {
         const x: number = this.x, y: number = this.y, z: number = this.z, w: number = this.w;
-        const e: Array<number> = m.toArray();
+        const e: number[] = m.toArray();
         return this.set(
             e[0] * x + e[4] * y + e[8] * z + e[12] * w,
             e[1] * x + e[5] * y + e[9] * z + e[13] * w,
@@ -164,7 +164,7 @@ export class Vector4 {
         let angle: number, x: number, y: number, z: number;	// variables for result
         const epsilon: number = 0.01,		// margin to allow for rounding errors
             epsilon2: number = 0.1,		// margin to distinguish between 0 and 180 degrees
-            te: Array<number> = m.toArray(),
+            te: number[] = m.toArray(),
             m11 = te[0], m12 = te[4], m13 = te[8],
             m21 = te[1], m22 = te[5], m23 = te[9],
             m31 = te[2], m32 = te[6], m33 = te[10];
@@ -318,7 +318,7 @@ export class Vector4 {
         return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z) && (v.w === this.w));
     }
 
-    public fromArray(array: Array<number>, offset: number = 0): this {
+    public fromArray(array: number[], offset: number = 0): this {
         return this.set(
             array[offset],
             array[offset + 1],
@@ -327,7 +327,7 @@ export class Vector4 {
         );
     }
 
-    public toArray(array: Array<number> = [], offset: number = 0): Array<number> {
+    public toArray(array: number[] = [], offset: number = 0): number[] {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         array[offset + 2] = this.z;

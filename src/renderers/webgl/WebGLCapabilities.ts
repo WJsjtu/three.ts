@@ -1,8 +1,8 @@
 import {WebGLExtensions} from "./WebGLExtensions";
 
-export interface WebGLCapabilitiesParameters {
-    precision?: string
-    logarithmicDepthBuffer?: boolean
+export interface IWebGLCapabilitiesParameters {
+    precision?: string;
+    logarithmicDepthBuffer?: boolean;
 }
 
 export class WebGLCapabilities {

@@ -12,12 +12,12 @@ export class Vector2 {
         return this._y;
     }
 
-    set x(_x: number) {
-        this._x = _x;
+    set x(x: number) {
+        this._x = x;
     }
 
-    set y(_y: number) {
-        this._y = _y;
+    set y(y: number) {
+        this._y = y;
     }
 
     get width(): number {
@@ -113,7 +113,7 @@ export class Vector2 {
 
     public applyMatrix3(m: Matrix3): this {
         const x: number = this.x, y: number = this.y;
-        const e: Array<number> = m.toArray();
+        const e: number[] = m.toArray();
         return this.set(
             e[0] * x + e[3] * y + e[6],
             e[1] * x + e[4] * y + e[7]
@@ -173,14 +173,14 @@ export class Vector2 {
         return (v.x === this.x) && (v.y === this.y);
     }
 
-    public fromArray(array: Array<number>, offset: number = 0): this {
+    public fromArray(array: number[], offset: number = 0): this {
         return this.set(
             array[offset],
             array[offset + 1]
         );
     }
 
-    public toArray(array: Array<number> = [], offset: number = 0): Array<number> {
+    public toArray(array: number[] = [], offset: number = 0): number[] {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         return array;

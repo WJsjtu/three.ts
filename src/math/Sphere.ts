@@ -19,7 +19,7 @@ export class Sphere {
         return this;
     }
 
-    public setFromPoints(points: Array<Vector3>, optionalCenter?: Vector3): this {
+    public setFromPoints(points: Vector3[], optionalCenter?: Vector3): this {
         if (optionalCenter !== undefined) {
             this.center.copy(optionalCenter);
         } else {

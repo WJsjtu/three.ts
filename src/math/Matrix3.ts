@@ -2,14 +2,14 @@ import {Matrix4} from "./Matrix4";
 
 export class Matrix3 {
 
-    protected elements: Array<number> = [
+    protected elements: number[] = [
         1, 0, 0,
         0, 1, 0,
         0, 0, 1
     ];
 
     public set(n11: number, n12: number, n13: number, n21: number, n22: number, n23: number, n31: number, n32: number, n33: number): this {
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
         te[0] = n11;
         te[1] = n21;
         te[2] = n31;
@@ -36,7 +36,7 @@ export class Matrix3 {
     }
 
     public setFromMatrix4(mat4: Matrix4): this {
-        const me: Array<number> = mat4.toArray();
+        const me: number[] = mat4.toArray();
         return this.set(
             me[0], me[4], me[8],
             me[1], me[5], me[9],
@@ -53,9 +53,9 @@ export class Matrix3 {
     }
 
     public multiplyMatrices(a: Matrix3, b: Matrix3): this {
-        const ae: Array<number> = a.toArray();
-        const be: Array<number> = b.toArray();
-        const te: Array<number> = this.elements;
+        const ae: number[] = a.toArray();
+        const be: number[] = b.toArray();
+        const te: number[] = this.elements;
 
         const a11: number = ae[0], a12: number = ae[3], a13: number = ae[6];
         const a21: number = ae[1], a22: number = ae[4], a23: number = ae[7];
@@ -81,7 +81,7 @@ export class Matrix3 {
     }
 
     public multiplyScalar(s: number): this {
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
         te[0] *= s;
         te[3] *= s;
         te[6] *= s;
@@ -95,7 +95,7 @@ export class Matrix3 {
     }
 
     public determinant(): number {
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
         const a: number = te[0], b: number = te[1], c: number = te[2],
             d: number = te[3], e: number = te[4], f: number = te[5],
             g: number = te[6], h: number = te[7], i: number = te[8];
@@ -104,7 +104,7 @@ export class Matrix3 {
     }
 
     public getInverse(matrix: Matrix3, throwOnDegenerate: boolean = false): this {
-        const me: Array<number> = matrix.toArray(), te: Array<number> = this.elements,
+        const me: number[] = matrix.toArray(), te: number[] = this.elements,
 
             n11: number = me[0], n21: number = me[1], n31: number = me[2],
             n12: number = me[3], n22: number = me[4], n32: number = me[5],
@@ -146,7 +146,7 @@ export class Matrix3 {
 
     public transpose(): this {
         let tmp;
-        const m: Array<number> = this.elements;
+        const m: number[] = this.elements;
 
         tmp = m[1];
         m[1] = m[3];
@@ -175,7 +175,7 @@ export class Matrix3 {
     }
 
     public scale(sx: number, sy: number): this {
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
         te[0] *= sx;
         te[3] *= sx;
         te[6] *= sx;
@@ -190,7 +190,7 @@ export class Matrix3 {
         const c: number = Math.cos(theta);
         const s: number = Math.sin(theta);
 
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
 
         const a11: number = te[0], a12: number = te[3], a13: number = te[6];
         const a21: number = te[1], a22: number = te[4], a23: number = te[7];
@@ -208,7 +208,7 @@ export class Matrix3 {
     }
 
     public translate(tx: number, ty: number): this {
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
         te[0] += tx * te[2];
         te[3] += tx * te[5];
         te[6] += tx * te[8];
@@ -219,23 +219,23 @@ export class Matrix3 {
     }
 
     public equals(matrix: Matrix3): boolean {
-        const te: Array<number> = this.elements;
-        const me: Array<number> = matrix.toArray();
+        const te: number[] = this.elements;
+        const me: number[] = matrix.toArray();
         for (let i: number = 0; i < 9; i++) {
             if (te[i] !== me[i]) return false;
         }
         return true;
     }
 
-    public fromArray(array: Array<number>, offset: number = 0): this {
+    public fromArray(array: number[], offset: number = 0): this {
         for (let i: number = 0; i < 9; i++) {
             this.elements[i] = array[i + offset];
         }
         return this;
     }
 
-    public toArray(array: Array<number> = [], offset: number = 0): Array<number> {
-        const te: Array<number> = this.elements;
+    public toArray(array: number[] = [], offset: number = 0): number[] {
+        const te: number[] = this.elements;
 
         array[offset] = te[0];
         array[offset + 1] = te[1];

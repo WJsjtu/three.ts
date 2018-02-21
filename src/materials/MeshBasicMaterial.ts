@@ -1,26 +1,26 @@
-import {Material, MaterialParameters} from "./Material";
+import {Material, IMaterialParameters} from "./Material";
 import {Color} from "../math/Color";
 import {MultiplyOperation} from "../constants";
 
-export interface MeshBasicMaterialParameter extends MaterialParameters {
-    color?: Color | number | string,
-    map?: any,
-    lightMap?: any,
-    lightMapIntensity?: number,
-    aoMap?: any,
-    aoMapIntensity?: number,
-    specularMap?: any,
-    alphaMap?: any,
-    envMap?: any,
-    combine?: number,
-    reflectivity?: number,
-    refractionRatio?: number,
-    wireframe?: boolean,
-    wireframeLinewidth?: number,
-    wireframeLinecap?: string,
-    wireframeLinejoin?: string,
-    skinning?: boolean,
-    morphTargets?: boolean
+export interface IMeshBasicMaterialParameter extends IMaterialParameters {
+    color?: Color | number | string;
+    map?: any;
+    lightMap?: any;
+    lightMapIntensity?: number;
+    aoMap?: any;
+    aoMapIntensity?: number;
+    specularMap?: any;
+    alphaMap?: any;
+    envMap?: any;
+    combine?: number;
+    reflectivity?: number;
+    refractionRatio?: number;
+    wireframe?: boolean;
+    wireframeLinewidth?: number;
+    wireframeLinecap?: string;
+    wireframeLinejoin?: string;
+    skinning?: boolean;
+    morphTargets?: boolean;
 }
 
 export class MeshBasicMaterial extends Material {
@@ -53,7 +53,7 @@ export class MeshBasicMaterial extends Material {
 
     public lights: boolean = false;
 
-    constructor(parameters: MeshBasicMaterialParameter) {
+    constructor(parameters: IMeshBasicMaterialParameter) {
         super();
         this.setValues(parameters);
     }

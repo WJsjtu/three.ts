@@ -3,19 +3,19 @@ import {BufferGeometry} from "../core/BufferGeometry";
 import {Vector3} from "../math/Vector3";
 import {Float32BufferAttribute} from "../core/BufferAttribute";
 
-export interface BoxGeometryParameters {
-    width: number,
-    height: number,
-    depth: number,
-    widthSegments: number,
-    heightSegments: number,
-    depthSegments: number
+export interface IBoxGeometryParameters {
+    width: number;
+    height: number;
+    depth: number;
+    widthSegments: number;
+    heightSegments: number;
+    depthSegments: number;
 }
 
 export class BoxGeometry extends Geometry {
 
     public readonly type: string = "BoxGeometry";
-    public parameters: BoxGeometryParameters;
+    public parameters: IBoxGeometryParameters;
 
     constructor(width?: number, height?: number, depth?: number, widthSegments?: number, heightSegments?: number, depthSegments?: number) {
         super();
@@ -33,7 +33,7 @@ export class BoxGeometry extends Geometry {
 export class BoxBufferGeometry extends BufferGeometry {
 
     public readonly type: string = "BoxBufferGeometry";
-    public parameters: BoxGeometryParameters;
+    public parameters: IBoxGeometryParameters;
 
     constructor(width: number = 1, height: number = 1, depth: number = 1, widthSegments: number = 1, heightSegments: number = 1, depthSegments: number = 1) {
         super();
@@ -52,31 +52,30 @@ export class BoxBufferGeometry extends BufferGeometry {
 
         // buffers
 
-        const indices: Array<number> = [];
-        const vertices: Array<number> = [];
-        const normals: Array<number> = [];
-        const uvs: Array<number> = [];
+        const indices: number[] = [];
+        const vertices: number[] = [];
+        const normals: number[] = [];
+        const uvs: number[] = [];
 
         // helper variables
 
         let numberOfVertices: number = 0;
         let groupStart: number = 0;
 
-        const buildPlane = (u: string, v: string, w: string, uDir: number, vDir: number, width: number, height: number, depth: number, gridX: number, gridY: number, materialIndex: number): void => {
+        const buildPlane = (u: string, v: string, w: string, uDir: number, vDir: number, width2: number, height2: number, depth2: number, gridX: number, gridY: number, materialIndex: number): void => {
 
-            const segmentWidth: number = width / gridX;
-            const segmentHeight: number = height / gridY;
+            const segmentWidth: number = width2 / gridX;
+            const segmentHeight: number = height2 / gridY;
 
-            const widthHalf: number = width / 2;
-            const heightHalf: number = height / 2;
-            const depthHalf: number = depth / 2;
+            const widthHalf: number = width2 / 2;
+            const heightHalf: number = height2 / 2;
+            const depthHalf: number = depth2 / 2;
 
             const gridX1: number = gridX + 1;
             const gridY1: number = gridY + 1;
 
             let vertexCounter: number = 0;
             let groupCount: number = 0;
-
 
             // generate vertices, normals and uvs
 
@@ -96,7 +95,7 @@ export class BoxBufferGeometry extends BufferGeometry {
                     // set values to correct vector component
                     vector[u] = 0;
                     vector[v] = 0;
-                    vector[w] = depth > 0 ? 1 : -1;
+                    vector[w] = depth2 > 0 ? 1 : -1;
                     // now apply vector to normal buffer
                     normals.push(vector.x, vector.y, vector.z);
                     // uvs

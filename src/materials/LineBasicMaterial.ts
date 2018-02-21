@@ -1,11 +1,11 @@
-import {Material, MaterialParameters} from "./Material";
+import {Material, IMaterialParameters} from "./Material";
 import {Color} from "../math/Color";
 
-export interface LineBasicMaterialParameters extends MaterialParameters {
-    color?: Color | number | string,
-    linewidth?: number,
-    linecap?: string
-    linejoin?: string
+export interface ILineBasicMaterialParameters extends IMaterialParameters {
+    color?: Color | number | string;
+    linewidth?: number;
+    linecap?: string;
+    linejoin?: string;
 }
 
 export class LineBasicMaterial extends Material {
@@ -17,7 +17,7 @@ export class LineBasicMaterial extends Material {
     public linejoin: string = "round";
     public lights: boolean = false;
 
-    constructor(parameters: LineBasicMaterialParameters) {
+    constructor(parameters: ILineBasicMaterialParameters) {
         super();
         this.setValues(parameters);
     }

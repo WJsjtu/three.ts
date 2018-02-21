@@ -1,4 +1,6 @@
-export interface EventObject { target?: EventDispatcher, type?: string
+export interface IEventObject {
+    target?: EventDispatcher;
+    type?: string;
 }
 
 export class EventDispatcher {
@@ -32,7 +34,7 @@ export class EventDispatcher {
         }
     }
 
-    public dispatchEvent(event: EventObject = {}) {
+    public dispatchEvent(event: IEventObject = {}) {
         if (this._listeners === undefined) return;
         const listeners: { [key: string]: Array<(args: any) => any>; } = this._listeners;
         const listenerArray: Array<(args: any) => any> = listeners[event.type];

@@ -1,11 +1,11 @@
 import {MathUtil} from "../math/Math";
 import {
-    NoColors,
+    AddEquation,
     FrontSide,
     FlatShading,
-    NormalBlending,
     LessEqualDepth,
-    AddEquation,
+    NoColors,
+    NormalBlending,
     OneMinusSrcAlphaFactor,
     SrcAlphaFactor
 } from "../constants";
@@ -16,41 +16,41 @@ import {Plane} from "../math/Plane";
 
 let materialId: number = 0;
 
-export interface MaterialParameters {
-    name?: string,
-    fog?: boolean,
-    lights?: boolean,
-    blending?: number,
-    side?: number,
-    flatShading?: boolean,
-    vertexColors?: number,
-    opacity?: number,
-    transparent?: boolean,
-    blendSrc?: number,
-    blendDst?: number,
-    blendEquation?: number,
-    blendSrcAlpha?: number ,
-    blendDstAlpha?: number,
-    blendEquationAlpha?: number,
-    depthFunc?: number,
-    depthTest?: boolean ,
-    depthWrite?: boolean,
-    clippingPlanes?: Array<Plane>,
-    clipIntersection?: boolean,
-    clipShadows?: boolean,
-    shadowSide?: number,
-    colorWrite?: boolean,
-    precision?: string,
-    polygonOffset?: boolean,
-    polygonOffsetFactor?: number ,
-    polygonOffsetUnits?: number,
-    dithering?: boolean,
-    alphaTest?: number,
-    premultipliedAlpha?: boolean,
-    overdraw?: number,
-    visible?: boolean,
-    userData?: any,
-    needsUpdate?: boolean
+export interface IMaterialParameters {
+    name?: string;
+    fog?: boolean;
+    lights?: boolean;
+    blending?: number;
+    side?: number;
+    flatShading?: boolean;
+    vertexColors?: number;
+    opacity?: number;
+    transparent?: boolean;
+    blendSrc?: number;
+    blendDst?: number;
+    blendEquation?: number;
+    blendSrcAlpha?: number ;
+    blendDstAlpha?: number;
+    blendEquationAlpha?: number;
+    depthFunc?: number;
+    depthTest?: boolean ;
+    depthWrite?: boolean;
+    clippingPlanes?: Plane[];
+    clipIntersection?: boolean;
+    clipShadows?: boolean;
+    shadowSide?: number;
+    colorWrite?: boolean;
+    precision?: string;
+    polygonOffset?: boolean;
+    polygonOffsetFactor?: number;
+    polygonOffsetUnits?: number;
+    dithering?: boolean;
+    alphaTest?: number;
+    premultipliedAlpha?: boolean;
+    overdraw?: number;
+    visible?: boolean;
+    userData?: any;
+    needsUpdate?: boolean;
 }
 
 export class Material extends EventDispatcher {
@@ -124,7 +124,7 @@ export class Material extends EventDispatcher {
 
     public needsUpdate: boolean = true;
 
-    public setValues(values: MaterialParameters): this {
+    public setValues(values: IMaterialParameters): this {
         if (values === undefined) return;
         for (let key in values) {
             if (!values.hasOwnProperty(key)) continue;

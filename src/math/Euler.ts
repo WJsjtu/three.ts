@@ -86,7 +86,7 @@ export class Euler {
      */
     public setFromRotationMatrix(m: Matrix4, order: EulerOrder = this.order): this {
         const clamp: (value: number, min: number, max: number) => number = MathUtil.clamp;
-        const te: Array<number> = m.toArray();
+        const te: number[] = m.toArray();
         const m11: number = te[0], m12: number = te[4], m13: number = te[8];
         const m21: number = te[1], m22: number = te[5], m23: number = te[9];
         const m31: number = te[2], m32: number = te[6], m33: number = te[10];

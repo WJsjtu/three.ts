@@ -36,12 +36,12 @@ export class Camera extends Object3D {
 }
 
 
-export interface FrustumView {
-    fullWidth: number,
-    fullHeight: number,
-    offsetX: number,
-    offsetY: number,
-    width: number,
-    height: number,
-    enabled: boolean
+export interface IFrustumView {
+    fullWidth: number;
+    fullHeight: number;
+    offsetX: number;
+    offsetY: number;
+    width: number;
+    height: number;
+    enabled: boolean;
 }

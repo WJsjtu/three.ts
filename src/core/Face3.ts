@@ -6,12 +6,12 @@ export class Face3 {
     public c: number = 0;
 
     public normal: Vector3 = new Vector3();
-    public vertexNormals: Array<Vector3> = [];
+    public vertexNormals: Vector3[] = [];
     public color: Color = new Color();
     public vertexColors: Array<Color> = [];
     public materialIndex: number = 0;
 
-    constructor(a: number = 0, b: number = 0, c: number = 0, normal: Vector3 | Array<Vector3> = new Vector3(), color: Color | Array<Color> = new Color(), materialIndex: number = 0) {
+    constructor(a: number = 0, b: number = 0, c: number = 0, normal: Vector3 | Vector3[] = new Vector3(), color: Color | Array<Color> = new Color(), materialIndex: number = 0) {
         this.a = a;
         this.b = b;
         this.c = c;

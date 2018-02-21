@@ -29,16 +29,16 @@ export class Vector3 {
         return this._z;
     }
 
-    set x(_x: number) {
-        this._x = _x;
+    set x(x: number) {
+        this._x = x;
     }
 
-    set y(_y: number) {
-        this._y = _y;
+    set y(y: number) {
+        this._y = y;
     }
 
-    set z(_z: number) {
-        this._z = _z;
+    set z(z: number) {
+        this._z = z;
     }
 
     public set(x: number, y: number, z: number): this {
@@ -121,7 +121,7 @@ export class Vector3 {
 
     public applyMatrix3(m: Matrix3): this {
         const x: number = this.x, y: number = this.y, z: number = this.z;
-        const e: Array<number> = m.toArray();
+        const e: number[] = m.toArray();
         return this.set(
             e[0] * x + e[3] * y + e[6] * z,
             e[1] * x + e[4] * y + e[7] * z,
@@ -131,7 +131,7 @@ export class Vector3 {
 
     public applyMatrix4(matrix: Matrix4): this {
         const x: number = this.x, y: number = this.y, z: number = this.z;
-        const e: Array<number> = matrix.toArray();
+        const e: number[] = matrix.toArray();
         const w: number = 1 / ( e[3] * x + e[7] * y + e[11] * z + e[15] );
         return this.set(
             (e[0] * x + e[4] * y + e[8] * z + e[12]) * w,
@@ -161,7 +161,7 @@ export class Vector3 {
 
     public transformDirection(mat4: Matrix4): this {
         const x: number = this.x, y: number = this.y, z: number = this.z;
-        const e: Array<number> = mat4.toArray();
+        const e: number[] = mat4.toArray();
         return this.set(
             e[0] * x + e[4] * y + e[8] * z,
             e[1] * x + e[5] * y + e[9] * z,
@@ -287,7 +287,7 @@ export class Vector3 {
     }
 
     public setFromMatrixPosition(m: Matrix4): this {
-    	var e: Array<number> = m.toArray();
+    	const e: number[] = m.toArray();
     	return this.set(e[ 12 ], e[ 13 ], e[ 14 ]);
     }
 
@@ -299,7 +299,7 @@ export class Vector3 {
         );
     }
 
-    public toArray(array: Array<number> = [], offset: number = 0): Array<number> {
+    public toArray(array: number[] = [], offset: number = 0): number[] {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         array[offset + 2] = this.z;

@@ -7,7 +7,7 @@ import {Quaternion} from "./Quaternion"
  */
 export class Matrix4 {
 
-    protected elements: Array<number> = [
+    protected elements: number[] = [
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
@@ -50,7 +50,7 @@ export class Matrix4 {
     }
 
     public copyPosition(m: Matrix4): this {
-        const te: Array<number> = this.elements, me: Array<number> = m.toArray();
+        const te: number[] = this.elements, me: number[] = m.toArray();
         te[12] = me[12];
         te[13] = me[13];
         te[14] = me[14];
@@ -75,8 +75,8 @@ export class Matrix4 {
 
     public extractRotation(mat4: Matrix4): this {
         const vec: Vector3 = new Vector3();
-        const te: Array<number> = this.elements;
-        const me: Array<number> = mat4.elements;
+        const te: number[] = this.elements;
+        const me: number[] = mat4.elements;
         const scaleX: number = 1 / vec.fromArray(mat4.toArray(), 0).length();
         const scaleY: number = 1 / vec.fromArray(mat4.toArray(), 4).length();
         const scaleZ: number = 1 / vec.fromArray(mat4.toArray(), 8).length();
@@ -93,7 +93,7 @@ export class Matrix4 {
     }
 
     public makeRotationFromEuler(euler: Euler): this {
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
         const x: number = euler.x, y: number = euler.y, z: number = euler.z;
         const a: number = Math.cos(x), b: number = Math.sin(x);
         const c: number = Math.cos(y), d: number = Math.sin(y);
@@ -182,7 +182,7 @@ export class Matrix4 {
 
     public makeRotationFromQuaternion(quaternion: Quaternion): this {
 
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
         const x: number = quaternion.x, y: number = quaternion.y, z: number = quaternion.z, w: number = quaternion.w;
         const x2: number = x + x, y2: number = y + y, z2: number = z + z;
         const xx: number = x * x2, xy: number = x * y2, xz: number = x * z2;
@@ -220,7 +220,7 @@ export class Matrix4 {
         const x: Vector3 = new Vector3();
         const y: Vector3 = new Vector3();
         const z: Vector3 = new Vector3();
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
         z.copy(eye).cross(target);
         if (z.lengthSquared() === 0) {
             // eye and target are in the same position
@@ -266,9 +266,9 @@ export class Matrix4 {
 
     public multiplyMatrices(matA: Matrix4, matB: Matrix4): this {
 
-        const ae: Array<number> = matA.toArray();
-        const be: Array<number> = matB.toArray();
-        const te: Array<number> = this.elements;
+        const ae: number[] = matA.toArray();
+        const be: number[] = matB.toArray();
+        const te: number[] = this.elements;
 
         const a11: number = ae[0], a12: number = ae[4], a13: number = ae[8], a14: number = ae[12];
         const a21: number = ae[1], a22: number = ae[5], a23: number = ae[9], a24: number = ae[13];
@@ -305,7 +305,7 @@ export class Matrix4 {
     }
 
     public multiplyScalar(s: number): this {
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
         te[0] *= s;
         te[4] *= s;
         te[8] *= s;
@@ -330,7 +330,7 @@ export class Matrix4 {
      * @returns {number}
      */
     public determinant(): number {
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
 
         const n11: number = te[0], n12: number = te[4], n13: number = te[8], n14: number = te[12];
         const n21: number = te[1], n22: number = te[5], n23: number = te[9], n24: number = te[13];
@@ -374,7 +374,7 @@ export class Matrix4 {
     }
 
     public transpose(): this {
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
         let tmp: number;
         tmp = te[1];
         te[1] = te[4];
@@ -398,7 +398,7 @@ export class Matrix4 {
     }
 
     public setPosition(v: Vector3): this {
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
         te[12] = v.x;
         te[13] = v.y;
         te[14] = v.z;
@@ -412,7 +412,7 @@ export class Matrix4 {
      * @returns {Matrix4}
      */
     public getInverse(m: Matrix4, throwOnDegenerate: boolean = false): this {
-        const te: Array<number> = this.elements, me: Array<number> = m.elements;
+        const te: number[] = this.elements, me: number[] = m.elements;
         const n11: number = me[0], n21: number = me[1], n31: number = me[2], n41: number = me[3],
             n12: number = me[4], n22: number = me[5], n32: number = me[6], n42: number = me[7],
             n13: number = me[8], n23: number = me[9], n33: number = me[10], n43: number = me[11],
@@ -462,7 +462,7 @@ export class Matrix4 {
     }
 
     public scale(v: Vector3): this {
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
         const x: number = v.x, y: number = v.y, z: number = v.z;
         te[0] *= x;
         te[4] *= y;
@@ -480,7 +480,7 @@ export class Matrix4 {
     }
 
     public getMaxScaleOnAxis(): number {
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
         const scaleXSq: number = te[0] * te[0] + te[1] * te[1] + te[2] * te[2];
         const scaleYSq: number = te[4] * te[4] + te[5] * te[5] + te[6] * te[6];
         const scaleZSq: number = te[8] * te[8] + te[9] * te[9] + te[10] * te[10];
@@ -574,7 +574,7 @@ export class Matrix4 {
     public decompose(position: Vector3, quaternion: Quaternion, scale: Vector3): this {
         const vector: Vector3 = new Vector3();
         const matrix: Matrix4 = new Matrix4();
-        const te: Array<number> = this.elements;
+        const te: number[] = this.elements;
 
         let sx: number = vector.set(te[0], te[1], te[2]).length();
         const sy: number = vector.set(te[4], te[5], te[6]).length();
@@ -640,14 +640,14 @@ export class Matrix4 {
     }
 
     public equals(matrix: Matrix4): boolean {
-        const me: Array<number> = matrix.toArray();
+        const me: number[] = matrix.toArray();
         for (let i: number = 0; i < 16; i++) {
             if (this.elements[i] !== me[i]) return false;
         }
         return true;
     }
 
-    public fromArray(array: Array<number>, offset: number = 0): this {
+    public fromArray(array: number[], offset: number = 0): this {
         for (let i: number = 0; i < 16; i++) {
             this.elements[i] = array[i + offset];
         }
@@ -655,8 +655,8 @@ export class Matrix4 {
 
     }
 
-    public toArray(array: Array<number> = [], offset: number = 0): Array<number> {
-        const te: Array<number> = this.elements;
+    public toArray(array: number[] = [], offset: number = 0): number[] {
+        const te: number[] = this.elements;
 
         array[offset] = te[0];
         array[offset + 1] = te[1];

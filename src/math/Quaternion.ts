@@ -339,7 +339,7 @@ export class Quaternion {
         return (quaternion.x === x ) && ( quaternion.y === y ) && ( quaternion.z === z ) && ( quaternion.w === w);
     }
 
-    public fromArray(array: Array<number>, offset: number = 0): this {
+    public fromArray(array: number[], offset: number = 0): this {
         return this.set(
             array[offset],
             array[offset + 1],
@@ -348,7 +348,7 @@ export class Quaternion {
         );
     }
 
-    public toArray(array: Array<number> = [], offset: number = 0): Array<number> {
+    public toArray(array: number[] = [], offset: number = 0): number[] {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         array[offset + 2] = this.z;
