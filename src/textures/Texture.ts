@@ -1,18 +1,18 @@
-import {MathUtil} from "../math/Math";
 import {
-    MirroredRepeatWrapping,
     ClampToEdgeWrapping,
-    RepeatWrapping,
     LinearEncoding,
+    LinearFilter,
+    LinearMipMapLinearFilter,
+    MirroredRepeatWrapping,
+    RepeatWrapping,
+    RGBAFormat,
     UnsignedByteType,
     UVMapping,
-    RGBAFormat,
-    LinearMipMapLinearFilter,
-    LinearFilter,
 } from "../constants.js";
-import {Vector2} from "../math/Vector2";
-import {Matrix3} from "../math/Matrix3";
 import {EventDispatcher} from "../core/EventDispatcher";
+import {MathUtil} from "../math/Math";
+import {Matrix3} from "../math/Matrix3";
+import {Vector2} from "../math/Vector2";
 
 let textureId: number = 0;
 
@@ -22,7 +22,7 @@ type InnerTextureSource =
     | HTMLVideoElement
     | {data?: any; width: number; height: number};
 
-export type TextureSource = InnerTextureSource | Array<InnerTextureSource>;
+export type TextureSource = InnerTextureSource | InnerTextureSource[];
 
 export class Texture extends EventDispatcher {
 

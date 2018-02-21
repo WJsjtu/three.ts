@@ -1,25 +1,25 @@
-import {MathUtil} from "../math/Math";
-import {
-    BufferAttribute,
-    Uint32BufferAttribute,
-    Uint16BufferAttribute,
-    Float32BufferAttribute,
-    TypedArray,
-} from "./BufferAttribute";
-import {DirectGeometry, IGroup} from "./DirectGeometry";
 import {Box3} from "../math/Box3";
+import {MathUtil} from "../math/Math";
+import {Matrix3} from "../math/Matrix3";
+import {Matrix4} from "../math/Matrix4";
 import {Sphere} from "../math/Sphere";
+import {Vector3} from "../math/Vector3";
 import {
     applyMatrixToBufferAttribute,
     arrayMax,
     setBoxFromBufferAttribute,
 } from "../utils";
-import {Matrix4} from "../math/Matrix4";
-import {Matrix3} from "../math/Matrix3";
-import {Vector3} from "../math/Vector3";
-import {Object3D} from "./Object3D";
-import {Geometry} from "./Geometry";
+import {
+    BufferAttribute,
+    Float32BufferAttribute,
+    TypedArray,
+    Uint16BufferAttribute,
+    Uint32BufferAttribute,
+} from "./BufferAttribute";
+import {DirectGeometry, IGroup} from "./DirectGeometry";
 import {EventDispatcher} from "./EventDispatcher";
+import {Geometry} from "./Geometry";
+import {Object3D} from "./Object3D";
 
 export interface IDrawRange {
     start: number;
@@ -80,9 +80,9 @@ export class BufferGeometry extends EventDispatcher {
         materialIndex: number = 0,
     ): this {
         this.groups.push({
-            start: start,
             count: count,
             materialIndex: materialIndex,
+            start: start,
         });
         return this;
     }
@@ -238,8 +238,8 @@ export class BufferGeometry extends EventDispatcher {
         // groups
         this.groups = geometry.groups;
         // morphs
-        for (let name in geometry.morphTargets) {
-            if(!geometry.morphTargets.hasOwnProperty(name)) continue;
+        for (const name in geometry.morphTargets) {
+            if (!geometry.morphTargets.hasOwnProperty(name)) continue;
             const array: Float32BufferAttribute[] = [];
             const morphTargets: Vector3[][] = geometry.morphTargets[name];
             for (
@@ -466,7 +466,7 @@ export class BufferGeometry extends EventDispatcher {
         const indices: TypedArray = this.index.array;
         const attributes: {[key: string]: BufferAttribute} = this.attributes;
         for (let name in attributes) {
-            if(!attributes.hasOwnProperty(name)) continue;
+            if (!attributes.hasOwnProperty(name)) continue;
             const attribute: BufferAttribute = attributes[name];
             const array: TypedArray = attribute.array;
             const itemSize: number = attribute.itemSize;
@@ -510,7 +510,7 @@ export class BufferGeometry extends EventDispatcher {
         // attributes
         const attributes: {[key: string]: BufferAttribute} = source.attributes;
         for (let name in attributes) {
-            if(!attributes.hasOwnProperty(name)) continue;
+            if (!attributes.hasOwnProperty(name)) continue;
             const attribute: BufferAttribute = attributes[name];
             this.addAttribute(name, attribute.clone());
         }
@@ -518,7 +518,7 @@ export class BufferGeometry extends EventDispatcher {
         const morphAttributes: {[key: string]: BufferAttribute[]} =
             source.morphAttributes;
         for (let name in morphAttributes) {
-            if(!attributes.hasOwnProperty(name)) continue;
+            if (!attributes.hasOwnProperty(name)) continue;
             const array: BufferAttribute[] = [];
             const morphAttribute: BufferAttribute[] = morphAttributes[name]; // morphAttribute: array of Float32BufferAttributes
             for (

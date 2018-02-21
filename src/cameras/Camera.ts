@@ -1,6 +1,6 @@
 import {Object3D} from "../core/Object3D";
-import {Vector3} from "../math/Vector3";
 import {Matrix4} from "../math/Matrix4";
+import {Vector3} from "../math/Vector3";
 
 export class Camera extends Object3D {
     public readonly type: string = "Camera";

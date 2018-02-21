@@ -1,6 +1,6 @@
-import {Vector3} from "./Vector3";
-import {Plane} from "./Plane";
 import {Line3} from "./Line3";
+import {Plane} from "./Plane";
+import {Vector3} from "./Vector3";
 
 export class Triangle {
     public a: Vector3 = new Vector3();

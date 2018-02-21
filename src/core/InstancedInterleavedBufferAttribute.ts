@@ -1,5 +1,5 @@
-import {InterleavedBufferAttribute} from "./InterleavedBufferAttribute";
 import {TypedArray} from "./BufferAttribute";
+import {InterleavedBufferAttribute} from "./InterleavedBufferAttribute";
 
 export class InstancedInterleavedBufferAttribute extends InterleavedBufferAttribute {
     public meshPerAttribute: number = 1;

@@ -1,7 +1,7 @@
 import {Object3D} from "../core/Object3D";
-import {AudioContextWrapper} from "./AudioContext";
-import {Vector3} from "../math/Vector3";
 import {Quaternion} from "../math/Quaternion";
+import {Vector3} from "../math/Vector3";
+import {AudioContextWrapper} from "./AudioContext";
 
 export class AudioListenerWrapper extends Object3D {
     public type: string = "AudioListener";

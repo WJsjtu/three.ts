@@ -1,7 +1,7 @@
+import {Camera} from "../cameras/Camera";
 import {Object3D} from "../core/Object3D";
 import {IIntersection, Raycaster} from "../core/Raycaster";
 import {Vector3} from "../math/Vector3";
-import {Camera} from "../cameras/Camera";
 
 export interface ILODLevel {
     object: Object3D;

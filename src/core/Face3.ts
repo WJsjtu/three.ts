@@ -1,5 +1,6 @@
-import {Vector3} from "../math/Vector3";
 import {Color} from "../math/Color";
+import {Vector3} from "../math/Vector3";
+
 export class Face3 {
     public a: number = 0;
     public b: number = 0;

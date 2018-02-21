@@ -9,7 +9,8 @@
       true,
       "ban-keywords",
       "check-format",
-      "allow-leading-underscore"
+      "allow-leading-underscore",
+      "allow-pascal-case"
     ],
     "max-line-length": [
       false
@@ -23,11 +24,19 @@
     ],
     "prefer-for-of": false,
     "one-variable-per-declaration": false,
-    "jsdoc-format": false
+    "jsdoc-format": false,
+    "no-conditional-assignment": false
   },
   "jsRules": {
     "no-console": false,
     "object-literal-shorthand": false,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case"
+    ],
     "max-line-length": [
       false
     ],
@@ -40,6 +49,7 @@
     ],
     "prefer-for-of": false,
     "one-variable-per-declaration": false,
-    "jsdoc-format": false
+    "jsdoc-format": false,
+    "no-conditional-assignment": false
   }
 }

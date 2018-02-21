@@ -1,5 +1,5 @@
-import {Texture} from "./Texture";
 import {NearestFilter} from "../constants.js";
+import {Texture} from "./Texture";
 
 export class DataTexture extends Texture {
     constructor(

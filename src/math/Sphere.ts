@@ -1,7 +1,7 @@
-import {Vector3} from "./Vector3";
-import {Plane} from "./Plane";
 import {Box3} from "./Box3";
 import {Matrix4} from "./Matrix4";
+import {Plane} from "./Plane";
+import {Vector3} from "./Vector3";
 
 export class Sphere {
     public center: Vector3 = new Vector3();

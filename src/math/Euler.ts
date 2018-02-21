@@ -1,7 +1,7 @@
 import {MathUtil} from "./Math";
 import {Matrix4} from "./Matrix4";
-import {Vector3} from "./Vector3";
 import {Quaternion} from "./Quaternion";
+import {Vector3} from "./Vector3";
 
 export enum EulerOrder {
     XYZ,
@@ -29,36 +29,36 @@ export class Euler {
         this._z = z;
     }
 
-    get order(): EulerOrder {
-        return this._order;
-    }
-
     get x() {
         return this._x;
+    }
+
+    set x(x: number) {
+        this._x = x;
     }
 
     get y() {
         return this._y;
     }
 
+    set y(y: number) {
+        this._y = y;
+    }
+
     get z() {
         return this._z;
     }
 
+    set z(z: number) {
+        this._z = z;
+    }
+
+    get order(): EulerOrder {
+        return this._order;
+    }
+
     set order(_order: EulerOrder) {
         this._order = _order;
-    }
-
-    set x(_x: number) {
-        this._x = _x;
-    }
-
-    set y(_y: number) {
-        this._y = _y;
-    }
-
-    set z(_z: number) {
-        this._z = _z;
     }
 
     public set(x: number, y: number, z: number, order: EulerOrder): this {

@@ -1,14 +1,14 @@
-import {BufferGeometry} from "../core/BufferGeometry";
 import {BufferAttribute, TypedArray} from "../core/BufferAttribute";
+import {BufferGeometry} from "../core/BufferGeometry";
 import {Geometry} from "../core/Geometry";
+import {Object3D} from "../core/Object3D";
 import {IIntersection, Raycaster} from "../core/Raycaster";
 import {LineBasicMaterial} from "../materials/LineBasicMaterial";
-import {LineSegments} from "./LineSegments";
 import {Matrix4} from "../math/Matrix4";
-import {Object3D} from "../core/Object3D";
 import {Ray} from "../math/Ray";
 import {Sphere} from "../math/Sphere";
 import {Vector3} from "../math/Vector3";
+import {LineSegments} from "./LineSegments";
 
 export class Line extends Object3D {
     public readonly type: string = "Line";
@@ -74,21 +74,20 @@ export class Line extends Object3D {
                         interSegment,
                     );
                     if (distSquared > precisionSquared) continue;
-                    interRay.applyMatrix4(this.matrixWorld); //Move back to world space for distance calculation
+                    interRay.applyMatrix4(this.matrixWorld); // Move back to world space for distance calculation
                     const distance: number = raycaster.ray.origin.distanceTo(
                         interRay,
                     );
-                    if (distance < raycaster.near || distance > raycaster.far)
-                        continue;
+                    if (distance < raycaster.near || distance > raycaster.far) continue;
                     intersects.push({
                         distance: distance,
+                        index: i,
+                        object: this,
                         // What do we want? intersection point on the ray or on the segment??
                         // point: raycaster.ray.at( distance ),
                         point: interSegment
                             .clone()
                             .applyMatrix4(this.matrixWorld),
-                        index: i,
-                        object: this,
                     });
                 }
             } else {
@@ -106,21 +105,20 @@ export class Line extends Object3D {
                         interSegment,
                     );
                     if (distSquared > precisionSquared) continue;
-                    interRay.applyMatrix4(this.matrixWorld); //Move back to world space for distance calculation
+                    interRay.applyMatrix4(this.matrixWorld); // Move back to world space for distance calculation
                     const distance: number = raycaster.ray.origin.distanceTo(
                         interRay,
                     );
-                    if (distance < raycaster.near || distance > raycaster.far)
-                        continue;
+                    if (distance < raycaster.near || distance > raycaster.far) continue;
                     intersects.push({
                         distance: distance,
+                        index: i,
+                        object: this,
                         // What do we want? intersection point on the ray or on the segment??
                         // point: raycaster.ray.at( distance ),
                         point: interSegment
                             .clone()
                             .applyMatrix4(this.matrixWorld),
-                        index: i,
-                        object: this,
                     });
                 }
             }
@@ -135,19 +133,18 @@ export class Line extends Object3D {
                     interSegment,
                 );
                 if (distSquared > precisionSquared) continue;
-                interRay.applyMatrix4(this.matrixWorld); //Move back to world space for distance calculation
+                interRay.applyMatrix4(this.matrixWorld); // Move back to world space for distance calculation
                 const distance: number = raycaster.ray.origin.distanceTo(
                     interRay,
                 );
-                if (distance < raycaster.near || distance > raycaster.far)
-                    continue;
+                if (distance < raycaster.near || distance > raycaster.far) continue;
                 intersects.push({
                     distance: distance,
+                    index: i,
+                    object: this,
                     // What do we want? intersection point on the ray or on the segment??
                     // point: raycaster.ray.at( distance ),
                     point: interSegment.clone().applyMatrix4(this.matrixWorld),
-                    index: i,
-                    object: this,
                 });
             }
         }

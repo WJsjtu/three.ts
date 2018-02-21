@@ -1,9 +1,9 @@
-import {Vector3} from "./Vector3";
-import {Sphere} from "./Sphere";
-import {Plane} from "./Plane";
 import {Box3} from "./Box3";
-import {Triangle} from "./Triangle";
 import {Matrix4} from "./Matrix4";
+import {Plane} from "./Plane";
+import {Sphere} from "./Sphere";
+import {Triangle} from "./Triangle";
+import {Vector3} from "./Vector3";
 
 export class Ray {
     public origin: Vector3 = new Vector3();
@@ -303,7 +303,7 @@ export class Ray {
         if (tmin > tzmax || tzmin > tmax) return null;
         if (tzmin > tmin || tmin !== tmin) tmin = tzmin;
         if (tzmax < tmax || tmax !== tmax) tmax = tzmax;
-        //return point closest to the ray (positive side)
+        // return point closest to the ray (positive side)
         if (tmax < 0) return null;
         return this.at(tmin >= 0 ? tmin : tmax);
     }

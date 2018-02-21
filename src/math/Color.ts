@@ -169,7 +169,7 @@ export class Color {
     constructor(r: number = 0, g: number = 0, b: number = 0) {
         this.setRGB(r, g, b);
     }
-    
+
     public copy(color: Color): this {
         this.r = color.r;
         this.g = color.g;
@@ -246,7 +246,7 @@ export class Color {
                         this.r = Math.min(255, parseInt(color[1], 10)) / 255;
                         this.g = Math.min(255, parseInt(color[2], 10)) / 255;
                         this.b = Math.min(255, parseInt(color[3], 10)) / 255;
-                        //handleAlpha(color[5]);
+                        // handleAlpha(color[5]);
                         return this;
                     }
 
@@ -259,7 +259,7 @@ export class Color {
                         this.r = Math.min(100, parseInt(color[1], 10)) / 100;
                         this.g = Math.min(100, parseInt(color[2], 10)) / 100;
                         this.b = Math.min(100, parseInt(color[3], 10)) / 100;
-                        //handleAlpha(color[5]);
+                        // handleAlpha(color[5]);
                         return this;
                     }
                     break;
@@ -274,7 +274,7 @@ export class Color {
                         const h = parseFloat(color[1]) / 360;
                         const s = parseInt(color[2], 10) / 100;
                         const l = parseInt(color[3], 10) / 100;
-                        //handleAlpha(color[5]);
+                        // handleAlpha(color[5]);
                         return this.setHSL(h, s, l);
                     }
                     break;

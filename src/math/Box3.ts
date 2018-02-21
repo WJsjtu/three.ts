@@ -1,8 +1,8 @@
-import {Vector3} from "./Vector3";
 import {Object3D} from "../core/Object3D";
-import {Sphere} from "./Sphere";
 import {Plane} from "./Plane";
 import {Matrix4} from "./Matrix4";
+import {Sphere} from "./Sphere";
+import {Vector3} from "./Vector3";
 
 export class Box3 {
     public min: Vector3 = new Vector3(+Infinity, +Infinity, +Infinity);
@@ -53,7 +53,7 @@ export class Box3 {
         return this;
     }
 
-    setFromCenterAndSize(center: Vector3, size: Vector3): this {
+    public setFromCenterAndSize(center: Vector3, size: Vector3): this {
         const halfSize: Vector3 = new Vector3().copy(size).multiplyScalar(0.5);
         this.min.copy(center).sub(halfSize);
         this.max.copy(center).add(halfSize);

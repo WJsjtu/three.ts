@@ -1,13 +1,13 @@
-import {EventDispatcher} from "./EventDispatcher";
+import {Camera} from "../cameras/Camera";
+import {Euler} from "../math/Euler";
 import {MathUtil} from "../math/Math";
+import {Matrix4} from "../math/Matrix4";
+import {Quaternion} from "../math/Quaternion";
 import {Vector3} from "../math/Vector3";
 import {Vector4} from "../math/Vector4";
-import {Euler} from "../math/Euler";
-import {Quaternion} from "../math/Quaternion";
-import {Matrix4} from "../math/Matrix4";
+import {EventDispatcher} from "./EventDispatcher";
 import {Layers} from "./Layers";
 import {IIntersection, Raycaster} from "./Raycaster";
-import {Camera} from "../cameras/Camera";
 
 let object3DId: number = 0;
 

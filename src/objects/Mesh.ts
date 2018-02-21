@@ -1,21 +1,120 @@
-import {Object3D} from "../core/Object3D";
+import {BackSide, DoubleSide, TrianglesDrawMode} from "../constants";
+import {BufferAttribute} from "../core/BufferAttribute";
 import {BufferGeometry} from "../core/BufferGeometry";
+import {Face3} from "../core/Face3";
 import {Geometry, IMorphTarget} from "../core/Geometry";
+import {Object3D} from "../core/Object3D";
+import {IIntersection, Raycaster} from "../core/Raycaster";
 import {Material} from "../materials/Material";
 import {MeshBasicMaterial} from "../materials/MeshBasicMaterial";
-import {DoubleSide, BackSide, TrianglesDrawMode} from "../constants";
-import {BufferAttribute} from "../core/BufferAttribute";
-import {IIntersection, Raycaster} from "../core/Raycaster";
-import {Sphere} from "../math/Sphere";
 import {Matrix4} from "../math/Matrix4";
 import {Ray} from "../math/Ray";
-import {Vector3} from "../math/Vector3";
-import {Face3} from "../core/Face3";
+import {Sphere} from "../math/Sphere";
 import {Triangle} from "../math/Triangle";
 import {Vector2} from "../math/Vector2";
+import {Vector3} from "../math/Vector3";
 import {vectorFromBufferAttribute} from "../utils";
 
 class Mesh extends Object3D {
+
+    public static uvIntersection(
+        point: Vector3,
+        triangle: Triangle,
+        uv1: Vector2,
+        uv2: Vector2,
+        uv3: Vector2,
+    ): Vector2 {
+        const baryCoord: Vector3 = triangle.barycoordFromPoint(point);
+        uv1.multiplyScalar(baryCoord.x);
+        uv2.multiplyScalar(baryCoord.y);
+        uv3.multiplyScalar(baryCoord.z);
+        uv1.add(uv2).add(uv3);
+        return uv1.clone();
+    }
+
+    public static checkIntersection(
+        object: Mesh,
+        material: MeshBasicMaterial,
+        raycaster: Raycaster,
+        ray: Ray,
+        pA: Vector3,
+        pB: Vector3,
+        pC: Vector3,
+        point: Vector3,
+    ): IIntersection {
+        let intersect: Vector3;
+        const intersectionPointWorld: Vector3 = new Vector3();
+        if (material.side === BackSide) {
+            intersect = ray.intersectTriangle(new Triangle(pC, pB, pA), true);
+        } else {
+            intersect = ray.intersectTriangle(
+                new Triangle(pC, pB, pA),
+                material.side !== DoubleSide,
+            );
+        }
+        if (intersect === null) return null;
+        point.copy(intersect);
+        intersectionPointWorld.copy(point);
+        intersectionPointWorld.applyMatrix4(object.matrixWorld);
+        const distance: number = raycaster.ray.origin.distanceTo(
+            intersectionPointWorld,
+        );
+        if (distance < raycaster.near || distance > raycaster.far) return null;
+        return {
+            distance: distance,
+            object: object,
+            point: intersectionPointWorld.clone(),
+        };
+    }
+
+    public static checkBufferGeometryIntersection(
+        object: Mesh,
+        raycaster: Raycaster,
+        ray: Ray,
+        position: BufferAttribute,
+        uv: BufferAttribute,
+        a: number,
+        b: number,
+        c: number,
+    ): IIntersection {
+        const intersectionPoint: Vector3 = new Vector3();
+        const vA = vectorFromBufferAttribute(new Vector3(), position, a);
+        const vB = vectorFromBufferAttribute(new Vector3(), position, b);
+        const vC = vectorFromBufferAttribute(new Vector3(), position, c);
+        const triangle = new Triangle(
+            vectorFromBufferAttribute(new Vector3(), position, a),
+            vectorFromBufferAttribute(new Vector3(), position, b),
+            vectorFromBufferAttribute(new Vector3(), position, c),
+        );
+        const intersection: IIntersection = Mesh.checkIntersection(
+            object,
+            object.material as MeshBasicMaterial,
+            raycaster,
+            ray,
+            vA,
+            vB,
+            vC,
+            intersectionPoint,
+        );
+        if (intersection) {
+            if (uv) {
+                const uvA = vectorFromBufferAttribute(new Vector2(), uv, a);
+                const uvB = vectorFromBufferAttribute(new Vector2(), uv, b);
+                const uvC = vectorFromBufferAttribute(new Vector2(), uv, c);
+                intersection.uv = Mesh.uvIntersection(
+                    intersectionPoint,
+                    triangle,
+                    uvA,
+                    uvB,
+                    uvC,
+                );
+            }
+            intersection.face = new Face3(a, b, c, triangle.normal());
+            intersection.faceIndex = a;
+        }
+        return intersection;
+    }
+
     public readonly type: string = "Mesh";
 
     public geometry: BufferGeometry | Geometry = null;
@@ -81,104 +180,6 @@ class Mesh extends Object3D {
             }
         }
         return this;
-    }
-
-    public static uvIntersection(
-        point: Vector3,
-        triangle: Triangle,
-        uv1: Vector2,
-        uv2: Vector2,
-        uv3: Vector2,
-    ): Vector2 {
-        const baryCoord: Vector3 = triangle.barycoordFromPoint(point);
-        uv1.multiplyScalar(baryCoord.x);
-        uv2.multiplyScalar(baryCoord.y);
-        uv3.multiplyScalar(baryCoord.z);
-        uv1.add(uv2).add(uv3);
-        return uv1.clone();
-    }
-
-    public static checkIntersection(
-        object: Mesh,
-        material: MeshBasicMaterial,
-        raycaster: Raycaster,
-        ray: Ray,
-        pA: Vector3,
-        pB: Vector3,
-        pC: Vector3,
-        point: Vector3,
-    ): IIntersection {
-        let intersect: Vector3;
-        const intersectionPointWorld: Vector3 = new Vector3();
-        if (material.side === BackSide) {
-            intersect = ray.intersectTriangle(new Triangle(pC, pB, pA), true);
-        } else {
-            intersect = ray.intersectTriangle(
-                new Triangle(pC, pB, pA),
-                material.side !== DoubleSide,
-            );
-        }
-        if (intersect === null) return null;
-        point.copy(intersect);
-        intersectionPointWorld.copy(point);
-        intersectionPointWorld.applyMatrix4(object.matrixWorld);
-        const distance: number = raycaster.ray.origin.distanceTo(
-            intersectionPointWorld,
-        );
-        if (distance < raycaster.near || distance > raycaster.far) return null;
-        return {
-            distance: distance,
-            point: intersectionPointWorld.clone(),
-            object: object,
-        };
-    }
-
-    public static checkBufferGeometryIntersection(
-        object: Mesh,
-        raycaster: Raycaster,
-        ray: Ray,
-        position: BufferAttribute,
-        uv: BufferAttribute,
-        a: number,
-        b: number,
-        c: number,
-    ): IIntersection {
-        const intersectionPoint: Vector3 = new Vector3();
-        const vA = vectorFromBufferAttribute(new Vector3(), position, a);
-        const vB = vectorFromBufferAttribute(new Vector3(), position, b);
-        const vC = vectorFromBufferAttribute(new Vector3(), position, c);
-        const triangle = new Triangle(
-            vectorFromBufferAttribute(new Vector3(), position, a),
-            vectorFromBufferAttribute(new Vector3(), position, b),
-            vectorFromBufferAttribute(new Vector3(), position, c),
-        );
-        const intersection: IIntersection = Mesh.checkIntersection(
-            object,
-            object.material as MeshBasicMaterial,
-            raycaster,
-            ray,
-            vA,
-            vB,
-            vC,
-            intersectionPoint,
-        );
-        if (intersection) {
-            if (uv) {
-                const uvA = vectorFromBufferAttribute(new Vector2(), uv, a);
-                const uvB = vectorFromBufferAttribute(new Vector2(), uv, b);
-                const uvC = vectorFromBufferAttribute(new Vector2(), uv, c);
-                intersection.uv = Mesh.uvIntersection(
-                    intersectionPoint,
-                    triangle,
-                    uvA,
-                    uvB,
-                    uvC,
-                );
-            }
-            intersection.face = new Face3(a, b, c, triangle.normal());
-            intersection.faceIndex = a;
-        }
-        return intersection;
     }
 
     public raycast(
@@ -259,7 +260,7 @@ class Mesh extends Object3D {
         } else if (geometry instanceof Geometry) {
             const vertices: Vector3[] = geometry.vertices;
             const faces: Face3[] = geometry.faces;
-            let uvs: Vector2[][] | undefined = undefined;
+            let uvs: Vector2[][] | undefined;
             const faceVertexUvs: Vector2[][] = geometry.faceVertexUvs[0];
             if (faceVertexUvs.length > 0) uvs = faceVertexUvs;
             for (let f: number = 0, fl: number = faces.length; f < fl; f++) {
@@ -325,10 +326,10 @@ class Mesh extends Object3D {
 
                 if (intersection) {
                     if (uvs && uvs[f]) {
-                        const uvs_f: Vector2[] = uvs[f];
-                        const uvA = new Vector2().copy(uvs_f[0]);
-                        const uvB = new Vector2().copy(uvs_f[1]);
-                        const uvC = new Vector2().copy(uvs_f[2]);
+                        const uvsF: Vector2[] = uvs[f];
+                        const uvA = new Vector2().copy(uvsF[0]);
+                        const uvB = new Vector2().copy(uvsF[1]);
+                        const uvC = new Vector2().copy(uvsF[2]);
                         intersection.uv = Mesh.uvIntersection(
                             intersectionPoint,
                             new Triangle(fvA, fvB, fvC),

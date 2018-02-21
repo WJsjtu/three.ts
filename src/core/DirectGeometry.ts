@@ -1,9 +1,9 @@
+import {Color} from "../math/Color";
+import {Triangle} from "../math/Triangle";
+import {Vector2} from "../math/Vector2";
 import {Vector3} from "../math/Vector3";
 import {Vector4} from "../math/Vector4";
-import {Color} from "../math/Color";
 import {Geometry, GeometryFace, IMorphNormal, IMorphTarget} from "./Geometry";
-import {Vector2} from "../math/Vector2";
-import {Triangle} from "../math/Triangle";
 // import {Sphere} from "../math/Sphere";
 // import {Box3} from "../math/Box3";
 
@@ -63,8 +63,8 @@ export class DirectGeometry {
                     groups.push(group);
                 }
                 group = {
-                    start: i * 3,
                     materialIndex: materialIndex,
+                    start: i * 3,
                 };
             }
         }
