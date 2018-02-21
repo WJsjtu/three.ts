@@ -12,15 +12,53 @@ import {
 import {EventDispatcher} from "../core/EventDispatcher";
 import {Color} from "../math/Color";
 import {Vector3} from "../math/Vector3";
+import {Plane} from "../math/Plane";
 
 let materialId: number = 0;
+
+export interface MaterialParameters {
+    name?: string,
+    fog?: boolean,
+    lights?: boolean,
+    blending?: number,
+    side?: number,
+    flatShading?: boolean,
+    vertexColors?: number,
+    opacity?: number,
+    transparent?: boolean,
+    blendSrc?: number,
+    blendDst?: number,
+    blendEquation?: number,
+    blendSrcAlpha?: number ,
+    blendDstAlpha?: number,
+    blendEquationAlpha?: number,
+    depthFunc?: number,
+    depthTest?: boolean ,
+    depthWrite?: boolean,
+    clippingPlanes?: Array<Plane>,
+    clipIntersection?: boolean,
+    clipShadows?: boolean,
+    shadowSide?: number,
+    colorWrite?: boolean,
+    precision?: string,
+    polygonOffset?: boolean,
+    polygonOffsetFactor?: number ,
+    polygonOffsetUnits?: number,
+    dithering?: boolean,
+    alphaTest?: number,
+    premultipliedAlpha?: boolean,
+    overdraw?: number,
+    visible?: boolean,
+    userData?: any,
+    needsUpdate?: boolean
+}
 
 export class Material extends EventDispatcher {
     public readonly id: number = materialId++;
     public readonly uuid: string = MathUtil.generateUUID();
+    public readonly type: string = "Material";
 
     public name: string = "";
-    public type: string = "Material";
     public fog: boolean = true;
     public lights: boolean = true;
     public blending: number = NormalBlending;
@@ -44,7 +82,7 @@ export class Material extends EventDispatcher {
     public depthTest: boolean = true;
     public depthWrite: boolean = true;
 
-    public clippingPlanes: any = null; //TODO:Three.Plane
+    public clippingPlanes: Array<Plane> = [];
     public clipIntersection: boolean = false;
     public clipShadows: boolean = false;
 
@@ -86,7 +124,7 @@ export class Material extends EventDispatcher {
 
     public needsUpdate: boolean = true;
 
-    public setValues(values: { [key: string]: any; }): void {
+    public setValues(values: MaterialParameters): void {
         if (values === undefined) return;
         for (let key in values) {
             if (!values.hasOwnProperty(key)) continue;

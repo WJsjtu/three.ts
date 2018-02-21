@@ -106,8 +106,7 @@ export class WebGLGeometries {
                 indices.push(a, b, b, c, c, a);
             }
         }
-
-        attribute = new ( arrayMax(indices) > 65535 ? Uint32BufferAttribute : Uint16BufferAttribute )(indices, 1);
+        attribute = new (arrayMax(indices) > 65535 ? Uint32BufferAttribute : Uint16BufferAttribute)(indices, 1);
         this.attributes.update(attribute, this.context.ELEMENT_ARRAY_BUFFER);
         this.wireframeAttributes[geometry.id] = attribute;
         return attribute;

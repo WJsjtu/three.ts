@@ -94,8 +94,8 @@ export class Object3D extends EventDispatcher {
         return this;
     }
 
-    public raycast(raycaster: Raycaster, intersections: Array<Intersection> = []) {
-
+    public raycast(raycaster: Raycaster, intersections: Array<Intersection> = []): Array<Intersection> {
+        return intersections;
     }
 
     public applyMatrix(matrix: Matrix4): Object3D {
