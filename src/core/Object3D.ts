@@ -81,7 +81,7 @@ export class Object3D extends EventDispatcher {
         return new Vector3().copy(this._scale);
     }
 
-    public updateMatrix(): Object3D {
+    public updateMatrix(): this {
         this.matrix.compose(this.position, this.quaternion, this.scale);
         if (this.parent === null) {
             this.matrixWorld.copy(this.matrix);
@@ -98,7 +98,7 @@ export class Object3D extends EventDispatcher {
         return intersections;
     }
 
-    public applyMatrix(matrix: Matrix4): Object3D {
+    public applyMatrix(matrix: Matrix4): this {
         this.matrix.multiplyMatrices(matrix, this.matrix);
         this.matrix.decompose(this._position, this._quaternion, this._scale);
         this.children.forEach((child: Object3D) => {
@@ -107,7 +107,7 @@ export class Object3D extends EventDispatcher {
         return this;
     }
 
-    public applyQuaternion(q: Quaternion): Object3D {
+    public applyQuaternion(q: Quaternion): this {
         this._quaternion.premultiply(q);
         return this.updateMatrix();
     }
@@ -118,12 +118,12 @@ export class Object3D extends EventDispatcher {
      * @param angle
      * @returns {Object3D}
      */
-    public setRotationFromAxisAngle(axis: Vector3, angle: number): Object3D {
+    public setRotationFromAxisAngle(axis: Vector3, angle: number): this {
         this._quaternion.setFromAxisAngle(axis, angle);
         return this.updateMatrix();
     }
 
-    public setRotationFromEuler(euler: Euler): Object3D {
+    public setRotationFromEuler(euler: Euler): this {
         this._quaternion.setFromEuler(euler);
         return this.updateMatrix();
     }
@@ -133,7 +133,7 @@ export class Object3D extends EventDispatcher {
      * @param m
      * @returns {Object3D}
      */
-    public setRotationFromMatrix(m: Matrix4): Object3D {
+    public setRotationFromMatrix(m: Matrix4): this {
         this._quaternion.setFromRotationMatrix(m);
         return this.updateMatrix();
     }
@@ -143,12 +143,12 @@ export class Object3D extends EventDispatcher {
      * @param q
      * @returns {Object3D}
      */
-    public setRotationFromQuaternion(q: Quaternion): Object3D {
+    public setRotationFromQuaternion(q: Quaternion): this {
         this._quaternion.copy(q);
         return this.updateMatrix();
     }
 
-    public rotateOnAxis(axis: Vector3, angle: number): Object3D {
+    public rotateOnAxis(axis: Vector3, angle: number): this {
         const q: Quaternion = new Quaternion();
         q.setFromAxisAngle(axis, angle);
         this._quaternion.multiply(q);
@@ -164,22 +164,22 @@ export class Object3D extends EventDispatcher {
      * @param angle
      * @returns {Object3D}
      */
-    public rotateOnWorldAxis(axis: Vector3, angle: number): Object3D {
+    public rotateOnWorldAxis(axis: Vector3, angle: number): this {
         const q = new Quaternion();
         q.setFromAxisAngle(axis, angle);
         this.quaternion.premultiply(q);
         return this.updateMatrix();
     }
 
-    public rotateX(angle: number): Object3D {
+    public rotateX(angle: number): this {
         return this.rotateOnAxis(new Vector3(1, 0, 0), angle);
     }
 
-    public rotateY(angle: number): Object3D {
+    public rotateY(angle: number): this {
         return this.rotateOnAxis(new Vector3(0, 1, 0), angle);
     }
 
-    public rotateZ(angle: number): Object3D {
+    public rotateZ(angle: number): this {
         return this.rotateOnAxis(new Vector3(0, 0, 1), angle);
     }
 
@@ -190,22 +190,22 @@ export class Object3D extends EventDispatcher {
      * @param distance
      * @returns {Object3D}
      */
-    public translateOnAxis(axis: Vector3, distance: number): Object3D {
+    public translateOnAxis(axis: Vector3, distance: number): this {
         const vec = new Vector3();
         vec.copy(axis).applyQuaternion(this.quaternion);
         this._position.add(vec.multiplyScalar(distance));
         return this.updateMatrix();
     }
 
-    public translateX(distance: number): Object3D {
+    public translateX(distance: number): this {
         return this.translateOnAxis(new Vector3(1, 0, 0), distance);
     }
 
-    public translateY(distance: number): Object3D {
+    public translateY(distance: number): this {
         return this.translateOnAxis(new Vector3(0, 1, 0), distance);
     }
 
-    public translateZ(distance: number): Object3D {
+    public translateZ(distance: number): this {
         return this.translateOnAxis(new Vector3(0, 0, 1), distance);
     }
 
@@ -217,7 +217,7 @@ export class Object3D extends EventDispatcher {
         return vector.applyMatrix4(new Matrix4().getInverse(this.matrixWorld));
     }
 
-    public lookAt(vec: Vector3): Object3D {
+    public lookAt(vec: Vector3): this {
         const mat: Matrix4 = new Matrix4();
         const vector: Vector3 = new Vector3();
         if (this instanceof Camera) {
@@ -229,7 +229,7 @@ export class Object3D extends EventDispatcher {
         return this.updateMatrix();
     }
 
-    public add(object: Object3D, ...objects: Array<Object3D>): Object3D {
+    public add(object: Object3D, ...objects: Array<Object3D>): this {
         if (objects.length > 1) {
             for (let i: number = 0; i < objects.length; i++) {
                 this.add(objects[i]);
@@ -249,7 +249,7 @@ export class Object3D extends EventDispatcher {
         return this;
     }
 
-    public remove(object: Object3D, ...objects: Array<Object3D>): Object3D {
+    public remove(object: Object3D, ...objects: Array<Object3D>): this {
         if (objects.length > 1) {
             for (let i: number = 0; i < objects.length; i++) {
                 this.remove(objects[i]);
@@ -320,7 +320,7 @@ export class Object3D extends EventDispatcher {
         return ((new (this.constructor as () => void)()) as Object3D).copy(this, recursive);
     }
 
-    public copy(source: Object3D, recursive: boolean = true): Object3D {
+    public copy(source: Object3D, recursive: boolean = true): this {
         this.name = source.name;
         this.up.copy(source.up);
         this.position.copy(source.position);

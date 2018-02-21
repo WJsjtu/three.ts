@@ -37,18 +37,20 @@ export class ColorBuffer {
         this.context = context;
     }
 
-    public setMask(colorMask: boolean): void {
+    public setMask(colorMask: boolean): this {
         if (this.currentColorMask !== colorMask && !this.locked) {
             this.context.colorMask(colorMask, colorMask, colorMask, colorMask);
             this.currentColorMask = colorMask;
         }
+        return this;
     }
 
-    public setLocked(lock: boolean): void {
+    public setLocked(lock: boolean): this {
         this.locked = lock;
+        return this;
     }
 
-    public setClear(r: number, g: number, b: number, a: number, premultipliedAlpha: boolean = false): void {
+    public setClear(r: number, g: number, b: number, a: number, premultipliedAlpha: boolean = false): this {
         if (premultipliedAlpha === true) {
             r *= a;
             g *= a;
@@ -59,15 +61,17 @@ export class ColorBuffer {
             this.context.clearColor(r, g, b, a);
             this.currentColorClear.copy(this.color);
         }
+        return this;
     }
 
-    public reset(): void {
+    public reset(): this {
         this.locked = false;
         this.currentColorMask = false;
         /**
          * set to invalid state
          */
         this.currentColorClear.set(-1, 0, 0, 0);
+        return this;
     }
 }
 
@@ -84,34 +88,37 @@ export class DepthBuffer {
         this.capabilities = capabilities;
     }
 
-    protected enable(id: number): void {
+    protected enable(id: number): this {
         if (this.capabilities[id] !== true) {
             this.context.enable(id);
             this.capabilities[id] = true;
         }
+        return this;
     }
 
-    protected disable(id: number): void {
+    protected disable(id: number): this {
         if (this.capabilities[id] !== false) {
             this.context.disable(id);
             this.capabilities[id] = false;
         }
+        return this;
     }
 
-    public setTest(depthTest: boolean = false): void {
+    public setTest(depthTest: boolean = false): this {
         if (depthTest) {
             this.enable(this.context.DEPTH_TEST);
         } else {
             this.disable(this.context.DEPTH_TEST);
         }
-
+        return this;
     }
 
-    public setMask(depthMask: boolean): void {
+    public setMask(depthMask: boolean): this {
         if (this.currentDepthMask !== depthMask && !this.locked) {
             this.context.depthMask(depthMask);
             this.currentDepthMask = depthMask;
         }
+        return this;
     }
 
     /**
@@ -138,7 +145,7 @@ export class DepthBuffer {
      *
      * @param depthFunc
      */
-    public setFunc(depthFunc: number): void {
+    public setFunc(depthFunc: number): this {
         if (this.currentDepthFunc !== depthFunc) {
             const gl: WebGLRenderingContext = this.context;
             if (depthFunc) {
@@ -175,25 +182,28 @@ export class DepthBuffer {
             }
             this.currentDepthFunc = depthFunc;
         }
-
+        return this;
     }
 
-    public setLocked(lock: boolean = false) {
+    public setLocked(lock: boolean = false): this {
         this.locked = lock;
+        return this;
     }
 
-    public setClear(depth: number): void {
+    public setClear(depth: number): this {
         if (this.currentDepthClear !== depth) {
             this.context.clearDepth(depth);
             this.currentDepthClear = depth;
         }
+        return this;
     }
 
-    public reset(): void {
+    public reset(): this {
         this.locked = false;
         this.currentDepthMask = false;
         this.currentDepthFunc = 0;
         this.currentDepthClear = 0;
+        return this;
     }
 }
 
@@ -215,45 +225,50 @@ export class StencilBuffer {
         this.capabilities = capabilities;
     }
 
-    protected enable(id: number): void {
+    protected enable(id: number): this {
         if (this.capabilities[id] !== true) {
             this.context.enable(id);
             this.capabilities[id] = true;
         }
+        return this;
     }
 
-    protected disable(id: number): void {
+    protected disable(id: number): this {
         if (this.capabilities[id] !== false) {
             this.context.disable(id);
             this.capabilities[id] = false;
         }
+        return this;
     }
 
-    public setTest(stencilTest: boolean): void {
+    public setTest(stencilTest: boolean): this {
         if (stencilTest) {
             this.enable(this.context.STENCIL_TEST);
         } else {
             this.disable(this.context.STENCIL_TEST);
         }
+        return this;
     }
 
-    public setMask(stencilMask: number): void {
+    public setMask(stencilMask: number): this {
         if (this.currentStencilMask !== stencilMask && !this.locked) {
             this.context.stencilMask(stencilMask);
             this.currentStencilMask = stencilMask;
         }
+        return this;
     }
 
-    public setFunc(stencilFunc: number, stencilRef: number, stencilMask: number): void {
+    public setFunc(stencilFunc: number, stencilRef: number, stencilMask: number): this {
         if (this.currentStencilFunc !== stencilFunc || this.currentStencilRef !== stencilRef || this.currentStencilFuncMask !== stencilMask) {
             this.context.stencilFunc(stencilFunc, stencilRef, stencilMask);
             this.currentStencilFunc = stencilFunc;
             this.currentStencilRef = stencilRef;
             this.currentStencilFuncMask = stencilMask;
         }
+        return this;
     }
 
-    public setOp(stencilFail: number, stencilZFail: number, stencilZPass: number): void {
+    public setOp(stencilFail: number, stencilZFail: number, stencilZPass: number): this {
         if (this.currentStencilFail !== stencilFail ||
             this.currentStencilZFail !== stencilZFail ||
             this.currentStencilZPass !== stencilZPass) {
@@ -262,20 +277,23 @@ export class StencilBuffer {
             this.currentStencilZFail = stencilZFail;
             this.currentStencilZPass = stencilZPass;
         }
+        return this;
     }
 
-    public setLocked(lock: boolean): void {
+    public setLocked(lock: boolean): this {
         this.locked = lock;
+        return this;
     }
 
-    public setClear(stencil: number): void {
+    public setClear(stencil: number): this {
         if (this.currentStencilClear !== stencil) {
             this.context.clearStencil(stencil);
             this.currentStencilClear = stencil;
         }
+        return this;
     }
 
-    public reset(): void {
+    public reset(): this {
         this.locked = false;
         this.currentStencilMask = 0;
         this.currentStencilFunc = 0;
@@ -285,6 +303,7 @@ export class StencilBuffer {
         this.currentStencilZFail = 0;
         this.currentStencilZPass = 0;
         this.currentStencilClear = 0;
+        return this;
     }
 
 }
@@ -394,25 +413,27 @@ export class WebGLState {
         return texture;
     }
 
-    public enable(id: number): void {
+    public enable(id: number): this {
         if (this.capabilities[id] !== true) {
             this.context.enable(id);
             this.capabilities[id] = true;
         }
+        return this;
     }
 
-    public disable(id: number): void {
+    public disable(id: number): this {
         if (this.capabilities[id] !== false) {
             this.context.disable(id);
             this.capabilities[id] = false;
         }
+        return this;
     }
 
     /**
      * 设置多边形的正反面（片元着色器？），这个和多边形的顶点连接顺序有关，CW为顺时针包围部分为正面，而CCW表示逆时针围绕部分为正面。
      * @param flipSided
      */
-    public setFlipSided(flipSided: boolean = false): void {
+    public setFlipSided(flipSided: boolean = false): this {
         const gl: WebGLRenderingContext = this.context;
         if (this.currentFlipSided !== flipSided) {
             if (flipSided) {
@@ -422,6 +443,7 @@ export class WebGLState {
             }
             this.currentFlipSided = flipSided;
         }
+        return this;
     }
 
     /**
@@ -430,7 +452,7 @@ export class WebGLState {
      *
      * @param cullFace
      */
-    public setCullFace(cullFace: number): void {
+    public setCullFace(cullFace: number): this {
         const gl: WebGLRenderingContext = this.context;
         if (cullFace !== CullFaceNone) {
             this.enable(gl.CULL_FACE);
@@ -447,6 +469,7 @@ export class WebGLState {
             this.disable(gl.CULL_FACE);
         }
         this.currentCullFace = cullFace;
+        return this;
     }
 
     /**
@@ -500,7 +523,7 @@ export class WebGLState {
                        blendEquationAlpha: number = 0,
                        blendSrcAlpha: number = 0,
                        blendDstAlpha: number = 0,
-                       premultipliedAlpha: boolean = false): void {
+                       premultipliedAlpha: boolean = false): this {
         const gl: WebGLRenderingContext = this.context;
         if (blending !== NoBlending) {
             this.enable(gl.BLEND);
@@ -572,9 +595,10 @@ export class WebGLState {
         }
         this.currentBlending = blending;
         this.currentPremultipledAlpha = premultipliedAlpha;
+        return this;
     }
 
-    public setMaterial(material: Material, frontFaceCW: boolean = false): void {
+    public setMaterial(material: Material, frontFaceCW: boolean = false): this {
         const gl: WebGLRenderingContext = this.context;
         material.side === DoubleSide ? this.disable(gl.CULL_FACE) : this.enable(gl.CULL_FACE);
         let flipSided: boolean = ( material.side === BackSide );
@@ -589,19 +613,21 @@ export class WebGLState {
         this.buffers.depth.setMask(material.depthWrite);
         this.buffers.depth.setMask(material.colorWrite);
         this.setPolygonOffset(material.polygonOffset, material.polygonOffsetFactor, material.polygonOffsetUnits);
+        return this;
     }
 
-    public initAttributes(): void {
+    public initAttributes(): this {
         for (let i: number = 0, l = this.newAttributes.length; i < l; i++) {
             this.newAttributes[i] = 0;
         }
+        return this;
     }
 
-    public enableAttribute(attribute: number): void {
-        this.enableAttributeAndDivisor(attribute);
+    public enableAttribute(attribute: number): this {
+        return this.enableAttributeAndDivisor(attribute);
     }
 
-    public disableUnusedAttributes(): void {
+    public disableUnusedAttributes(): this {
         const gl: WebGLRenderingContext = this.context;
         for (let i: number = 0, l: number = this.enabledAttributes.length; i !== l; i++) {
             if (this.enabledAttributes[i] !== this.newAttributes[i]) {
@@ -609,13 +635,14 @@ export class WebGLState {
                 this.enabledAttributes[i] = 0;
             }
         }
+        return this;
     }
 
     /**
      * @param attribute
      * @param meshPerAttribute
      */
-    public enableAttributeAndDivisor(attribute: number, meshPerAttribute: number = 0): void {
+    public enableAttributeAndDivisor(attribute: number, meshPerAttribute: number = 0): this {
         this.newAttributes[attribute] = 1;
         if (this.enabledAttributes[attribute] === 0) {
             /**
@@ -650,6 +677,7 @@ export class WebGLState {
             extension.vertexAttribDivisorANGLE(attribute, meshPerAttribute);
             this.attributeDivisors[attribute] = meshPerAttribute;
         }
+        return this;
     }
 
     public getCompressedTextureFormats(): Array<number> {
@@ -677,11 +705,12 @@ export class WebGLState {
         return false;
     }
 
-    public setLineWidth(width: number): void {
+    public setLineWidth(width: number): this {
         if (width !== this.currentLineWidth) {
             if (this.lineWidthAvailable) this.context.lineWidth(width);
             this.currentLineWidth = width;
         }
+        return this;
     }
 
     /**
@@ -706,7 +735,7 @@ export class WebGLState {
      * @param factor
      * @param units
      */
-    public setPolygonOffset(polygonOffset: boolean, factor: number, units: number): void {
+    public setPolygonOffset(polygonOffset: boolean, factor: number, units: number): this {
         const gl: WebGLRenderingContext = this.context;
         if (polygonOffset) {
             this.enable(gl.POLYGON_OFFSET_FILL);
@@ -718,17 +747,19 @@ export class WebGLState {
         } else {
             this.disable(gl.POLYGON_OFFSET_FILL);
         }
+        return this;
     }
 
-    public setScissorTest(scissorTest: boolean): void {
+    public setScissorTest(scissorTest: boolean): this {
         if (scissorTest) {
             this.enable(this.context.SCISSOR_TEST);
         } else {
             this.disable(this.context.SCISSOR_TEST);
         }
+        return this;
     }
 
-    public activeTexture(slot?: number): void {
+    public activeTexture(slot?: number): this {
         const gl: WebGLRenderingContext = this.context;
         if (slot === undefined) slot = gl.TEXTURE0 + this.maxTextures - 1;
         /**
@@ -738,9 +769,10 @@ export class WebGLState {
             gl.activeTexture(slot);
             this.currentTextureSlot = slot;
         }
+        return this;
     }
 
-    public bindTexture(type: number, texture: WebGLTexture): void {
+    public bindTexture(type: number, texture: WebGLTexture): this {
         if (this.currentTextureSlot === null) {
             this.activeTexture();
         }
@@ -754,9 +786,10 @@ export class WebGLState {
             boundTexture.type = type;
             boundTexture.texture = texture;
         }
+        return this;
     }
 
-    public compressedTexImage2D(target: number, level: number, internalformat: number, width: number, height: number, border: number, data: TypedArray | null): void {
+    public compressedTexImage2D(target: number, level: number, internalformat: number, width: number, height: number, border: number, data: TypedArray | null): this {
         /**
          * 所支持压缩纹理格式数量可以查询GL_NUM_COMPRESSED_TEXTURE_FORMATS值来获取。
          * 所支持的压缩格式列表可以查询GL_COMPRESSED_TEXTURE_FORMATS值来获取。
@@ -767,11 +800,12 @@ export class WebGLState {
         } catch (error) {
             console.error(`THREE.WebGLState: ${error}`);
         }
+        return this;
     }
 
-    public texImage2D(target: number, level: number, internalformat: number, width: number, height: number, border: number, format: number, type: number, pixels: TypedArray | null): void;
-    public texImage2D(target: number, level: number, internalformat: number, format: number, type: number, pixels: ImageBitmap | ImageData | HTMLVideoElement | HTMLImageElement | HTMLCanvasElement): void;
-    public texImage2D(target: number, level: number, internalformat: number, a: number, b: number, c: any, format?: number, type?: number, pixels?: TypedArray | null) {
+    public texImage2D(target: number, level: number, internalformat: number, width: number, height: number, border: number, format: number, type: number, pixels: TypedArray | null): this;
+    public texImage2D(target: number, level: number, internalformat: number, format: number, type: number, pixels: ImageBitmap | ImageData | HTMLVideoElement | HTMLImageElement | HTMLCanvasElement): this;
+    public texImage2D(target: number, level: number, internalformat: number, a: number, b: number, c: any, format?: number, type?: number, pixels?: TypedArray | null): this {
         /**
          * 2D贴图，这里有重载是因为DOM的特殊关系，ImageBitmap | ImageData | HTMLVideoElement | HTMLImageElement | HTMLCanvasElement这些属性都有width，height属性包含在内，
          * 而border值必须为0 ㄟ( ▔, ▔ )ㄏ
@@ -812,9 +846,10 @@ export class WebGLState {
         } catch (error) {
             console.error(`THREE.WebGLState: ${error}`);
         }
+        return this;
     }
 
-    public scissor(scissor: Vector4): void {
+    public scissor(scissor: Vector4): this {
         /**
          * 对屏幕进行剪裁，x,y为起点，z,w分别表示width和height
          * 剪裁功能
@@ -823,9 +858,10 @@ export class WebGLState {
             this.context.scissor(scissor.x, scissor.y, scissor.z, scissor.w);
             this.currentScissor.copy(scissor);
         }
+        return this;
     }
 
-    public viewport(viewport: Vector4) {
+    public viewport(viewport: Vector4): this {
         /**
          * 打开窗口的整个像素矩形，x,y为起点，z,w分别表示width和height
          * 缩放功能
@@ -834,9 +870,10 @@ export class WebGLState {
             this.context.viewport(viewport.x, viewport.y, viewport.z, viewport.w);
             this.currentViewport.copy(viewport);
         }
+        return this;
     }
 
-    public reset(): void {
+    public reset(): this {
         for (let i: number = 0; i < this.enabledAttributes.length; i++) {
             if (this.enabledAttributes[i] === 1) {
                 this.context.disableVertexAttribArray(i);
@@ -854,5 +891,6 @@ export class WebGLState {
         this.buffers.color.reset();
         this.buffers.depth.reset();
         this.buffers.stencil.reset();
+        return this;
     }
 }

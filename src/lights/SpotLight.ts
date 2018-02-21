@@ -31,7 +31,7 @@ export class SpotLight extends Light {
         this.intensity = power / Math.PI;
     }
 
-    public copy(source: SpotLight): SpotLight {
+    public copy(source: SpotLight): this {
         super.copy(source);
         this.distance = source.distance;
         this.angle = source.angle;

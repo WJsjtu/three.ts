@@ -7,7 +7,7 @@ export class SpotLightShadow extends LightShadow {
         super(new PerspectiveCamera(50, 1, 0.5, 500));
     }
 
-    update(light) {
+    update(light): this {
         const camera: PerspectiveCamera = this.camera as PerspectiveCamera;
         const fov: number = MathUtil.RAD2DEG * 2 * light.angle;
         const aspect: number = this.mapSize.width / this.mapSize.height;
@@ -17,6 +17,7 @@ export class SpotLightShadow extends LightShadow {
             camera.aspect = aspect;
             camera.far = far;
         }
+        return this
     }
 
     public clone(): SpotLightShadow {

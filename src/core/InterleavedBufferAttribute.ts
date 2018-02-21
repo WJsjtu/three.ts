@@ -31,18 +31,18 @@ export class InterleavedBufferAttribute {
         if (value === true) this.version++;
     }
 
-    public setArray(array: TypedArray): InterleavedBufferAttribute {
+    public setArray(array: TypedArray): this {
         this.count = array !== undefined ? array.length / this.stride : 0;
         this.array = array;
         return this;
     }
 
-    public setDynamic(value: boolean): InterleavedBufferAttribute {
+    public setDynamic(value: boolean): this {
         this.dynamic = value;
         return this;
     }
 
-    public copy(source: InterleavedBufferAttribute): InterleavedBufferAttribute {
+    public copy(source: InterleavedBufferAttribute): this {
         this.array = (new ((source.array as any).constructor as (TypedArray) => void)(source.array)) as TypedArray;
         this.stride = source.stride;
         this.count = source.count;
@@ -50,7 +50,7 @@ export class InterleavedBufferAttribute {
         return this;
     }
 
-    public set(value: TypedArray | Array<number>, offset: number = 0): InterleavedBufferAttribute {
+    public set(value: TypedArray | Array<number>, offset: number = 0): this {
         this.array.set(value, offset);
         return this;
     }
@@ -59,7 +59,7 @@ export class InterleavedBufferAttribute {
         return this.array.slice(offset, length);
     }
 
-    public copyAt(index1: number, attribute: InterleavedBufferAttribute, index2: number): InterleavedBufferAttribute {
+    public copyAt(index1: number, attribute: InterleavedBufferAttribute, index2: number): this {
         index1 *= this.stride;
         index2 *= attribute.stride;
         for (let i: number = 0, l: number = this.stride; i < l; i++) {
@@ -72,7 +72,7 @@ export class InterleavedBufferAttribute {
         return ((new (this.constructor as (array: TypedArray, itemSize: number) => void)(this.array, this.stride)) as InterleavedBufferAttribute).copy(this);
     }
 
-    public setProperty(index: number, property: string, value: Vector2 | Vector3 | Vector4 | number): InterleavedBufferAttribute {
+    public setProperty(index: number, property: string, value: Vector2 | Vector3 | Vector4 | number): this {
         property = property.toLowerCase();
         if (property && property.length <= 4 && property.replace(/[xyzw]/g, "").length === 0) {
             const offsetMap = {x: 0, y: 1, z: 2};

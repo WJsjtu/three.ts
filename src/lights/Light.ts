@@ -18,7 +18,7 @@ export class Light extends Object3D {
         this.intensity = intensity;
     }
 
-    public copy(source: Light): Light {
+    public copy(source: Light): this {
         super.copy(source);
         this.color.copy(source.color);
         this.intensity = source.intensity;

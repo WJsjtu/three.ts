@@ -14,10 +14,11 @@ export class VideoTexture extends Texture {
         this.generateMipmaps = false;
     }
 
-    public update(): void {
+    public update(): this {
         const video: HTMLVideoElement = this.image as HTMLVideoElement;
         if (video.readyState >= video.HAVE_CURRENT_DATA) {
             this.needsUpdate = true;
         }
+        return this;
     }
 }

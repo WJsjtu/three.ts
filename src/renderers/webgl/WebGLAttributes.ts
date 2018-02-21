@@ -63,7 +63,7 @@ export class WebGLAttributes {
         };
     }
 
-    protected updateBuffer(buffer, attribute, bufferType): void {
+    protected updateBuffer(buffer, attribute, bufferType): this {
         const gl: WebGLRenderingContext = this.context;
         const array: TypedArray = attribute.array;
         const updateRange: BufferRange = attribute.updateRange;
@@ -83,22 +83,24 @@ export class WebGLAttributes {
             );
             updateRange.count = -1; // reset range
         }
+        return this;
     }
 
     public get(attribute: TypedBufferAttribute): WebGLBufferWrapper {
         return this.buffers[attribute.uuid];
     }
 
-    public remove(attribute: TypedBufferAttribute): void {
+    public remove(attribute: TypedBufferAttribute): this {
         const data = this.buffers[attribute.uuid];
         if (data) {
             const gl: WebGLRenderingContext = this.context;
             gl.deleteBuffer(data.buffer);
             delete this.buffers[attribute.uuid];
         }
+        return this;
     }
 
-    public update(attribute: TypedBufferAttribute, bufferType: number): void {
+    public update(attribute: TypedBufferAttribute, bufferType: number): this {
         const data = this.buffers[attribute.uuid];
         if (data === undefined) {
             this.buffers[attribute.uuid] = this.createBuffer(attribute, bufferType);
@@ -106,5 +108,6 @@ export class WebGLAttributes {
             this.updateBuffer(data.buffer, attribute, bufferType);
             data.version = attribute.version;
         }
+        return this;
     }
 }

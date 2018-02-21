@@ -12,7 +12,7 @@ export class Line3 {
         this.end = end;
     }
 
-    public set(start: Vector3, end: Vector3): Line3 {
+    public set(start: Vector3, end: Vector3): this {
         this.start.copy(start);
         this.end.copy(end);
         return this;
@@ -22,7 +22,7 @@ export class Line3 {
         return (new (this.constructor as () => void)() as Line3).copy(this);
     }
 
-    public copy(line: Line3): Line3 {
+    public copy(line: Line3): this {
         this.start.copy(line.start);
         this.end.copy(line.end);
         return this;
@@ -44,7 +44,7 @@ export class Line3 {
         return this.start.distanceTo(this.end);
     }
 
-    public at(t) {
+    public at(t): Vector3 {
         return this.delta().multiplyScalar(t).add(this.start);
     }
 
@@ -67,7 +67,7 @@ export class Line3 {
         return this.delta().multiplyScalar(t).add(this.start);
     }
 
-    public applyMatrix4(matrix: Matrix4): Line3 {
+    public applyMatrix4(matrix: Matrix4): this {
         this.start.applyMatrix4(matrix);
         this.end.applyMatrix4(matrix);
         return this;

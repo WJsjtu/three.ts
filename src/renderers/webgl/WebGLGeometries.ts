@@ -66,7 +66,7 @@ export class WebGLGeometries {
         return bufferGeometry;
     }
 
-    public update(geometry: BufferGeometry): void {
+    public update(geometry: BufferGeometry): this {
         const index: BufferAttribute = geometry.index;
         const geometryAttributes: { [key: string]: BufferAttribute; } = geometry.attributes;
         if (index !== null) {
@@ -83,6 +83,7 @@ export class WebGLGeometries {
                 this.attributes.update(array[i], this.context.ARRAY_BUFFER);
             }
         }
+        return this;
     }
 
     public getWireframeAttribute(geometry: BufferGeometry): BufferAttribute {

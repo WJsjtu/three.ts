@@ -15,7 +15,7 @@ export class LightShadow {
         this.camera = camera;
     }
 
-    public copy(source: LightShadow): LightShadow {
+    public copy(source: LightShadow): this {
         this.camera = source.camera.clone();
         this.bias = source.bias;
         this.radius = source.radius;

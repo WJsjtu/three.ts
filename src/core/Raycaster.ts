@@ -12,6 +12,7 @@ export interface Intersection {
     index?: number,
     face?: Face3,
     faceIndex?: number,
+    uv?: Vector2,
     distance: number,
     point: Vector3,
     object: Object3D
@@ -49,12 +50,12 @@ export class Raycaster {
         this.far = far
     }
 
-    public set(origin: Vector3, direction: Vector3): Raycaster {
+    public set(origin: Vector3, direction: Vector3): this {
         this.ray.set(origin, direction);
         return this;
     }
 
-    public setFromCamera(coords: Vector2, camera: Camera) {
+    public setFromCamera(coords: Vector2, camera: Camera): this {
         if (camera && camera instanceof PerspectiveCamera) {
             this.ray.origin.setFromMatrixPosition(camera.matrixWorld);
             this.ray.direction.set(coords.x, coords.y, 0.5);
@@ -67,6 +68,7 @@ export class Raycaster {
         } else {
             console.error(`THREE.Raycaster: Unsupported camera type.`);
         }
+        return this;
     }
 
     public intersectObject(object: Object3D, recursive: boolean = false): Array<Intersection> {

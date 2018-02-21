@@ -8,7 +8,7 @@ export class InstancedBufferAttribute extends BufferAttribute {
         this.meshPerAttribute = meshPerAttribute;
     }
 
-    copy(source: InstancedBufferAttribute): InstancedBufferAttribute {
+    copy(source: InstancedBufferAttribute): this {
         super.copy(source);
         this.meshPerAttribute = source.meshPerAttribute;
         return this;

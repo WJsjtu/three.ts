@@ -94,7 +94,7 @@ export class OrthographicCamera extends Camera {
         return this._view;
     }
 
-    public setViewOffset(fullWidth: number, fullHeight: number, x: number, y: number, width: number, height: number): OrthographicCamera {
+    public setViewOffset(fullWidth: number, fullHeight: number, x: number, y: number, width: number, height: number): this {
         this._view = {
             enabled: true,
             fullWidth: fullWidth,
@@ -107,14 +107,14 @@ export class OrthographicCamera extends Camera {
         return this.updateProjectionMatrix();
     }
 
-    public clearViewOffset(): OrthographicCamera {
+    public clearViewOffset(): this {
         if (this.view !== null) {
             this.view.enabled = false;
         }
         return this.updateProjectionMatrix();
     }
 
-    public updateProjectionMatrix(): OrthographicCamera {
+    public updateProjectionMatrix(): this {
         const dx = (this.right - this.left) / (2 * this.zoom);
         const dy = (this.top - this.bottom) / (2 * this.zoom);
         const cx = (this.right + this.left) / 2;
@@ -140,7 +140,7 @@ export class OrthographicCamera extends Camera {
         return this;
     }
 
-    public copy(source: OrthographicCamera): OrthographicCamera {
+    public copy(source: OrthographicCamera): this {
         super.copy(source);
         this._top = source.top;
         this._bottom = source.bottom;

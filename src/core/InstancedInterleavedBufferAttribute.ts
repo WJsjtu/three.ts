@@ -9,7 +9,7 @@ export class InstancedInterleavedBufferAttribute extends InterleavedBufferAttrib
         this.meshPerAttribute = meshPerAttribute;
     }
 
-    copy(source: InstancedInterleavedBufferAttribute): InstancedInterleavedBufferAttribute {
+    copy(source: InstancedInterleavedBufferAttribute): this {
         super.copy(source);
         this.meshPerAttribute = source.meshPerAttribute;
         return this;

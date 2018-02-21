@@ -172,7 +172,7 @@ export class WebGLLights {
         hemi: []
     };
 
-    public setup(lights: Array<Light>, shadows: Array<LightShadow>, camera: Camera) {
+    public setup(lights: Array<Light>, shadows: Array<LightShadow>, camera: Camera): this {
 
         const vector3: Vector3 = new Vector3();
         const matrix4: Matrix4 = new Matrix4();
@@ -318,6 +318,7 @@ export class WebGLLights {
         state.hemi.length = hemisphereLength;
 
         state.hash = [directionalLength, pointLength, spotLength, rectAreaLength, hemisphereLength, shadows.length].join(",");
-
+        
+        return this;
     }
 }

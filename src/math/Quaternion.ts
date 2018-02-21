@@ -49,7 +49,7 @@ export class Quaternion {
         this._w = _w;
     }
 
-    public set(x: number, y: number, z: number, w: number): Quaternion {
+    public set(x: number, y: number, z: number, w: number): this {
         this._x = x;
         this._y = y;
         this._z = z;
@@ -57,7 +57,7 @@ export class Quaternion {
         return this;
     }
 
-    public copy(quaternion: Quaternion): Quaternion {
+    public copy(quaternion: Quaternion): this {
         return this.set(
             quaternion.x,
             quaternion.y,
@@ -66,7 +66,7 @@ export class Quaternion {
         );
     }
 
-    public setFromEuler(euler: Euler): Quaternion {
+    public setFromEuler(euler: Euler): this {
         const {x, y, z, order} = euler;
 
         const cos = Math.cos;
@@ -133,7 +133,7 @@ export class Quaternion {
      * @param angle
      * @returns {Quaternion}
      */
-    public setFromAxisAngle(axis: Vector3, angle: number): Quaternion {
+    public setFromAxisAngle(axis: Vector3, angle: number): this {
         const halfAngle = angle / 2, s = Math.sin(halfAngle);
         return this.set(
             axis.x * s,
@@ -149,7 +149,7 @@ export class Quaternion {
      * @param m
      * @returns {Quaternion}
      */
-    public setFromRotationMatrix(m: Matrix4): Quaternion {
+    public setFromRotationMatrix(m: Matrix4): this {
 
         const te = m.toArray(),
 
@@ -202,7 +202,7 @@ export class Quaternion {
      * @param vTo
      * @returns {Quaternion}
      */
-    public setFromUnitVectors(vFrom: Vector3, vTo: Vector3): Quaternion {
+    public setFromUnitVectors(vFrom: Vector3, vTo: Vector3): this {
         const vec: Vector3 = new Vector3();
         const EPS: number = 0.000001;
         let r: number = vFrom.dot(vTo) + 1;
@@ -223,11 +223,11 @@ export class Quaternion {
         return this.normalize();
     }
 
-    public inverse(): Quaternion {
+    public inverse(): this {
         return this.conjugate().normalize();
     }
 
-    public conjugate() {
+    public conjugate(): this {
         return this.set(
             this.x * -1,
             this.y * -1,
@@ -249,7 +249,7 @@ export class Quaternion {
         return Math.sqrt(this.lengthSquared());
     }
 
-    public normalize() {
+    public normalize(): this {
         let l = this.length();
         if (l === 0) {
             return this.set(0, 0, 0, 1);
@@ -259,11 +259,11 @@ export class Quaternion {
         }
     }
 
-    public multiply(quaternion: Quaternion): Quaternion {
+    public multiply(quaternion: Quaternion): this {
         return this.multiplyQuaternions(this, quaternion);
     }
 
-    public premultiply(quaternion: Quaternion): Quaternion {
+    public premultiply(quaternion: Quaternion): this {
         return this.multiplyQuaternions(quaternion, this);
     }
 
@@ -273,7 +273,7 @@ export class Quaternion {
      * @param b
      * @returns {Quaternion}
      */
-    public multiplyQuaternions(a: Quaternion, b: Quaternion): Quaternion {
+    public multiplyQuaternions(a: Quaternion, b: Quaternion): this {
         const qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
         const qbx = b.x, qby = b.y, qbz = b.z, qbw = b.w;
         return this.set(
@@ -291,7 +291,7 @@ export class Quaternion {
      * @param t
      * @returns {Quaternion}
      */
-    public slerp(qb: Quaternion, t: number): Quaternion {
+    public slerp(qb: Quaternion, t: number): this {
 
         if (t === 0) return this;
         if (t === 1) return this.copy(qb);
@@ -339,7 +339,7 @@ export class Quaternion {
         return (quaternion.x === x ) && ( quaternion.y === y ) && ( quaternion.z === z ) && ( quaternion.w === w);
     }
 
-    public fromArray(array: Array<number>, offset: number = 0): Quaternion {
+    public fromArray(array: Array<number>, offset: number = 0): this {
         return this.set(
             array[offset],
             array[offset + 1],

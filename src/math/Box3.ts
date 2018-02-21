@@ -13,13 +13,13 @@ export class Box3 {
         this.min = min;
     }
 
-    public set(min: Vector3, max: Vector3): Box3 {
+    public set(min: Vector3, max: Vector3): this {
         this.min.copy(min);
         this.max.copy(max);
         return this;
     }
 
-    public setFromArray(array: Array<number>): Box3 {
+    public setFromArray(array: Array<number>): this {
         let minX: number = +Infinity, minY: number = +Infinity, minZ: number = +Infinity;
         let maxX: number = -Infinity, maxY: number = -Infinity, maxZ: number = -Infinity;
         for (let i: number = 0, l: number = array.length; i < l; i += 3) {
@@ -36,7 +36,7 @@ export class Box3 {
         return this;
     }
 
-    public setFromPoints(points: Array<Vector3>): Box3 {
+    public setFromPoints(points: Array<Vector3>): this {
         this.makeEmpty();
         for (let i: number = 0, il: number = points.length; i < il; i++) {
             this.expandByPoint(points[i]);
@@ -44,15 +44,14 @@ export class Box3 {
         return this;
     }
 
-    setFromCenterAndSize(center: Vector3, size: Vector3): Box3 {
+    setFromCenterAndSize(center: Vector3, size: Vector3): this {
         const halfSize: Vector3 = new Vector3().copy(size).multiplyScalar(0.5);
         this.min.copy(center).sub(halfSize);
         this.max.copy(center).add(halfSize);
         return this;
     }
 
-
-    public setFromObject(object: Object3D) {
+    public setFromObject(object: Object3D): this{
         this.makeEmpty();
         return this.expandByObject(object);
     }
@@ -61,13 +60,13 @@ export class Box3 {
         return (new (this.constructor as () => void)() as Box3).copy(this);
     }
 
-    public copy(box: Box3): Box3 {
+    public copy(box: Box3): this {
         this.min.copy(box.min);
         this.max.copy(box.max);
         return this;
     }
 
-    public makeEmpty(): Box3 {
+    public makeEmpty(): this {
         this.min.x = this.min.y = this.min.z = +Infinity;
         this.max.x = this.max.y = this.max.z = -Infinity;
         return this;
@@ -93,19 +92,19 @@ export class Box3 {
 
     }
 
-    public expandByPoint(point: Vector3): Box3 {
+    public expandByPoint(point: Vector3): this {
         this.min.min(point);
         this.max.max(point);
         return this;
     }
 
-    public expandByVector(vector: Vector3): Box3 {
+    public expandByVector(vector: Vector3): this {
         this.min.sub(vector);
         this.max.add(vector);
         return this;
     }
 
-    public expandByScalar(scalar: number): Box3 {
+    public expandByScalar(scalar: number): this {
         this.min.addScalar(-scalar);
         this.max.addScalar(scalar);
         return this;
@@ -116,7 +115,7 @@ export class Box3 {
      * @param object
      * @returns {Box3}
      */
-    public expandByObject(object: Object3D): Box3 {
+    public expandByObject(object: Object3D): this {
         return this;
     }
 
@@ -229,7 +228,7 @@ export class Box3 {
         return result;
     }
 
-    public intersect(box: Box3): Box3 {
+    public intersect(box: Box3): this {
         this.min.max(box.min);
         this.max.min(box.max);
         // ensure that if there is no overlap, the result is fully empty, not slightly empty with non-inf/+inf values that will cause subsequence intersects to erroneously return valid values.
@@ -237,13 +236,13 @@ export class Box3 {
         return this;
     }
 
-    public union(box: Box3): Box3 {
+    public union(box: Box3): this {
         this.min.min(box.min);
         this.max.max(box.max);
         return this;
     }
 
-    public applyMatrix4(matrix: Matrix4): Box3 {
+    public applyMatrix4(matrix: Matrix4): this {
         // transform of empty box is an empty box.
         if (this.isEmpty()) return this;
         const points: Array<Vector3> = [
@@ -269,7 +268,7 @@ export class Box3 {
         return this;
     }
 
-    public translate(offset: Vector3): Box3 {
+    public translate(offset: Vector3): this {
         this.min.add(offset);
         this.max.add(offset);
         return this;

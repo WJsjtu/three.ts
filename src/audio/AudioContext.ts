@@ -1,6 +1,6 @@
 export class AudioContextWrapper {
 
-    public static context: AudioContext;
+    public static context: AudioContext | undefined = undefined;
 
     public static getContext(): AudioContext {
         if (AudioContextWrapper.context === undefined) {

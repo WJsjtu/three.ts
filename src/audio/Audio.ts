@@ -32,7 +32,7 @@ export class AudioWrapper extends Object3D {
         return (this.gain as AudioNode);
     }
 
-    public setNodeSource(audioNode): AudioWrapper {
+    public setNodeSource(audioNode): this {
         this.hasPlaybackControl = false;
         this.source = audioNode;
         this.sourceType = "audioNode";
@@ -40,14 +40,14 @@ export class AudioWrapper extends Object3D {
         return this;
     }
 
-    public setBuffer(audioBuffer: AudioBuffer): AudioWrapper {
+    public setBuffer(audioBuffer: AudioBuffer): this {
         this.buffer = audioBuffer;
         this.sourceType = "buffer";
         if (this.autoplay) this.play();
         return this;
     }
 
-    public play(): AudioWrapper {
+    public play(): this {
         if (this.isPlaying === true) {
             console.warn(`THREE.Audio: Audio is already playing.`);
             return;
@@ -71,7 +71,7 @@ export class AudioWrapper extends Object3D {
         return this.connect();
     }
 
-    public pause(): AudioWrapper {
+    public pause(): this {
         if (this.hasPlaybackControl === false) {
             console.warn(`THREE.Audio: this Audio has no playback control.`);
             return;
@@ -84,7 +84,7 @@ export class AudioWrapper extends Object3D {
         return this;
     }
 
-    public stop(): AudioWrapper {
+    public stop(): this {
         if (this.hasPlaybackControl === false) {
             console.warn(`THREE.Audio: this Audio has no playback control.`);
             return;
@@ -96,7 +96,7 @@ export class AudioWrapper extends Object3D {
         return this;
     }
 
-    public connect(): AudioWrapper {
+    public connect(): this {
         if (this.filters.length > 0) {
             this.source.connect(this.filters[0]);
             for (let i: number = 1, l: number = this.filters.length; i < l; i++) {
@@ -109,7 +109,7 @@ export class AudioWrapper extends Object3D {
         return this;
     }
 
-    public disconnect(): AudioWrapper {
+    public disconnect(): this {
         if (this.filters.length > 0) {
             this.source.disconnect(this.filters[0]);
             for (let i: number = 1, l: number = this.filters.length; i < l; i++) {
@@ -126,7 +126,7 @@ export class AudioWrapper extends Object3D {
         return this.filters;
     }
 
-    public setFilters(value: Array<AudioNode> = []): AudioWrapper {
+    public setFilters(value: Array<AudioNode> = []): this {
         if (this.isPlaying === true) {
             this.disconnect();
             this.filters = value;
@@ -141,11 +141,11 @@ export class AudioWrapper extends Object3D {
         return this.getFilters()[0];
     }
 
-    public setFilter(filter: AudioNode): AudioWrapper {
+    public setFilter(filter: AudioNode): this {
         return this.setFilters(filter ? [filter] : []);
     }
 
-    public setPlaybackRate(value: number): AudioWrapper {
+    public setPlaybackRate(value: number): this {
         if (this.hasPlaybackControl === false) {
             console.warn(`THREE.Audio: this Audio has no playback control.`);
             return;
@@ -173,7 +173,7 @@ export class AudioWrapper extends Object3D {
         return this.loop;
     }
 
-    public setLoop(value: boolean): AudioWrapper {
+    public setLoop(value: boolean): this {
         if (this.hasPlaybackControl === false) {
             console.warn(`THREE.Audio: this Audio has no playback control.`);
             return;
@@ -189,7 +189,7 @@ export class AudioWrapper extends Object3D {
         return this.gain.gain.value;
     }
 
-    public setVolume(value: number): AudioWrapper {
+    public setVolume(value: number): this {
         this.gain.gain.value = value;
         return this;
     }

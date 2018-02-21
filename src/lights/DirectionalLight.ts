@@ -13,7 +13,7 @@ export class DirectionalLight extends Light {
         this.position = Object3D.DefaultUp.clone();
     }
 
-    public copy(source: DirectionalLight): DirectionalLight {
+    public copy(source: DirectionalLight): this {
         super.copy(source);
         this.target = source.target.clone();
         this.shadow = source.shadow.clone();

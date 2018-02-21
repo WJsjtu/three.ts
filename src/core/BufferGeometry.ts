@@ -38,7 +38,7 @@ export class BufferGeometry extends EventDispatcher {
 
     public drawRange: DrawRange = {start: 0, count: Infinity};
 
-    public setIndex(index: Array<number> | BufferAttribute): BufferGeometry {
+    public setIndex(index: Array<number> | BufferAttribute): this {
         if (Array.isArray(index)) {
             this.index = new (arrayMax(index) > 65535 ? Uint32BufferAttribute : Uint16BufferAttribute)(index, 1);
         } else {
@@ -47,7 +47,7 @@ export class BufferGeometry extends EventDispatcher {
         return this;
     }
 
-    public addAttribute(name: string, attribute: BufferAttribute): BufferGeometry {
+    public addAttribute(name: string, attribute: BufferAttribute): this {
         if (name === "index") {
             this.setIndex(attribute);
             return this;
@@ -60,12 +60,12 @@ export class BufferGeometry extends EventDispatcher {
         return this.attributes[name];
     }
 
-    public removeAttribute(name: string): BufferGeometry {
+    public removeAttribute(name: string): this {
         delete this.attributes[name];
         return this;
     }
 
-    public addGroup(start: number, count: number, materialIndex: number = 0): BufferGeometry {
+    public addGroup(start: number, count: number, materialIndex: number = 0): this {
         this.groups.push({
             start: start,
             count: count,
@@ -74,18 +74,18 @@ export class BufferGeometry extends EventDispatcher {
         return this;
     }
 
-    public clearGroups(): BufferGeometry {
+    public clearGroups(): this {
         this.groups = [];
         return this;
     }
 
-    public setDrawRange(start: number, count: number): BufferGeometry {
+    public setDrawRange(start: number, count: number): this {
         this.drawRange.start = start;
         this.drawRange.count = count;
         return this;
     }
 
-    public applyMatrix(matrix: Matrix4): BufferGeometry {
+    public applyMatrix(matrix: Matrix4): this {
         const position: BufferAttribute = this.attributes.position;
         if (position !== undefined) {
             applyMatrixToBufferAttribute(matrix, position);
@@ -106,27 +106,27 @@ export class BufferGeometry extends EventDispatcher {
         return this;
     }
 
-    public rotateX(angle: number): BufferGeometry {
+    public rotateX(angle: number): this {
         return this.applyMatrix(new Matrix4().makeRotationX(angle));
     }
 
-    public rotateY(angle: number): BufferGeometry {
+    public rotateY(angle: number): this {
         return this.applyMatrix(new Matrix4().makeRotationY(angle));
     }
 
-    public rotateZ(angle: number): BufferGeometry {
+    public rotateZ(angle: number): this {
         return this.applyMatrix(new Matrix4().makeRotationZ(angle));
     }
 
-    public translate(x: number, y: number, z: number): BufferGeometry {
+    public translate(x: number, y: number, z: number): this {
         return this.applyMatrix(new Matrix4().makeTranslation(x, y, z));
     }
 
-    public scale(x: number, y: number, z: number): BufferGeometry {
+    public scale(x: number, y: number, z: number): this {
         return this.applyMatrix(new Matrix4().makeScale(x, y, z));
     }
 
-    public lookAt(vector: Vector3): BufferGeometry {
+    public lookAt(vector: Vector3): this {
         return this.applyMatrix(new Object3D().lookAt(vector).matrix);
     }
 
@@ -141,11 +141,11 @@ export class BufferGeometry extends EventDispatcher {
      * TODO setFromObject
      * @param object
      */
-    public setFromObject(object: Object3D): BufferGeometry {
+    public setFromObject(object: Object3D): this {
         return this;
     }
 
-    public setFromPoints(points: Array<Vector3>): BufferGeometry {
+    public setFromPoints(points: Array<Vector3>): this {
         const position: Array<number> = [];
         for (let i: number = 0, l: number = points.length; i < l; i++) {
             const point: Vector3 = points[i];
@@ -160,16 +160,16 @@ export class BufferGeometry extends EventDispatcher {
      * @param object
      * @returns {BufferGeometry}
      */
-    public updateFromObject(object: Object3D): BufferGeometry {
+    public updateFromObject(object: Object3D): this {
         return this;
     }
 
-    public fromGeometry(geometry: Geometry): BufferGeometry {
+    public fromGeometry(geometry: Geometry): this {
         geometry.directGeometry = new DirectGeometry().fromGeometry(geometry);
         return this.fromDirectGeometry(geometry.directGeometry);
     }
 
-    public fromDirectGeometry(geometry: DirectGeometry): BufferGeometry {
+    public fromDirectGeometry(geometry: DirectGeometry): this {
         const positions: Float32Array = new Float32Array(geometry.vertices.length * 3);
         this.addAttribute("position", new BufferAttribute(positions, 3).copyVector3sArray(geometry.vertices));
         if (geometry.normals.length > 0) {
@@ -389,7 +389,7 @@ export class BufferGeometry extends EventDispatcher {
         return (new (this.constructor as () => void)() as BufferGeometry).copy(this);
     }
 
-    public copy(source): BufferGeometry {
+    public copy(source): this {
         // reset
         this.index = null;
         this.attributes = {};

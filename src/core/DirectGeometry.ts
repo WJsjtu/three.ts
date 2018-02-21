@@ -76,7 +76,7 @@ export class DirectGeometry {
         this.groups = groups;
     }
 
-    public fromGeometry(geometry: Geometry): DirectGeometry {
+    public fromGeometry(geometry: Geometry): this {
         const faces: Array<GeometryFace> = geometry.faces;
         const vertices: Array<Vector3> = geometry.vertices;
         const faceVertexUvs: Array<Array<Array<Vector2>>> = geometry.faceVertexUvs;

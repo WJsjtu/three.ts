@@ -96,8 +96,8 @@ export class Texture extends EventDispatcher {
         this.dispatchEvent({type: "dispose"});
     }
 
-    public transformUv(uv: Vector2): void {
-        if (this.mapping !== UVMapping) return;
+    public transformUv(uv: Vector2): this {
+        if (this.mapping !== UVMapping) return this;
         uv.applyMatrix3(this.matrix);
         if (uv.x < 0 || uv.x > 1) {
             switch (this.wrapS) {
@@ -137,13 +137,14 @@ export class Texture extends EventDispatcher {
         if (this.flipY) {
             uv.y = 1 - uv.y;
         }
+        return this;
     }
 
     public clone(): Texture {
         return (new (this.constructor as () => void)() as Texture).copy(this);
     }
 
-    public copy(source: Texture): Texture {
+    public copy(source: Texture): this {
         this.name = source.name;
         this.image = source.image;
         this.mipmaps = source.mipmaps.slice(0);

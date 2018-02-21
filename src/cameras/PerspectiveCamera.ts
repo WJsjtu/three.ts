@@ -111,7 +111,7 @@ export class PerspectiveCamera extends Camera {
      * @param focalLength
      * @returns {PerspectiveCamera}
      */
-    public setFocalLength(focalLength: number): PerspectiveCamera {
+    public setFocalLength(focalLength: number): this {
         const vExtentSlope = 0.5 * this.getFilmHeight() / focalLength;
         this._fov = MathUtil.RAD2DEG * 2 * Math.atan(vExtentSlope);
         return this.updateProjectionMatrix();
@@ -177,7 +177,7 @@ export class PerspectiveCamera extends Camera {
      *
      *   Note there is no reason monitors have to be the same size or in a grid.
      */
-    public setViewOffset(fullWidth: number, fullHeight: number, x: number, y: number, width: number, height: number): PerspectiveCamera {
+    public setViewOffset(fullWidth: number, fullHeight: number, x: number, y: number, width: number, height: number): this {
         this._view = {
             enabled: true,
             fullWidth: fullWidth,
@@ -190,14 +190,14 @@ export class PerspectiveCamera extends Camera {
         return this.updateProjectionMatrix();
     }
 
-    public clearViewOffset(): PerspectiveCamera {
+    public clearViewOffset(): this {
         if (this.view !== null) {
             this.view.enabled = false;
         }
         return this.updateProjectionMatrix();
     }
 
-    public updateProjectionMatrix(): PerspectiveCamera {
+    public updateProjectionMatrix(): this {
         const near: number = this.near;
         let top: number = near * Math.tan(MathUtil.DEG2RAD * 0.5 * this.fov) / this.zoom;
         let height: number = 2 * top;
@@ -218,7 +218,7 @@ export class PerspectiveCamera extends Camera {
         return this;
     }
 
-    public copy(source: PerspectiveCamera): PerspectiveCamera {
+    public copy(source: PerspectiveCamera): this {
         super.copy(source);
         this._fov = source.fov;
         this._zoom = source.zoom;

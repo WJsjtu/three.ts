@@ -61,7 +61,7 @@ export class Euler {
         this._z = _z;
     }
 
-    public set(x: number, y: number, z: number, order: EulerOrder): Euler {
+    public set(x: number, y: number, z: number, order: EulerOrder): this {
         this._x = x;
         this._y = y;
         this._z = z;
@@ -69,7 +69,7 @@ export class Euler {
         return this;
     }
 
-    public copy(euler: Euler): Euler {
+    public copy(euler: Euler): this {
         return this.set(
             euler.x,
             euler.y,
@@ -84,7 +84,7 @@ export class Euler {
      * @param order
      * @returns {Euler}
      */
-    public setFromRotationMatrix(m: Matrix4, order: EulerOrder = this.order): Euler {
+    public setFromRotationMatrix(m: Matrix4, order: EulerOrder = this.order): this {
         const clamp: (value: number, min: number, max: number) => number = MathUtil.clamp;
         const te: Array<number> = m.toArray();
         const m11: number = te[0], m12: number = te[4], m13: number = te[8];
@@ -150,7 +150,7 @@ export class Euler {
         return this;
     }
 
-    public setFromQuaternion(q: Quaternion, order: EulerOrder) {
+    public setFromQuaternion(q: Quaternion, order: EulerOrder): this {
         const matrix: Matrix4 = new Matrix4();
         matrix.makeRotationFromQuaternion(q);
         return this.setFromRotationMatrix(matrix, order);
@@ -161,21 +161,21 @@ export class Euler {
      * @param newOrder
      * @returns {Euler}
      */
-    public reorder(newOrder: EulerOrder) {
+    public reorder(newOrder: EulerOrder): this {
         const q: Quaternion = new Quaternion();
         q.setFromEuler(this);
         return this.setFromQuaternion(q, newOrder);
     }
 
-    public equals(euler: Euler) {
+    public equals(euler: Euler): boolean {
         return (euler.x === this.x) && (euler.y === this.y) && (euler.z === this.z) && (euler.order === this.order);
     }
 
-    public fromArray(array: [number, number, number] | [number, number, number, EulerOrder]) {
+    public fromArray(array: [number, number, number] | [number, number, number, EulerOrder]): this {
         return this.set(array[0], array[1], array[2], array[3] || this.order);
     }
 
-    public toArray(array: Array<any> = [], offset: number = 0) {
+    public toArray(array: Array<any> = [], offset: number = 0): Array<any> {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         array[offset + 2] = this.z;

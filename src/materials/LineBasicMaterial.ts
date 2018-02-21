@@ -22,7 +22,7 @@ export class LineBasicMaterial extends Material {
         this.setValues(parameters);
     }
 
-    public copy(source: LineBasicMaterial): LineBasicMaterial {
+    public copy(source: LineBasicMaterial): this {
         super.copy(source);
         this.color.copy(source.color);
         this.linewidth = source.linewidth;

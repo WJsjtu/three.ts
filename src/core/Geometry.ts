@@ -73,7 +73,7 @@ export class Geometry extends EventDispatcher {
 
     public directGeometry?: DirectGeometry;
 
-    public applyMatrix(matrix: Matrix4) {
+    public applyMatrix(matrix: Matrix4): this {
         const normalMatrix: Matrix3 = new Matrix3().getNormalMatrix(matrix);
         for (let i: number = 0, il: number = this.vertices.length; i < il; i++) {
             this.vertices[i].applyMatrix4(matrix);
@@ -96,31 +96,31 @@ export class Geometry extends EventDispatcher {
         return this;
     }
 
-    public rotateX(angle: number): Geometry {
+    public rotateX(angle: number): this {
         return this.applyMatrix(new Matrix4().makeRotationX(angle));
     }
 
-    public rotateY(angle: number): Geometry {
+    public rotateY(angle: number): this {
         return this.applyMatrix(new Matrix4().makeRotationY(angle));
     }
 
-    public rotateZ(angle: number): Geometry {
+    public rotateZ(angle: number): this {
         return this.applyMatrix(new Matrix4().makeRotationZ(angle));
     }
 
-    public translate(x: number, y: number, z: number): Geometry {
+    public translate(x: number, y: number, z: number): this {
         return this.applyMatrix(new Matrix4().makeTranslation(x, y, z));
     }
 
-    public scale(x: number, y: number, z: number): Geometry {
+    public scale(x: number, y: number, z: number): this {
         return this.applyMatrix(new Matrix4().makeScale(x, y, z));
     }
 
-    public lookAt(vector: Vector3): Geometry {
+    public lookAt(vector: Vector3): this {
         return this.applyMatrix(new Object3D().lookAt(vector).matrix);
     }
 
-    public fromBufferGeometry(geometry: BufferGeometry): Geometry {
+    public fromBufferGeometry(geometry: BufferGeometry): this {
         const indices: TypedArray = geometry.index !== null ? geometry.index.array : undefined;
         const attributes: { [key: string]: BufferAttribute; } = geometry.attributes;
         const positions: TypedArray = attributes.position.array;
@@ -204,7 +204,7 @@ export class Geometry extends EventDispatcher {
         return offset;
     }
 
-    public normalize() {
+    public normalize(): this {
         this.computeBoundingSphere();
         const center: Vector3 = this.boundingSphere.center;
         const radius: number = this.boundingSphere.radius;
@@ -219,7 +219,7 @@ export class Geometry extends EventDispatcher {
         return this.applyMatrix(matrix);
     }
 
-    public computeFaceNormals(): void {
+    public computeFaceNormals(): this {
         const cb: Vector3 = new Vector3(), ab: Vector3 = new Vector3();
         for (let f: number = 0, fl: number = this.faces.length; f < fl; f++) {
             const face: GeometryFace = this.faces[f];
@@ -232,9 +232,10 @@ export class Geometry extends EventDispatcher {
             cb.normalize();
             face.normal.copy(cb);
         }
+        return this;
     }
 
-    public computeVertexNormals(areaWeighted: boolean = true): void {
+    public computeVertexNormals(areaWeighted: boolean = true): this {
         const vertices: Array<Vector3> = new Array(this.vertices.length);
         for (let v: number = 0, vl: number = this.vertices.length; v < vl; v++) {
             vertices[v] = new Vector3();
@@ -282,9 +283,10 @@ export class Geometry extends EventDispatcher {
         if (this.faces.length > 0) {
             this.normalsNeedUpdate = true;
         }
+        return this;
     }
 
-    public computeFlatVertexNormals(): void {
+    public computeFlatVertexNormals(): this {
         this.computeFaceNormals();
         for (let f: number = 0, fl: number = this.faces.length; f < fl; f++) {
             const face: GeometryFace = this.faces[f];
@@ -302,9 +304,10 @@ export class Geometry extends EventDispatcher {
         if (this.faces.length > 0) {
             this.normalsNeedUpdate = true;
         }
+        return this;
     }
 
-    public computeMorphNormals(): void {
+    public computeMorphNormals(): this {
         // save original normals
         // - create temp variables on first access
         //   otherwise just copy (for faster repeated calls)
@@ -367,9 +370,10 @@ export class Geometry extends EventDispatcher {
             face.normal = face.originalFaceNormal;
             face.vertexNormals = face.originalVertexNormals;
         }
+        return this;
     }
 
-    public computeLineDistances(): void {
+    public computeLineDistances(): this {
         let d: number = 0;
         const vertices: Array<Vector3> = this.vertices;
         for (let i: number = 0, il: number = vertices.length; i < il; i++) {
@@ -378,23 +382,26 @@ export class Geometry extends EventDispatcher {
             }
             this.lineDistances[i] = d;
         }
+        return this;
     }
 
-    public computeBoundingBox(): void {
+    public computeBoundingBox(): this {
         if (this.boundingBox === null) {
             this.boundingBox = new Box3();
         }
         this.boundingBox.setFromPoints(this.vertices);
+        return this;
     }
 
-    public computeBoundingSphere(): void {
+    public computeBoundingSphere(): this {
         if (this.boundingSphere === null) {
             this.boundingSphere = new Sphere();
         }
         this.boundingSphere.setFromPoints(this.vertices);
+        return this;
     }
 
-    public merge(geometry: Geometry, matrix?: Matrix4, materialIndexOffset: number = 0): void {
+    public merge(geometry: Geometry, matrix?: Matrix4, materialIndexOffset: number = 0): this {
         let normalMatrix: Matrix3;
         const vertexOffset: number = this.vertices.length,
             thisVertices = this.vertices,
@@ -452,6 +459,7 @@ export class Geometry extends EventDispatcher {
             }
             thisUvs.push(uvCopy);
         }
+        return this;
     }
 
     //TODO mergeMesh
@@ -527,7 +535,7 @@ export class Geometry extends EventDispatcher {
         return diff;
     }
 
-    public setFromPoints(points: Array<Vector3>): Geometry {
+    public setFromPoints(points: Array<Vector3>): this {
         this.vertices = [];
         for (let i: number = 0, l: number = points.length; i < l; i++) {
             const point: Vector3 = points[i];
@@ -536,7 +544,7 @@ export class Geometry extends EventDispatcher {
         return this;
     }
 
-    public sortFacesByMaterialIndex(): void {
+    public sortFacesByMaterialIndex(): this {
         const faces: Array<GeometryFace> = this.faces;
         const length: number = faces.length;
         // tag faces
@@ -561,9 +569,10 @@ export class Geometry extends EventDispatcher {
         }
         if (newUvs1) this.faceVertexUvs[0] = newUvs1;
         if (newUvs2) this.faceVertexUvs[1] = newUvs2;
+        return this;
     }
 
-    public copy(source: Geometry): Geometry {
+    public copy(source: Geometry): this {
         // reset
         this.vertices = [];
         this.colors = [];

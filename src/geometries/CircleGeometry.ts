@@ -32,7 +32,7 @@ export class CircleBufferGeometry extends BufferGeometry {
     public readonly type: string = "CircleBufferGeometry";
     public parameters: CircleGeometryParameters;
 
-    constructor(radius: number = 1, segments: number = 8, thetaStart: number = 0, thetaLength: number = Math.PI * 2) {
+    constructor(radius: number = 1, segments: number | undefined = undefined, thetaStart: number = 0, thetaLength: number = Math.PI * 2) {
         super();
         this.parameters = {
             radius: radius,

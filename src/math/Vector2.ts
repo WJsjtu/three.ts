@@ -41,77 +41,77 @@ export class Vector2 {
         this._y = y;
     }
 
-    public set(x: number, y: number): Vector2 {
+    public set(x: number, y: number): this {
         this._x = x;
         this._y = y;
         return this;
     }
 
-    public setScalar(scalar: number): Vector2 {
+    public setScalar(scalar: number): this {
         return this.set(scalar, scalar);
     }
 
-    public copy(v: Vector2): Vector2 {
+    public copy(v: Vector2): this {
         return this.set(v.x, v.y);
     }
 
-    public add(v: Vector2): Vector2 {
+    public add(v: Vector2): this {
         return this.set(
             this.x + v.x,
             this.y + v.y
         );
     }
 
-    public addScalar(s: number): Vector2 {
+    public addScalar(s: number): this {
         return this.set(
             this.x + s,
             this.y + s
         );
     }
 
-    public sub(v: Vector2): Vector2 {
+    public sub(v: Vector2): this {
         return this.set(
             this.x - v.x,
             this.y - v.y
         );
     }
 
-    public subScalar(s: number): Vector2 {
+    public subScalar(s: number): this {
         return this.set(
             this.x - s,
             this.y - s
         );
     }
 
-    public multiply(v: Vector2): Vector2 {
+    public multiply(v: Vector2): this {
         return this.set(
             this.x * v.x,
             this.y * v.y
         );
     }
 
-    public multiplyScalar(s: number): Vector2 {
+    public multiplyScalar(s: number): this {
         return this.set(
             this.x * s,
             this.y * s
         );
     }
 
-    public divide(v: Vector2): Vector2 {
+    public divide(v: Vector2): this {
         return this.set(
             this.x / v.x,
             this.y / v.y
         );
     }
 
-    public divideScalar(s: number): Vector2 {
+    public divideScalar(s: number): this {
         return this.set(
             this.x / s,
             this.y / s
         );
     }
 
-    public applyMatrix3(m: Matrix3): Vector2 {
+    public applyMatrix3(m: Matrix3): this {
         const x: number = this.x, y: number = this.y;
         const e: Array<number> = m.toArray();
         return this.set(
@@ -120,14 +120,14 @@ export class Vector2 {
         );
     }
 
-    public clamp(min, max) {
+    public clamp(min, max): this {
         return this.set(
             Math.max(min.x, Math.min(max.x, this.x)),
             Math.max(min.y, Math.min(max.y, this.y))
         );
     }
 
-    public negate(): Vector2 {
+    public negate(): this {
         return this.set(
             -this.x,
             -this.y
@@ -150,22 +150,22 @@ export class Vector2 {
         return Math.abs(this.x) + Math.abs(this.y);
     }
 
-    public normalize(): Vector2 {
+    public normalize(): this {
         return this.divideScalar(this.length() || 1);
     }
 
-    public setLength(length: number): Vector2 {
+    public setLength(length: number): this {
         return this.normalize().multiplyScalar(length);
     }
 
-    public lerp(v: Vector2, alpha: number): Vector2 {
+    public lerp(v: Vector2, alpha: number): this {
         return this.set(
             this.x + ( v.x - this.x ) * alpha,
             this.y + ( v.y - this.y ) * alpha
         );
     }
 
-    public lerpVectors(v1: Vector2, v2: Vector2, alpha: number): Vector2 {
+    public lerpVectors(v1: Vector2, v2: Vector2, alpha: number): this {
         return this.copy(v2).sub(v1).multiplyScalar(alpha).add(v1);
     }
 
@@ -173,7 +173,7 @@ export class Vector2 {
         return (v.x === this.x) && (v.y === this.y);
     }
 
-    public fromArray(array: Array<number>, offset: number = 0): Vector2 {
+    public fromArray(array: Array<number>, offset: number = 0): this {
         return this.set(
             array[offset],
             array[offset + 1]
@@ -186,7 +186,7 @@ export class Vector2 {
         return array;
     }
 
-    public rotateAround(center: Vector2, angle: number): Vector2 {
+    public rotateAround(center: Vector2, angle: number): this {
         const c: number = Math.cos(angle), s: number = Math.sin(angle);
         const x: number = this.x - center.x;
         const y: number = this.y - center.y;

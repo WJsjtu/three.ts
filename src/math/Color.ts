@@ -169,21 +169,21 @@ export class Color {
     public g: number = 1;
     public b: number = 1;
 
-    public copy(color: Color): Color {
+    public copy(color: Color): this {
         this.r = color.r;
         this.g = color.g;
         this.b = color.b;
         return this;
     }
 
-    public setScalar(scalar: number): Color {
+    public setScalar(scalar: number): this {
         this.r = scalar;
         this.g = scalar;
         this.b = scalar;
         return this;
     }
 
-    public setHex(hex: number): Color {
+    public setHex(hex: number): this {
         hex = Math.floor(hex);
         this.r = ( hex >> 16 & 255 ) / 255;
         this.g = ( hex >> 8 & 255 ) / 255;
@@ -191,7 +191,7 @@ export class Color {
         return this;
     }
 
-    public setRGB(r: number, g: number, b: number): Color {
+    public setRGB(r: number, g: number, b: number): this {
         this.r = r;
         this.g = g;
         this.b = b;
@@ -206,7 +206,7 @@ export class Color {
      * @param l
      * @returns {Color}
      */
-    public setHSL(h: number, s: number, l: number): Color {
+    public setHSL(h: number, s: number, l: number): this {
         // h,s,l ranges are in 0.0 - 1.0
         h = MathUtil.euclideanModulo(h, 1);
         s = MathUtil.clamp(s, 0, 1);
@@ -223,7 +223,7 @@ export class Color {
         return this;
     }
 
-    public setStyle(style: string): Color {
+    public setStyle(style: string): this {
 
         let matches;
         /**
@@ -301,7 +301,7 @@ export class Color {
         return this;
     }
 
-    public convertGammaToLinear(color: Color, gammaFactor: number = 2.0): Color {
+    public convertGammaToLinear(color: Color, gammaFactor: number = 2.0): this {
         return this.setRGB(
             Math.pow(color.r, gammaFactor),
             Math.pow(color.g, gammaFactor),
@@ -309,7 +309,7 @@ export class Color {
         );
     }
 
-    public convertLinearToGamma(color: Color, gammaFactor: number = 2.0): Color {
+    public convertLinearToGamma(color: Color, gammaFactor: number = 2.0): this {
         const safeInverse = ( gammaFactor > 0 ) ? ( 1.0 / gammaFactor ) : 1.0;
         return this.setRGB(
             Math.pow(color.r, safeInverse),
@@ -366,7 +366,7 @@ export class Color {
         return "rgb(" + ((r * 255) | 0) + "," + ((g * 255) | 0) + "," + ((b * 255) | 0) + ")";
     }
 
-    public offsetHSL(h: number, s: number, l: number): Color {
+    public offsetHSL(h: number, s: number, l: number): this {
         const hsl = this.getHSL();
         hsl.h += h;
         hsl.s += s;
@@ -374,49 +374,49 @@ export class Color {
         return this.setHSL(hsl.h, hsl.s, hsl.l);
     }
 
-    public add(color: Color): Color {
+    public add(color: Color): this {
         this.r = Math.min(1, this.r + color.r);
         this.g = Math.min(1, this.g + color.g);
         this.b = Math.min(1, this.b + color.b);
         return this;
     }
 
-    public addScalar(scalar: number): Color {
+    public addScalar(scalar: number): this {
         this.r = Math.min(1, this.r + scalar);
         this.g = Math.min(1, this.g + scalar);
         this.b = Math.min(1, this.b + scalar);
         return this;
     }
 
-    public sub(color: Color): Color {
+    public sub(color: Color): this {
         this.r = Math.max(0, this.r - color.r);
         this.g = Math.max(0, this.g - color.g);
         this.b = Math.max(0, this.b - color.b);
         return this;
     }
 
-    public subScalar(scalar: number): Color {
+    public subScalar(scalar: number): this {
         this.r = Math.min(1, this.r - scalar);
         this.g = Math.min(1, this.g - scalar);
         this.b = Math.min(1, this.b - scalar);
         return this;
     }
 
-    public multiply(color: Color): Color {
+    public multiply(color: Color): this {
         this.r *= color.r;
         this.g *= color.g;
         this.b *= color.b;
         return this;
     }
 
-    public multiplyScalar(scalar: number): Color {
+    public multiplyScalar(scalar: number): this {
         this.r = Math.min(1, this.r * scalar);
         this.g = Math.min(1, this.g * scalar);
         this.b = Math.min(1, this.b * scalar);
         return this;
     }
 
-    public lerp(color: Color, alpha: number): Color {
+    public lerp(color: Color, alpha: number): this {
         this.r += (color.r - this.r) * alpha;
         this.g += (color.g - this.g) * alpha;
         this.b += (color.b - this.b) * alpha;

@@ -4,6 +4,8 @@ import {BufferAttribute} from "./core/BufferAttribute";
 import {Vector3} from "./math/Vector3";
 import {Box3} from "./math/Box3";
 import {Camera} from "./cameras/Camera";
+import {Vector2} from "./math/Vector2";
+import {Vector4} from "./math/Vector4";
 
 export function arrayMin(array: Array<number>): number {
     if (array.length === 0) return Infinity;
@@ -61,7 +63,12 @@ export function setBoxFromBufferAttribute(target: Box3, attribute: BufferAttribu
     target.max.set(maxX, maxY, maxZ);
 }
 
-export function unprojectVector3onCamera(vector: Vector3, camera: Camera) {
+export function unprojectVector3onCamera(vector: Vector3, camera: Camera): Vector3 {
     const matrix: Matrix4 = new Matrix4();
     vector.applyMatrix4(matrix.multiplyMatrices(camera.matrixWorld, matrix.getInverse(camera.projectionMatrix)));
+    return vector;
+}
+
+export function vectorFromBufferAttribute<T = Vector4 | Vector3 | Vector2>(vector: T, attribute: BufferAttribute, index: number = 0): T {
+
 }

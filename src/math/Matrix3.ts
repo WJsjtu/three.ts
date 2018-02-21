@@ -8,7 +8,7 @@ export class Matrix3 {
         0, 0, 1
     ];
 
-    public set(n11: number, n12: number, n13: number, n21: number, n22: number, n23: number, n31: number, n32: number, n33: number): Matrix3 {
+    public set(n11: number, n12: number, n13: number, n21: number, n22: number, n23: number, n31: number, n32: number, n33: number): this {
         const te: Array<number> = this.elements;
         te[0] = n11;
         te[1] = n21;
@@ -22,7 +22,7 @@ export class Matrix3 {
         return this;
     }
 
-    public identity() {
+    public identity(): this {
         return this.set(
             1, 0, 0,
             0, 1, 0,
@@ -30,12 +30,12 @@ export class Matrix3 {
         );
     }
 
-    public copy(mat3: Matrix3): Matrix3 {
+    public copy(mat3: Matrix3): this {
         this.elements = mat3.toArray();
         return this;
     }
 
-    public setFromMatrix4(mat4: Matrix4) {
+    public setFromMatrix4(mat4: Matrix4): this {
         const me: Array<number> = mat4.toArray();
         return this.set(
             me[0], me[4], me[8],
@@ -44,15 +44,15 @@ export class Matrix3 {
         );
     }
 
-    public multiply(mat3: Matrix3): Matrix3 {
+    public multiply(mat3: Matrix3): this {
         return this.multiplyMatrices(this, mat3);
     }
 
-    public premultiply(m: Matrix3): Matrix3 {
+    public premultiply(m: Matrix3): this {
         return this.multiplyMatrices(m, this);
     }
 
-    public multiplyMatrices(a: Matrix3, b: Matrix3): Matrix3 {
+    public multiplyMatrices(a: Matrix3, b: Matrix3): this {
         const ae: Array<number> = a.toArray();
         const be: Array<number> = b.toArray();
         const te: Array<number> = this.elements;
@@ -80,7 +80,7 @@ export class Matrix3 {
         return this;
     }
 
-    public multiplyScalar(s: number): Matrix3 {
+    public multiplyScalar(s: number): this {
         const te: Array<number> = this.elements;
         te[0] *= s;
         te[3] *= s;
@@ -103,7 +103,7 @@ export class Matrix3 {
 
     }
 
-    public getInverse(matrix: Matrix3, throwOnDegenerate: boolean = false): Matrix3 {
+    public getInverse(matrix: Matrix3, throwOnDegenerate: boolean = false): this {
         const me: Array<number> = matrix.toArray(), te: Array<number> = this.elements,
 
             n11: number = me[0], n21: number = me[1], n31: number = me[2],
@@ -144,7 +144,7 @@ export class Matrix3 {
 
     }
 
-    public transpose(): Matrix3 {
+    public transpose(): this {
         let tmp;
         const m: Array<number> = this.elements;
 
@@ -160,11 +160,11 @@ export class Matrix3 {
         return this;
     }
 
-    public getNormalMatrix(matrix4: Matrix4): Matrix3 {
+    public getNormalMatrix(matrix4: Matrix4): this {
         return this.setFromMatrix4(matrix4).getInverse(this).transpose();
     }
 
-    public setUvTransform(tx: number, ty: number, sx: number, sy: number, rotation: number, cx: number, cy: number): Matrix3 {
+    public setUvTransform(tx: number, ty: number, sx: number, sy: number, rotation: number, cx: number, cy: number): this {
         const c = Math.cos(rotation);
         const s = Math.sin(rotation);
         return this.set(
@@ -174,7 +174,7 @@ export class Matrix3 {
         );
     }
 
-    public scale(sx: number, sy: number): Matrix3 {
+    public scale(sx: number, sy: number): this {
         const te: Array<number> = this.elements;
         te[0] *= sx;
         te[3] *= sx;
@@ -185,7 +185,7 @@ export class Matrix3 {
         return this;
     }
 
-    public rotate(theta: number): Matrix3 {
+    public rotate(theta: number): this {
 
         const c: number = Math.cos(theta);
         const s: number = Math.sin(theta);
@@ -207,19 +207,15 @@ export class Matrix3 {
 
     }
 
-    public translate(tx: number, ty: number): Matrix3 {
-
+    public translate(tx: number, ty: number): this {
         const te: Array<number> = this.elements;
-
         te[0] += tx * te[2];
         te[3] += tx * te[5];
         te[6] += tx * te[8];
         te[1] += ty * te[2];
         te[4] += ty * te[5];
         te[7] += ty * te[8];
-
         return this;
-
     }
 
     public equals(matrix: Matrix3): boolean {
@@ -231,12 +227,11 @@ export class Matrix3 {
         return true;
     }
 
-    public fromArray(array: Array<number>, offset: number = 0): Matrix3 {
+    public fromArray(array: Array<number>, offset: number = 0): this {
         for (let i: number = 0; i < 9; i++) {
             this.elements[i] = array[i + offset];
         }
         return this;
-
     }
 
     public toArray(array: Array<number> = [], offset: number = 0): Array<number> {

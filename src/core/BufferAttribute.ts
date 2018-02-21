@@ -23,7 +23,7 @@ export type TypedArray = Int8Array
 export class BufferAttribute {
     public readonly uuid: string = MathUtil.generateUUID();
     public name: string = "";
-    public array: TypedArray = undefined;
+    public array: TypedArray | undefined = undefined;
     public itemSize: number = 1;
     public count: number = 0;
     public normalized: boolean = false;
@@ -31,7 +31,7 @@ export class BufferAttribute {
     public updateRange: BufferRange = {offset: 0, count: -1};
     public version: number = 0;
 
-    constructor(array: TypedArray, itemSize: number = 0, normalized: boolean = false) {
+    constructor(array: TypedArray | undefined, itemSize: number = 0, normalized: boolean = false) {
         this.array = array;
         this.itemSize = itemSize;
         this.count = array !== undefined ? array.length / itemSize : 0;
@@ -42,18 +42,18 @@ export class BufferAttribute {
         if (value === true) this.version++;
     }
 
-    public setArray(array: TypedArray): BufferAttribute {
+    public setArray(array: TypedArray): this {
         this.count = array !== undefined ? array.length / this.itemSize : 0;
         this.array = array;
         return this;
     }
 
-    public setDynamic(value: boolean): BufferAttribute {
+    public setDynamic(value: boolean): this {
         this.dynamic = value;
         return this;
     }
 
-    public copy(source: BufferAttribute): BufferAttribute {
+    public copy(source: BufferAttribute): this {
         this.array = (new ((source.array as any).constructor as (TypedArray) => void)(source.array)) as TypedArray;
         this.itemSize = source.itemSize;
         this.count = source.count;
@@ -62,7 +62,7 @@ export class BufferAttribute {
         return this;
     }
 
-    public set(value: TypedArray | Array<number>, offset: number = 0): BufferAttribute {
+    public set(value: TypedArray | Array<number>, offset: number = 0): this {
         this.array.set(value, offset);
         return this;
     }
@@ -71,7 +71,7 @@ export class BufferAttribute {
         return this.array.slice(offset, length);
     }
 
-    public copyAt(index1: number, attribute: BufferAttribute, index2: number): BufferAttribute {
+    public copyAt(index1: number, attribute: BufferAttribute, index2: number): this {
         index1 *= this.itemSize;
         index2 *= attribute.itemSize;
         for (let i: number = 0, l: number = this.itemSize; i < l; i++) {
@@ -80,12 +80,12 @@ export class BufferAttribute {
         return this;
     }
 
-    public copyArray(array: TypedArray): BufferAttribute {
+    public copyArray(array: TypedArray): this {
         this.array.set(array);
         return this;
     }
 
-    public copyColorsArray(colors: Array<Color>): BufferAttribute {
+    public copyColorsArray(colors: Array<Color>): this {
         const array: TypedArray = this.array;
         let offset: number = 0;
         for (let i: number = 0, l: number = colors.length; i < l; i++) {
@@ -114,7 +114,7 @@ export class BufferAttribute {
     }
      */
 
-    public copyVector2sArray(vectors: Array<Vector2>): BufferAttribute {
+    public copyVector2sArray(vectors: Array<Vector2>): this {
         const array: TypedArray = this.array;
         let offset: number = 0;
         for (let i: number = 0, l: number = vectors.length; i < l; i++) {
@@ -125,7 +125,7 @@ export class BufferAttribute {
         return this;
     }
 
-    public copyVector3sArray(vectors: Array<Vector3>): BufferAttribute {
+    public copyVector3sArray(vectors: Array<Vector3>): this {
         const array: TypedArray = this.array;
         let offset: number = 0;
         for (let i: number = 0, l: number = vectors.length; i < l; i++) {
@@ -137,7 +137,7 @@ export class BufferAttribute {
         return this;
     }
 
-    public copyVector4sArray(vectors: Array<Vector4>): BufferAttribute {
+    public copyVector4sArray(vectors: Array<Vector4>): this {
         const array: TypedArray = this.array;
         let offset: number = 0;
         for (let i: number = 0, l: number = vectors.length; i < l; i++) {
@@ -150,7 +150,7 @@ export class BufferAttribute {
         return this;
     }
 
-    public setProperty(index: number, property: string, value: Vector2 | Vector3 | Vector4 | number): BufferAttribute {
+    public setProperty(index: number, property: string, value: Vector2 | Vector3 | Vector4 | number): this {
         property = property.toLowerCase();
         if (property && property.length <= 4 && property.replace(/[xyzw]/g, "").length === 0) {
             const offsetMap = {x: 0, y: 1, z: 2};

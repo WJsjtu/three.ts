@@ -13,13 +13,13 @@ export class Camera extends Object3D {
         super();
     }
 
-    public updateMatrix(): Camera {
+    public updateMatrix(): this {
         super.updateMatrix();
         this.matrixWorldInverse.getInverse(this.matrixWorld);
         return this;
     }
 
-    public copy(source: Camera, recursive: boolean = true): Camera {
+    public copy(source: Camera, recursive: boolean = true): this {
         super.copy(source, recursive);
         this.matrixWorldInverse.copy(source.matrixWorldInverse);
         this.projectionMatrix.copy(source.projectionMatrix);

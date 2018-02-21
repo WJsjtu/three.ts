@@ -33,7 +33,7 @@ export class AudioListenerWrapper extends Object3D {
         return this.filter;
     }
 
-    public setFilter(value: AudioNode) {
+    public setFilter(value: AudioNode): this {
         if (this.filter !== null) {
             this.gain.disconnect(this.filter);
             this.filter.disconnect(this.context.destination);
@@ -43,17 +43,19 @@ export class AudioListenerWrapper extends Object3D {
         this.filter = value;
         this.gain.connect(this.filter);
         this.filter.connect(this.context.destination);
+        return this;
     }
 
     public getMasterVolume(): number {
         return this.gain.gain.value;
     }
 
-    public setMasterVolume(value: number) {
+    public setMasterVolume(value: number): this {
         this.gain.gain.value = value;
+        return this;
     }
 
-    public updateMatrix(): AudioListenerWrapper {
+    public updateMatrix(): this {
         super.updateMatrix();
         const position: Vector3 = new Vector3();
         const quaternion: Quaternion = new Quaternion();

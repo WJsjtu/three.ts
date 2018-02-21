@@ -14,7 +14,7 @@ export class Triangle {
         this.c = c;
     }
 
-    public set(a: Vector3, b: Vector3, c: Vector3): Triangle {
+    public set(a: Vector3, b: Vector3, c: Vector3): this {
         this.a.copy(a);
         this.b.copy(b);
         this.c.copy(c);
@@ -25,7 +25,7 @@ export class Triangle {
         return (new (this.constructor as () => void)() as Triangle).copy(this);
     }
 
-    public copy(triangle: Triangle): Triangle {
+    public copy(triangle: Triangle): this {
         this.a.copy(triangle.a);
         this.b.copy(triangle.b);
         this.c.copy(triangle.c);

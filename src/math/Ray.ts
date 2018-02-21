@@ -15,7 +15,7 @@ export class Ray {
         this.direction = direction;
     }
 
-    public set(origin: Vector3, direction: Vector3): Ray {
+    public set(origin: Vector3, direction: Vector3): this {
         this.origin.copy(origin);
         this.direction.copy(direction);
         return this;
@@ -25,7 +25,7 @@ export class Ray {
         return (new (this.constructor as () => void)() as Ray).copy(this);
     }
 
-    public copy(ray: Ray): Ray {
+    public copy(ray: Ray): this {
         this.origin.copy(ray.origin);
         this.direction.copy(ray.direction);
         return this;
@@ -35,12 +35,12 @@ export class Ray {
         return new Vector3().copy(this.direction).multiplyScalar(t).add(this.origin);
     }
 
-    public lookAt(v: Vector3): Ray {
+    public lookAt(v: Vector3): this {
         this.direction.copy(v).sub(this.origin).normalize();
         return this;
     }
 
-    public recast(t: number): Ray {
+    public recast(t: number): this {
         this.origin.copy(this.at(t));
         return this;
     }
@@ -313,7 +313,7 @@ export class Ray {
         return this.intersectTriangle(triangle) !== null;
     }
 
-    public applyMatrix4(matrix4: Matrix4): Ray {
+    public applyMatrix4(matrix4: Matrix4): this {
         this.origin.applyMatrix4(matrix4);
         this.direction.transformDirection(matrix4);
         return this;

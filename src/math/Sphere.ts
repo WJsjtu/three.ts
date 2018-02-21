@@ -13,13 +13,13 @@ export class Sphere {
         this.radius = radius;
     }
 
-    public set(center: Vector3, radius: number): Sphere {
+    public set(center: Vector3, radius: number): this {
         this.center.copy(center);
         this.radius = radius;
         return this;
     }
 
-    public setFromPoints(points: Array<Vector3>, optionalCenter?: Vector3): Sphere {
+    public setFromPoints(points: Array<Vector3>, optionalCenter?: Vector3): this {
         if (optionalCenter !== undefined) {
             this.center.copy(optionalCenter);
         } else {
@@ -37,7 +37,7 @@ export class Sphere {
         return (new (this.constructor as () => void)() as Sphere).copy(this);
     }
 
-    public copy(sphere: Sphere): Sphere {
+    public copy(sphere: Sphere): this {
         this.center.copy(sphere.center);
         this.radius = sphere.radius;
         return this;
@@ -88,7 +88,7 @@ export class Sphere {
         return this;
     }
 
-    public translate(offset: Vector3): Sphere {
+    public translate(offset: Vector3): this {
         this.center.add(offset);
         return this;
     }

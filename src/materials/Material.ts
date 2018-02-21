@@ -124,7 +124,7 @@ export class Material extends EventDispatcher {
 
     public needsUpdate: boolean = true;
 
-    public setValues(values: MaterialParameters): void {
+    public setValues(values: MaterialParameters): this {
         if (values === undefined) return;
         for (let key in values) {
             if (!values.hasOwnProperty(key)) continue;
@@ -165,14 +165,14 @@ export class Material extends EventDispatcher {
             }
 
         }
-
+        return this;
     }
 
-    public clone() {
+    public clone(): Material {
         return (new (this.constructor as () => void)() as Material).copy(this);
     }
 
-    public copy(source: Material): Material {
+    public copy(source: Material): this {
         this.name = source.name;
         this.fog = source.fog;
         this.lights = source.lights;

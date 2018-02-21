@@ -14,19 +14,19 @@ export class Plane {
         this.constant = constant;
     }
 
-    public set(normal: Vector3, constant: number): Plane {
+    public set(normal: Vector3, constant: number): this {
         this.normal.copy(normal);
         this.constant = constant;
         return this;
     }
 
-    public setFromNormalAndCoplanarPoint(normal: Vector3, point: Vector3): Plane {
+    public setFromNormalAndCoplanarPoint(normal: Vector3, point: Vector3): this {
         this.normal.copy(normal);
         this.constant = -point.dot(this.normal);
         return this;
     }
 
-    public setFromCoplanarPoints(a, b, c): Plane {
+    public setFromCoplanarPoints(a, b, c): this {
         const v1: Vector3 = new Vector3();
         const v2: Vector3 = new Vector3();
         const normal: Vector3 = v1.copy(c).sub(b).cross(v2.copy(a).sub(b)).normalize();
@@ -39,7 +39,7 @@ export class Plane {
         return (new (this.constructor as () => void)() as Plane).copy(this);
     }
 
-    public copy(plane): Plane {
+    public copy(plane): this {
         this.normal.copy(plane.normal);
         this.constant = plane.constant;
         return this;
@@ -49,14 +49,14 @@ export class Plane {
      * Note: will lead to a divide by zero if the plane is invalid
      * @returns {Plane}
      */
-    public normalize(): Plane {
+    public normalize(): this {
         const inverseNormalLength: number = 1.0 / this.normal.length();
         this.normal.multiplyScalar(inverseNormalLength);
         this.constant *= inverseNormalLength;
         return this;
     }
 
-    public negate(): Plane {
+    public negate(): this {
         this.constant *= -1;
         this.normal.negate();
         return this;
@@ -111,7 +111,7 @@ export class Plane {
         return new Vector3().copy(this.normal).multiplyScalar(-this.constant);
     }
 
-    public applyMatrix4(matrix: Matrix4): Plane {
+    public applyMatrix4(matrix: Matrix4): this {
         const normalMatrix: Matrix3 = new Matrix3().getNormalMatrix(matrix);
         const referencePoint: Vector3 = this.coplanarPoint().applyMatrix4(matrix);
         const normal: Vector3 = this.normal.applyMatrix3(normalMatrix).normalize();
@@ -119,7 +119,7 @@ export class Plane {
         return this;
     }
 
-    public translate(offset: Vector3): Plane {
+    public translate(offset: Vector3): this {
         this.constant -= offset.dot(this.normal);
         return this;
     }

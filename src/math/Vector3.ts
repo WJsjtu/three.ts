@@ -5,11 +5,6 @@ import {Quaternion} from "./Quaternion";
 import {Vector4} from "./Vector4";
 import {MathUtil} from "./Math";
 
-/**
- * TODO: project, unproject, clampScalar, clampLength, floor, ceil, round, roundToZero, crossVectors,
- * manhattanDistanceTo, setFromSpherical, setFromCylindrical, setFromMatrixPosition,
- * setFromMatrixScale, setFromMatrixColumn
- */
 export class Vector3 {
 
     private _x: number;
@@ -46,26 +41,26 @@ export class Vector3 {
         this._z = _z;
     }
 
-    public set(x: number, y: number, z: number): Vector3 {
+    public set(x: number, y: number, z: number): this {
         this._x = x;
         this._y = y;
         this._z = z;
         return this;
     }
 
-    public setScalar(scalar: number): Vector3 {
+    public setScalar(scalar: number): this {
         return this.set(scalar, scalar, scalar);
     }
 
-    public copy(vec: Vector3): Vector3 {
+    public copy(vec: Vector3): this {
         return this.set(vec.x, vec.y, vec.z);
     }
 
-    public add(vec: Vector3): Vector3 {
+    public add(vec: Vector3): this {
         return this.set(this.x + vec.x, this.y + vec.y, this.z + vec.z);
     }
 
-    public addScalar(scalar: number): Vector3 {
+    public addScalar(scalar: number): this {
         return this.set(
             this.x + scalar,
             this.y + scalar,
@@ -73,11 +68,11 @@ export class Vector3 {
         );
     }
 
-    public sub(vec: Vector3): Vector3 {
+    public sub(vec: Vector3): this {
         return this.set(this.x - vec.x, this.y - vec.y, this.z - vec.z);
     }
 
-    public subScalar(scalar: number): Vector3 {
+    public subScalar(scalar: number): this {
         return this.set(
             this.x - scalar,
             this.y - scalar,
@@ -85,11 +80,11 @@ export class Vector3 {
         );
     }
 
-    public multiply(vec: Vector3): Vector3 {
+    public multiply(vec: Vector3): this {
         return this.set(this.x * vec.x, this.y * vec.y, this.z * vec.z);
     }
 
-    public multiplyScalar(scalar: number): Vector3 {
+    public multiplyScalar(scalar: number): this {
         return this.set(
             this.x * scalar,
             this.y * scalar,
@@ -97,7 +92,7 @@ export class Vector3 {
         );
     }
 
-    public divide(vec: Vector3): Vector3 {
+    public divide(vec: Vector3): this {
         return this.set(
             this.x / vec.x,
             this.y / vec.y,
@@ -106,7 +101,7 @@ export class Vector3 {
 
     }
 
-    public divideScalar(scalar: number): Vector3 {
+    public divideScalar(scalar: number): this {
         return this.set(
             this.x / scalar,
             this.y / scalar,
@@ -114,17 +109,17 @@ export class Vector3 {
         );
     }
 
-    public applyEuler(euler: Euler): Vector3 {
+    public applyEuler(euler: Euler): this {
         const quaternion: Quaternion = new Quaternion();
         return this.applyQuaternion(quaternion.setFromEuler(euler));
     }
 
-    public applyAxisAngle(axis: Vector3, angle: number): Vector3 {
+    public applyAxisAngle(axis: Vector3, angle: number): this {
         const quaternion: Quaternion = new Quaternion();
         return this.applyQuaternion(quaternion.setFromAxisAngle(axis, angle));
     }
 
-    public applyMatrix3(m: Matrix3): Vector3 {
+    public applyMatrix3(m: Matrix3): this {
         const x: number = this.x, y: number = this.y, z: number = this.z;
         const e: Array<number> = m.toArray();
         return this.set(
@@ -134,7 +129,7 @@ export class Vector3 {
         );
     }
 
-    public applyMatrix4(matrix: Matrix4): Vector3 {
+    public applyMatrix4(matrix: Matrix4): this {
         const x: number = this.x, y: number = this.y, z: number = this.z;
         const e: Array<number> = matrix.toArray();
         const w: number = 1 / ( e[3] * x + e[7] * y + e[11] * z + e[15] );
@@ -145,7 +140,7 @@ export class Vector3 {
         );
     }
 
-    public applyQuaternion(quaternion: Quaternion): Vector3 {
+    public applyQuaternion(quaternion: Quaternion): this {
         const x: number = this.x, y: number = this.y, z: number = this.z;
         const qx: number = quaternion.x, qy: number = quaternion.y, qz: number = quaternion.z,
             qw: number = quaternion.w;
@@ -164,7 +159,7 @@ export class Vector3 {
         );
     }
 
-    public transformDirection(mat4: Matrix4): Vector3 {
+    public transformDirection(mat4: Matrix4): this {
         const x: number = this.x, y: number = this.y, z: number = this.z;
         const e: Array<number> = mat4.toArray();
         return this.set(
@@ -174,7 +169,7 @@ export class Vector3 {
         ).normalize();
     }
 
-    public min(vec: Vector3): Vector3 {
+    public min(vec: Vector3): this {
         return this.set(
             Math.min(this.x, vec.x),
             Math.min(this.y, vec.y),
@@ -182,7 +177,7 @@ export class Vector3 {
         );
     }
 
-    public max(vec: Vector3): Vector3 {
+    public max(vec: Vector3): this {
         return this.set(
             Math.max(this.x, vec.x),
             Math.max(this.y, vec.y),
@@ -190,7 +185,7 @@ export class Vector3 {
         );
     }
 
-    public clamp(min: Vector3, max: Vector3): Vector3 {
+    public clamp(min: Vector3, max: Vector3): this {
         return this.set(
             Math.max(min.x, Math.min(max.x, this.x)),
             Math.max(min.y, Math.min(max.y, this.y)),
@@ -198,7 +193,7 @@ export class Vector3 {
         );
     }
 
-    public negate(): Vector3 {
+    public negate(): this {
         return this.set(-this.x, -this.y, -this.z);
     }
 
@@ -216,7 +211,7 @@ export class Vector3 {
         return Math.sqrt(x * x + y * y + z * z);
     }
 
-    public setLength(length: number): Vector3 {
+    public setLength(length: number): this {
         return this.normalize().multiplyScalar(length);
     }
 
@@ -225,11 +220,11 @@ export class Vector3 {
         return Math.abs(x) + Math.abs(y) + Math.abs(z);
     }
 
-    public normalize(): Vector3 {
+    public normalize(): this {
         return this.divideScalar(this.length() || 1);
     }
 
-    public lerp(vec: Vector3, alpha: number): Vector3 {
+    public lerp(vec: Vector3, alpha: number): this {
         return this.set(
             (vec.x - this.x) * alpha,
             (vec.y - this.y) * alpha,
@@ -237,11 +232,11 @@ export class Vector3 {
         );
     }
 
-    public lerpVectors(v1: Vector3, v2: Vector3, alpha: number): Vector3 {
+    public lerpVectors(v1: Vector3, v2: Vector3, alpha: number): this {
         return this.set(v2.x - v1.x, v2.y - v1.y, v2.z - v1.z).multiplyScalar(alpha).add(v1);
     }
 
-    public cross(vec: Vector3): Vector3 {
+    public cross(vec: Vector3): this {
         const ax: number = this.x, ay: number = this.y, az: number = this.z;
         const bx: number = vec.x, by: number = vec.y, bz: number = vec.z;
         return this.set(
@@ -251,12 +246,12 @@ export class Vector3 {
         );
     }
 
-    public projectOnVector(vector: Vector3): Vector3 {
+    public projectOnVector(vector: Vector3): this {
         const scalar: number = vector.dot(this) / vector.lengthSquared();
         return this.copy(vector).multiplyScalar(scalar);
     }
 
-    public projectOnPlane(planeNormal: Vector3): Vector3 {
+    public projectOnPlane(planeNormal: Vector3): this {
         const vec: Vector3 = new Vector3();
         vec.copy(this).projectOnVector(planeNormal);
         return this.sub(vec);
@@ -268,7 +263,7 @@ export class Vector3 {
      * @param normal
      * @returns {Vector3}
      */
-    public reflect(normal: Vector3): Vector3 {
+    public reflect(normal: Vector3): this {
         const vec: Vector3 = new Vector3();
         return this.sub(vec.copy(normal).multiplyScalar(2 * this.dot(normal)));
     }
@@ -291,12 +286,12 @@ export class Vector3 {
         return ((vec.x === this.x) && (vec.y === this.y) && (vec.z === this.z));
     }
 
-    public setFromMatrixPosition(m: Matrix4): Vector3 {
+    public setFromMatrixPosition(m: Matrix4): this {
     	var e: Array<number> = m.toArray();
     	return this.set(e[ 12 ], e[ 13 ], e[ 14 ]);
     }
 
-    public fromArray(array: ArrayLike<number>, offset: number = 0): Vector3 {
+    public fromArray(array: ArrayLike<number>, offset: number = 0): this {
         return this.set(
             array[offset],
             array[offset + 1],

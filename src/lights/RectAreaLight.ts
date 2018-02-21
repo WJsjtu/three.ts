@@ -12,7 +12,7 @@ export class RectAreaLight extends Light {
         this.height = height;
     }
 
-    public copy(source: RectAreaLight): RectAreaLight {
+    public copy(source: RectAreaLight): this {
         super.copy(source);
         this.width = source.width;
         this.height = source.height;

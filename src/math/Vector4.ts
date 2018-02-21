@@ -48,7 +48,7 @@ export class Vector4 {
         this._w = _w;
     }
 
-    public set(x: number, y: number, z: number, w: number): Vector4 {
+    public set(x: number, y: number, z: number, w: number): this {
         this._x = x;
         this._y = y;
         this._z = z;
@@ -56,7 +56,7 @@ export class Vector4 {
         return this;
     }
 
-    public setScalar(scalar: number): Vector4 {
+    public setScalar(scalar: number): this {
         return this.set(
             scalar,
             scalar,
@@ -65,7 +65,7 @@ export class Vector4 {
         );
     }
 
-    public copy(v: Vector4 | Vector3) {
+    public copy(v: Vector4 | Vector3): this {
         return this.set(
             v.x,
             v.y,
@@ -74,7 +74,7 @@ export class Vector4 {
         );
     }
 
-    public add(v: Vector4): Vector4 {
+    public add(v: Vector4): this {
         return this.set(
             this.x + v.x,
             this.y + v.y,
@@ -83,7 +83,7 @@ export class Vector4 {
         );
     }
 
-    public addScalar(s: number): Vector4 {
+    public addScalar(s: number): this {
         return this.set(
             this.x + s,
             this.y + s,
@@ -92,7 +92,7 @@ export class Vector4 {
         );
     }
 
-    public sub(v: Vector4): Vector4 {
+    public sub(v: Vector4): this {
         return this.set(
             this.x - v.x,
             this.y - v.y,
@@ -101,7 +101,7 @@ export class Vector4 {
         );
     }
 
-    public subScalar(s: number): Vector4 {
+    public subScalar(s: number): this {
         return this.set(
             this.x - s,
             this.y - s,
@@ -110,7 +110,7 @@ export class Vector4 {
         );
     }
 
-    public multiplyScalar(s: number): Vector4 {
+    public multiplyScalar(s: number): this {
         return this.set(
             this.x * s,
             this.y * s,
@@ -119,7 +119,7 @@ export class Vector4 {
         );
     }
 
-    public divideScalar(s: number): Vector4 {
+    public divideScalar(s: number): this {
         return this.set(
             this.x / s,
             this.y / s,
@@ -128,7 +128,7 @@ export class Vector4 {
         );
     }
 
-    public applyMatrix4(m: Matrix4): Vector4 {
+    public applyMatrix4(m: Matrix4): this {
         const x: number = this.x, y: number = this.y, z: number = this.z, w: number = this.w;
         const e: Array<number> = m.toArray();
         return this.set(
@@ -145,7 +145,7 @@ export class Vector4 {
      * @param q
      * @returns {Vector4}
      */
-    public setAxisAngleFromQuaternion(q: Quaternion): Vector4 {
+    public setAxisAngleFromQuaternion(q: Quaternion): this {
         const s = Math.sqrt(1 - q.w * q.w);
         if (s < 0.0001) {
             return this.set(1, 0, 0, 2 * Math.acos(q.w));
@@ -159,7 +159,7 @@ export class Vector4 {
      * @param m
      * @returns {Vector4}
      */
-    public setAxisAngleFromRotationMatrix(m: Matrix4): Vector4 {
+    public setAxisAngleFromRotationMatrix(m: Matrix4): this {
         // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
         let angle: number, x: number, y: number, z: number;	// variables for result
         const epsilon: number = 0.01,		// margin to allow for rounding errors
@@ -240,7 +240,7 @@ export class Vector4 {
         );
     }
 
-    public min(v: Vector4): Vector4 {
+    public min(v: Vector4): this {
         return this.set(
             Math.min(this.x, v.x),
             Math.min(this.y, v.y),
@@ -249,7 +249,7 @@ export class Vector4 {
         );
     }
 
-    public max(v: Vector4): Vector4 {
+    public max(v: Vector4): this {
         return this.set(
             Math.max(this.x, v.x),
             Math.max(this.y, v.y),
@@ -258,7 +258,7 @@ export class Vector4 {
         );
     }
 
-    public clamp(min: Vector4, max: Vector4): Vector4 {
+    public clamp(min: Vector4, max: Vector4): this {
         return this.set(
             Math.max(min.x, Math.min(max.x, this.x)),
             Math.max(min.y, Math.min(max.y, this.y)),
@@ -268,7 +268,7 @@ export class Vector4 {
 
     }
 
-    public negate(): Vector4 {
+    public negate(): this {
         return this.set(
             -this.x,
             -this.y,
@@ -293,15 +293,15 @@ export class Vector4 {
         return Math.abs(this.x) + Math.abs(this.y) + Math.abs(this.z) + Math.abs(this.w);
     }
 
-    public normalize(): Vector4 {
+    public normalize(): this {
         return this.divideScalar(this.length() || 1);
     }
 
-    public setLength(length: number): Vector4 {
+    public setLength(length: number): this {
         return this.normalize().multiplyScalar(length);
     }
 
-    public lerp(v: Vector4, alpha: number): Vector4 {
+    public lerp(v: Vector4, alpha: number): this {
         return this.set(
             this.x + ( v.x - this.x ) * alpha,
             this.y + ( v.y - this.y ) * alpha,
@@ -310,7 +310,7 @@ export class Vector4 {
         );
     }
 
-    public lerpVectors(v1: Vector4, v2: Vector4, alpha: number): Vector4 {
+    public lerpVectors(v1: Vector4, v2: Vector4, alpha: number): this {
         return this.copy(v2).sub(v1).multiplyScalar(alpha).add(v1);
     }
 
@@ -318,7 +318,7 @@ export class Vector4 {
         return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z) && (v.w === this.w));
     }
 
-    public fromArray(array: Array<number>, offset: number = 0): Vector4 {
+    public fromArray(array: Array<number>, offset: number = 0): this {
         return this.set(
             array[offset],
             array[offset + 1],

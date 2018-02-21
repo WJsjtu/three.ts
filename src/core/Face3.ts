@@ -26,7 +26,7 @@ export class Face3 {
 
     }
 
-    public copy(source: Face3): Face3 {
+    public copy(source: Face3): this {
         this.a = source.a;
         this.b = source.b;
         this.c = source.c;
