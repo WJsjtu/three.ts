@@ -2,7 +2,6 @@ import {MathUtil} from "../math/Math";
 import {Camera, IFrustumView} from "./Camera";
 
 export class PerspectiveCamera extends Camera {
-
     public readonly type: string = "PerspectiveCamera";
     public focus: number = 10;
 

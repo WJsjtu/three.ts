@@ -10,7 +10,6 @@ function HUE_TO_RGB(p, q, t) {
 }
 
 export class Color {
-
     public static ColorKeywords: {[key: string]: number} = {
         aliceblue: 0xf0f8ff,
         antiquewhite: 0xfaebd7,

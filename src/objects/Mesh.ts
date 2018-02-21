@@ -16,7 +16,6 @@ import {Vector3} from "../math/Vector3";
 import {vectorFromBufferAttribute} from "../utils";
 
 class Mesh extends Object3D {
-
     public static uvIntersection(
         point: Vector3,
         triangle: Triangle,

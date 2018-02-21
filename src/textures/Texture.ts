@@ -25,7 +25,6 @@ type InnerTextureSource =
 export type TextureSource = InnerTextureSource | InnerTextureSource[];
 
 export class Texture extends EventDispatcher {
-
     public static DEFAULT_IMAGE: HTMLImageElement = null;
     public static DEFAULT_MAPPING: number = UVMapping;
 

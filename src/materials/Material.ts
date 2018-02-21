@@ -159,8 +159,11 @@ export class Material extends EventDispatcher {
             }
             if (currentValue && currentValue instanceof Color) {
                 if (newValue instanceof Color) currentValue.copy(newValue);
-                else if (typeof newValue === "number") currentValue.setHex(newValue);
-                else if (typeof newValue === "string") currentValue.setStyle(newValue);
+                else if (typeof newValue === "number") {
+                    currentValue.setHex(newValue);
+                } else if (typeof newValue === "string") {
+                    currentValue.setStyle(newValue);
+                }
             } else if (
                 currentValue &&
                 currentValue instanceof Vector3 &&
@@ -221,7 +224,9 @@ export class Material extends EventDispatcher {
         if (srcPlanes !== null) {
             const n: number = srcPlanes.length;
             dstPlanes = new Array(n);
-            for (let i: number = 0; i !== n; ++i) dstPlanes[i] = srcPlanes[i].clone();
+            for (let i: number = 0; i !== n; ++i) {
+                dstPlanes[i] = srcPlanes[i].clone();
+            }
         }
         this.clippingPlanes = dstPlanes;
         this.shadowSide = source.shadowSide;

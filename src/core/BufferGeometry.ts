@@ -470,7 +470,9 @@ export class BufferGeometry extends EventDispatcher {
             const attribute: BufferAttribute = attributes[name];
             const array: TypedArray = attribute.array;
             const itemSize: number = attribute.itemSize;
-            const array2: TypedArray = new (array.constructor as (length: number) => void)(indices.length * itemSize) as TypedArray;
+            const array2: TypedArray = new (array.constructor as (
+                length: number,
+            ) => void)(indices.length * itemSize) as TypedArray;
             let index: number = 0,
                 index2: number = 0;
             for (let i: number = 0, l: number = indices.length; i < l; i++) {

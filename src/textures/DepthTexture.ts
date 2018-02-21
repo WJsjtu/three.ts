@@ -27,8 +27,12 @@ export class DepthTexture extends Texture {
                 `DepthTexture format must be either THREE.DepthFormat or THREE.DepthStencilFormat`,
             );
         }
-        if (type === undefined && format === DepthFormat) type = UnsignedShortType;
-        if (type === undefined && format === DepthStencilFormat) type = UnsignedInt248Type;
+        if (type === undefined && format === DepthFormat) {
+            type = UnsignedShortType;
+        }
+        if (type === undefined && format === DepthStencilFormat) {
+            type = UnsignedInt248Type;
+        }
         super(
             null,
             mapping,

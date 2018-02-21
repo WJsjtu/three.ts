@@ -531,7 +531,9 @@ export class Geometry extends EventDispatcher {
             thatUvs = geometry.faceVertexUvs[0],
             thisColors = this.colors,
             thatColors = geometry.colors;
-        if (matrix !== undefined) normalMatrix = new Matrix3().getNormalMatrix(matrix);
+        if (matrix !== undefined) {
+            normalMatrix = new Matrix3().getNormalMatrix(matrix);
+        }
         // vertices
         for (let i: number = 0, il: number = thatVertices.length; i < il; i++) {
             const vertexCopy: Vector3 = thatVertices[i].clone();

@@ -78,7 +78,9 @@ export class Line extends Object3D {
                     const distance: number = raycaster.ray.origin.distanceTo(
                         interRay,
                     );
-                    if (distance < raycaster.near || distance > raycaster.far) continue;
+                    if (distance < raycaster.near || distance > raycaster.far) {
+                        continue;
+                    }
                     intersects.push({
                         distance: distance,
                         index: i,
@@ -109,7 +111,9 @@ export class Line extends Object3D {
                     const distance: number = raycaster.ray.origin.distanceTo(
                         interRay,
                     );
-                    if (distance < raycaster.near || distance > raycaster.far) continue;
+                    if (distance < raycaster.near || distance > raycaster.far) {
+                        continue;
+                    }
                     intersects.push({
                         distance: distance,
                         index: i,
@@ -137,7 +141,9 @@ export class Line extends Object3D {
                 const distance: number = raycaster.ray.origin.distanceTo(
                     interRay,
                 );
-                if (distance < raycaster.near || distance > raycaster.far) continue;
+                if (distance < raycaster.near || distance > raycaster.far) {
+                    continue;
+                }
                 intersects.push({
                     distance: distance,
                     index: i,
