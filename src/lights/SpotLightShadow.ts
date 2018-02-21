@@ -1,6 +1,6 @@
-import {LightShadow} from "./LightShadow";
 import {PerspectiveCamera} from "../cameras/PerspectiveCamera";
 import {MathUtil} from "../math/Math";
+import {LightShadow} from "./LightShadow";
 
 export class SpotLightShadow extends LightShadow {
     constructor() {

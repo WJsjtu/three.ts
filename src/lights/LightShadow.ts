@@ -1,6 +1,6 @@
 import {Camera} from "../cameras/Camera";
-import {Vector2} from "../math/Vector2";
 import {Matrix4} from "../math/Matrix4";
+import {Vector2} from "../math/Vector2";
 
 export class LightShadow {
     public camera: Camera = null;

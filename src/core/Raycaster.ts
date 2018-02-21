@@ -4,9 +4,9 @@ import {PerspectiveCamera} from "../cameras/PerspectiveCamera";
 import {Ray} from "../math/Ray";
 import {Vector2} from "../math/Vector2";
 import {Vector3} from "../math/Vector3";
+import {unprojectVector3onCamera} from "../utils";
 import {Face3} from "./Face3";
 import {Object3D} from "./Object3D";
-import {unprojectVector3onCamera} from "../utils";
 
 export interface IIntersection {
     index?: number;
@@ -36,9 +36,9 @@ function intersectObject(
 
 export class Raycaster {
     public params: any = {
-        Mesh: {},
-        Line: {},
         LOD: {},
+        Line: {},
+        Mesh: {},
         Points: {threshold: 1},
         Sprite: {},
     };

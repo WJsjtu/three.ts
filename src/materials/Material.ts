@@ -1,8 +1,7 @@
-import {MathUtil} from "../math/Math";
 import {
     AddEquation,
-    FrontSide,
     FlatShading,
+    FrontSide,
     LessEqualDepth,
     NoColors,
     NormalBlending,
@@ -11,8 +10,9 @@ import {
 } from "../constants";
 import {EventDispatcher} from "../core/EventDispatcher";
 import {Color} from "../math/Color";
-import {Vector3} from "../math/Vector3";
+import {MathUtil} from "../math/Math";
 import {Plane} from "../math/Plane";
+import {Vector3} from "../math/Vector3";
 
 let materialId: number = 0;
 

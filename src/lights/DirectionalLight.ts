@@ -1,7 +1,7 @@
-import {Light} from "./Light";
 import {Object3D} from "../core/Object3D";
-import {DirectionalLightShadow} from "./DirectionalLightShadow";
 import {Color} from "../math/Color";
+import {DirectionalLightShadow} from "./DirectionalLightShadow";
+import {Light} from "./Light";
 
 export class DirectionalLight extends Light {
     public readonly type: string = "DirectionalLight";

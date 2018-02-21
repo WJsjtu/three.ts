@@ -1,8 +1,8 @@
-import {Geometry} from "../core/Geometry";
+import {Float32BufferAttribute} from "../core/BufferAttribute";
 import {BufferGeometry} from "../core/BufferGeometry";
+import {Geometry} from "../core/Geometry";
 import {Vector2} from "../math/Vector2";
 import {Vector3} from "../math/Vector3";
-import {Float32BufferAttribute} from "../core/BufferAttribute";
 
 export interface ICylinderGeometryParameters {
     radiusTop: number;
@@ -31,14 +31,14 @@ export class CylinderGeometry extends Geometry {
     ) {
         super();
         this.parameters = {
-            radiusTop: radiusTop,
-            radiusBottom: radiusBottom,
             height: height,
-            radialSegments: radialSegments,
             heightSegments: heightSegments,
             openEnded: openEnded,
-            thetaStart: thetaStart,
+            radialSegments: radialSegments,
+            radiusBottom: radiusBottom,
+            radiusTop: radiusTop,
             thetaLength: thetaLength,
+            thetaStart: thetaStart,
         };
         this.fromBufferGeometry(
             new CylinderBufferGeometry(
@@ -72,14 +72,14 @@ export class CylinderBufferGeometry extends BufferGeometry {
     ) {
         super();
         this.parameters = {
-            radiusTop: radiusTop,
-            radiusBottom: radiusBottom,
             height: height,
-            radialSegments: radialSegments,
             heightSegments: heightSegments,
             openEnded: openEnded,
-            thetaStart: thetaStart,
+            radialSegments: radialSegments,
+            radiusBottom: radiusBottom,
+            radiusTop: radiusTop,
             thetaLength: thetaLength,
+            thetaStart: thetaStart,
         };
         radialSegments = Math.floor(radialSegments);
         heightSegments = Math.floor(heightSegments);

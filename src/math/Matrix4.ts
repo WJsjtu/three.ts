@@ -1,6 +1,6 @@
-import {Vector3} from "./Vector3";
 import {Euler, EulerOrder} from "./Euler";
 import {Quaternion} from "./Quaternion";
+import {Vector3} from "./Vector3";
 
 /**
  * TODO: applyToBufferAttribute

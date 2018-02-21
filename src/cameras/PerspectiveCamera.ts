@@ -1,8 +1,11 @@
-import {Camera, IFrustumView} from "./Camera";
 import {MathUtil} from "../math/Math";
+import {Camera, IFrustumView} from "./Camera";
 
 export class PerspectiveCamera extends Camera {
+
     public readonly type: string = "PerspectiveCamera";
+    public focus: number = 10;
+
     protected _fov: number = 50;
     protected _zoom: number = 1;
     protected _near: number = 0.1;
@@ -21,8 +24,6 @@ export class PerspectiveCamera extends Camera {
      * @type {number}
      */
     protected _filmOffset: number = 0;
-
-    public focus: number = 10;
 
     get fov(): number {
         return this._fov;
@@ -196,12 +197,12 @@ export class PerspectiveCamera extends Camera {
     ): this {
         this._view = {
             enabled: true,
-            fullWidth: fullWidth,
             fullHeight: fullHeight,
+            fullWidth: fullWidth,
+            height: height,
             offsetX: x,
             offsetY: y,
             width: width,
-            height: height,
         };
         return this.updateProjectionMatrix();
     }

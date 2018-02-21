@@ -1,6 +1,6 @@
 import {Object3D} from "../core/Object3D";
-import {Plane} from "./Plane";
 import {Matrix4} from "./Matrix4";
+import {Plane} from "./Plane";
 import {Sphere} from "./Sphere";
 import {Vector3} from "./Vector3";
 

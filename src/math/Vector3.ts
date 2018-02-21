@@ -1,9 +1,9 @@
+import {Euler} from "./Euler";
+import {MathUtil} from "./Math";
 import {Matrix3} from "./Matrix3";
 import {Matrix4} from "./Matrix4";
-import {Euler} from "./Euler";
 import {Quaternion} from "./Quaternion";
 import {Vector4} from "./Vector4";
-import {MathUtil} from "./Math";
 
 export class Vector3 {
     private _x: number;
@@ -20,20 +20,20 @@ export class Vector3 {
         return this._x;
     }
 
-    get y(): number {
-        return this._y;
-    }
-
-    get z(): number {
-        return this._z;
-    }
-
     set x(x: number) {
         this._x = x;
     }
 
+    get y(): number {
+        return this._y;
+    }
+
     set y(y: number) {
         this._y = y;
+    }
+
+    get z(): number {
+        return this._z;
     }
 
     set z(z: number) {

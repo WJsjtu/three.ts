@@ -1,7 +1,7 @@
-import {Geometry} from "../core/Geometry";
-import {BufferGeometry} from "../core/BufferGeometry";
-import {Vector3} from "../math/Vector3";
 import {Float32BufferAttribute} from "../core/BufferAttribute";
+import {BufferGeometry} from "../core/BufferGeometry";
+import {Geometry} from "../core/Geometry";
+import {Vector3} from "../math/Vector3";
 
 export interface IBoxGeometryParameters {
     width: number;
@@ -26,12 +26,12 @@ export class BoxGeometry extends Geometry {
     ) {
         super();
         this.parameters = {
-            width: width,
-            height: height,
             depth: depth,
-            widthSegments: widthSegments,
-            heightSegments: heightSegments,
             depthSegments: depthSegments,
+            height: height,
+            heightSegments: heightSegments,
+            width: width,
+            widthSegments: widthSegments,
         };
     }
 }
@@ -50,12 +50,12 @@ export class BoxBufferGeometry extends BufferGeometry {
     ) {
         super();
         this.parameters = {
-            width: width,
-            height: height,
             depth: depth,
-            widthSegments: widthSegments,
-            heightSegments: heightSegments,
             depthSegments: depthSegments,
+            height: height,
+            heightSegments: heightSegments,
+            width: width,
+            widthSegments: widthSegments,
         };
 
         widthSegments = Math.floor(widthSegments);

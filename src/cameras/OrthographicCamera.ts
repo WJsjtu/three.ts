@@ -110,12 +110,12 @@ export class OrthographicCamera extends Camera {
     ): this {
         this._view = {
             enabled: true,
-            fullWidth: fullWidth,
             fullHeight: fullHeight,
+            fullWidth: fullWidth,
+            height: height,
             offsetX: x,
             offsetY: y,
             width: width,
-            height: height,
         };
         return this.updateProjectionMatrix();
     }

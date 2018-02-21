@@ -1,6 +1,6 @@
-import {Light} from "./Light";
-import {Color} from "../math/Color";
 import {Object3D} from "../core/Object3D";
+import {Color} from "../math/Color";
+import {Light} from "./Light";
 import {SpotLightShadow} from "./SpotLightShadow";
 
 export class SpotLight extends Light {

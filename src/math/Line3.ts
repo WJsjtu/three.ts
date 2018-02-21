@@ -1,6 +1,6 @@
-import {Vector3} from "./Vector3";
 import {MathUtil} from "./Math";
 import {Matrix4} from "./Matrix4";
+import {Vector3} from "./Vector3";
 
 export class Line3 {
     public start: Vector3 = new Vector3();
@@ -61,8 +61,8 @@ export class Line3 {
         startP.copy(point).sub(this.start);
         startEnd.copy(this.end).sub(this.start);
         const startEnd2 = startEnd.dot(startEnd);
-        const startEnd_startP = startEnd.dot(startP);
-        let t: number = startEnd_startP / startEnd2;
+        const startEndStartP = startEnd.dot(startP);
+        let t: number = startEndStartP / startEnd2;
         if (clampToLine) {
             t = MathUtil.clamp(t, 0, 1);
         }

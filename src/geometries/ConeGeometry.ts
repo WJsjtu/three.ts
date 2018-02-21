@@ -1,6 +1,6 @@
+import {BufferGeometry} from "../core/BufferGeometry";
 import {Geometry} from "../core/Geometry";
 import {CylinderBufferGeometry, CylinderGeometry} from "./CylinderGeometry";
-import {BufferGeometry} from "../core/BufferGeometry";
 
 export interface IConeGeometryParameters {
     radius: number;
@@ -38,13 +38,13 @@ export class ConeGeometry extends Geometry {
             thetaLength,
         );
         this.parameters = {
-            radius: radius,
             height: height,
-            radialSegments: radialSegments,
             heightSegments: heightSegments,
             openEnded: openEnded,
-            thetaStart: thetaStart,
+            radialSegments: radialSegments,
+            radius: radius,
             thetaLength: thetaLength,
+            thetaStart: thetaStart,
         };
     }
 }
@@ -75,13 +75,13 @@ export class ConeBufferGeometry extends BufferGeometry {
             thetaLength,
         );
         this.parameters = {
-            radius: radius,
             height: height,
-            radialSegments: radialSegments,
             heightSegments: heightSegments,
             openEnded: openEnded,
-            thetaStart: thetaStart,
+            radialSegments: radialSegments,
+            radius: radius,
             thetaLength: thetaLength,
+            thetaStart: thetaStart,
         };
     }
 }

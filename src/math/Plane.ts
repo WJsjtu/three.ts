@@ -1,7 +1,7 @@
 import {Box3} from "./Box3";
 import {Line3} from "./Line3";
-import {Matrix4} from "./Matrix4";
 import {Matrix3} from "./Matrix3";
+import {Matrix4} from "./Matrix4";
 import {Sphere} from "./Sphere";
 import {Vector3} from "./Vector3";
 

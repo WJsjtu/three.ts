@@ -465,14 +465,12 @@ export class BufferGeometry extends EventDispatcher {
         const geometry2: BufferGeometry = new BufferGeometry();
         const indices: TypedArray = this.index.array;
         const attributes: {[key: string]: BufferAttribute} = this.attributes;
-        for (let name in attributes) {
+        for (const name in attributes) {
             if (!attributes.hasOwnProperty(name)) continue;
             const attribute: BufferAttribute = attributes[name];
             const array: TypedArray = attribute.array;
             const itemSize: number = attribute.itemSize;
-            const array2: TypedArray = new (array.constructor as (
-                number,
-            ) => void)(indices.length * itemSize) as TypedArray;
+            const array2: TypedArray = new (array.constructor as (length: number) => void)(indices.length * itemSize) as TypedArray;
             let index: number = 0,
                 index2: number = 0;
             for (let i: number = 0, l: number = indices.length; i < l; i++) {
@@ -509,7 +507,7 @@ export class BufferGeometry extends EventDispatcher {
         }
         // attributes
         const attributes: {[key: string]: BufferAttribute} = source.attributes;
-        for (let name in attributes) {
+        for (const name in attributes) {
             if (!attributes.hasOwnProperty(name)) continue;
             const attribute: BufferAttribute = attributes[name];
             this.addAttribute(name, attribute.clone());
@@ -517,7 +515,7 @@ export class BufferGeometry extends EventDispatcher {
         // morph attributes
         const morphAttributes: {[key: string]: BufferAttribute[]} =
             source.morphAttributes;
-        for (let name in morphAttributes) {
+        for (const name in morphAttributes) {
             if (!attributes.hasOwnProperty(name)) continue;
             const array: BufferAttribute[] = [];
             const morphAttribute: BufferAttribute[] = morphAttributes[name]; // morphAttribute: array of Float32BufferAttributes

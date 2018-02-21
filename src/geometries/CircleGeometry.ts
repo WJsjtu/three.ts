@@ -1,5 +1,5 @@
-import {BufferGeometry} from "../core/BufferGeometry";
 import {Float32BufferAttribute} from "../core/BufferAttribute";
+import {BufferGeometry} from "../core/BufferGeometry";
 import {Geometry} from "../core/Geometry";
 
 export interface ICircleGeometryParameters {
@@ -47,8 +47,8 @@ export class CircleBufferGeometry extends BufferGeometry {
         this.parameters = {
             radius: radius,
             segments: segments,
-            thetaStart: thetaStart,
             thetaLength: thetaLength,
+            thetaStart: thetaStart,
         };
         segments = segments !== undefined ? Math.max(3, segments) : 8;
         // buffers

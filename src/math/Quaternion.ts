@@ -20,28 +20,28 @@ export class Quaternion {
         return this._x;
     }
 
-    get y(): number {
-        return this._y;
-    }
-
-    get z(): number {
-        return this._z;
-    }
-
-    get w(): number {
-        return this._w;
-    }
-
     set x(_x: number) {
         this._x = _x;
+    }
+
+    get y(): number {
+        return this._y;
     }
 
     set y(_y: number) {
         this._y = _y;
     }
 
+    get z(): number {
+        return this._z;
+    }
+
     set z(_z: number) {
         this._z = _z;
+    }
+
+    get w(): number {
+        return this._w;
     }
 
     set w(_w: number) {

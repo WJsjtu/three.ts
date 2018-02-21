@@ -1,5 +1,5 @@
-import {Light} from "./Light";
 import {Color} from "../math/Color";
+import {Light} from "./Light";
 
 export class AmbientLight extends Light {
     public readonly type: string = "AmbientLight";

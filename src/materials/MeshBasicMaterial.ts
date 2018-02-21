@@ -1,6 +1,6 @@
-import {Material, IMaterialParameters} from "./Material";
-import {Color} from "../math/Color";
 import {MultiplyOperation} from "../constants";
+import {Color} from "../math/Color";
+import {IMaterialParameters, Material} from "./Material";
 
 export interface IMeshBasicMaterialParameter extends IMaterialParameters {
     color?: Color | number | string;
