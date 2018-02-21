@@ -33,7 +33,7 @@ export function applyMatrixToBufferAttribute(matrix: Matrix4 | Matrix3, attribut
         vec.z = attribute.getProperty(i, "z") as number;
         if (matrix instanceof Matrix4) {
             vec.applyMatrix4(matrix);
-        } else {
+        } else if (matrix instanceof Matrix3) {
             vec.applyMatrix3(matrix);
         }
         attribute.setProperty(i, "xyz", vec);
@@ -70,5 +70,24 @@ export function unprojectVector3onCamera(vector: Vector3, camera: Camera): Vecto
 }
 
 export function vectorFromBufferAttribute<T = Vector4 | Vector3 | Vector2>(vector: T, attribute: BufferAttribute, index: number = 0): T {
-
+    if (vector instanceof Vector2) {
+        return vector.set(
+            attribute.getProperty(index, "x") as number,
+            attribute.getProperty(index, "y") as number
+        )
+    } else if (vector instanceof Vector3) {
+        return vector.set(
+            attribute.getProperty(index, "x") as number,
+            attribute.getProperty(index, "y") as number,
+            attribute.getProperty(index, "z") as number
+        )
+    } else if (vector instanceof Vector4) {
+        return vector.set(
+            attribute.getProperty(index, "x") as number,
+            attribute.getProperty(index, "y") as number,
+            attribute.getProperty(index, "z") as number,
+            attribute.getProperty(index, "w") as number
+        )
+    }
+    return vector;
 }
