@@ -12,7 +12,7 @@ export class MeshPhysicalMaterial extends Material {
     // maps to F0 = 0.04
     public clearCoat: number = 0.0;
     public clearCoatRoughness: number = 0.0;
-    public defines: { [key: string]: string } = { PHYSICAL: "" };
+    public defines: { [key: string]: any } = { PHYSICAL: "" };
     public reflectivity: number = 0.5;
 
     constructor(parameters: IMeshPhysicalMaterialParameters) {

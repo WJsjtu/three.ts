@@ -5,7 +5,7 @@ import { CubeTexture } from "../textures/CubeTexture";
 import { Texture } from "../textures/Texture";
 import { IMaterialParameters, Material } from "./Material";
 
-export interface IMeshPhongMaterial extends IMaterialParameters {
+export interface IMeshPhongMaterialParameters extends IMaterialParameters {
     alphaMap?: Texture;
     aoMap?: Texture;
     aoMapIntensity?: number;
@@ -39,9 +39,6 @@ export interface IMeshPhongMaterial extends IMaterialParameters {
     wireframeLinewidth?: number;
 }
 /**
- * @author mrdoob / http://mrdoob.com/
- * @author alteredq / http://alteredqualia.com/
- *
  * parameters = {
  *  color: <hex>,
  *  specular: <hex>,
@@ -122,7 +119,7 @@ export class MeshPhongMaterial extends Material {
     public wireframeLinejoin: string = "round";
     public wireframeLinewidth: number = 1;
 
-    constructor(parameters: IMeshPhongMaterial) {
+    constructor(parameters: IMeshPhongMaterialParameters) {
         super();
         this.setValues(parameters);
     }

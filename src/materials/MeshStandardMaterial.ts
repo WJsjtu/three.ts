@@ -4,7 +4,7 @@ import { CubeTexture } from "../textures/CubeTexture";
 import { Texture } from "../textures/Texture";
 import { IMaterialParameters, Material } from "./Material";
 
-export interface IMeshStandardMaterial extends IMaterialParameters {
+export interface IMeshStandardMaterialParameters extends IMaterialParameters {
     alphaMap?: Texture;
     aoMap?: Texture;
     aoMapIntensity?: number;
@@ -97,7 +97,7 @@ export class MeshStandardMaterial extends Material {
     public bumpMap: Texture = null;
     public bumpScale: number = 1;
     public color: Color = new Color().setHex(0xffffff);
-    public defines: { [key: string]: string } = { STANDARD: "" };
+    public defines: { [key: string]: any } = { STANDARD: "" };
     public displacementBias: number = 0;
     public displacementMap: Texture = null;
     public displacementScale: number = 1;
@@ -124,7 +124,7 @@ export class MeshStandardMaterial extends Material {
     public wireframeLinejoin: string = "round";
     public wireframeLinewidth: number = 1;
 
-    constructor(parameters: IMeshStandardMaterial) {
+    constructor(parameters: IMeshStandardMaterialParameters) {
         super();
         this.setValues(parameters);
     }
