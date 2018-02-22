@@ -1,4 +1,4 @@
-import {MathUtil} from "./Math";
+import { MathUtil } from "./Math";
 
 function HUE_TO_RGB(p, q, t) {
     if (t < 0) t += 1;
@@ -10,7 +10,7 @@ function HUE_TO_RGB(p, q, t) {
 }
 
 export class Color {
-    public static ColorKeywords: {[key: string]: number} = {
+    public static ColorKeywords: { [key: string]: number } = {
         aliceblue: 0xf0f8ff,
         antiquewhite: 0xfaebd7,
         aqua: 0x00ffff,
@@ -340,10 +340,10 @@ export class Color {
     }
 
     public getHSL(
-        hsl: {h: number; s: number; l: number} = {h: 0, s: 0, l: 0},
-    ): {h: number; s: number; l: number} {
+        hsl: { h: number; s: number; l: number } = { h: 0, s: 0, l: 0 },
+    ): { h: number; s: number; l: number } {
         // h,s,l ranges are in 0.0 - 1.0
-        const {r, g, b} = this;
+        const { r, g, b } = this;
         const max = Math.max(r, g, b);
         const min = Math.min(r, g, b);
 
@@ -379,7 +379,7 @@ export class Color {
     }
 
     public getStyle(): string {
-        const {r, g, b} = this;
+        const { r, g, b } = this;
         return (
             "rgb(" +
             ((r * 255) | 0) +

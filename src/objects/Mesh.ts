@@ -1,19 +1,19 @@
-import {BackSide, DoubleSide, TrianglesDrawMode} from "../constants";
-import {BufferAttribute} from "../core/BufferAttribute";
-import {BufferGeometry} from "../core/BufferGeometry";
-import {Face3} from "../core/Face3";
-import {Geometry, IMorphTarget} from "../core/Geometry";
-import {Object3D} from "../core/Object3D";
-import {IIntersection, Raycaster} from "../core/Raycaster";
-import {Material} from "../materials/Material";
-import {MeshBasicMaterial} from "../materials/MeshBasicMaterial";
-import {Matrix4} from "../math/Matrix4";
-import {Ray} from "../math/Ray";
-import {Sphere} from "../math/Sphere";
-import {Triangle} from "../math/Triangle";
-import {Vector2} from "../math/Vector2";
-import {Vector3} from "../math/Vector3";
-import {vectorFromBufferAttribute} from "../utils";
+import { BackSide, DoubleSide, TrianglesDrawMode } from "../constants";
+import { BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Face3 } from "../core/Face3";
+import { Geometry, IMorphTarget } from "../core/Geometry";
+import { Object3D } from "../core/Object3D";
+import { IIntersection, Raycaster } from "../core/Raycaster";
+import { Material } from "../materials/Material";
+import { MeshBasicMaterial } from "../materials/MeshBasicMaterial";
+import { Matrix4 } from "../math/Matrix4";
+import { Ray } from "../math/Ray";
+import { Sphere } from "../math/Sphere";
+import { Triangle } from "../math/Triangle";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
+import { vectorFromBufferAttribute } from "../utils";
 
 class Mesh extends Object3D {
     public static uvIntersection(
@@ -121,7 +121,7 @@ class Mesh extends Object3D {
     public drawMode: number = TrianglesDrawMode;
 
     public morphTargetInfluences: number[] = [];
-    public morphTargetDictionary: {[key: string]: number} = {};
+    public morphTargetDictionary: { [key: string]: number } = {};
 
     constructor(
         geometry: BufferGeometry | Geometry = new BufferGeometry(),
@@ -145,7 +145,7 @@ class Mesh extends Object3D {
     public updateMorphTargets(): this {
         const geometry: BufferGeometry | Geometry = this.geometry;
         if (geometry instanceof BufferGeometry) {
-            const morphAttributes: {[key: string]: BufferAttribute[]} =
+            const morphAttributes: { [key: string]: BufferAttribute[] } =
                 geometry.morphAttributes;
             const keys: string[] = Object.keys(morphAttributes);
             if (keys.length > 0) {

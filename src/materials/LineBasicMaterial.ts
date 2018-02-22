@@ -1,5 +1,5 @@
-import {Color} from "../math/Color";
-import {IMaterialParameters, Material} from "./Material";
+import { Color } from "../math/Color";
+import { IMaterialParameters, Material } from "./Material";
 
 export interface ILineBasicMaterialParameters extends IMaterialParameters {
     color?: Color | number | string;

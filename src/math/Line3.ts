@@ -1,6 +1,6 @@
-import {MathUtil} from "./Math";
-import {Matrix4} from "./Matrix4";
-import {Vector3} from "./Vector3";
+import { MathUtil } from "./Math";
+import { Matrix4 } from "./Matrix4";
+import { Vector3 } from "./Vector3";
 
 export class Line3 {
     public start: Vector3 = new Vector3();

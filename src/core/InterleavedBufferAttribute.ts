@@ -1,8 +1,8 @@
-import {MathUtil} from "../math/Math";
-import {Vector2} from "../math/Vector2";
-import {Vector3} from "../math/Vector3";
-import {Vector4} from "../math/Vector4";
-import {IBufferRange, TypedArray} from "./BufferAttribute";
+import { MathUtil } from "../math/Math";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
+import { Vector4 } from "../math/Vector4";
+import { IBufferRange, TypedArray } from "./BufferAttribute";
 
 export class InterleavedBufferAttribute {
     public readonly uuid: string = MathUtil.generateUUID();
@@ -11,7 +11,7 @@ export class InterleavedBufferAttribute {
     public stride: number = 1;
     public count: number = 0;
     public dynamic: boolean = false;
-    public updateRange: IBufferRange = {offset: 0, count: -1};
+    public updateRange: IBufferRange = { offset: 0, count: -1 };
     public version: number = 0;
 
     public itemSize: number;
@@ -100,7 +100,7 @@ export class InterleavedBufferAttribute {
             property.length <= 4 &&
             property.replace(/[xyzw]/g, "").length === 0
         ) {
-            const offsetMap = {x: 0, y: 1, z: 2};
+            const offsetMap = { x: 0, y: 1, z: 2 };
             if (property.length === 1 && typeof value === "number") {
                 this.array[
                     index * this.stride +
@@ -179,7 +179,7 @@ export class InterleavedBufferAttribute {
             property.length <= 4 &&
             property.replace(/[xyzw]/g, "").length === 0
         ) {
-            const offsetMap = {x: 0, y: 1, z: 2};
+            const offsetMap = { x: 0, y: 1, z: 2 };
             if (property.length === 1) {
                 return this.array[
                     index * this.stride +

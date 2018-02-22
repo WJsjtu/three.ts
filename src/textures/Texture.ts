@@ -9,10 +9,10 @@ import {
     UnsignedByteType,
     UVMapping,
 } from "../constants.js";
-import {EventDispatcher} from "../core/EventDispatcher";
-import {MathUtil} from "../math/Math";
-import {Matrix3} from "../math/Matrix3";
-import {Vector2} from "../math/Vector2";
+import { EventDispatcher } from "../core/EventDispatcher";
+import { MathUtil } from "../math/Math";
+import { Matrix3 } from "../math/Matrix3";
+import { Vector2 } from "../math/Vector2";
 
 let textureId: number = 0;
 
@@ -20,7 +20,7 @@ type InnerTextureSource =
     | HTMLImageElement
     | HTMLCanvasElement
     | HTMLVideoElement
-    | {data?: any; width: number; height: number};
+    | { data?: any; width: number; height: number };
 
 export type TextureSource = InnerTextureSource | InnerTextureSource[];
 
@@ -32,7 +32,7 @@ export class Texture extends EventDispatcher {
     public readonly uuid: string = MathUtil.generateUUID();
     public name: string = "";
     public image: TextureSource = Texture.DEFAULT_IMAGE;
-    public mipmaps: Array<{data: any; width: number; height: number}> = [];
+    public mipmaps: Array<{ data: any; width: number; height: number }> = [];
     public mapping: number = Texture.DEFAULT_MAPPING;
     public wrapS: number = ClampToEdgeWrapping;
     public wrapT: number = ClampToEdgeWrapping;
@@ -95,7 +95,7 @@ export class Texture extends EventDispatcher {
     }
 
     public dispose(): void {
-        this.dispatchEvent({type: "dispose"});
+        this.dispatchEvent({ type: "dispose" });
     }
 
     public transformUv(uv: Vector2): this {

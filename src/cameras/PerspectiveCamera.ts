@@ -1,5 +1,5 @@
-import {MathUtil} from "../math/Math";
-import {Camera, IFrustumView} from "./Camera";
+import { MathUtil } from "../math/Math";
+import { Camera, IFrustumView } from "./Camera";
 
 export class PerspectiveCamera extends Camera {
     public readonly type: string = "PerspectiveCamera";
@@ -252,7 +252,7 @@ export class PerspectiveCamera extends Camera {
         this.focus = source.focus;
 
         this._aspect = source.aspect;
-        this._view = source.view === null ? null : {...source.view};
+        this._view = source.view === null ? null : { ...source.view };
 
         this._filmGauge = source.filmGauge;
         this._filmOffset = source.filmOffset;

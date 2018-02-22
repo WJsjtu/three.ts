@@ -1,8 +1,8 @@
-import {Object3D} from "../core/Object3D";
-import {Matrix4} from "./Matrix4";
-import {Plane} from "./Plane";
-import {Sphere} from "./Sphere";
-import {Vector3} from "./Vector3";
+import { Object3D } from "../core/Object3D";
+import { Matrix4 } from "./Matrix4";
+import { Plane } from "./Plane";
+import { Sphere } from "./Sphere";
+import { Vector3 } from "./Vector3";
 
 export class Box3 {
     public min: Vector3 = new Vector3(+Infinity, +Infinity, +Infinity);

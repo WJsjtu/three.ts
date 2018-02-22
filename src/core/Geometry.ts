@@ -1,19 +1,19 @@
-import {Box3} from "../math/Box3";
-import {Color} from "../math/Color";
-import {MathUtil} from "../math/Math";
-import {Matrix3} from "../math/Matrix3";
-import {Matrix4} from "../math/Matrix4";
-import {Sphere} from "../math/Sphere";
-import {Triangle} from "../math/Triangle";
-import {Vector2} from "../math/Vector2";
-import {Vector3} from "../math/Vector3";
-import {Vector4} from "../math/Vector4";
-import {BufferAttribute, TypedArray} from "./BufferAttribute";
-import {BufferGeometry} from "./BufferGeometry";
-import {DirectGeometry, IGroup} from "./DirectGeometry";
-import {EventDispatcher} from "./EventDispatcher";
-import {Face3} from "./Face3";
-import {Object3D} from "./Object3D";
+import { Box3 } from "../math/Box3";
+import { Color } from "../math/Color";
+import { MathUtil } from "../math/Math";
+import { Matrix3 } from "../math/Matrix3";
+import { Matrix4 } from "../math/Matrix4";
+import { Sphere } from "../math/Sphere";
+import { Triangle } from "../math/Triangle";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
+import { Vector4 } from "../math/Vector4";
+import { BufferAttribute, TypedArray } from "./BufferAttribute";
+import { BufferGeometry } from "./BufferGeometry";
+import { DirectGeometry, IGroup } from "./DirectGeometry";
+import { EventDispatcher } from "./EventDispatcher";
+import { Face3 } from "./Face3";
+import { Object3D } from "./Object3D";
 
 export class GeometryFace extends Face3 {
     public id?: number;
@@ -130,7 +130,7 @@ export class Geometry extends EventDispatcher {
     public fromBufferGeometry(geometry: BufferGeometry): this {
         const indices: TypedArray =
             geometry.index !== null ? geometry.index.array : undefined;
-        const attributes: {[key: string]: BufferAttribute} =
+        const attributes: { [key: string]: BufferAttribute } =
             geometry.attributes;
         const positions: TypedArray = attributes.position.array;
         const normals: TypedArray =
@@ -605,7 +605,7 @@ export class Geometry extends EventDispatcher {
          * Hashmap for looking up vertices by position coordinates (and making sure they are unique)
          * @type {{}}
          */
-        const verticesMap: {[key: string]: number} = {};
+        const verticesMap: { [key: string]: number } = {};
         const unique: Vector3[] = [],
             changes: number[] = [];
 
@@ -767,7 +767,7 @@ export class Geometry extends EventDispatcher {
         // morph targets
         const morphTargets: IMorphTarget[] = source.morphTargets;
         for (let i: number = 0, il: number = morphTargets.length; i < il; i++) {
-            const morphTarget: IMorphTarget = {name: morphTargets[i].name};
+            const morphTarget: IMorphTarget = { name: morphTargets[i].name };
             // vertices
             if (morphTargets[i].vertices !== undefined) {
                 morphTarget.vertices = [];

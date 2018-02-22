@@ -1,6 +1,6 @@
-import {BufferGeometry} from "../core/BufferGeometry";
-import {Geometry} from "../core/Geometry";
-import {CylinderBufferGeometry, CylinderGeometry} from "./CylinderGeometry";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Geometry } from "../core/Geometry";
+import { CylinderBufferGeometry, CylinderGeometry } from "./CylinderGeometry";
 
 export interface IConeGeometryParameters {
     radius: number;

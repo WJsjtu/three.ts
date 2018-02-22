@@ -1,6 +1,6 @@
-import {Float32BufferAttribute} from "../core/BufferAttribute";
-import {BufferGeometry} from "../core/BufferGeometry";
-import {Geometry} from "../core/Geometry";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Geometry } from "../core/Geometry";
 
 export interface ICircleGeometryParameters {
     radius: number;

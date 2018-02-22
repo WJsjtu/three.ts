@@ -1,7 +1,7 @@
-import {Object3D} from "../core/Object3D";
-import {Vector3} from "../math/Vector3";
-import {AudioWrapper} from "./Audio";
-import {AudioListenerWrapper} from "./AudioListener";
+import { Object3D } from "../core/Object3D";
+import { Vector3 } from "../math/Vector3";
+import { AudioWrapper } from "./Audio";
+import { AudioListenerWrapper } from "./AudioListener";
 
 export class PositionalAudio extends AudioWrapper {
     public panner: PannerNode = null;

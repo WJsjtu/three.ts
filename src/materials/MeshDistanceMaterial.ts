@@ -1,45 +1,48 @@
 import { BasicDepthPacking } from "../constants";
+import { Vector3 } from "../math/Vector3";
 import { IMaterialParameters, Material } from "./Material";
 
-export interface IMeshDepthMaterialParameters extends IMaterialParameters {
+export interface IMeshDistanceMaterialParameters extends IMaterialParameters {
     alphaMap?: any;
-    depthPacking?: number;
     displacementMap?: any;
     displacementScale?: number;
     displacementBias?: number;
+    farDistance?: number;
     map?: any;
     morphTargets?: boolean;
+    nearDistance: number;
+    referencePosition: Vector3;
     skinning?: boolean;
-    wireframe?: boolean;
-    wireframeLinewidth?: number;
 }
 
-export class MeshDepthMaterial extends Material {
+export class MeshDistanceMaterial extends Material {
     public readonly type: string = "MeshDepthMaterial";
 
     public alphaMap: any = null;
-    public depthPacking: number = BasicDepthPacking;
     public displacementMap: any = null;
     public displacementScale: number = 1;
     public displacementBias: number = 0;
 
+    public farDistance: number = 1;
     public fog: boolean = false;
     public lights: boolean = false;
 
     public map: any = null;
     public morphTargets: boolean = false;
+    public nearDistance: number = 1;
+    public referencePosition: Vector3 = new Vector3();
     public skinning: boolean = false;
-    public wireframe: boolean = false;
-    public wireframeLinewidth: number = 1;
 
-    constructor(parameters: IMeshDepthMaterialParameters) {
+    constructor(parameters: IMeshDistanceMaterialParameters) {
         super();
         this.setValues(parameters);
     }
 
-    public copy(source: MeshDepthMaterial): this {
+    public copy(source: MeshDistanceMaterial): this {
         super.copy(source);
-        this.depthPacking = source.depthPacking;
+        this.referencePosition.copy(source.referencePosition);
+        this.nearDistance = source.nearDistance;
+        this.farDistance = source.farDistance;
         this.skinning = source.skinning;
         this.morphTargets = source.morphTargets;
         this.map = source.map;
@@ -47,8 +50,6 @@ export class MeshDepthMaterial extends Material {
         this.displacementMap = source.displacementMap;
         this.displacementScale = source.displacementScale;
         this.displacementBias = source.displacementBias;
-        this.wireframe = source.wireframe;
-        this.wireframeLinewidth = source.wireframeLinewidth;
         return this;
     }
 }

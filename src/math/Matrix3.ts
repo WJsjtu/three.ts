@@ -1,4 +1,4 @@
-import {Matrix4} from "./Matrix4";
+import { Matrix4 } from "./Matrix4";
 
 export class Matrix3 {
     protected elements: number[] = [1, 0, 0, 0, 1, 0, 0, 0, 1];

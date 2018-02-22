@@ -1,9 +1,9 @@
-import {Box3} from "./Box3";
-import {Matrix4} from "./Matrix4";
-import {Plane} from "./Plane";
-import {Sphere} from "./Sphere";
-import {Triangle} from "./Triangle";
-import {Vector3} from "./Vector3";
+import { Box3 } from "./Box3";
+import { Matrix4 } from "./Matrix4";
+import { Plane } from "./Plane";
+import { Sphere } from "./Sphere";
+import { Triangle } from "./Triangle";
+import { Vector3 } from "./Vector3";
 
 export class Ray {
     public origin: Vector3 = new Vector3();

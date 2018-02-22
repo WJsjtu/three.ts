@@ -1,4 +1,4 @@
-import {BufferAttribute, TypedArray} from "./BufferAttribute";
+import { BufferAttribute, TypedArray } from "./BufferAttribute";
 
 export class InstancedBufferAttribute extends BufferAttribute {
     public meshPerAttribute: number = 1;

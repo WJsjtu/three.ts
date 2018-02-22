@@ -1,4 +1,4 @@
-import {Camera, IFrustumView} from "./Camera";
+import { Camera, IFrustumView } from "./Camera";
 
 export class OrthographicCamera extends Camera {
     public readonly type: string = "OrthographicCamera";
@@ -171,7 +171,7 @@ export class OrthographicCamera extends Camera {
         this._near = source.near;
         this._far = source.far;
 
-        this._view = source.view === null ? null : {...source.view};
+        this._view = source.view === null ? null : { ...source.view };
 
         return this.updateProjectionMatrix();
     }

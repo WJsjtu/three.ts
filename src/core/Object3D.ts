@@ -1,13 +1,13 @@
-import {Camera} from "../cameras/Camera";
-import {Euler} from "../math/Euler";
-import {MathUtil} from "../math/Math";
-import {Matrix4} from "../math/Matrix4";
-import {Quaternion} from "../math/Quaternion";
-import {Vector3} from "../math/Vector3";
-import {Vector4} from "../math/Vector4";
-import {EventDispatcher} from "./EventDispatcher";
-import {Layers} from "./Layers";
-import {IIntersection, Raycaster} from "./Raycaster";
+import { Camera } from "../cameras/Camera";
+import { Euler } from "../math/Euler";
+import { MathUtil } from "../math/Math";
+import { Matrix4 } from "../math/Matrix4";
+import { Quaternion } from "../math/Quaternion";
+import { Vector3 } from "../math/Vector3";
+import { Vector4 } from "../math/Vector4";
+import { EventDispatcher } from "./EventDispatcher";
+import { Layers } from "./Layers";
+import { IIntersection, Raycaster } from "./Raycaster";
 
 let object3DId: number = 0;
 
@@ -250,7 +250,7 @@ export class Object3D extends EventDispatcher {
             object.parent.remove(object);
         }
         object.parent = this;
-        object.dispatchEvent({type: "added"});
+        object.dispatchEvent({ type: "added" });
         this.children.push(object);
         return this;
     }
@@ -265,7 +265,7 @@ export class Object3D extends EventDispatcher {
         const index = this.children.indexOf(object);
         if (index !== -1) {
             object.parent = null;
-            object.dispatchEvent({type: "removed"});
+            object.dispatchEvent({ type: "removed" });
             this.children.splice(index, 1);
         }
         return this;

@@ -1,12 +1,12 @@
-import {Camera} from "../cameras/Camera";
-import {OrthographicCamera} from "../cameras/OrthographicCamera";
-import {PerspectiveCamera} from "../cameras/PerspectiveCamera";
-import {Ray} from "../math/Ray";
-import {Vector2} from "../math/Vector2";
-import {Vector3} from "../math/Vector3";
-import {unprojectVector3onCamera} from "../utils";
-import {Face3} from "./Face3";
-import {Object3D} from "./Object3D";
+import { Camera } from "../cameras/Camera";
+import { OrthographicCamera } from "../cameras/OrthographicCamera";
+import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
+import { Ray } from "../math/Ray";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
+import { unprojectVector3onCamera } from "../utils";
+import { Face3 } from "./Face3";
+import { Object3D } from "./Object3D";
 
 export interface IIntersection {
     index?: number;
@@ -39,7 +39,7 @@ export class Raycaster {
         LOD: {},
         Line: {},
         Mesh: {},
-        Points: {threshold: 1},
+        Points: { threshold: 1 },
         Sprite: {},
     };
 

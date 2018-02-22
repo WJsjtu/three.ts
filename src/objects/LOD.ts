@@ -1,7 +1,7 @@
-import {Camera} from "../cameras/Camera";
-import {Object3D} from "../core/Object3D";
-import {IIntersection, Raycaster} from "../core/Raycaster";
-import {Vector3} from "../math/Vector3";
+import { Camera } from "../cameras/Camera";
+import { Object3D } from "../core/Object3D";
+import { IIntersection, Raycaster } from "../core/Raycaster";
+import { Vector3 } from "../math/Vector3";
 
 export interface ILODLevel {
     object: Object3D;
@@ -21,7 +21,7 @@ export class LOD extends Object3D {
                 break;
             }
         }
-        levels.splice(l, 0, {distance: distance, object: object});
+        levels.splice(l, 0, { distance: distance, object: object });
         this.add(object);
         return this;
     }

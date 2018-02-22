@@ -1,9 +1,9 @@
-import {Color} from "../math/Color";
-import {MathUtil} from "../math/Math";
-import {Vector2} from "../math/Vector2";
-import {Vector3} from "../math/Vector3";
-import {Vector4} from "../math/Vector4";
-import {Face3} from "./Face3";
+import { Color } from "../math/Color";
+import { MathUtil } from "../math/Math";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
+import { Vector4 } from "../math/Vector4";
+import { Face3 } from "./Face3";
 
 export interface IBufferRange {
     offset: number;
@@ -29,7 +29,7 @@ export class BufferAttribute {
     public count: number = 0;
     public normalized: boolean = false;
     public dynamic: boolean = false;
-    public updateRange: IBufferRange = {offset: 0, count: -1};
+    public updateRange: IBufferRange = { offset: 0, count: -1 };
     public version: number = 0;
 
     constructor(
@@ -172,7 +172,7 @@ export class BufferAttribute {
             property.length <= 4 &&
             property.replace(/[xyzw]/g, "").length === 0
         ) {
-            const offsetMap = {x: 0, y: 1, z: 2};
+            const offsetMap = { x: 0, y: 1, z: 2 };
             if (property.length === 1 && typeof value === "number") {
                 this.array[
                     index * this.itemSize + offsetMap[property.charAt(0)]
@@ -231,7 +231,7 @@ export class BufferAttribute {
             property.length <= 4 &&
             property.replace(/[xyzw]/g, "").length === 0
         ) {
-            const offsetMap = {x: 0, y: 1, z: 2};
+            const offsetMap = { x: 0, y: 1, z: 2 };
             if (property.length === 1) {
                 return this.array[
                     index * this.itemSize + offsetMap[property.charAt(0)]

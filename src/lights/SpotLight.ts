@@ -1,7 +1,7 @@
-import {Object3D} from "../core/Object3D";
-import {Color} from "../math/Color";
-import {Light} from "./Light";
-import {SpotLightShadow} from "./SpotLightShadow";
+import { Object3D } from "../core/Object3D";
+import { Color } from "../math/Color";
+import { Light } from "./Light";
+import { SpotLightShadow } from "./SpotLightShadow";
 
 export class SpotLight extends Light {
     public readonly type: string = "SpotLight";

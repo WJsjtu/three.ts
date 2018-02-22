@@ -1,7 +1,7 @@
-import {MathUtil} from "./Math";
-import {Matrix4} from "./Matrix4";
-import {Quaternion} from "./Quaternion";
-import {Vector3} from "./Vector3";
+import { MathUtil } from "./Math";
+import { Matrix4 } from "./Matrix4";
+import { Quaternion } from "./Quaternion";
+import { Vector3 } from "./Vector3";
 
 export enum EulerOrder {
     XYZ,

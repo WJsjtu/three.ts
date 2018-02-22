@@ -1,5 +1,5 @@
-import {NearestFilter} from "../constants.js";
-import {Texture} from "./Texture";
+import { NearestFilter } from "../constants.js";
+import { Texture } from "./Texture";
 
 export class DataTexture extends Texture {
     constructor(
@@ -28,7 +28,7 @@ export class DataTexture extends Texture {
             anisotropy,
             encoding,
         );
-        this.image = {data: data, width: width, height: height};
+        this.image = { data: data, width: width, height: height };
         this.magFilter = magFilter !== undefined ? magFilter : NearestFilter;
         this.minFilter = minFilter !== undefined ? minFilter : NearestFilter;
         this.generateMipmaps = false;

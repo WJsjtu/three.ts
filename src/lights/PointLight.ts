@@ -1,7 +1,7 @@
-import {PerspectiveCamera} from "../cameras/PerspectiveCamera";
-import {Color} from "../math/Color";
-import {Light} from "./Light";
-import {LightShadow} from "./LightShadow";
+import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
+import { Color } from "../math/Color";
+import { Light } from "./Light";
+import { LightShadow } from "./LightShadow";
 
 export class PointLight extends Light {
     public readonly type: string = "PointLight";

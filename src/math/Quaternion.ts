@@ -1,7 +1,7 @@
-import {Euler, EulerOrder} from "./Euler";
-import {Matrix4} from "./Matrix4";
-import {Vector3} from "./Vector3";
-import {Vector4} from "./Vector4";
+import { Euler, EulerOrder } from "./Euler";
+import { Matrix4 } from "./Matrix4";
+import { Vector3 } from "./Vector3";
+import { Vector4 } from "./Vector4";
 
 export class Quaternion {
     protected _x: number;
@@ -61,7 +61,7 @@ export class Quaternion {
     }
 
     public setFromEuler(euler: Euler): this {
-        const {x, y, z, order} = euler;
+        const { x, y, z, order } = euler;
 
         const cos = Math.cos;
         const sin = Math.sin;
@@ -235,7 +235,7 @@ export class Quaternion {
     }
 
     public lengthSquared(): number {
-        const {x, y, z, w} = this;
+        const { x, y, z, w } = this;
         return x * x + y * y + z * z + w * w;
     }
 
@@ -294,7 +294,7 @@ export class Quaternion {
         if (t === 0) return this;
         if (t === 1) return this.copy(qb);
 
-        const {x, y, z, w} = this;
+        const { x, y, z, w } = this;
 
         let cosHalfTheta = w * qb.w + x * qb.x + y * qb.y + z * qb.z;
 
@@ -333,7 +333,7 @@ export class Quaternion {
     }
 
     public equals(quaternion: Quaternion): boolean {
-        const {x, y, z, w} = this;
+        const { x, y, z, w } = this;
         return (
             quaternion.x === x &&
             quaternion.y === y &&

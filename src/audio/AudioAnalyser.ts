@@ -1,4 +1,4 @@
-import {AudioWrapper} from "./Audio";
+import { AudioWrapper } from "./Audio";
 
 export class AudioAnalyserWrapper {
     public analyser: AnalyserNode = null;

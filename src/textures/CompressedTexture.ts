@@ -1,8 +1,8 @@
-import {Texture} from "./Texture";
+import { Texture } from "./Texture";
 
 export class CompressedTexture extends Texture {
     constructor(
-        mipmaps: Array<{data: any; width: number; height: number}>,
+        mipmaps: Array<{ data: any; width: number; height: number }>,
         width: number,
         height: number,
         mapping?: number,
@@ -27,7 +27,7 @@ export class CompressedTexture extends Texture {
             anisotropy,
             encoding,
         );
-        this.image = {width: width, height: height};
+        this.image = { width: width, height: height };
         this.mipmaps = mipmaps;
 
         /**

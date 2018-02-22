@@ -5,7 +5,7 @@ import {
     UnsignedInt248Type,
     UnsignedShortType,
 } from "../constants.js";
-import {Texture} from "./Texture";
+import { Texture } from "./Texture";
 
 export class DepthTexture extends Texture {
     constructor(
@@ -45,7 +45,7 @@ export class DepthTexture extends Texture {
             anisotropy,
             encoding,
         );
-        this.image = {width: width, height: height};
+        this.image = { width: width, height: height };
         this.magFilter = magFilter !== undefined ? magFilter : NearestFilter;
         this.minFilter = minFilter !== undefined ? minFilter : NearestFilter;
         this.flipY = false;

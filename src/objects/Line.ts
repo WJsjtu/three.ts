@@ -1,14 +1,14 @@
-import {BufferAttribute, TypedArray} from "../core/BufferAttribute";
-import {BufferGeometry} from "../core/BufferGeometry";
-import {Geometry} from "../core/Geometry";
-import {Object3D} from "../core/Object3D";
-import {IIntersection, Raycaster} from "../core/Raycaster";
-import {LineBasicMaterial} from "../materials/LineBasicMaterial";
-import {Matrix4} from "../math/Matrix4";
-import {Ray} from "../math/Ray";
-import {Sphere} from "../math/Sphere";
-import {Vector3} from "../math/Vector3";
-import {LineSegments} from "./LineSegments";
+import { BufferAttribute, TypedArray } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Geometry } from "../core/Geometry";
+import { Object3D } from "../core/Object3D";
+import { IIntersection, Raycaster } from "../core/Raycaster";
+import { LineBasicMaterial } from "../materials/LineBasicMaterial";
+import { Matrix4 } from "../math/Matrix4";
+import { Ray } from "../math/Ray";
+import { Sphere } from "../math/Sphere";
+import { Vector3 } from "../math/Vector3";
+import { LineSegments } from "./LineSegments";
 
 export class Line extends Object3D {
     public readonly type: string = "Line";
@@ -53,7 +53,7 @@ export class Line extends Object3D {
 
         if (geometry instanceof BufferGeometry) {
             const index: BufferAttribute = geometry.index;
-            const attributes: {[key: string]: BufferAttribute} =
+            const attributes: { [key: string]: BufferAttribute } =
                 geometry.attributes;
             const positions: TypedArray = attributes.position.array;
             if (index !== null) {

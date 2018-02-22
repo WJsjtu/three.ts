@@ -1,4 +1,4 @@
-import {Matrix3} from "./Matrix3";
+import { Matrix3 } from "./Matrix3";
 
 export class Vector2 {
     public _x: number;

@@ -1,6 +1,6 @@
-import {MultiplyOperation} from "../constants";
-import {Color} from "../math/Color";
-import {IMaterialParameters, Material} from "./Material";
+import { MultiplyOperation } from "../constants";
+import { Color } from "../math/Color";
+import { IMaterialParameters, Material } from "./Material";
 
 export interface IMeshBasicMaterialParameter extends IMaterialParameters {
     alphaMap?: any;

@@ -1,7 +1,7 @@
-import {Float32BufferAttribute} from "../core/BufferAttribute";
-import {BufferGeometry} from "../core/BufferGeometry";
-import {Geometry} from "../core/Geometry";
-import {Vector3} from "../math/Vector3";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Geometry } from "../core/Geometry";
+import { Vector3 } from "../math/Vector3";
 
 export interface IBoxGeometryParameters {
     width: number;

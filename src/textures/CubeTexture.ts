@@ -1,5 +1,5 @@
-import {CubeReflectionMapping} from "../constants.js";
-import {Texture, TextureSource} from "./Texture";
+import { CubeReflectionMapping } from "../constants.js";
+import { Texture, TextureSource } from "./Texture";
 
 export class CubeTexture extends Texture {
     constructor(

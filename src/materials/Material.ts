@@ -8,11 +8,11 @@ import {
     OneMinusSrcAlphaFactor,
     SrcAlphaFactor,
 } from "../constants";
-import {EventDispatcher} from "../core/EventDispatcher";
-import {Color} from "../math/Color";
-import {MathUtil} from "../math/Math";
-import {Plane} from "../math/Plane";
-import {Vector3} from "../math/Vector3";
+import { EventDispatcher } from "../core/EventDispatcher";
+import { Color } from "../math/Color";
+import { MathUtil } from "../math/Math";
+import { Plane } from "../math/Plane";
+import { Vector3 } from "../math/Vector3";
 
 let materialId: number = 0;
 
@@ -230,6 +230,6 @@ export class Material extends EventDispatcher {
     }
 
     public dispose(): void {
-        this.dispatchEvent({type: "dispose"});
+        this.dispatchEvent({ type: "dispose" });
     }
 }

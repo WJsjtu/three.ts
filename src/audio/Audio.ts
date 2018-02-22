@@ -1,5 +1,5 @@
-import {Object3D} from "../core/Object3D";
-import {AudioListenerWrapper} from "./AudioListener";
+import { Object3D } from "../core/Object3D";
+import { AudioListenerWrapper } from "./AudioListener";
 
 export class AudioWrapper extends Object3D {
     public type: string = "Audio";

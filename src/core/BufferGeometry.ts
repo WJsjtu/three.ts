@@ -1,9 +1,9 @@
-import {Box3} from "../math/Box3";
-import {MathUtil} from "../math/Math";
-import {Matrix3} from "../math/Matrix3";
-import {Matrix4} from "../math/Matrix4";
-import {Sphere} from "../math/Sphere";
-import {Vector3} from "../math/Vector3";
+import { Box3 } from "../math/Box3";
+import { MathUtil } from "../math/Math";
+import { Matrix3 } from "../math/Matrix3";
+import { Matrix4 } from "../math/Matrix4";
+import { Sphere } from "../math/Sphere";
+import { Vector3 } from "../math/Vector3";
 import {
     applyMatrixToBufferAttribute,
     arrayMax,
@@ -16,10 +16,10 @@ import {
     Uint16BufferAttribute,
     Uint32BufferAttribute,
 } from "./BufferAttribute";
-import {DirectGeometry, IGroup} from "./DirectGeometry";
-import {EventDispatcher} from "./EventDispatcher";
-import {Geometry} from "./Geometry";
-import {Object3D} from "./Object3D";
+import { DirectGeometry, IGroup } from "./DirectGeometry";
+import { EventDispatcher } from "./EventDispatcher";
+import { Geometry } from "./Geometry";
+import { Object3D } from "./Object3D";
 
 export interface IDrawRange {
     start: number;
@@ -34,16 +34,16 @@ export class BufferGeometry extends EventDispatcher {
     public readonly type: string = "BufferGeometry";
 
     public index: BufferAttribute = null;
-    public attributes: {[key: string]: BufferAttribute} = {};
+    public attributes: { [key: string]: BufferAttribute } = {};
 
-    public morphAttributes: {[key: string]: BufferAttribute[]} = {};
+    public morphAttributes: { [key: string]: BufferAttribute[] } = {};
 
     public groups: IGroup[] = [];
 
     public boundingBox: Box3 = null;
     public boundingSphere: Sphere = null;
 
-    public drawRange: IDrawRange = {start: 0, count: Infinity};
+    public drawRange: IDrawRange = { start: 0, count: Infinity };
 
     public setIndex(index: number[] | BufferAttribute): this {
         if (Array.isArray(index)) {
@@ -347,7 +347,7 @@ export class BufferGeometry extends EventDispatcher {
 
     public computeVertexNormals(): void {
         const index: BufferAttribute = this.index;
-        const attributes: {[key: string]: BufferAttribute} = this.attributes;
+        const attributes: { [key: string]: BufferAttribute } = this.attributes;
         const groups: IGroup[] = this.groups;
         if (attributes.position) {
             const positions: TypedArray = attributes.position.array;
@@ -464,7 +464,7 @@ export class BufferGeometry extends EventDispatcher {
         }
         const geometry2: BufferGeometry = new BufferGeometry();
         const indices: TypedArray = this.index.array;
-        const attributes: {[key: string]: BufferAttribute} = this.attributes;
+        const attributes: { [key: string]: BufferAttribute } = this.attributes;
         for (const name in attributes) {
             if (!attributes.hasOwnProperty(name)) continue;
             const attribute: BufferAttribute = attributes[name];
@@ -508,14 +508,15 @@ export class BufferGeometry extends EventDispatcher {
             this.setIndex(index.clone());
         }
         // attributes
-        const attributes: {[key: string]: BufferAttribute} = source.attributes;
+        const attributes: { [key: string]: BufferAttribute } =
+            source.attributes;
         for (const name in attributes) {
             if (!attributes.hasOwnProperty(name)) continue;
             const attribute: BufferAttribute = attributes[name];
             this.addAttribute(name, attribute.clone());
         }
         // morph attributes
-        const morphAttributes: {[key: string]: BufferAttribute[]} =
+        const morphAttributes: { [key: string]: BufferAttribute[] } =
             source.morphAttributes;
         for (const name in morphAttributes) {
             if (!attributes.hasOwnProperty(name)) continue;
@@ -553,6 +554,6 @@ export class BufferGeometry extends EventDispatcher {
     }
 
     public dispose(): void {
-        this.dispatchEvent({type: "dispose"});
+        this.dispatchEvent({ type: "dispose" });
     }
 }

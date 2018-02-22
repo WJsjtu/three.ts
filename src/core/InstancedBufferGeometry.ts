@@ -1,4 +1,4 @@
-import {BufferGeometry} from "./BufferGeometry";
+import { BufferGeometry } from "./BufferGeometry";
 export class InstancedBufferGeometry extends BufferGeometry {
     public readonly type: string = "InstancedBufferGeometry";
     public maxInstancedCount: number;
