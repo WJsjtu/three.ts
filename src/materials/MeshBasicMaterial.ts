@@ -3,55 +3,48 @@ import {Color} from "../math/Color";
 import {IMaterialParameters, Material} from "./Material";
 
 export interface IMeshBasicMaterialParameter extends IMaterialParameters {
-    color?: Color | number | string;
-    map?: any;
-    lightMap?: any;
-    lightMapIntensity?: number;
+    alphaMap?: any;
     aoMap?: any;
     aoMapIntensity?: number;
-    specularMap?: any;
-    alphaMap?: any;
-    envMap?: any;
+    color?: Color | number | string;
     combine?: number;
+    envMap?: any;
+    lightMap?: any;
+    lightMapIntensity?: number;
+    map?: any;
+    morphTargets?: boolean;
     reflectivity?: number;
     refractionRatio?: number;
+    skinning?: boolean;
+    specularMap?: any;
     wireframe?: boolean;
-    wireframeLinewidth?: number;
     wireframeLinecap?: string;
     wireframeLinejoin?: string;
-    skinning?: boolean;
-    morphTargets?: boolean;
+    wireframeLinewidth?: number;
 }
 
 export class MeshBasicMaterial extends Material {
     public readonly type: string = "MeshBasicMaterial";
 
-    public color: Color = new Color().setHex(0xffffff);
-    public map: any = null;
-    public lightMap: any = null;
-    public lightMapIntensity: number = 1.0;
-
+    public alphaMap: any = null;
     public aoMap: any = null;
     public aoMapIntensity: number = 1.0;
-
-    public specularMap: any = null;
-
-    public alphaMap: any = null;
-
-    public envMap: any = null;
+    public color: Color = new Color().setHex(0xffffff);
     public combine: number = MultiplyOperation;
+    public envMap: any = null;
+    public lights: boolean = false;
+    public lightMap: any = null;
+    public lightMapIntensity: number = 1.0;
+    public map: any = null;
+    public morphTargets: boolean = false;
     public reflectivity: number = 1;
     public refractionRatio: number = 0.98;
-
+    public skinning: boolean = false;
+    public specularMap: any = null;
     public wireframe: boolean = false;
-    public wireframeLinewidth: number = 1;
     public wireframeLinecap: string = "round";
     public wireframeLinejoin: string = "round";
-
-    public skinning: boolean = false;
-    public morphTargets: boolean = false;
-
-    public lights: boolean = false;
+    public wireframeLinewidth: number = 1;
 
     constructor(parameters: IMeshBasicMaterialParameter) {
         super();

@@ -17,40 +17,40 @@ import {Vector3} from "../math/Vector3";
 let materialId: number = 0;
 
 export interface IMaterialParameters {
-    name?: string;
-    fog?: boolean;
-    lights?: boolean;
+    alphaTest?: number;
     blending?: number;
-    side?: number;
-    flatShading?: boolean;
-    vertexColors?: number;
-    opacity?: number;
-    transparent?: boolean;
-    blendSrc?: number;
     blendDst?: number;
-    blendEquation?: number;
-    blendSrcAlpha?: number;
     blendDstAlpha?: number;
+    blendEquation?: number;
     blendEquationAlpha?: number;
+    blendSrc?: number;
+    blendSrcAlpha?: number;
+    clipIntersection?: boolean;
+    clippingPlanes?: Plane[];
+    clipShadows?: boolean;
+    colorWrite?: boolean;
     depthFunc?: number;
     depthTest?: boolean;
     depthWrite?: boolean;
-    clippingPlanes?: Plane[];
-    clipIntersection?: boolean;
-    clipShadows?: boolean;
-    shadowSide?: number;
-    colorWrite?: boolean;
-    precision?: string;
+    dithering?: boolean;
+    flatShading?: boolean;
+    fog?: boolean;
+    lights?: boolean;
+    name?: string;
+    needsUpdate?: boolean;
+    opacity?: number;
+    overdraw?: number;
     polygonOffset?: boolean;
     polygonOffsetFactor?: number;
     polygonOffsetUnits?: number;
-    dithering?: boolean;
-    alphaTest?: number;
+    precision?: string;
     premultipliedAlpha?: boolean;
-    overdraw?: number;
-    visible?: boolean;
+    shadowSide?: number;
+    side?: number;
+    transparent?: boolean;
     userData?: any;
-    needsUpdate?: boolean;
+    vertexColors?: number;
+    visible?: boolean;
 }
 
 export class Material extends EventDispatcher {
@@ -58,33 +58,45 @@ export class Material extends EventDispatcher {
     public readonly uuid: string = MathUtil.generateUUID();
     public readonly type: string = "Material";
 
-    public name: string = "";
-    public fog: boolean = true;
-    public lights: boolean = true;
-    public blending: number = NormalBlending;
-    public side: number = FrontSide;
-    public flatShading: boolean = false;
-    /**
-     * THREE.NoColors, THREE.VertexColors, THREE.FaceColors
-     */
-    public vertexColors: number = NoColors;
-    public opacity: number = 1;
-    public transparent: boolean = false;
+    public alphaTest: number = 0;
 
-    public blendSrc: number = SrcAlphaFactor;
+    public blending: number = NormalBlending;
     public blendDst: number = OneMinusSrcAlphaFactor;
-    public blendEquation: number = AddEquation;
-    public blendSrcAlpha: number = null;
     public blendDstAlpha: number = null;
+    public blendEquation: number = AddEquation;
     public blendEquationAlpha: number = null;
+    public blendSrc: number = SrcAlphaFactor;
+    public blendSrcAlpha: number = null;
+
+    public clipIntersection: boolean = false;
+    public clippingPlanes: Plane[] = [];
+    public clipShadows: boolean = false;
+
+    public colorWrite: boolean = true;
 
     public depthFunc: number = LessEqualDepth;
     public depthTest: boolean = true;
     public depthWrite: boolean = true;
 
-    public clippingPlanes: Plane[] = [];
-    public clipIntersection: boolean = false;
-    public clipShadows: boolean = false;
+    public dithering: boolean = false;
+    public flatShading: boolean = false;
+    public fog: boolean = true;
+    public lights: boolean = true;
+    public name: string = "";
+    public needsUpdate: boolean = true;
+    public opacity: number = 1;
+    public overdraw: number = 0;
+    public polygonOffset: boolean = false;
+    public polygonOffsetFactor: number = 0;
+    public polygonOffsetUnits: number = 0;
+
+    /**
+     * override the renderer's default precision for this material
+     * "highp", "mediump" or "lowp"
+     * @type {string}
+     */
+    public precision: string = null;
+    public premultipliedAlpha: boolean = false;
 
     /**
      * THREE.FrontSide  back side
@@ -93,36 +105,20 @@ export class Material extends EventDispatcher {
      * @type {number}
      */
     public shadowSide: number = null;
-
-    public colorWrite: boolean = true;
+    public side: number = FrontSide;
+    public transparent: boolean = false;
+    public userData: any = {};
 
     /**
-     * override the renderer's default precision for this material
-     * "highp", "mediump" or "lowp"
-     * @type {string}
+     * THREE.NoColors, THREE.VertexColors, THREE.FaceColors
      */
-    public precision: string = null;
-
-    public polygonOffset: boolean = false;
-    public polygonOffsetFactor: number = 0;
-    public polygonOffsetUnits: number = 0;
-
-    public dithering: boolean = false;
-
-    public alphaTest: number = 0;
-    public premultipliedAlpha: boolean = false;
+    public vertexColors: number = NoColors;
 
     /**
      * Overdrawn pixels (typically between 0 and 1) for fixing antialiasing gaps in CanvasRenderer
      * @type {number}
      */
-    public overdraw: number = 0;
-
     public visible: boolean = true;
-
-    public userData: any = {};
-
-    public needsUpdate: boolean = true;
 
     public setValues(values: IMaterialParameters): this {
         if (values === undefined) return;
