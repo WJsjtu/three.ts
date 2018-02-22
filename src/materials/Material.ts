@@ -82,6 +82,10 @@ export class Material extends EventDispatcher {
     public flatShading: boolean = false;
     public fog: boolean = true;
     public lights: boolean = true;
+    /**
+     * For mesh type extension
+     */
+    public morphTargets: boolean = false;
     public name: string = "";
     public needsUpdate: boolean = true;
     public opacity: number = 1;

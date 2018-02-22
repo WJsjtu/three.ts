@@ -33,7 +33,7 @@ class Mesh extends Object3D {
 
     public static checkIntersection(
         object: Mesh,
-        material: MeshBasicMaterial,
+        material: Material,
         raycaster: Raycaster,
         ray: Ray,
         pA: Vector3,
@@ -87,7 +87,7 @@ class Mesh extends Object3D {
         );
         const intersection: IIntersection = Mesh.checkIntersection(
             object,
-            object.material as MeshBasicMaterial,
+            object.material as Material,
             raycaster,
             ray,
             vA,
@@ -117,7 +117,7 @@ class Mesh extends Object3D {
     public readonly type: string = "Mesh";
 
     public geometry: BufferGeometry | Geometry = null;
-    public material: MeshBasicMaterial | MeshBasicMaterial[] = null;
+    public material: Material | Material[] = null;
     public drawMode: number = TrianglesDrawMode;
 
     public morphTargetInfluences: number[] = [];
@@ -125,9 +125,7 @@ class Mesh extends Object3D {
 
     constructor(
         geometry: BufferGeometry | Geometry = new BufferGeometry(),
-        material:
-            | MeshBasicMaterial
-            | MeshBasicMaterial[] = new MeshBasicMaterial({
+        material: Material | Material[] = new MeshBasicMaterial({
             color: Math.random() * 0xffffff,
         }),
     ) {
@@ -186,7 +184,7 @@ class Mesh extends Object3D {
         intersects: IIntersection[] = [],
     ): IIntersection[] {
         const geometry: BufferGeometry | Geometry = this.geometry;
-        const material: MeshBasicMaterial | MeshBasicMaterial[] = this.material;
+        const material: Material | Material[] = this.material;
         const matrixWorld: Matrix4 = this.matrixWorld;
         if (material === undefined) return;
         // Checking boundingSphere distance to ray
@@ -264,7 +262,7 @@ class Mesh extends Object3D {
             if (faceVertexUvs.length > 0) uvs = faceVertexUvs;
             for (let f: number = 0, fl: number = faces.length; f < fl; f++) {
                 const face: Face3 = faces[f];
-                const faceMaterial: MeshBasicMaterial = Array.isArray(material)
+                const faceMaterial: Material = Array.isArray(material)
                     ? material[face.materialIndex]
                     : material;
                 if (faceMaterial === undefined) continue;
@@ -349,7 +347,7 @@ class Mesh extends Object3D {
     public clone(): Mesh {
         return new (this.constructor as (
             geometry: BufferGeometry | Geometry,
-            material: MeshBasicMaterial | MeshBasicMaterial[],
+            material: Material | Material[],
         ) => void)(this.geometry, this.material).copy(this);
     }
 }
