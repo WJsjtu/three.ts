@@ -48,7 +48,7 @@ export interface IMaterialParameters {
     shadowSide?: number;
     side?: number;
     transparent?: boolean;
-    userData?: any;
+    userData?: object;
     vertexColors?: number;
     visible?: boolean;
 }
@@ -107,7 +107,7 @@ export class Material extends EventDispatcher {
     public shadowSide: number = null;
     public side: number = FrontSide;
     public transparent: boolean = false;
-    public userData: any = {};
+    public userData: object = {};
 
     /**
      * THREE.NoColors, THREE.VertexColors, THREE.FaceColors

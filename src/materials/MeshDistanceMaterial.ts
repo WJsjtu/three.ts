@@ -1,14 +1,15 @@
 import { BasicDepthPacking } from "../constants";
 import { Vector3 } from "../math/Vector3";
+import { Texture } from "../textures/Texture";
 import { IMaterialParameters, Material } from "./Material";
 
 export interface IMeshDistanceMaterialParameters extends IMaterialParameters {
-    alphaMap?: any;
-    displacementMap?: any;
+    alphaMap?: Texture;
+    displacementMap?: Texture;
     displacementScale?: number;
     displacementBias?: number;
     farDistance?: number;
-    map?: any;
+    map?: Texture;
     morphTargets?: boolean;
     nearDistance: number;
     referencePosition: Vector3;
@@ -18,8 +19,8 @@ export interface IMeshDistanceMaterialParameters extends IMaterialParameters {
 export class MeshDistanceMaterial extends Material {
     public readonly type: string = "MeshDepthMaterial";
 
-    public alphaMap: any = null;
-    public displacementMap: any = null;
+    public alphaMap: Texture = null;
+    public displacementMap: Texture = null;
     public displacementScale: number = 1;
     public displacementBias: number = 0;
 
@@ -27,7 +28,7 @@ export class MeshDistanceMaterial extends Material {
     public fog: boolean = false;
     public lights: boolean = false;
 
-    public map: any = null;
+    public map: Texture = null;
     public morphTargets: boolean = false;
     public nearDistance: number = 1;
     public referencePosition: Vector3 = new Vector3();

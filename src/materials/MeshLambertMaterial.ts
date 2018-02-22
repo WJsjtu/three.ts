@@ -4,56 +4,71 @@ import { CubeTexture } from "../textures/CubeTexture";
 import { Texture } from "../textures/Texture";
 import { IMaterialParameters, Material } from "./Material";
 
-export interface IMeshBasicMaterialParameter extends IMaterialParameters {
-    alphaMap?: Texture;
+export interface IMeshLambertMaterialParameters extends IMaterialParameters {
     aoMap?: Texture;
     aoMapIntensity?: number;
+    alphaMap?: Texture;
     color?: Color | number | string;
     combine?: number;
+    emissive?: Color | number | string;
+    emissiveIntensity?: number;
+    emissiveMap?: Texture;
     envMap?: CubeTexture;
+    map?: Texture;
+    morphNormals?: boolean;
+    morphTargets?: boolean;
     lightMap?: Texture;
     lightMapIntensity?: number;
-    map?: Texture;
-    morphTargets?: boolean;
-    reflectivity?: number;
-    refractionRatio?: number;
     skinning?: boolean;
     specularMap?: Texture;
+    reflectivity?: number;
+    refractionRatio?: number;
     wireframe?: boolean;
     wireframeLinecap?: string;
     wireframeLinejoin?: string;
     wireframeLinewidth?: number;
 }
 
-export class MeshBasicMaterial extends Material {
-    public readonly type: string = "MeshBasicMaterial";
+export class MeshLambertMaterial extends Material {
+    public readonly type: string = "MeshLambertMaterial";
+
+    public aoMap: Texture = null;
+    public aoMapIntensity: number = 1;
 
     public alphaMap: Texture = null;
-    public aoMap: Texture = null;
-    public aoMapIntensity: number = 1.0;
+
     public color: Color = new Color().setHex(0xffffff);
     public combine: number = MultiplyOperation;
+
+    public emissive: Color = new Color().setHex(0x000000);
+    public emissiveIntensity: number = 1;
+    public emissiveMap: Texture = null;
     public envMap: CubeTexture = null;
-    public lights: boolean = false;
-    public lightMap: Texture = null;
-    public lightMapIntensity: number = 1.0;
+
     public map: Texture = null;
-    public morphTargets: boolean = false;
-    public reflectivity: number = 1;
-    public refractionRatio: number = 0.98;
+    public morphNormals: boolean = true;
+    public morphTargets: boolean = true;
+
+    public lightMap: Texture = null;
+    public lightMapIntensity: number = 1;
+
     public skinning: boolean = false;
     public specularMap: Texture = null;
+
+    public reflectivity: number = 1;
+    public refractionRatio: number = 0.98;
+
     public wireframe: boolean = false;
     public wireframeLinecap: string = "round";
     public wireframeLinejoin: string = "round";
     public wireframeLinewidth: number = 1;
 
-    constructor(parameters: IMeshBasicMaterialParameter) {
+    constructor(parameters: IMeshLambertMaterialParameters) {
         super();
         this.setValues(parameters);
     }
 
-    public copy(source: MeshBasicMaterial): this {
+    public copy(source: MeshLambertMaterial): this {
         super.copy(source);
         this.color.copy(source.color);
 
@@ -64,6 +79,10 @@ export class MeshBasicMaterial extends Material {
 
         this.aoMap = source.aoMap;
         this.aoMapIntensity = source.aoMapIntensity;
+
+        this.emissive.copy(source.emissive);
+        this.emissiveMap = source.emissiveMap;
+        this.emissiveIntensity = source.emissiveIntensity;
 
         this.specularMap = source.specularMap;
 
@@ -81,6 +100,7 @@ export class MeshBasicMaterial extends Material {
 
         this.skinning = source.skinning;
         this.morphTargets = source.morphTargets;
+        this.morphNormals = source.morphNormals;
 
         return this;
     }

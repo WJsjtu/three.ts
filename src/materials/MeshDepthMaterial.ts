@@ -1,13 +1,14 @@
 import { BasicDepthPacking } from "../constants";
+import { Texture } from "../textures/Texture";
 import { IMaterialParameters, Material } from "./Material";
 
 export interface IMeshDepthMaterialParameters extends IMaterialParameters {
-    alphaMap?: any;
+    alphaMap?: Texture;
     depthPacking?: number;
-    displacementMap?: any;
+    displacementMap?: Texture;
     displacementScale?: number;
     displacementBias?: number;
-    map?: any;
+    map?: Texture;
     morphTargets?: boolean;
     skinning?: boolean;
     wireframe?: boolean;
@@ -17,16 +18,16 @@ export interface IMeshDepthMaterialParameters extends IMaterialParameters {
 export class MeshDepthMaterial extends Material {
     public readonly type: string = "MeshDepthMaterial";
 
-    public alphaMap: any = null;
+    public alphaMap: Texture = null;
     public depthPacking: number = BasicDepthPacking;
-    public displacementMap: any = null;
+    public displacementMap: Texture = null;
     public displacementScale: number = 1;
     public displacementBias: number = 0;
 
     public fog: boolean = false;
     public lights: boolean = false;
 
-    public map: any = null;
+    public map: Texture = null;
     public morphTargets: boolean = false;
     public skinning: boolean = false;
     public wireframe: boolean = false;
