@@ -103,6 +103,11 @@ export class Material extends EventDispatcher {
     public premultipliedAlpha: boolean = false;
 
     /**
+     * For WebGLRenderList
+     */
+    public program?: any = null;
+
+    /**
      * THREE.FrontSide  back side
      * THREE.BackSide   front side
      * THREE.DoubleSide both sides

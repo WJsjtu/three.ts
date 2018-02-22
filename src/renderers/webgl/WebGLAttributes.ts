@@ -1,7 +1,11 @@
-import {BufferAttribute, IBufferRange, TypedArray} from "../../core/BufferAttribute";
-import {InstancedBufferAttribute} from "../../core/InstancedBufferAttribute";
-import {InterleavedBufferAttribute} from "../../core/InterleavedBufferAttribute";
-import {InstancedInterleavedBufferAttribute} from "../../core/InstancedInterleavedBufferAttribute";
+import {
+    BufferAttribute,
+    IBufferRange,
+    TypedArray,
+} from "../../core/BufferAttribute";
+import { InstancedBufferAttribute } from "../../core/InstancedBufferAttribute";
+import { InterleavedBufferAttribute } from "../../core/InterleavedBufferAttribute";
+import { InstancedInterleavedBufferAttribute } from "../../core/InstancedInterleavedBufferAttribute";
 
 export interface IWebGLBufferWrapper {
     buffer: WebGLBuffer;
@@ -11,37 +15,43 @@ export interface IWebGLBufferWrapper {
 }
 
 export type TypedBufferAttribute =
-    BufferAttribute
+    | BufferAttribute
     | InstancedBufferAttribute
     | InterleavedBufferAttribute
     | InstancedInterleavedBufferAttribute;
 
 export class WebGLAttributes {
-
     protected context: WebGLRenderingContext = null;
 
-    protected buffers: { [key: string]: IWebGLBufferWrapper; } = {};
+    protected buffers: { [key: string]: IWebGLBufferWrapper } = {};
 
     constructor(context: WebGLRenderingContext) {
         this.context = context;
     }
 
-    protected createBuffer(attribute: TypedBufferAttribute, bufferType: number): IWebGLBufferWrapper {
+    protected createBuffer(
+        attribute: TypedBufferAttribute,
+        bufferType: number,
+    ): IWebGLBufferWrapper {
         const gl: WebGLRenderingContext = this.context;
         const array: TypedArray = attribute.array;
-        const usage: number = attribute.dynamic ? gl.DYNAMIC_DRAW : gl.STATIC_DRAW;
+        const usage: number = attribute.dynamic
+            ? gl.DYNAMIC_DRAW
+            : gl.STATIC_DRAW;
         const buffer = gl.createBuffer();
         gl.bindBuffer(bufferType, buffer);
         gl.bufferData(bufferType, array, usage);
 
-        //attribute.onUploadCallback();
+        // attribute.onUploadCallback();
 
         let type = gl.FLOAT;
 
         if (array instanceof Float32Array) {
             type = gl.FLOAT;
         } else if (array instanceof Float64Array) {
-            console.warn(`THREE.WebGLAttributes: Unsupported data buffer format: Float64Array.`);
+            console.warn(
+                `THREE.WebGLAttributes: Unsupported data buffer format: Float64Array.`,
+            );
         } else if (array instanceof Uint16Array) {
             type = gl.UNSIGNED_SHORT;
         } else if (array instanceof Int16Array) {
@@ -59,7 +69,7 @@ export class WebGLAttributes {
             buffer: buffer,
             type: type,
             bytesPerElement: array.BYTES_PER_ELEMENT,
-            version: attribute.version
+            version: attribute.version,
         };
     }
 
@@ -74,12 +84,17 @@ export class WebGLAttributes {
             // Not using update ranges
             gl.bufferSubData(bufferType, 0, array);
         } else if (updateRange.count === 0) {
-            console.error(`THREE.WebGLObjects.updateBuffer: dynamic THREE.BufferAttribute marked as needsUpdate but updateRange.count is 0, ensure you are using set methods or updating manually.`);
+            console.error(
+                `THREE.WebGLObjects.updateBuffer: dynamic THREE.BufferAttribute marked as needsUpdate but updateRange.count is 0, ensure you are using set methods or updating manually.`,
+            );
         } else {
             gl.bufferSubData(
                 bufferType,
                 updateRange.offset * array.BYTES_PER_ELEMENT,
-                array.subarray(updateRange.offset, updateRange.offset + updateRange.count)
+                array.subarray(
+                    updateRange.offset,
+                    updateRange.offset + updateRange.count,
+                ),
             );
             updateRange.count = -1; // reset range
         }
@@ -103,7 +118,10 @@ export class WebGLAttributes {
     public update(attribute: TypedBufferAttribute, bufferType: number): this {
         const data = this.buffers[attribute.uuid];
         if (data === undefined) {
-            this.buffers[attribute.uuid] = this.createBuffer(attribute, bufferType);
+            this.buffers[attribute.uuid] = this.createBuffer(
+                attribute,
+                bufferType,
+            );
         } else if (data.version < attribute.version) {
             this.updateBuffer(data.buffer, attribute, bufferType);
             data.version = attribute.version;

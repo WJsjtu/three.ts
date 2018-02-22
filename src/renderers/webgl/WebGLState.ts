@@ -1,30 +1,29 @@
-import {Vector4} from "../../math/Vector4";
-import {Material} from "../../materials/Material";
 import {
-    NotEqualDepth,
-    GreaterDepth,
-    GreaterEqualDepth,
-    EqualDepth,
-    LessEqualDepth,
-    LessDepth,
+    AdditiveBlending,
     AlwaysDepth,
-    NeverDepth,
+    BackSide,
     CullFaceFront,
     CullFaceBack,
     CullFaceNone,
     CustomBlending,
+    DoubleSide,
+    EqualDepth,
+    GreaterDepth,
+    GreaterEqualDepth,
+    LessEqualDepth,
+    LessDepth,
     MultiplyBlending,
-    SubtractiveBlending,
-    AdditiveBlending,
+    NeverDepth,
     NoBlending,
     NormalBlending,
-    DoubleSide,
-    BackSide
+    NotEqualDepth,
+    SubtractiveBlending,
 } from "../../constants";
-import {WebGLExtensions} from "./WebGLExtensions";
-import {WebGLUtils} from "./WebGLUtils";
-import {TypedArray} from "../../core/BufferAttribute";
-
+import { TypedArray } from "../../core/BufferAttribute";
+import { Material } from "../../materials/Material";
+import { Vector4 } from "../../math/Vector4";
+import { WebGLExtensions } from "./WebGLExtensions";
+import { WebGLUtils } from "./WebGLUtils";
 
 export class ColorBuffer {
     protected context: WebGLRenderingContext = null;
@@ -50,7 +49,13 @@ export class ColorBuffer {
         return this;
     }
 
-    public setClear(r: number, g: number, b: number, a: number, premultipliedAlpha: boolean = false): this {
+    public setClear(
+        r: number,
+        g: number,
+        b: number,
+        a: number,
+        premultipliedAlpha: boolean = false,
+    ): this {
         if (premultipliedAlpha === true) {
             r *= a;
             g *= a;
@@ -77,31 +82,18 @@ export class ColorBuffer {
 
 export class DepthBuffer {
     protected context: WebGLRenderingContext = null;
-    protected capabilities: { [key: number]: boolean; } = null;
+    protected capabilities: { [key: number]: boolean } = null;
     protected locked: boolean = false;
     protected currentDepthMask: boolean = false;
     protected currentDepthFunc: number = 0;
     protected currentDepthClear: number = 0;
 
-    constructor(context: WebGLRenderingContext, capabilities: { [key: number]: boolean; }) {
+    constructor(
+        context: WebGLRenderingContext,
+        capabilities: { [key: number]: boolean },
+    ) {
         this.context = context;
         this.capabilities = capabilities;
-    }
-
-    protected enable(id: number): this {
-        if (this.capabilities[id] !== true) {
-            this.context.enable(id);
-            this.capabilities[id] = true;
-        }
-        return this;
-    }
-
-    protected disable(id: number): this {
-        if (this.capabilities[id] !== false) {
-            this.context.disable(id);
-            this.capabilities[id] = false;
-        }
-        return this;
     }
 
     public setTest(depthTest: boolean = false): this {
@@ -205,25 +197,6 @@ export class DepthBuffer {
         this.currentDepthClear = 0;
         return this;
     }
-}
-
-export class StencilBuffer {
-    protected context: WebGLRenderingContext = null;
-    protected capabilities: { [key: number]: boolean; } = null;
-    protected locked: boolean = false;
-    protected currentStencilMask: number = 0;
-    protected currentStencilFunc: number = 0;
-    protected currentStencilRef: number = 0;
-    protected currentStencilFuncMask: number = 0;
-    protected currentStencilFail: number = 0;
-    protected currentStencilZFail: number = 0;
-    protected currentStencilZPass: number = 0;
-    protected currentStencilClear: number = 0;
-
-    constructor(context: WebGLRenderingContext, capabilities: { [key: number]: boolean; }) {
-        this.context = context;
-        this.capabilities = capabilities;
-    }
 
     protected enable(id: number): this {
         if (this.capabilities[id] !== true) {
@@ -239,6 +212,28 @@ export class StencilBuffer {
             this.capabilities[id] = false;
         }
         return this;
+    }
+}
+
+export class StencilBuffer {
+    protected context: WebGLRenderingContext = null;
+    protected capabilities: { [key: number]: boolean } = null;
+    protected locked: boolean = false;
+    protected currentStencilMask: number = 0;
+    protected currentStencilFunc: number = 0;
+    protected currentStencilRef: number = 0;
+    protected currentStencilFuncMask: number = 0;
+    protected currentStencilFail: number = 0;
+    protected currentStencilZFail: number = 0;
+    protected currentStencilZPass: number = 0;
+    protected currentStencilClear: number = 0;
+
+    constructor(
+        context: WebGLRenderingContext,
+        capabilities: { [key: number]: boolean },
+    ) {
+        this.context = context;
+        this.capabilities = capabilities;
     }
 
     public setTest(stencilTest: boolean): this {
@@ -258,8 +253,16 @@ export class StencilBuffer {
         return this;
     }
 
-    public setFunc(stencilFunc: number, stencilRef: number, stencilMask: number): this {
-        if (this.currentStencilFunc !== stencilFunc || this.currentStencilRef !== stencilRef || this.currentStencilFuncMask !== stencilMask) {
+    public setFunc(
+        stencilFunc: number,
+        stencilRef: number,
+        stencilMask: number,
+    ): this {
+        if (
+            this.currentStencilFunc !== stencilFunc ||
+            this.currentStencilRef !== stencilRef ||
+            this.currentStencilFuncMask !== stencilMask
+        ) {
             this.context.stencilFunc(stencilFunc, stencilRef, stencilMask);
             this.currentStencilFunc = stencilFunc;
             this.currentStencilRef = stencilRef;
@@ -268,10 +271,16 @@ export class StencilBuffer {
         return this;
     }
 
-    public setOp(stencilFail: number, stencilZFail: number, stencilZPass: number): this {
-        if (this.currentStencilFail !== stencilFail ||
+    public setOp(
+        stencilFail: number,
+        stencilZFail: number,
+        stencilZPass: number,
+    ): this {
+        if (
+            this.currentStencilFail !== stencilFail ||
             this.currentStencilZFail !== stencilZFail ||
-            this.currentStencilZPass !== stencilZPass) {
+            this.currentStencilZPass !== stencilZPass
+        ) {
             this.context.stencilOp(stencilFail, stencilZFail, stencilZPass);
             this.currentStencilFail = stencilFail;
             this.currentStencilZFail = stencilZFail;
@@ -306,19 +315,34 @@ export class StencilBuffer {
         return this;
     }
 
+    protected enable(id: number): this {
+        if (this.capabilities[id] !== true) {
+            this.context.enable(id);
+            this.capabilities[id] = true;
+        }
+        return this;
+    }
+
+    protected disable(id: number): this {
+        if (this.capabilities[id] !== false) {
+            this.context.disable(id);
+            this.capabilities[id] = false;
+        }
+        return this;
+    }
 }
 
 export class WebGLState {
-    protected context: WebGLRenderingContext = null;
-    protected extensions: WebGLExtensions = null;
-    protected utils: WebGLUtils = null;
+    public capabilities: { [key: number]: boolean } = {};
 
-    public capabilities: { [key: number]: boolean; } = {};
-
-    public buffers: { color: ColorBuffer, depth: DepthBuffer, stencil: StencilBuffer } = {
+    public buffers: {
+        color: ColorBuffer;
+        depth: DepthBuffer;
+        stencil: StencilBuffer;
+    } = {
         color: null,
         depth: null,
-        stencil: null
+        stencil: null,
     };
 
     public maxVertexAttributes: number = null;
@@ -360,26 +384,50 @@ export class WebGLState {
 
     public currentTextureSlot: number | null = null;
 
-    public currentBoundTextures: { [key: number]: { type: number, texture: WebGLTexture }; } = {};
+    public currentBoundTextures: {
+        [key: number]: { type: number; texture: WebGLTexture };
+    } = {};
 
-    constructor(context: WebGLRenderingContext, extensions: WebGLExtensions, utils: WebGLUtils) {
+    protected context: WebGLRenderingContext = null;
+    protected extensions: WebGLExtensions = null;
+    protected utils: WebGLUtils = null;
+
+    constructor(
+        context: WebGLRenderingContext,
+        extensions: WebGLExtensions,
+        utils: WebGLUtils,
+    ) {
         this.context = context;
         this.extensions = extensions;
         this.utils = utils;
         this.buffers.color = new ColorBuffer(context);
         this.buffers.depth = new DepthBuffer(context, this.capabilities);
         this.buffers.stencil = new StencilBuffer(context, this.capabilities);
-        this.maxVertexAttributes = context.getParameter(context.MAX_VERTEX_ATTRIBS) as number;
+        this.maxVertexAttributes = context.getParameter(
+            context.MAX_VERTEX_ATTRIBS,
+        ) as number;
         this.newAttributes = new Uint8Array(this.maxVertexAttributes);
         this.enabledAttributes = new Uint8Array(this.maxVertexAttributes);
         this.attributeDivisors = new Uint8Array(this.maxVertexAttributes);
 
-        this.maxTextures = context.getParameter(context.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
-        this.version = parseFloat(/^WebGL\ ([0-9])/.exec(context.getParameter(context.VERSION))[1]);
+        this.maxTextures = context.getParameter(
+            context.MAX_COMBINED_TEXTURE_IMAGE_UNITS,
+        );
+        this.version = parseFloat(
+            /^WebGL\ ([0-9])/.exec(context.getParameter(context.VERSION))[1],
+        );
         this.lineWidthAvailable = this.version >= 1.0;
 
-        this.emptyTextures[context.TEXTURE_2D] = this.createTexture(context.TEXTURE_2D, context.TEXTURE_2D, 1);
-        this.emptyTextures[context.TEXTURE_CUBE_MAP] = this.createTexture(context.TEXTURE_CUBE_MAP, context.TEXTURE_CUBE_MAP_POSITIVE_X, 6);
+        this.emptyTextures[context.TEXTURE_2D] = this.createTexture(
+            context.TEXTURE_2D,
+            context.TEXTURE_2D,
+            1,
+        );
+        this.emptyTextures[context.TEXTURE_CUBE_MAP] = this.createTexture(
+            context.TEXTURE_CUBE_MAP,
+            context.TEXTURE_CUBE_MAP_POSITIVE_X,
+            6,
+        );
 
         /**
          * initialize
@@ -394,23 +442,6 @@ export class WebGLState {
         this.enable(context.CULL_FACE);
         this.enable(context.BLEND);
         this.setBlending(NormalBlending);
-    }
-
-    protected createTexture(type: number, target: number, count: number): WebGLTexture {
-        const gl: WebGLRenderingContext = this.context;
-        /**
-         * 4 is required to match default unpack alignment of 4.
-         * @type {Uint8Array}
-         */
-        const data: Uint8Array = new Uint8Array(4);
-        const texture: WebGLTexture = gl.createTexture();
-        gl.bindTexture(type, texture);
-        gl.texParameteri(type, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.texParameteri(type, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-        for (let i: number = 0; i < count; i++) {
-            gl.texImage2D(target + i, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, data);
-        }
-        return texture;
     }
 
     public enable(id: number): this {
@@ -516,14 +547,16 @@ export class WebGLState {
      * @param blendDstAlpha
      * @param premultipliedAlpha
      */
-    public setBlending(blending: number,
-                       blendEquation: number = 0,
-                       blendSrc: number = 0,
-                       blendDst: number = 0,
-                       blendEquationAlpha: number = 0,
-                       blendSrcAlpha: number = 0,
-                       blendDstAlpha: number = 0,
-                       premultipliedAlpha: boolean = false): this {
+    public setBlending(
+        blending: number,
+        blendEquation: number = 0,
+        blendSrc: number = 0,
+        blendDst: number = 0,
+        blendEquationAlpha: number = 0,
+        blendSrcAlpha: number = 0,
+        blendDstAlpha: number = 0,
+        premultipliedAlpha: boolean = false,
+    ): this {
         const gl: WebGLRenderingContext = this.context;
         if (blending !== NoBlending) {
             this.enable(gl.BLEND);
@@ -531,12 +564,20 @@ export class WebGLState {
             this.disable(gl.BLEND);
         }
         if (blending !== CustomBlending) {
-            if (blending !== this.currentBlending || premultipliedAlpha !== this.currentPremultipledAlpha) {
+            if (
+                blending !== this.currentBlending ||
+                premultipliedAlpha !== this.currentPremultipledAlpha
+            ) {
                 switch (blending) {
                     case AdditiveBlending:
                         if (premultipliedAlpha) {
                             gl.blendEquationSeparate(gl.FUNC_ADD, gl.FUNC_ADD);
-                            gl.blendFuncSeparate(gl.ONE, gl.ONE, gl.ONE, gl.ONE);
+                            gl.blendFuncSeparate(
+                                gl.ONE,
+                                gl.ONE,
+                                gl.ONE,
+                                gl.ONE,
+                            );
                         } else {
                             gl.blendEquation(gl.FUNC_ADD);
                             gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
@@ -545,7 +586,12 @@ export class WebGLState {
                     case SubtractiveBlending:
                         if (premultipliedAlpha) {
                             gl.blendEquationSeparate(gl.FUNC_ADD, gl.FUNC_ADD);
-                            gl.blendFuncSeparate(gl.ZERO, gl.ZERO, gl.ONE_MINUS_SRC_COLOR, gl.ONE_MINUS_SRC_ALPHA);
+                            gl.blendFuncSeparate(
+                                gl.ZERO,
+                                gl.ZERO,
+                                gl.ONE_MINUS_SRC_COLOR,
+                                gl.ONE_MINUS_SRC_ALPHA,
+                            );
                         } else {
                             gl.blendEquation(gl.FUNC_ADD);
                             gl.blendFunc(gl.ZERO, gl.ONE_MINUS_SRC_COLOR);
@@ -554,7 +600,12 @@ export class WebGLState {
                     case MultiplyBlending:
                         if (premultipliedAlpha) {
                             gl.blendEquationSeparate(gl.FUNC_ADD, gl.FUNC_ADD);
-                            gl.blendFuncSeparate(gl.ZERO, gl.SRC_COLOR, gl.ZERO, gl.SRC_ALPHA);
+                            gl.blendFuncSeparate(
+                                gl.ZERO,
+                                gl.SRC_COLOR,
+                                gl.ZERO,
+                                gl.SRC_ALPHA,
+                            );
                         } else {
                             gl.blendEquation(gl.FUNC_ADD);
                             gl.blendFunc(gl.ZERO, gl.SRC_COLOR);
@@ -563,10 +614,20 @@ export class WebGLState {
                     default:
                         if (premultipliedAlpha) {
                             gl.blendEquationSeparate(gl.FUNC_ADD, gl.FUNC_ADD);
-                            gl.blendFuncSeparate(gl.ONE, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+                            gl.blendFuncSeparate(
+                                gl.ONE,
+                                gl.ONE_MINUS_SRC_ALPHA,
+                                gl.ONE,
+                                gl.ONE_MINUS_SRC_ALPHA,
+                            );
                         } else {
                             gl.blendEquationSeparate(gl.FUNC_ADD, gl.FUNC_ADD);
-                            gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+                            gl.blendFuncSeparate(
+                                gl.SRC_ALPHA,
+                                gl.ONE_MINUS_SRC_ALPHA,
+                                gl.ONE,
+                                gl.ONE_MINUS_SRC_ALPHA,
+                            );
                         }
                 }
             }
@@ -580,13 +641,29 @@ export class WebGLState {
             blendEquationAlpha = blendEquationAlpha || blendEquation;
             blendSrcAlpha = blendSrcAlpha || blendSrc;
             blendDstAlpha = blendDstAlpha || blendDst;
-            if (blendEquation !== this.currentBlendEquation || blendEquationAlpha !== this.currentBlendEquationAlpha) {
-                gl.blendEquationSeparate(this.utils.convert(blendEquation), this.utils.convert(blendEquationAlpha));
+            if (
+                blendEquation !== this.currentBlendEquation ||
+                blendEquationAlpha !== this.currentBlendEquationAlpha
+            ) {
+                gl.blendEquationSeparate(
+                    this.utils.convert(blendEquation),
+                    this.utils.convert(blendEquationAlpha),
+                );
                 this.currentBlendEquation = blendEquation;
                 this.currentBlendEquationAlpha = blendEquationAlpha;
             }
-            if (blendSrc !== this.currentBlendSrc || blendDst !== this.currentBlendDst || blendSrcAlpha !== this.currentBlendSrcAlpha || blendDstAlpha !== this.currentBlendDstAlpha) {
-                gl.blendFuncSeparate(this.utils.convert(blendSrc), this.utils.convert(blendDst), this.utils.convert(blendSrcAlpha), this.utils.convert(blendDstAlpha));
+            if (
+                blendSrc !== this.currentBlendSrc ||
+                blendDst !== this.currentBlendDst ||
+                blendSrcAlpha !== this.currentBlendSrcAlpha ||
+                blendDstAlpha !== this.currentBlendDstAlpha
+            ) {
+                gl.blendFuncSeparate(
+                    this.utils.convert(blendSrc),
+                    this.utils.convert(blendDst),
+                    this.utils.convert(blendSrcAlpha),
+                    this.utils.convert(blendDstAlpha),
+                );
                 this.currentBlendSrc = blendSrc;
                 this.currentBlendDst = blendDst;
                 this.currentBlendSrcAlpha = blendSrcAlpha;
@@ -600,19 +677,34 @@ export class WebGLState {
 
     public setMaterial(material: Material, frontFaceCW: boolean = false): this {
         const gl: WebGLRenderingContext = this.context;
-        material.side === DoubleSide ? this.disable(gl.CULL_FACE) : this.enable(gl.CULL_FACE);
-        let flipSided: boolean = ( material.side === BackSide );
+        material.side === DoubleSide
+            ? this.disable(gl.CULL_FACE)
+            : this.enable(gl.CULL_FACE);
+        let flipSided: boolean = material.side === BackSide;
         if (frontFaceCW) flipSided = !flipSided;
         this.setFlipSided(flipSided);
         material.transparent === true
-            ? this.setBlending(material.blending, material.blendEquation, material.blendSrc, material.blendDst, material.blendEquationAlpha, material.blendSrcAlpha, material.blendDstAlpha, material.premultipliedAlpha)
+            ? this.setBlending(
+                  material.blending,
+                  material.blendEquation,
+                  material.blendSrc,
+                  material.blendDst,
+                  material.blendEquationAlpha,
+                  material.blendSrcAlpha,
+                  material.blendDstAlpha,
+                  material.premultipliedAlpha,
+              )
             : this.setBlending(NoBlending);
 
         this.buffers.depth.setFunc(material.depthFunc);
         this.buffers.depth.setTest(material.depthTest);
         this.buffers.depth.setMask(material.depthWrite);
         this.buffers.depth.setMask(material.colorWrite);
-        this.setPolygonOffset(material.polygonOffset, material.polygonOffsetFactor, material.polygonOffsetUnits);
+        this.setPolygonOffset(
+            material.polygonOffset,
+            material.polygonOffsetFactor,
+            material.polygonOffsetUnits,
+        );
         return this;
     }
 
@@ -629,7 +721,11 @@ export class WebGLState {
 
     public disableUnusedAttributes(): this {
         const gl: WebGLRenderingContext = this.context;
-        for (let i: number = 0, l: number = this.enabledAttributes.length; i !== l; i++) {
+        for (
+            let i: number = 0, l: number = this.enabledAttributes.length;
+            i !== l;
+            i++
+        ) {
             if (this.enabledAttributes[i] !== this.newAttributes[i]) {
                 gl.disableVertexAttribArray(i);
                 this.enabledAttributes[i] = 0;
@@ -642,7 +738,10 @@ export class WebGLState {
      * @param attribute
      * @param meshPerAttribute
      */
-    public enableAttributeAndDivisor(attribute: number, meshPerAttribute: number = 0): this {
+    public enableAttributeAndDivisor(
+        attribute: number,
+        meshPerAttribute: number = 0,
+    ): this {
         this.newAttributes[attribute] = 1;
         if (this.enabledAttributes[attribute] === 0) {
             /**
@@ -673,7 +772,9 @@ export class WebGLState {
          * 就可以绘制相同的对象或是被多次使用的相似的对象组。
          */
         if (this.attributeDivisors[attribute] !== meshPerAttribute) {
-            const extension: any = this.extensions.get("ANGLE_instanced_arrays");
+            const extension: any = this.extensions.get(
+                "ANGLE_instanced_arrays",
+            );
             extension.vertexAttribDivisorANGLE(attribute, meshPerAttribute);
             this.attributeDivisors[attribute] = meshPerAttribute;
         }
@@ -683,11 +784,15 @@ export class WebGLState {
     public getCompressedTextureFormats(): number[] {
         if (this.compressedTextureFormats === null) {
             this.compressedTextureFormats = [];
-            if (this.extensions.get("WEBGL_compressed_texture_pvrtc") ||
+            if (
+                this.extensions.get("WEBGL_compressed_texture_pvrtc") ||
                 this.extensions.get("WEBGL_compressed_texture_s3tc") ||
                 this.extensions.get("WEBGL_compressed_texture_etc1") ||
-                this.extensions.get("WEBGL_compressed_texture_astc")) {
-                const formats: number[] = this.context.getParameter(this.context.COMPRESSED_TEXTURE_FORMATS);
+                this.extensions.get("WEBGL_compressed_texture_astc")
+            ) {
+                const formats: number[] = this.context.getParameter(
+                    this.context.COMPRESSED_TEXTURE_FORMATS,
+                );
                 for (let i: number = 0; i < formats.length; i++) {
                     this.compressedTextureFormats.push(formats[i]);
                 }
@@ -735,11 +840,18 @@ export class WebGLState {
      * @param factor
      * @param units
      */
-    public setPolygonOffset(polygonOffset: boolean, factor: number, units: number): this {
+    public setPolygonOffset(
+        polygonOffset: boolean,
+        factor: number,
+        units: number,
+    ): this {
         const gl: WebGLRenderingContext = this.context;
         if (polygonOffset) {
             this.enable(gl.POLYGON_OFFSET_FILL);
-            if (this.currentPolygonOffsetFactor !== factor || this.currentPolygonOffsetUnits !== units) {
+            if (
+                this.currentPolygonOffsetFactor !== factor ||
+                this.currentPolygonOffsetUnits !== units
+            ) {
                 gl.polygonOffset(factor, units);
                 this.currentPolygonOffsetFactor = factor;
                 this.currentPolygonOffsetUnits = units;
@@ -778,7 +890,7 @@ export class WebGLState {
         }
         let boundTexture = this.currentBoundTextures[this.currentTextureSlot];
         if (boundTexture === undefined) {
-            boundTexture = {type: undefined, texture: undefined};
+            boundTexture = { type: undefined, texture: undefined };
             this.currentBoundTextures[this.currentTextureSlot] = boundTexture;
         }
         if (boundTexture.type !== type || boundTexture.texture !== texture) {
@@ -789,36 +901,84 @@ export class WebGLState {
         return this;
     }
 
-    public compressedTexImage2D(target: number, level: number, internalformat: number, width: number, height: number, border: number, data: TypedArray | null): this {
+    public compressedTexImage2D(
+        target: number,
+        level: number,
+        internalformat: number,
+        width: number,
+        height: number,
+        border: number,
+        data: TypedArray | null,
+    ): this {
         /**
          * 所支持压缩纹理格式数量可以查询GL_NUM_COMPRESSED_TEXTURE_FORMATS值来获取。
          * 所支持的压缩格式列表可以查询GL_COMPRESSED_TEXTURE_FORMATS值来获取。
          * getCompressedTextureFormats函数也是相关信息的查询工具
          */
         try {
-            this.context.compressedTexImage2D(target, level, internalformat, width, height, border, data);
+            this.context.compressedTexImage2D(
+                target,
+                level,
+                internalformat,
+                width,
+                height,
+                border,
+                data,
+            );
         } catch (error) {
             console.error(`THREE.WebGLState: ${error}`);
         }
         return this;
     }
 
-    public texImage2D(target: number, level: number, internalformat: number, width: number, height: number, border: number, format: number, type: number, pixels: TypedArray | null): this;
-    public texImage2D(target: number, level: number, internalformat: number, format: number, type: number, pixels: ImageBitmap | ImageData | HTMLVideoElement | HTMLImageElement | HTMLCanvasElement): this;
-    public texImage2D(target: number, level: number, internalformat: number, a: number, b: number, c: any, format?: number, type?: number, pixels?: TypedArray | null): this {
+    public texImage2D(
+        target: number,
+        level: number,
+        internalformat: number,
+        width: number,
+        height: number,
+        border: number,
+        format: number,
+        type: number,
+        pixels: TypedArray | null,
+    ): this;
+    public texImage2D(
+        target: number,
+        level: number,
+        internalformat: number,
+        format: number,
+        type: number,
+        pixels:
+            | ImageBitmap
+            | ImageData
+            | HTMLVideoElement
+            | HTMLImageElement
+            | HTMLCanvasElement,
+    ): this;
+    public texImage2D(
+        target: number,
+        level: number,
+        internalformat: number,
+        a: number,
+        b: number,
+        c: any,
+        format?: number,
+        type?: number,
+        pixels?: TypedArray | null,
+    ): this {
         /**
          * 2D贴图，这里有重载是因为DOM的特殊关系，ImageBitmap | ImageData | HTMLVideoElement | HTMLImageElement | HTMLCanvasElement这些属性都有width，height属性包含在内，
          * 而border值必须为0 ㄟ( ▔, ▔ )ㄏ
          * 而且实际上internalformat与format的值必须一致 ㄟ( ▔, ▔ )ㄏ
          * target的值必须为TEXTURE_2D与TEXTURE_CUBE_MAP_(NEGATIVE|POSITIVE)_(X|Y|Z)—之一
-         * 
+         *
          * Mipmap是一个功能强大的纹理技术，它可以提高渲染的性能以及提升场景的视觉质量。它可以用来解决使用一般的纹理贴图会出现的两个常见的问题：
          *  1. 闪烁，当屏幕上被渲染物体的表面与它所应用的纹理图像相比显得非常小时，就会出现闪烁。尤其当相机和物体在移动的时候，这种负面效果更容易被看到。
          *  2. 性能问题。加载了大量的纹理数据之后，还要对其进行过滤处理（缩小），在屏幕上显示的只是一小部分。纹理越大，所造成的性能影响就越大。
          * Mipmap就可以解决上面那两个问题。当加载纹理的时候，不单单是加载一个纹理，而是加载一系列从大到小的纹理当mipmapped纹理状态中。
          * 然后OpenGl会根据给定的几何图像的大小选择最合适的纹理。Mipmap是把纹理按照2的倍数进行缩放，直到图像为1x1的大小，然后把这些图都存储起来，当要使用的就选择一个合适的图像。
          * 这会增加一些额外的内存。在正方形的纹理贴图中使用mipmap技术，大概要比原先多出三分之一的内存空间。
-         * 
+         *
          * Mipmap的纹理过滤模式如下表：
          * 常量	描述
          * GL_NEAREST	在mip基层上使用最邻近过滤
@@ -832,17 +992,27 @@ export class WebGLState {
          * 这个mipmap过滤器的常量是GL_[FILTER]_MIPMAP_[SELECTOR[的形式。
          * 其中FLILTER指定了过滤模式，SELECTOR指定了如何选择mipmap层。例如GL_NEAREST_MIPMAP_LINEAR模式，
          * 它的SELECTOR是GL_LINEAR，它会在两个最邻近的mip层中执行线性插值，然后得出的结果又由被选择的过滤器GL_NEAREST进行过滤。
-         * 
+         *
          * 其中GL_NEAREST_MIPMAP_NEAAREST具有很好的性能，也能够解决闪烁的问题，但在视觉效果上会比较差。
          * 其中GL_LINEAR_MIPMAP_NEAREST常用于游戏加速，使用了质量较高的线性过滤，和快速的选择的方式(最邻近方式）。
          * 使用最邻近的方式作为mipmap选择器的效果依然不能令人满意。从某一个角度去看，常常可以看到物体表面从一个mip层到另一个mip层的转变。
          * GL_LINEAR_MIPMAP_LINEAR和GL_NEAREST_MIPMAP_LINEAR过滤器在mip层之间执行一些额外的线性插值，以消除不同层之间的变换痕迹，但也需要一些额外的性能开销。
          * GL_LINEAR_MIPMAP_LINEAR具有最高的精度。
-         * 
+         *
          * 所以level参数就是用来指定这是低级级缩略图的，0代表基本，log_{2}(GL_MAX_TEXTURE_SIZE)为最大允许值
          */
         try {
-            this.context.texImage2D(target, level, internalformat, a, b, c, format, type, pixels);
+            this.context.texImage2D(
+                target,
+                level,
+                internalformat,
+                a,
+                b,
+                c,
+                format,
+                type,
+                pixels,
+            );
         } catch (error) {
             console.error(`THREE.WebGLState: ${error}`);
         }
@@ -867,7 +1037,12 @@ export class WebGLState {
          * 缩放功能
          */
         if (this.currentViewport.equals(viewport) === false) {
-            this.context.viewport(viewport.x, viewport.y, viewport.z, viewport.w);
+            this.context.viewport(
+                viewport.x,
+                viewport.y,
+                viewport.z,
+                viewport.w,
+            );
             this.currentViewport.copy(viewport);
         }
         return this;
@@ -892,5 +1067,36 @@ export class WebGLState {
         this.buffers.depth.reset();
         this.buffers.stencil.reset();
         return this;
+    }
+
+    protected createTexture(
+        type: number,
+        target: number,
+        count: number,
+    ): WebGLTexture {
+        const gl: WebGLRenderingContext = this.context;
+        /**
+         * 4 is required to match default unpack alignment of 4.
+         * @type {Uint8Array}
+         */
+        const data: Uint8Array = new Uint8Array(4);
+        const texture: WebGLTexture = gl.createTexture();
+        gl.bindTexture(type, texture);
+        gl.texParameteri(type, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.texParameteri(type, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        for (let i: number = 0; i < count; i++) {
+            gl.texImage2D(
+                target + i,
+                0,
+                gl.RGBA,
+                1,
+                1,
+                0,
+                gl.RGBA,
+                gl.UNSIGNED_BYTE,
+                data,
+            );
+        }
+        return texture;
     }
 }

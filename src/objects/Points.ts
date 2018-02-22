@@ -108,4 +108,11 @@ export class Points extends Object3D {
             }
         }
     }
+
+    public clone(): this {
+        return new (this.constructor as (
+            geometry: BufferGeometry | Geometry,
+            material: Material | Material[],
+        ) => void)(this.geometry, this.material).copy(this);
+    }
 }

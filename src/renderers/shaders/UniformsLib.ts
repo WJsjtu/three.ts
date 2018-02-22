@@ -1,7 +1,7 @@
-import {Color} from '../../math/Color.js';
-import {Vector2} from '../../math/Vector2.js';
-import {Matrix3} from '../../math/Matrix3.js';
-import {Uniform} from "./UniformsUtils";
+import { Color } from "../../math/Color.js";
+import { Vector2 } from "../../math/Vector2.js";
+import { Matrix3 } from "../../math/Matrix3.js";
+import { IUniform } from "./UniformsUtils";
 
 /**
  * Uniforms library for shared webgl shaders
@@ -9,109 +9,81 @@ import {Uniform} from "./UniformsUtils";
 
 const UniformsLib: {
     [key: string]: {
-        [name: string]: Uniform
+        [name: string]: IUniform;
     };
 } = {
-
     common: {
+        diffuse: { value: new Color(0xeeeeee) },
+        opacity: { value: 1.0 },
 
-        diffuse: {value: new Color(0xeeeeee)},
-        opacity: {value: 1.0},
+        map: { value: null },
+        uvTransform: { value: new Matrix3() },
 
-        map: {value: null},
-        uvTransform: {value: new Matrix3()},
-
-        alphaMap: {value: null},
-
+        alphaMap: { value: null },
     },
 
     specularmap: {
-
-        specularMap: {value: null},
-
+        specularMap: { value: null },
     },
 
     envmap: {
-
-        envMap: {value: null},
-        flipEnvMap: {value: -1},
-        reflectivity: {value: 1.0},
-        refractionRatio: {value: 0.98}
-
+        envMap: { value: null },
+        flipEnvMap: { value: -1 },
+        reflectivity: { value: 1.0 },
+        refractionRatio: { value: 0.98 },
     },
 
     aomap: {
-
-        aoMap: {value: null},
-        aoMapIntensity: {value: 1}
-
+        aoMap: { value: null },
+        aoMapIntensity: { value: 1 },
     },
 
     lightmap: {
-
-        lightMap: {value: null},
-        lightMapIntensity: {value: 1}
-
+        lightMap: { value: null },
+        lightMapIntensity: { value: 1 },
     },
 
     emissivemap: {
-
-        emissiveMap: {value: null}
-
+        emissiveMap: { value: null },
     },
 
     bumpmap: {
-
-        bumpMap: {value: null},
-        bumpScale: {value: 1}
-
+        bumpMap: { value: null },
+        bumpScale: { value: 1 },
     },
 
     normalmap: {
-
-        normalMap: {value: null},
-        normalScale: {value: new Vector2(1, 1)}
-
+        normalMap: { value: null },
+        normalScale: { value: new Vector2(1, 1) },
     },
 
     displacementmap: {
-
-        displacementMap: {value: null},
-        displacementScale: {value: 1},
-        displacementBias: {value: 0}
-
+        displacementMap: { value: null },
+        displacementScale: { value: 1 },
+        displacementBias: { value: 0 },
     },
 
     roughnessmap: {
-
-        roughnessMap: {value: null}
-
+        roughnessMap: { value: null },
     },
 
     metalnessmap: {
-
-        metalnessMap: {value: null}
-
+        metalnessMap: { value: null },
     },
 
     gradientmap: {
-
-        gradientMap: {value: null}
-
+        gradientMap: { value: null },
     },
 
     fog: {
-
-        fogDensity: {value: 0.00025},
-        fogNear: {value: 1},
-        fogFar: {value: 2000},
-        fogColor: {value: new Color(0xffffff)}
-
+        fogDensity: { value: 0.00025 },
+        fogNear: { value: 1 },
+        fogFar: { value: 2000 },
+        fogColor: { value: new Color(0xffffff) },
     },
 
     lights: {
-
-        ambientLightColor: {value: []},
+        ambientLightColor: { value: [] },
 
         directionalLights: {
             value: [],
@@ -122,12 +94,12 @@ const UniformsLib: {
                 shadow: {},
                 shadowBias: {},
                 shadowRadius: {},
-                shadowMapSize: {}
-            }
+                shadowMapSize: {},
+            },
         },
 
-        directionalShadowMap: {value: []},
-        directionalShadowMatrix: {value: []},
+        directionalShadowMap: { value: [] },
+        directionalShadowMatrix: { value: [] },
 
         spotLights: {
             value: [],
@@ -143,15 +115,16 @@ const UniformsLib: {
                 shadow: {},
                 shadowBias: {},
                 shadowRadius: {},
-                shadowMapSize: {}
-            }
+                shadowMapSize: {},
+            },
         },
 
-        spotShadowMap: {value: []},
-        spotShadowMatrix: {value: []},
+        spotShadowMap: { value: [] },
+        spotShadowMatrix: { value: [] },
 
         pointLights: {
-            value: [], properties: {
+            value: [],
+            properties: {
                 color: {},
                 position: {},
                 decay: {},
@@ -162,44 +135,42 @@ const UniformsLib: {
                 shadowRadius: {},
                 shadowMapSize: {},
                 shadowCameraNear: {},
-                shadowCameraFar: {}
-            }
+                shadowCameraFar: {},
+            },
         },
 
-        pointShadowMap: {value: []},
-        pointShadowMatrix: {value: []},
+        pointShadowMap: { value: [] },
+        pointShadowMatrix: { value: [] },
 
         hemisphereLights: {
-            value: [], properties: {
+            value: [],
+            properties: {
                 direction: {},
                 skyColor: {},
-                groundColor: {}
-            }
+                groundColor: {},
+            },
         },
 
         // TODO (abelnation): RectAreaLight BRDF data needs to be moved from example to main src
         rectAreaLights: {
-            value: [], properties: {
+            value: [],
+            properties: {
                 color: {},
                 position: {},
                 width: {},
-                height: {}
-            }
-        }
-
+                height: {},
+            },
+        },
     },
 
     points: {
-
-        diffuse: {value: new Color(0xeeeeee)},
-        opacity: {value: 1.0},
-        size: {value: 1.0},
-        scale: {value: 1.0},
-        map: {value: null},
-        uvTransform: {value: new Matrix3()}
-
-    }
-
+        diffuse: { value: new Color(0xeeeeee) },
+        opacity: { value: 1.0 },
+        size: { value: 1.0 },
+        scale: { value: 1.0 },
+        map: { value: null },
+        uvTransform: { value: new Matrix3() },
+    },
 };
 
-export {UniformsLib};
+export { UniformsLib };

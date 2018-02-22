@@ -1,4 +1,4 @@
-import {WebGLExtensions} from "./WebGLExtensions";
+import { WebGLExtensions } from "./WebGLExtensions";
 
 export interface IWebGLCapabilitiesParameters {
     precision?: string;
@@ -6,7 +6,6 @@ export interface IWebGLCapabilitiesParameters {
 }
 
 export class WebGLCapabilities {
-
     public extensions: WebGLExtensions = null;
     public context: WebGLRenderingContext = null;
 
@@ -29,30 +28,51 @@ export class WebGLCapabilities {
     public maxAnisotropy: number = 0;
     public maxPrecision: string = null;
 
-    constructor(context: WebGLRenderingContext, extensions: WebGLExtensions, parameters) {
+    constructor(
+        context: WebGLRenderingContext,
+        extensions: WebGLExtensions,
+        parameters,
+    ) {
         this.context = context;
         this.extensions = extensions;
-        this.precision = parameters.precision !== undefined ? parameters.precision : "highp";
+        this.precision =
+            parameters.precision !== undefined ? parameters.precision : "highp";
         this.maxPrecision = this.getMaxPrecision(this.precision);
         if (this.maxPrecision !== this.precision) {
-            console.warn(`THREE.WebGLRenderer: ${this.precision} not supported, using ${this.maxPrecision} instead.`);
+            console.warn(
+                `THREE.WebGLRenderer: ${this.precision} not supported, using ${
+                    this.maxPrecision
+                } instead.`,
+            );
             this.precision = this.maxPrecision;
         }
-        this.logarithmicDepthBuffer = parameters.logarithmicDepthBuffer === true;
+        this.logarithmicDepthBuffer =
+            parameters.logarithmicDepthBuffer === true;
 
-        this.maxTextures = context.getParameter(context.MAX_TEXTURE_IMAGE_UNITS);
-        this.maxVertexTextures = context.getParameter(context.MAX_VERTEX_TEXTURE_IMAGE_UNITS);
+        this.maxTextures = context.getParameter(
+            context.MAX_TEXTURE_IMAGE_UNITS,
+        );
+        this.maxVertexTextures = context.getParameter(
+            context.MAX_VERTEX_TEXTURE_IMAGE_UNITS,
+        );
         this.maxTextureSize = context.getParameter(context.MAX_TEXTURE_SIZE);
-        this.maxCubemapSize = context.getParameter(context.MAX_CUBE_MAP_TEXTURE_SIZE);
+        this.maxCubemapSize = context.getParameter(
+            context.MAX_CUBE_MAP_TEXTURE_SIZE,
+        );
 
         this.maxAttributes = context.getParameter(context.MAX_VERTEX_ATTRIBS);
-        this.maxVertexUniforms = context.getParameter(context.MAX_VERTEX_UNIFORM_VECTORS);
+        this.maxVertexUniforms = context.getParameter(
+            context.MAX_VERTEX_UNIFORM_VECTORS,
+        );
         this.maxVaryings = context.getParameter(context.MAX_VARYING_VECTORS);
-        this.maxFragmentUniforms = context.getParameter(context.MAX_FRAGMENT_UNIFORM_VECTORS);
+        this.maxFragmentUniforms = context.getParameter(
+            context.MAX_FRAGMENT_UNIFORM_VECTORS,
+        );
 
         this.vertexTextures = this.maxVertexTextures > 0;
         this.floatFragmentTextures = !!this.extensions.get("OES_texture_float");
-        this.floatVertexTextures = this.vertexTextures && this.floatFragmentTextures;
+        this.floatVertexTextures =
+            this.vertexTextures && this.floatFragmentTextures;
 
         this.maxAnisotropy = this.getMaxAnisotropy();
     }
@@ -60,15 +80,31 @@ export class WebGLCapabilities {
     protected getMaxPrecision(precision: string): string {
         const context: WebGLRenderingContext = this.context;
         if (precision === "highp") {
-            if (context.getShaderPrecisionFormat(context.VERTEX_SHADER, context.HIGH_FLOAT).precision > 0 &&
-                context.getShaderPrecisionFormat(context.FRAGMENT_SHADER, context.HIGH_FLOAT).precision > 0) {
+            if (
+                context.getShaderPrecisionFormat(
+                    context.VERTEX_SHADER,
+                    context.HIGH_FLOAT,
+                ).precision > 0 &&
+                context.getShaderPrecisionFormat(
+                    context.FRAGMENT_SHADER,
+                    context.HIGH_FLOAT,
+                ).precision > 0
+            ) {
                 return "highp";
             }
             precision = "mediump";
         }
         if (precision === "mediump") {
-            if (context.getShaderPrecisionFormat(context.VERTEX_SHADER, context.MEDIUM_FLOAT).precision > 0 &&
-                context.getShaderPrecisionFormat(context.FRAGMENT_SHADER, context.MEDIUM_FLOAT).precision > 0) {
+            if (
+                context.getShaderPrecisionFormat(
+                    context.VERTEX_SHADER,
+                    context.MEDIUM_FLOAT,
+                ).precision > 0 &&
+                context.getShaderPrecisionFormat(
+                    context.FRAGMENT_SHADER,
+                    context.MEDIUM_FLOAT,
+                ).precision > 0
+            ) {
                 return "mediump";
             }
         }
@@ -78,7 +114,9 @@ export class WebGLCapabilities {
     protected getMaxAnisotropy(): number {
         const extension = this.extensions.get("EXT_texture_filter_anisotropic");
         if (extension !== null) {
-            return this.context.getParameter(extension.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+            return this.context.getParameter(
+                extension.MAX_TEXTURE_MAX_ANISOTROPY_EXT,
+            );
         } else {
             return 0;
         }

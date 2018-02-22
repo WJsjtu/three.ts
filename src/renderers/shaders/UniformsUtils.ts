@@ -1,57 +1,71 @@
-import {Color} from "../../math/Color";
-import {Matrix3} from "../../math/Matrix3";
-import {Matrix4} from "../../math/Matrix4";
-import {Vector2} from "../../math/Vector2";
-import {Vector3} from "../../math/Vector3";
-import {Vector4} from "../../math/Vector4";
-import {Texture} from "../../textures/Texture";
+import { Color } from "../../math/Color";
+import { Matrix3 } from "../../math/Matrix3";
+import { Matrix4 } from "../../math/Matrix4";
+import { Vector2 } from "../../math/Vector2";
+import { Vector3 } from "../../math/Vector3";
+import { Vector4 } from "../../math/Vector4";
+import { Texture } from "../../textures/Texture";
 
-export type BaseUniformType = number | Color | Matrix3 | Matrix4 | Vector2 | Vector3 | Vector4 | Texture;
+export type BaseUniformType =
+    | number
+    | Color
+    | Matrix3
+    | Matrix4
+    | Vector2
+    | Vector3
+    | Vector4
+    | Texture;
 
-export type Uniform = {
-    value?: BaseUniformType | BaseUniformType[],
-    properties?: object,
-    type?: string
+export interface IUniform {
+    value?: BaseUniformType | BaseUniformType[];
+    properties?: object;
+    type?: string;
 }
 
 export class UniformsUtils {
-    static merge(uniforms: Array<{ [key: string]: Uniform; }>): { [key: string]: Uniform; } {
-        const merged: { [key: string]: Uniform; } = {};
+    public static merge(
+        uniforms: Array<{ [key: string]: IUniform }>,
+    ): { [key: string]: IUniform } {
+        const merged: { [key: string]: IUniform } = {};
         for (let u: number = 0; u < uniforms.length; u++) {
-            let tmp = this.clone(uniforms[u]);
-            for (let p in tmp) {
-                merged[p] = tmp[p];
+            const tmp = this.clone(uniforms[u]);
+            for (const p in tmp) {
+                if (tmp.hasOwnProperty(p)) {
+                    merged[p] = tmp[p];
+                }
             }
         }
         return merged;
     }
 
-    static clone(uniforms_src: { [key: string]: Uniform; }): { [key: string]: Uniform; } {
-        const uniforms_dst: { [key: string]: Uniform; } = {};
-        for (let u in uniforms_src) {
-            if (!uniforms_src.hasOwnProperty(u)) continue;
-            uniforms_dst[u] = {};
-            for (let p in uniforms_src[u]) {
-                if (!uniforms_src[u].hasOwnProperty(p)) continue;
-                const parameter_src = uniforms_src[u][p];
-                if (parameter_src && (
-                        (parameter_src instanceof Color) ||
-                        (parameter_src instanceof Matrix3) ||
-                        (parameter_src instanceof Matrix4) ||
-                        (parameter_src instanceof Vector2) ||
-                        (parameter_src instanceof Vector3) ||
-                        (parameter_src instanceof Vector4) ||
-                        (parameter_src instanceof Texture)
-                    )
+    public static clone(uniformsSrc: {
+        [key: string]: IUniform;
+    }): { [key: string]: IUniform } {
+        const uniformsDst: { [key: string]: IUniform } = {};
+        for (const u in uniformsSrc) {
+            if (!uniformsSrc.hasOwnProperty(u)) continue;
+            uniformsDst[u] = {};
+            for (const p in uniformsSrc[u]) {
+                if (!uniformsSrc[u].hasOwnProperty(p)) continue;
+                const parameterSrc = uniformsSrc[u][p];
+                if (
+                    parameterSrc &&
+                    (parameterSrc instanceof Color ||
+                        parameterSrc instanceof Matrix3 ||
+                        parameterSrc instanceof Matrix4 ||
+                        parameterSrc instanceof Vector2 ||
+                        parameterSrc instanceof Vector3 ||
+                        parameterSrc instanceof Vector4 ||
+                        parameterSrc instanceof Texture)
                 ) {
-                    uniforms_dst[u][p] = parameter_src.clone();
-                } else if (Array.isArray(parameter_src)) {
-                    uniforms_dst[u][p] = parameter_src.slice();
+                    uniformsDst[u][p] = parameterSrc.clone();
+                } else if (Array.isArray(parameterSrc)) {
+                    uniformsDst[u][p] = parameterSrc.slice();
                 } else {
-                    uniforms_dst[u][p] = parameter_src;
+                    uniformsDst[u][p] = parameterSrc;
                 }
             }
         }
-        return uniforms_dst;
+        return uniformsDst;
     }
 }

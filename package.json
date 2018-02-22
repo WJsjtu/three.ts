@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "three.ts",
   "scripts": {
-    "test": "tslint -c tslint.json src/**/*.ts",
-    "prettify": "prettier --config ./.prettierrc.json --write src/**/*.ts"
+    "test": "tslint -c tslint.json 'src/**/*.ts'",
+    "prettify": "prettier --config ./.prettierrc.json --write 'src/**/*.ts'"
   },
   "files": [
     "src"

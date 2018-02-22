@@ -25,31 +25,9 @@
     "prefer-for-of": false,
     "one-variable-per-declaration": false,
     "jsdoc-format": false,
-    "no-conditional-assignment": false
-  },
-  "jsRules": {
-    "no-console": false,
-    "object-literal-shorthand": false,
-    "variable-name": [
-      true,
-      "ban-keywords",
-      "check-format",
-      "allow-leading-underscore",
-      "allow-pascal-case"
-    ],
-    "max-line-length": [
-      false
-    ],
-    "curly": [
-      true,
-      "ignore-same-line"
-    ],
-    "max-classes-per-file": [
-      false
-    ],
-    "prefer-for-of": false,
-    "one-variable-per-declaration": false,
-    "jsdoc-format": false,
-    "no-conditional-assignment": false
+    "no-conditional-assignment": false,
+    "member-ordering": [false],
+    "object-literal-sort-keys": false,
+    "ordered-imports": false
   }
 }

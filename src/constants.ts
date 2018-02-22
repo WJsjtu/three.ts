@@ -1,5 +1,6 @@
+/* tslint:disable */
 export const REVISION: string = "90dev";
-export const MOUSE: any = {LEFT: 0, MIDDLE: 1, RIGHT: 2};
+export const MOUSE: any = { LEFT: 0, MIDDLE: 1, RIGHT: 2 };
 export const CullFaceNone: number = 0;
 export const CullFaceBack: number = 1;
 export const CullFaceFront: number = 2;

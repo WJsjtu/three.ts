@@ -1,22 +1,29 @@
-import {WebGLAttributes} from "./WebGLAttributes";
-import {IInfoMemory} from "./WebGLRenderer";
-import {BufferGeometry} from "../../core/BufferGeometry";
-import {Geometry} from "../../core/Geometry";
-import {Object3D} from "../../core/Object3D";
-import {BufferAttribute, TypedArray, Uint16BufferAttribute, Uint32BufferAttribute} from "../../core/BufferAttribute";
-import {arrayMax} from "../../utils";
-import {IEventObject} from "../../core/EventDispatcher";
-
+import {
+    BufferAttribute,
+    TypedArray,
+    Uint16BufferAttribute,
+    Uint32BufferAttribute,
+} from "../../core/BufferAttribute";
+import { BufferGeometry } from "../../core/BufferGeometry";
+import { IEventObject } from "../../core/EventDispatcher";
+import { Geometry } from "../../core/Geometry";
+import { Object3D } from "../../core/Object3D";
+import { arrayMax } from "../../utils";
+import { WebGLAttributes } from "./WebGLAttributes";
+import { IInfoMemory } from "./WebGLRenderer";
 
 export class WebGLGeometries {
-
     protected geometries: { [key: number]: BufferGeometry } = {};
     protected wireframeAttributes: { [key: number]: BufferAttribute } = {};
     protected context: WebGLRenderingContext = null;
     protected attributes: WebGLAttributes = null;
     protected infoMemory: IInfoMemory = null;
 
-    constructor(context: WebGLRenderingContext, attributes: WebGLAttributes, infoMemory: IInfoMemory) {
+    constructor(
+        context: WebGLRenderingContext,
+        attributes: WebGLAttributes,
+        infoMemory: IInfoMemory,
+    ) {
         this.context = context;
         this.attributes = attributes;
         this.infoMemory = infoMemory;
@@ -28,7 +35,10 @@ export class WebGLGeometries {
         if (bufferGeometry.index !== null) {
             this.attributes.remove(bufferGeometry.index);
         }
-        for (let name in bufferGeometry.attributes) {
+        for (const name in bufferGeometry.attributes) {
+            if (!bufferGeometry.attributes.hasOwnProperty(name)) {
+                continue;
+            }
             this.attributes.remove(bufferGeometry.attributes[name]);
         }
         geometry.removeEventListener("dispose", this.onGeometryDispose);
@@ -47,17 +57,20 @@ export class WebGLGeometries {
         this.infoMemory.geometries--;
     }
 
-    public get(object: Object3D, geometry: BufferGeometry | Geometry): BufferGeometry {
+    public get(
+        object: Object3D,
+        geometry: BufferGeometry | Geometry,
+    ): BufferGeometry {
         let bufferGeometry: BufferGeometry = this.geometries[geometry.id];
         if (bufferGeometry) return bufferGeometry;
         geometry.addEventListener("dispose", this.onGeometryDispose);
         if (geometry instanceof BufferGeometry) {
-
             bufferGeometry = geometry;
-
         } else if (geometry instanceof Geometry) {
             if (geometry.bufferGeometry === null) {
-                geometry.bufferGeometry = new BufferGeometry().setFromObject(object);
+                geometry.bufferGeometry = new BufferGeometry().setFromObject(
+                    object,
+                );
             }
             bufferGeometry = geometry.bufferGeometry;
         }
@@ -68,16 +81,27 @@ export class WebGLGeometries {
 
     public update(geometry: BufferGeometry): this {
         const index: BufferAttribute = geometry.index;
-        const geometryAttributes: { [key: string]: BufferAttribute; } = geometry.attributes;
+        const geometryAttributes: { [key: string]: BufferAttribute } =
+            geometry.attributes;
         if (index !== null) {
             this.attributes.update(index, this.context.ELEMENT_ARRAY_BUFFER);
         }
-        for (let name in geometryAttributes) {
-            this.attributes.update(geometryAttributes[name], this.context.ARRAY_BUFFER);
+        for (const name in geometryAttributes) {
+            if (!geometryAttributes.hasOwnProperty(name)) {
+                continue;
+            }
+            this.attributes.update(
+                geometryAttributes[name],
+                this.context.ARRAY_BUFFER,
+            );
         }
         // morph targets
-        const morphAttributes: { [key: string]: BufferAttribute[]; } = geometry.morphAttributes;
-        for (let name in morphAttributes) {
+        const morphAttributes: { [key: string]: BufferAttribute[] } =
+            geometry.morphAttributes;
+        for (const name in morphAttributes) {
+            if (!morphAttributes.hasOwnProperty(name)) {
+                continue;
+            }
             const array: BufferAttribute[] = morphAttributes[name];
             for (let i: number = 0, l: number = array.length; i < l; i++) {
                 this.attributes.update(array[i], this.context.ARRAY_BUFFER);
@@ -100,14 +124,20 @@ export class WebGLGeometries {
             }
         } else {
             const array: TypedArray = geometry.attributes.position.array;
-            for (let i: number = 0, l: number = ( array.length / 3 ) - 1; i < l; i += 3) {
+            for (
+                let i: number = 0, l: number = array.length / 3 - 1;
+                i < l;
+                i += 3
+            ) {
                 const a: number = i;
                 const b: number = i + 1;
                 const c: number = i + 2;
                 indices.push(a, b, b, c, c, a);
             }
         }
-        attribute = new (arrayMax(indices) > 65535 ? Uint32BufferAttribute : Uint16BufferAttribute)(indices, 1);
+        attribute = new (arrayMax(indices) > 65535
+            ? Uint32BufferAttribute
+            : Uint16BufferAttribute)(indices, 1);
         this.attributes.update(attribute, this.context.ELEMENT_ARRAY_BUFFER);
         this.wireframeAttributes[geometry.id] = attribute;
         return attribute;

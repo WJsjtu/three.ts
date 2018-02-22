@@ -1,5 +1,5 @@
 import { Color } from "../math/Color";
-import { Uniform, UniformsUtils } from "../renderers/shaders/UniformsUtils";
+import { IUniform, UniformsUtils } from "../renderers/shaders/UniformsUtils";
 import { Texture } from "../textures/Texture";
 import { IMaterialParameters, Material } from "./Material";
 
@@ -21,7 +21,7 @@ export class ShaderMaterial extends Material {
     public readonly type: string = "ShaderMaterial";
 
     public defines: { [key: string]: any } = {};
-    public uniforms: { [key: string]: Uniform } = {};
+    public uniforms: { [key: string]: IUniform } = {};
 
     public vertexShader: string = `void main() {\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n}`;
     public fragmentShader: string = "void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}";
