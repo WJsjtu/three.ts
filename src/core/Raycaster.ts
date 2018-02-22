@@ -10,6 +10,7 @@ import { Object3D } from "./Object3D";
 
 export interface IIntersection {
     index?: number;
+    distanceToRay?: number;
     face?: Face3;
     faceIndex?: number;
     uv?: Vector2;

@@ -483,6 +483,7 @@ export class BufferGeometry extends EventDispatcher {
             }
             geometry2.addAttribute(name, new BufferAttribute(array2, itemSize));
         }
+
         return geometry2;
     }
 
