@@ -91,7 +91,7 @@ export class BufferAttribute {
         return this;
     }
 
-    public copyArray(array: TypedArray): this {
+    public copyArray(array: number[]): this {
         this.array.set(array);
         return this;
     }
@@ -288,55 +288,91 @@ export class BufferAttribute {
 }
 
 export class Int8BufferAttribute extends BufferAttribute {
-    constructor(array: number[], itemSize: number, normalized?: boolean) {
+    constructor(
+        array: number | ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    ) {
         super(new Int8Array(array), itemSize, normalized);
     }
 }
 
 export class Uint8BufferAttribute extends BufferAttribute {
-    constructor(array: number[], itemSize: number, normalized?: boolean) {
+    constructor(
+        array: number | ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    ) {
         super(new Uint8Array(array), itemSize, normalized);
     }
 }
 
 export class Uint8ClampedBufferAttribute extends BufferAttribute {
-    constructor(array: number[], itemSize: number, normalized?: boolean) {
+    constructor(
+        array: number | ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    ) {
         super(new Uint8ClampedArray(array), itemSize, normalized);
     }
 }
 
 export class Int16BufferAttribute extends BufferAttribute {
-    constructor(array: number[], itemSize: number, normalized?: boolean) {
+    constructor(
+        array: number | ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    ) {
         super(new Int16Array(array), itemSize, normalized);
     }
 }
 
 export class Uint16BufferAttribute extends BufferAttribute {
-    constructor(array: number[], itemSize: number, normalized?: boolean) {
+    constructor(
+        array: number | ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    ) {
         super(new Uint16Array(array), itemSize, normalized);
     }
 }
 
 export class Int32BufferAttribute extends BufferAttribute {
-    constructor(array: number[], itemSize: number, normalized?: boolean) {
+    constructor(
+        array: number | ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    ) {
         super(new Int32Array(array), itemSize, normalized);
     }
 }
 
 export class Uint32BufferAttribute extends BufferAttribute {
-    constructor(array: number[], itemSize: number, normalized?: boolean) {
+    constructor(
+        array: number | ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    ) {
         super(new Uint32Array(array), itemSize, normalized);
     }
 }
 
 export class Float32BufferAttribute extends BufferAttribute {
-    constructor(array: number[], itemSize: number, normalized?: boolean) {
+    constructor(
+        array: number | ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    ) {
         super(new Float32Array(array), itemSize, normalized);
     }
 }
 
 export class Float64BufferAttribute extends BufferAttribute {
-    constructor(array: number[], itemSize: number, normalized?: boolean) {
+    constructor(
+        array: number | ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    ) {
         super(new Float64Array(array), itemSize, normalized);
     }
 }

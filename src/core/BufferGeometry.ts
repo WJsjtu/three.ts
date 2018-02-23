@@ -1,4 +1,4 @@
-import { Box3 } from "../math/Box3";
+import { Box3, ObjectWithGeometry } from "../math/Box3";
 import { MathUtil } from "../math/Math";
 import { Matrix3 } from "../math/Matrix3";
 import { Matrix4 } from "../math/Matrix4";
@@ -20,6 +20,9 @@ import { DirectGeometry, IGroup } from "./DirectGeometry";
 import { EventDispatcher } from "./EventDispatcher";
 import { Geometry } from "./Geometry";
 import { Object3D } from "./Object3D";
+import { Mesh } from "../objects/Mesh";
+import { Line } from "../objects/Line";
+import { Points } from "../objects/Points";
 
 export interface IDrawRange {
     start: number;
@@ -153,10 +156,47 @@ export class BufferGeometry extends EventDispatcher {
     }
 
     /**
-     * TODO setFromObject
+     * Same as updateFromObject
      * @param object
      */
-    public setFromObject(object: Object3D): this {
+    public setFromObject(object: ObjectWithGeometry): this {
+        const geometry: Geometry = object.geometry as Geometry;
+        if (object instanceof Points || object instanceof Line) {
+            const positions: Float32BufferAttribute = new Float32BufferAttribute(
+                geometry.vertices.length * 3,
+                3,
+            );
+            const colors: Float32BufferAttribute = new Float32BufferAttribute(
+                geometry.colors.length * 3,
+                3,
+            );
+            this.addAttribute(
+                "position",
+                positions.copyVector3sArray(geometry.vertices),
+            );
+            this.addAttribute("color", colors.copyColorsArray(geometry.colors));
+            if (
+                geometry.lineDistances &&
+                geometry.lineDistances.length === geometry.vertices.length
+            ) {
+                const lineDistances: Float32BufferAttribute = new Float32BufferAttribute(
+                    geometry.lineDistances.length,
+                    1,
+                );
+                this.addAttribute(
+                    "lineDistance",
+                    lineDistances.copyArray(geometry.lineDistances),
+                );
+            }
+            if (geometry.boundingSphere !== null) {
+                this.boundingSphere = geometry.boundingSphere.clone();
+            }
+            if (geometry.boundingBox !== null) {
+                this.boundingBox = geometry.boundingBox.clone();
+            }
+        } else if (object instanceof Mesh) {
+            this.fromGeometry(geometry);
+        }
         return this;
     }
 
@@ -171,11 +211,103 @@ export class BufferGeometry extends EventDispatcher {
     }
 
     /**
-     * TODO updateFromObject
+     * This function is a mess.
+     * The argument has implicit requirement for arg `object`
+     * Since the only use of this function is in `WebGLObjects`,
+     * and it requires the object's `geometry` property should be a `Geometry` instance,
+     * So we can/must assert the object.geometry as type `Geometry`.
+     * So the whole function is dealing with no BufferGeometry instance,
+     * which may be the reason why BufferGeometry is faster.
+     *
      * @param object
      * @returns {BufferGeometry}
      */
-    public updateFromObject(object: Object3D): this {
+    public updateFromObject(object: ObjectWithGeometry): this {
+        let geometry: Geometry | DirectGeometry = object.geometry as Geometry;
+        if (object instanceof Mesh) {
+            let direct: DirectGeometry = geometry.directGeometry;
+            if (geometry.elementsNeedUpdate === true) {
+                direct = undefined;
+                geometry.elementsNeedUpdate = false;
+            }
+            if (direct === undefined) {
+                // Geometry -> DirectGeometry -> BufferGeometry
+                return this.fromGeometry(geometry);
+            }
+            direct.verticesNeedUpdate = geometry.verticesNeedUpdate;
+            direct.normalsNeedUpdate = geometry.normalsNeedUpdate;
+            direct.colorsNeedUpdate = geometry.colorsNeedUpdate;
+            direct.uvsNeedUpdate = geometry.uvsNeedUpdate;
+            direct.groupsNeedUpdate = geometry.groupsNeedUpdate;
+            geometry.verticesNeedUpdate = false;
+            geometry.normalsNeedUpdate = false;
+            geometry.colorsNeedUpdate = false;
+            geometry.uvsNeedUpdate = false;
+            geometry.groupsNeedUpdate = false;
+            geometry = direct;
+        }
+
+        // Used by both Geometry and DirectGeometry
+        if (geometry.verticesNeedUpdate === true) {
+            const attribute: BufferAttribute = this.attributes.position;
+            if (attribute !== undefined) {
+                attribute.copyVector3sArray(geometry.vertices);
+                attribute.needsUpdate = true;
+            }
+            geometry.verticesNeedUpdate = false;
+        }
+
+        // Used only by DirectGeometry
+        if (
+            geometry instanceof DirectGeometry &&
+            geometry.normalsNeedUpdate === true
+        ) {
+            const attribute: BufferAttribute = this.attributes.normal;
+            if (attribute !== undefined) {
+                attribute.copyVector3sArray(geometry.normals);
+                attribute.needsUpdate = true;
+            }
+            geometry.normalsNeedUpdate = false;
+        }
+
+        // Used by both Geometry and DirectGeometry
+        if (geometry.colorsNeedUpdate === true) {
+            const attribute: BufferAttribute = this.attributes.color;
+            if (attribute !== undefined) {
+                attribute.copyColorsArray(geometry.colors);
+                attribute.needsUpdate = true;
+            }
+            geometry.colorsNeedUpdate = false;
+        }
+
+        // Used only by DirectGeometry
+        if (geometry instanceof DirectGeometry && geometry.uvsNeedUpdate) {
+            const attribute: BufferAttribute = this.attributes.uv;
+            if (attribute !== undefined) {
+                attribute.copyVector2sArray(geometry.uvs);
+                attribute.needsUpdate = true;
+            }
+            geometry.uvsNeedUpdate = false;
+        }
+
+        // Used only by Geometry
+        if (geometry instanceof Geometry && geometry.lineDistancesNeedUpdate) {
+            const attribute: BufferAttribute = this.attributes.lineDistance;
+            if (attribute !== undefined) {
+                attribute.copyArray(geometry.lineDistances);
+                attribute.needsUpdate = true;
+            }
+            geometry.lineDistancesNeedUpdate = false;
+        }
+
+        // Used only by DirectGeometry
+        if (geometry instanceof DirectGeometry && geometry.groupsNeedUpdate) {
+            geometry.computeGroups(object.geometry as Geometry);
+            this.groups = geometry.groups;
+            geometry.groupsNeedUpdate = false;
+        }
+
+        // Well, IMO!!
         return this;
     }
 

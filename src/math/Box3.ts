@@ -13,12 +13,7 @@ import { LineLoop } from "../objects/LineLoop";
 import { LineSegments } from "../objects/LineSegments";
 import { Points } from "../objects/Points";
 
-export type ObjectWithGeometery =
-    | Mesh
-    | Line
-    | LineLoop
-    | LineSegments
-    | Points;
+export type ObjectWithGeometry = Mesh | Line | LineLoop | LineSegments | Points;
 
 export class Box3 {
     public min: Vector3 = new Vector3(+Infinity, +Infinity, +Infinity);
@@ -76,7 +71,7 @@ export class Box3 {
         return this;
     }
 
-    public setFromObject(object: ObjectWithGeometery): this {
+    public setFromObject(object: ObjectWithGeometry): this {
         this.makeEmpty();
         return this.expandByObject(object);
     }
@@ -149,10 +144,10 @@ export class Box3 {
      * @param object
      * @returns {Box3}
      */
-    public expandByObject(object: ObjectWithGeometery): this {
+    public expandByObject(object: ObjectWithGeometry): this {
         // Computes the world-axis-aligned bounding box of an object (including its children),
         // accounting for both the object's, and children's, world transforms
-        const traverse = (node: ObjectWithGeometery) => {
+        const traverse = (node: ObjectWithGeometry) => {
             const geometry: Geometry | BufferGeometry = node.geometry;
             if (geometry !== undefined) {
                 if (geometry instanceof Geometry) {

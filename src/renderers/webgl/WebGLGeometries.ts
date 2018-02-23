@@ -7,7 +7,7 @@ import {
 import { BufferGeometry } from "../../core/BufferGeometry";
 import { IEventObject } from "../../core/EventDispatcher";
 import { Geometry } from "../../core/Geometry";
-import { Object3D } from "../../core/Object3D";
+import { ObjectWithGeometry } from "../../math/Box3";
 import { arrayMax } from "../../utils";
 import { IInfoMemory } from "../WebGLRenderer";
 import { WebGLAttributes } from "./WebGLAttributes";
@@ -58,7 +58,7 @@ export class WebGLGeometries {
     }
 
     public get(
-        object: Object3D,
+        object: ObjectWithGeometry,
         geometry: BufferGeometry | Geometry,
     ): BufferGeometry {
         let bufferGeometry: BufferGeometry = this.geometries[geometry.id];
