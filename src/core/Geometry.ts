@@ -8,6 +8,7 @@ import { Triangle } from "../math/Triangle";
 import { Vector2 } from "../math/Vector2";
 import { Vector3 } from "../math/Vector3";
 import { Vector4 } from "../math/Vector4";
+import { Mesh } from "../objects/Mesh";
 import { BufferAttribute, TypedArray } from "./BufferAttribute";
 import { BufferGeometry } from "./BufferGeometry";
 import { DirectGeometry, IGroup } from "./DirectGeometry";
@@ -124,7 +125,9 @@ export class Geometry extends EventDispatcher {
     }
 
     public lookAt(vector: Vector3): this {
-        return this.applyMatrix(new Object3D().lookAt(vector).matrix);
+        const obj: Object3D = new Object3D().lookAt(vector);
+        obj.updateMatrix();
+        return this.applyMatrix(obj.matrix);
     }
 
     public fromBufferGeometry(geometry: BufferGeometry): this {
@@ -592,7 +595,19 @@ export class Geometry extends EventDispatcher {
         return this;
     }
 
-    // TODO mergeMesh
+    public mergeMesh(mesh: Mesh): void {
+        if (mesh.geometry instanceof Geometry) {
+            if (mesh.matrixAutoUpdate) {
+                mesh.updateMatrix();
+            }
+            this.merge(mesh.geometry, mesh.matrix);
+        } else {
+            console.error(
+                `THREE.Geometry.merge(): geometry not an instance of THREE.Geometry.`,
+                mesh.geometry,
+            );
+        }
+    }
 
     /**
      * Checks for duplicate vertices with hashmap.

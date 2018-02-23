@@ -48,8 +48,8 @@ export class PositionalAudio extends AudioWrapper {
         this.panner.maxDistance = value;
     }
 
-    public updateMatrix(): this {
-        super.updateMatrix();
+    public updateMatrixWorld(force: boolean = false): this {
+        super.updateMatrixWorld(force);
         const position = new Vector3();
         position.setFromMatrixPosition(this.matrixWorld);
         this.panner.setPosition(position.x, position.y, position.z);

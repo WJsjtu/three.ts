@@ -55,8 +55,8 @@ export class AudioListenerWrapper extends Object3D {
         return this;
     }
 
-    public updateMatrix(): this {
-        super.updateMatrix();
+    public updateMatrixWorld(force: boolean = false): this {
+        super.updateMatrixWorld(force);
         const position: Vector3 = new Vector3();
         const quaternion: Quaternion = new Quaternion();
         const scale: Vector3 = new Vector3();

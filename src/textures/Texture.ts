@@ -47,6 +47,7 @@ export class Texture extends EventDispatcher {
     public rotation: number = 0;
 
     public matrix: Matrix3 = new Matrix3();
+    public matrixAutoUpdate: boolean = true;
     public generateMipmaps: boolean = true;
     public premultiplyAlpha: boolean = false;
     public flipY: boolean = true;
@@ -162,6 +163,7 @@ export class Texture extends EventDispatcher {
         this.repeat.copy(source.repeat);
         this.center.copy(source.center);
         this.rotation = source.rotation;
+        this.matrixAutoUpdate = source.matrixAutoUpdate;
         this.matrix.copy(source.matrix);
         this.generateMipmaps = source.generateMipmaps;
         this.premultiplyAlpha = source.premultiplyAlpha;

@@ -3,6 +3,22 @@ import { Matrix4 } from "./Matrix4";
 import { Plane } from "./Plane";
 import { Sphere } from "./Sphere";
 import { Vector3 } from "./Vector3";
+import { vectorFromBufferAttribute } from "../utils";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { BufferAttribute } from "../core/BufferAttribute";
+import { Geometry } from "../core/Geometry";
+import { Mesh } from "../objects/Mesh";
+import { Line } from "../objects/Line";
+import { LineLoop } from "../objects/LineLoop";
+import { LineSegments } from "../objects/LineSegments";
+import { Points } from "../objects/Points";
+
+export type ObjectWithGeometery =
+    | Mesh
+    | Line
+    | LineLoop
+    | LineSegments
+    | Points;
 
 export class Box3 {
     public min: Vector3 = new Vector3(+Infinity, +Infinity, +Infinity);
@@ -60,7 +76,7 @@ export class Box3 {
         return this;
     }
 
-    public setFromObject(object: Object3D): this {
+    public setFromObject(object: ObjectWithGeometery): this {
         this.makeEmpty();
         return this.expandByObject(object);
     }
@@ -133,7 +149,45 @@ export class Box3 {
      * @param object
      * @returns {Box3}
      */
-    public expandByObject(object: Object3D): this {
+    public expandByObject(object: ObjectWithGeometery): this {
+        // Computes the world-axis-aligned bounding box of an object (including its children),
+        // accounting for both the object's, and children's, world transforms
+        const traverse = (node: ObjectWithGeometery) => {
+            const geometry: Geometry | BufferGeometry = node.geometry;
+            if (geometry !== undefined) {
+                if (geometry instanceof Geometry) {
+                    const vertices: Vector3[] = geometry.vertices;
+                    for (
+                        let i: number = 0, l: number = vertices.length;
+                        i < l;
+                        i++
+                    ) {
+                        const v1: Vector3 = new Vector3().copy(vertices[i]);
+                        v1.applyMatrix4(node.matrixWorld);
+                        this.expandByPoint(v1);
+                    }
+                } else if (geometry instanceof BufferGeometry) {
+                    const attribute: BufferAttribute =
+                        geometry.attributes.position;
+                    if (attribute !== undefined) {
+                        for (
+                            let i: number = 0, l: number = attribute.count;
+                            i < l;
+                            i++
+                        ) {
+                            const v1: Vector3 = vectorFromBufferAttribute(
+                                new Vector3(),
+                                attribute,
+                                i,
+                            ).applyMatrix4(node.matrixWorld);
+                            this.expandByPoint(v1);
+                        }
+                    }
+                }
+            }
+        };
+        object.updateMatrixWorld(true);
+        object.traverse(traverse);
         return this;
     }
 

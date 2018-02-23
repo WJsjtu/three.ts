@@ -15,7 +15,7 @@ import { Vector2 } from "../math/Vector2";
 import { Vector3 } from "../math/Vector3";
 import { vectorFromBufferAttribute } from "../utils";
 
-class Mesh extends Object3D {
+export class Mesh extends Object3D {
     public static uvIntersection(
         point: Vector3,
         triangle: Triangle,

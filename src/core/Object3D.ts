@@ -13,6 +13,7 @@ let object3DId: number = 0;
 
 export class Object3D extends EventDispatcher {
     public static DefaultUp = new Vector3(0, 1, 0);
+    public static DefaultMatrixAutoUpdate: boolean = true;
 
     public readonly id: number = object3DId++;
     public readonly uuid: string = MathUtil.generateUUID();
@@ -23,6 +24,8 @@ export class Object3D extends EventDispatcher {
     public up: Vector3 = new Vector3().copy(Object3D.DefaultUp);
     public matrix: Matrix4 = new Matrix4();
     public matrixWorld: Matrix4 = new Matrix4();
+    public matrixAutoUpdate = Object3D.DefaultMatrixAutoUpdate;
+    public matrixWorldNeedsUpdate: boolean = false;
     public layers: Layers = new Layers();
     public visible: boolean = true;
     public castShadow: boolean = false;
@@ -37,10 +40,7 @@ export class Object3D extends EventDispatcher {
     protected _scale: Vector3 = new Vector3(1, 1, 1);
 
     set position(_position: Vector3) {
-        if (!this._position.equals(_position)) {
-            this._position.copy(_position);
-            this.updateMatrix();
-        }
+        this._position.copy(_position);
     }
 
     get position(): Vector3 {
@@ -48,10 +48,7 @@ export class Object3D extends EventDispatcher {
     }
 
     set rotation(_rotation: Euler) {
-        if (!this._rotation.equals(_rotation)) {
-            this._rotation.copy(_rotation);
-            this.updateMatrix();
-        }
+        this._rotation.copy(_rotation);
     }
 
     get rotation(): Euler {
@@ -59,10 +56,7 @@ export class Object3D extends EventDispatcher {
     }
 
     set quaternion(_quaternion: Quaternion) {
-        if (!this._quaternion.equals(_quaternion)) {
-            this._quaternion.copy(_quaternion);
-            this.updateMatrix();
-        }
+        this._quaternion.copy(_quaternion);
     }
 
     get quaternion(): Quaternion {
@@ -70,10 +64,7 @@ export class Object3D extends EventDispatcher {
     }
 
     set scale(_scale: Vector3) {
-        if (!this._scale.equals(_scale)) {
-            this._scale.copy(_scale);
-            this.updateMatrix();
-        }
+        this._scale.copy(_scale);
     }
 
     get scale(): Vector3 {
@@ -82,18 +73,31 @@ export class Object3D extends EventDispatcher {
 
     public updateMatrix(): this {
         this.matrix.compose(this.position, this.quaternion, this.scale);
-        if (this.parent === null) {
-            this.matrixWorld.copy(this.matrix);
-        } else {
-            this.matrixWorld.multiplyMatrices(
-                this.parent.matrixWorld,
-                this.matrix,
-            );
-        }
-        this.children.forEach((child: Object3D) => {
-            child.updateMatrix();
-        });
+        this.matrixWorldNeedsUpdate = true;
         return this;
+    }
+
+    public updateMatrixWorld(force: boolean = false): this {
+        if (this.matrixAutoUpdate) {
+            return this.updateMatrix();
+        }
+        if (this.matrixWorldNeedsUpdate || force) {
+            if (this.parent === null) {
+                this.matrixWorld.copy(this.matrix);
+            } else {
+                this.matrixWorld.multiplyMatrices(
+                    this.parent.matrixWorld,
+                    this.matrix,
+                );
+            }
+            this.matrixWorldNeedsUpdate = false;
+            force = true;
+        }
+        // update children
+        const children: Object3D[] = this.children;
+        for (let i: number = 0, l: number = children.length; i < l; i++) {
+            children[i].updateMatrixWorld(force);
+        }
     }
 
     public raycast(
@@ -106,15 +110,12 @@ export class Object3D extends EventDispatcher {
     public applyMatrix(matrix: Matrix4): this {
         this.matrix.multiplyMatrices(matrix, this.matrix);
         this.matrix.decompose(this._position, this._quaternion, this._scale);
-        this.children.forEach((child: Object3D) => {
-            child.updateMatrix();
-        });
         return this;
     }
 
     public applyQuaternion(q: Quaternion): this {
         this._quaternion.premultiply(q);
-        return this.updateMatrix();
+        return this;
     }
 
     /**
@@ -125,12 +126,12 @@ export class Object3D extends EventDispatcher {
      */
     public setRotationFromAxisAngle(axis: Vector3, angle: number): this {
         this._quaternion.setFromAxisAngle(axis, angle);
-        return this.updateMatrix();
+        return this;
     }
 
     public setRotationFromEuler(euler: Euler): this {
         this._quaternion.setFromEuler(euler);
-        return this.updateMatrix();
+        return this;
     }
 
     /**
@@ -140,7 +141,7 @@ export class Object3D extends EventDispatcher {
      */
     public setRotationFromMatrix(m: Matrix4): this {
         this._quaternion.setFromRotationMatrix(m);
-        return this.updateMatrix();
+        return this;
     }
 
     /**
@@ -150,14 +151,14 @@ export class Object3D extends EventDispatcher {
      */
     public setRotationFromQuaternion(q: Quaternion): this {
         this._quaternion.copy(q);
-        return this.updateMatrix();
+        return this;
     }
 
     public rotateOnAxis(axis: Vector3, angle: number): this {
         const q: Quaternion = new Quaternion();
         q.setFromAxisAngle(axis, angle);
         this._quaternion.multiply(q);
-        return this.updateMatrix();
+        return this;
     }
 
     /**
@@ -172,7 +173,7 @@ export class Object3D extends EventDispatcher {
         const q = new Quaternion();
         q.setFromAxisAngle(axis, angle);
         this.quaternion.premultiply(q);
-        return this.updateMatrix();
+        return this;
     }
 
     public rotateX(angle: number): this {
@@ -198,7 +199,7 @@ export class Object3D extends EventDispatcher {
         const vec = new Vector3();
         vec.copy(axis).applyQuaternion(this.quaternion);
         this._position.add(vec.multiplyScalar(distance));
-        return this.updateMatrix();
+        return this;
     }
 
     public translateX(distance: number): this {
@@ -230,7 +231,7 @@ export class Object3D extends EventDispatcher {
             mat.lookAt(vector, this.position, this.up);
         }
         this.quaternion.setFromRotationMatrix(mat);
-        return this.updateMatrix();
+        return this;
     }
 
     public add(object: Object3D, ...objects: Object3D[]): this {
@@ -272,6 +273,7 @@ export class Object3D extends EventDispatcher {
     }
 
     get worldPosition(): Vector3 {
+        this.updateMatrixWorld(true);
         return new Vector3().setFromMatrixPosition(this.matrixWorld);
     }
 
@@ -279,6 +281,7 @@ export class Object3D extends EventDispatcher {
         const position: Vector3 = new Vector3();
         const scale: Vector3 = new Vector3();
         const result: Quaternion = new Quaternion();
+        this.updateMatrixWorld(true);
         this.matrixWorld.decompose(position, result, scale);
         return result;
     }
@@ -294,6 +297,7 @@ export class Object3D extends EventDispatcher {
         const position: Vector3 = new Vector3();
         const quaternion: Quaternion = new Quaternion();
         const result: Vector3 = new Vector3();
+        this.updateMatrixWorld(true);
         this.matrixWorld.decompose(position, quaternion, result);
         return result;
     }
@@ -339,6 +343,8 @@ export class Object3D extends EventDispatcher {
         this.scale.copy(source.scale);
         this.matrix.copy(source.matrix);
         this.matrixWorld.copy(source.matrixWorld);
+        this.matrixAutoUpdate = source.matrixAutoUpdate;
+        this.matrixWorldNeedsUpdate = source.matrixWorldNeedsUpdate;
         this.layers.mask = source.layers.mask;
         this.visible = source.visible;
         this.castShadow = source.castShadow;

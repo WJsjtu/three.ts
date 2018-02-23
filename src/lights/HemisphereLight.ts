@@ -11,6 +11,7 @@ export class HemisphereLight extends Light {
         super(skyColor, intensity);
         this.groundColor = groundColor;
         this.position = Object3D.DefaultUp.clone();
+        this.updateMatrix();
     }
 
     public copy(source: HemisphereLight): this {

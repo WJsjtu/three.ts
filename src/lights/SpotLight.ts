@@ -22,6 +22,7 @@ export class SpotLight extends Light {
     ) {
         super(color, intensity);
         this.position = Object3D.DefaultUp.clone();
+        this.updateMatrix();
         this.distance = distance;
         this.angle = angle;
         this.penumbra = penumbra;

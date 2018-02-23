@@ -140,7 +140,9 @@ export class BufferGeometry extends EventDispatcher {
     }
 
     public lookAt(vector: Vector3): this {
-        return this.applyMatrix(new Object3D().lookAt(vector).matrix);
+        const obj: Object3D = new Object3D().lookAt(vector);
+        obj.updateMatrix();
+        return this.applyMatrix(obj.matrix);
     }
 
     public center(): Vector3 {

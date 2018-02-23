@@ -11,6 +11,7 @@ export class DirectionalLight extends Light {
     constructor(color: Color, intensity: number) {
         super(color, intensity);
         this.position = Object3D.DefaultUp.clone();
+        this.updateMatrix();
     }
 
     public copy(source: DirectionalLight): this {

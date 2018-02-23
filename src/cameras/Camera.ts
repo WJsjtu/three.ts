@@ -12,8 +12,8 @@ export class Camera extends Object3D {
         super();
     }
 
-    public updateMatrix(): this {
-        super.updateMatrix();
+    public updateMatrixWorld(force: boolean = false): this {
+        super.updateMatrixWorld(force);
         this.matrixWorldInverse.getInverse(this.matrixWorld);
         return this;
     }
