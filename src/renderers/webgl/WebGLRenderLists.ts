@@ -3,6 +3,8 @@ import { IGroup } from "../../core/DirectGeometry";
 import { Geometry } from "../../core/Geometry";
 import { Object3D } from "../../core/Object3D";
 import { Material } from "../../materials/Material";
+import { Scene } from "../../scenes/Scene";
+import { Camera } from "../../cameras/Camera";
 
 export interface IRenderItem {
     geometry: BufferGeometry;
@@ -96,4 +98,20 @@ export class WebGLRenderList {
     }
 }
 
-export class WebGLRenderLists {}
+export class WebGLRenderLists {
+    protected lists: { [key: string]: WebGLRenderList } = Object.create(null);
+
+    public get(scene: Scene, camera: Camera): WebGLRenderList {
+        const hash: string = scene.id + "," + camera.id;
+        let list: WebGLRenderList = this.lists[hash];
+        if (list === undefined) {
+            list = new WebGLRenderList();
+            this.lists[hash] = list;
+        }
+        return list;
+    }
+
+    public dispose() {
+        this.lists = Object.create(null);
+    }
+}
