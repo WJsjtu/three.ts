@@ -9,8 +9,8 @@ import { IEventObject } from "../../core/EventDispatcher";
 import { Geometry } from "../../core/Geometry";
 import { Object3D } from "../../core/Object3D";
 import { arrayMax } from "../../utils";
+import { IInfoMemory } from "../WebGLRenderer";
 import { WebGLAttributes } from "./WebGLAttributes";
-import { IInfoMemory } from "./WebGLRenderer";
 
 export class WebGLGeometries {
     protected geometries: { [key: number]: BufferGeometry } = {};

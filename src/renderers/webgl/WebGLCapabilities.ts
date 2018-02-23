@@ -112,7 +112,9 @@ export class WebGLCapabilities {
     }
 
     protected getMaxAnisotropy(): number {
-        const extension = this.extensions.get("EXT_texture_filter_anisotropic");
+        const extension: EXT_texture_filter_anisotropic = this.extensions.get(
+            "EXT_texture_filter_anisotropic",
+        );
         if (extension !== null) {
             return this.context.getParameter(
                 extension.MAX_TEXTURE_MAX_ANISOTROPY_EXT,
