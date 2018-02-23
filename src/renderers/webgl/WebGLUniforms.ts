@@ -10,7 +10,10 @@ import { Matrix4 } from "../../math/Matrix4";
 import { WebGLRenderer } from "../WebGLRenderer";
 
 class UniformContainer {
-    public seq: SingleUniformSetter[]| PureArrayUniformSetter[] | StructuredUniformSetter[] = [];
+    public seq:
+        | SingleUniformSetter[]
+        | PureArrayUniformSetter[]
+        | StructuredUniformSetter[] = [];
     public map = {};
 }
 
@@ -350,11 +353,10 @@ class PureArrayUniformSetter extends UniformSetter {
 }
 
 class StructuredUniformSetter extends UniformContainer {
-
     public id: number = 0;
-    public context:WebGLRenderingContext = null;
+    public context: WebGLRenderingContext = null;
 
-    constructor(id: number, context:WebGLRenderingContext) {
+    constructor(id: number, context: WebGLRenderingContext) {
         super();
         this.id = id;
         this.context = context;
@@ -363,9 +365,9 @@ class StructuredUniformSetter extends UniformContainer {
     public setValue(value) {
         // Note: Don't need an extra 'renderer' parameter, since samplers
         // are not allowed in structured uniforms.
-        for ( let i: number = 0, n: number = this.seq.length; i !== n;  i++ ) {
-            var u = this.seq[ i ];
-            u.setValue(value[ u.id ] );
+        for (let i: number = 0, n: number = this.seq.length; i !== n; i++) {
+            var u = this.seq[i];
+            u.setValue(value[u.id]);
         }
     }
 }
