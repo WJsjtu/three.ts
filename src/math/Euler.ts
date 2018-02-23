@@ -85,7 +85,7 @@ export class Euler {
     ): this {
         const clamp: (value: number, min: number, max: number) => number =
             MathUtil.clamp;
-        const te: number[] = m.toArray();
+        const te: number[] = m.elements;
         const m11: number = te[0],
             m12: number = te[4],
             m13: number = te[8];

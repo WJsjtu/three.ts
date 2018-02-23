@@ -1,3 +1,4 @@
+import { TypedArray } from "../core/BufferAttribute";
 import { Euler, EulerOrder } from "./Euler";
 import { Quaternion } from "./Quaternion";
 import { Vector3 } from "./Vector3";
@@ -6,7 +7,7 @@ import { Vector3 } from "./Vector3";
  * TODO: applyToBufferAttribute
  */
 export class Matrix4 {
-    protected elements: number[] = [
+    public elements: number[] = [
         1,
         0,
         0,
@@ -26,7 +27,26 @@ export class Matrix4 {
     ];
 
     public copy(mat4: Matrix4): this {
-        this.elements = mat4.toArray();
+        const te: number[] = this.elements;
+        const me: number[] = mat4.elements;
+
+        te[0] = me[0];
+        te[1] = me[1];
+        te[2] = me[2];
+        te[3] = me[3];
+        te[4] = me[4];
+        te[5] = me[5];
+        te[6] = me[6];
+        te[7] = me[7];
+        te[8] = me[8];
+        te[9] = me[9];
+        te[10] = me[10];
+        te[11] = me[11];
+        te[12] = me[12];
+        te[13] = me[13];
+        te[14] = me[14];
+        te[15] = me[15];
+
         return this;
     }
 
@@ -74,7 +94,7 @@ export class Matrix4 {
 
     public copyPosition(m: Matrix4): this {
         const te: number[] = this.elements,
-            me: number[] = m.toArray();
+            me: number[] = m.elements;
         te[12] = me[12];
         te[13] = me[13];
         te[14] = me[14];
@@ -113,9 +133,9 @@ export class Matrix4 {
         const vec: Vector3 = new Vector3();
         const te: number[] = this.elements;
         const me: number[] = mat4.elements;
-        const scaleX: number = 1 / vec.fromArray(mat4.toArray(), 0).length();
-        const scaleY: number = 1 / vec.fromArray(mat4.toArray(), 4).length();
-        const scaleZ: number = 1 / vec.fromArray(mat4.toArray(), 8).length();
+        const scaleX: number = 1 / vec.fromArray(mat4.elements, 0).length();
+        const scaleY: number = 1 / vec.fromArray(mat4.elements, 4).length();
+        const scaleZ: number = 1 / vec.fromArray(mat4.elements, 8).length();
         te[0] = me[0] * scaleX;
         te[1] = me[1] * scaleX;
         te[2] = me[2] * scaleX;
@@ -333,8 +353,8 @@ export class Matrix4 {
     }
 
     public multiplyMatrices(matA: Matrix4, matB: Matrix4): this {
-        const ae: number[] = matA.toArray();
-        const be: number[] = matB.toArray();
+        const ae: number[] = matA.elements;
+        const be: number[] = matB.elements;
         const te: number[] = this.elements;
 
         const a11: number = ae[0],
@@ -893,21 +913,24 @@ export class Matrix4 {
     }
 
     public equals(matrix: Matrix4): boolean {
-        const me: number[] = matrix.toArray();
+        const me: number[] = matrix.elements;
         for (let i: number = 0; i < 16; i++) {
             if (this.elements[i] !== me[i]) return false;
         }
         return true;
     }
 
-    public fromArray(array: number[], offset: number = 0): this {
+    public fromArray(array: number[] | TypedArray, offset: number = 0): this {
         for (let i: number = 0; i < 16; i++) {
             this.elements[i] = array[i + offset];
         }
         return this;
     }
 
-    public toArray(array: number[] = [], offset: number = 0): number[] {
+    public toArray(
+        array: number[] | TypedArray = [],
+        offset: number = 0,
+    ): number[] | TypedArray {
         const te: number[] = this.elements;
 
         array[offset] = te[0];

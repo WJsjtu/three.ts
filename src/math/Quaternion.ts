@@ -63,16 +63,16 @@ export class Quaternion {
     public setFromEuler(euler: Euler): this {
         const { x, y, z, order } = euler;
 
-        const cos = Math.cos;
-        const sin = Math.sin;
+        const cos: (number) => number = Math.cos;
+        const sin: (number) => number = Math.sin;
 
-        const c1 = cos(x / 2);
-        const c2 = cos(y / 2);
-        const c3 = cos(z / 2);
+        const c1: number = cos(x / 2);
+        const c2: number = cos(y / 2);
+        const c3: number = cos(z / 2);
 
-        const s1 = sin(x / 2);
-        const s2 = sin(y / 2);
-        const s3 = sin(z / 2);
+        const s1: number = sin(x / 2);
+        const s2: number = sin(y / 2);
+        const s3: number = sin(z / 2);
 
         if (order === EulerOrder.XYZ) {
             return this.set(
@@ -128,8 +128,8 @@ export class Quaternion {
      * @returns {Quaternion}
      */
     public setFromAxisAngle(axis: Vector3, angle: number): this {
-        const halfAngle = angle / 2,
-            s = Math.sin(halfAngle);
+        const halfAngle: number = angle / 2,
+            s: number = Math.sin(halfAngle);
         return this.set(
             axis.x * s,
             axis.y * s,
@@ -145,18 +145,18 @@ export class Quaternion {
      * @returns {Quaternion}
      */
     public setFromRotationMatrix(m: Matrix4): this {
-        const te = m.toArray(),
-            m11 = te[0],
-            m12 = te[4],
-            m13 = te[8],
-            m21 = te[1],
-            m22 = te[5],
-            m23 = te[9],
-            m31 = te[2],
-            m32 = te[6],
-            m33 = te[10],
-            trace = m11 + m22 + m33;
-        let s;
+        const te: number[] = m.elements,
+            m11: number = te[0],
+            m12: number = te[4],
+            m13: number = te[8],
+            m21: number = te[1],
+            m22: number = te[5],
+            m23: number = te[9],
+            m31: number = te[2],
+            m32: number = te[6],
+            m33: number = te[10],
+            trace: number = m11 + m22 + m33;
+        let s: number;
 
         if (trace > 0) {
             s = 0.5 / Math.sqrt(trace + 1.0);
@@ -244,7 +244,7 @@ export class Quaternion {
     }
 
     public normalize(): this {
-        let l = this.length();
+        let l: number = this.length();
         if (l === 0) {
             return this.set(0, 0, 0, 1);
         } else {
@@ -268,14 +268,14 @@ export class Quaternion {
      * @returns {Quaternion}
      */
     public multiplyQuaternions(a: Quaternion, b: Quaternion): this {
-        const qax = a.x,
-            qay = a.y,
-            qaz = a.z,
-            qaw = a.w;
-        const qbx = b.x,
-            qby = b.y,
-            qbz = b.z,
-            qbw = b.w;
+        const qax: number = a.x,
+            qay: number = a.y,
+            qaz: number = a.z,
+            qaw: number = a.w;
+        const qbx: number = b.x,
+            qby: number = b.y,
+            qbz: number = b.z,
+            qbw: number = b.w;
         return this.set(
             qax * qbw + qaw * qbx + qay * qbz - qaz * qby,
             qay * qbw + qaw * qby + qaz * qbx - qax * qbz,
@@ -296,7 +296,7 @@ export class Quaternion {
 
         const { x, y, z, w } = this;
 
-        let cosHalfTheta = w * qb.w + x * qb.x + y * qb.y + z * qb.z;
+        let cosHalfTheta: number = w * qb.w + x * qb.x + y * qb.y + z * qb.z;
 
         if (cosHalfTheta < 0) {
             this.set(-qb.x, -qb.y, -qb.z, -qb.w);
@@ -309,7 +309,9 @@ export class Quaternion {
             return this.set(x, y, z, w);
         }
 
-        const sinHalfTheta = Math.sqrt(1.0 - cosHalfTheta * cosHalfTheta);
+        const sinHalfTheta: number = Math.sqrt(
+            1.0 - cosHalfTheta * cosHalfTheta,
+        );
 
         if (Math.abs(sinHalfTheta) < 0.001) {
             return this.set(
@@ -320,9 +322,9 @@ export class Quaternion {
             );
         }
 
-        const halfTheta = Math.atan2(sinHalfTheta, cosHalfTheta);
-        const ratioA = Math.sin((1 - t) * halfTheta) / sinHalfTheta,
-            ratioB = Math.sin(t * halfTheta) / sinHalfTheta;
+        const halfTheta: number = Math.atan2(sinHalfTheta, cosHalfTheta);
+        const ratioA: number = Math.sin((1 - t) * halfTheta) / sinHalfTheta,
+            ratioB: number = Math.sin(t * halfTheta) / sinHalfTheta;
 
         return this.set(
             x * ratioA + this.x * ratioB,

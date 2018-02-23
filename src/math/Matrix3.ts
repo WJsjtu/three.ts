@@ -1,7 +1,8 @@
+import { TypedArray } from "../core/BufferAttribute";
 import { Matrix4 } from "./Matrix4";
 
 export class Matrix3 {
-    protected elements: number[] = [1, 0, 0, 0, 1, 0, 0, 0, 1];
+    public elements: number[] = [1, 0, 0, 0, 1, 0, 0, 0, 1];
 
     public set(
         n11: number,
@@ -32,12 +33,24 @@ export class Matrix3 {
     }
 
     public copy(mat3: Matrix3): this {
-        this.elements = mat3.toArray();
+        const te: number[] = this.elements;
+        const me: number[] = mat3.elements;
+
+        te[0] = me[0];
+        te[1] = me[1];
+        te[2] = me[2];
+        te[3] = me[3];
+        te[4] = me[4];
+        te[5] = me[5];
+        te[6] = me[6];
+        te[7] = me[7];
+        te[8] = me[8];
+
         return this;
     }
 
     public setFromMatrix4(mat4: Matrix4): this {
-        const me: number[] = mat4.toArray();
+        const me: number[] = mat4.elements;
         return this.set(
             me[0],
             me[4],
@@ -60,8 +73,8 @@ export class Matrix3 {
     }
 
     public multiplyMatrices(a: Matrix3, b: Matrix3): this {
-        const ae: number[] = a.toArray();
-        const be: number[] = b.toArray();
+        const ae: number[] = a.elements;
+        const be: number[] = b.elements;
         const te: number[] = this.elements;
 
         const a11: number = ae[0],
@@ -138,7 +151,7 @@ export class Matrix3 {
         matrix: Matrix3,
         throwOnDegenerate: boolean = false,
     ): this {
-        const me: number[] = matrix.toArray(),
+        const me: number[] = matrix.elements,
             te: number[] = this.elements,
             n11: number = me[0],
             n21: number = me[1],
@@ -275,21 +288,24 @@ export class Matrix3 {
 
     public equals(matrix: Matrix3): boolean {
         const te: number[] = this.elements;
-        const me: number[] = matrix.toArray();
+        const me: number[] = matrix.elements;
         for (let i: number = 0; i < 9; i++) {
             if (te[i] !== me[i]) return false;
         }
         return true;
     }
 
-    public fromArray(array: number[], offset: number = 0): this {
+    public fromArray(array: number[] | TypedArray, offset: number = 0): this {
         for (let i: number = 0; i < 9; i++) {
             this.elements[i] = array[i + offset];
         }
         return this;
     }
 
-    public toArray(array: number[] = [], offset: number = 0): number[] {
+    public toArray(
+        array: number[] | TypedArray = [],
+        offset: number = 0,
+    ): number[] | TypedArray {
         const te: number[] = this.elements;
 
         array[offset] = te[0];

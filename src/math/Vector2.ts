@@ -1,3 +1,4 @@
+import { TypedArray } from "../core/BufferAttribute";
 import { Matrix3 } from "./Matrix3";
 
 export class Vector2 {
@@ -90,7 +91,7 @@ export class Vector2 {
     public applyMatrix3(m: Matrix3): this {
         const x: number = this.x,
             y: number = this.y;
-        const e: number[] = m.toArray();
+        const e: number[] = m.elements;
         return this.set(e[0] * x + e[3] * y + e[6], e[1] * x + e[4] * y + e[7]);
     }
 
@@ -147,11 +148,14 @@ export class Vector2 {
         return v.x === this.x && v.y === this.y;
     }
 
-    public fromArray(array: number[], offset: number = 0): this {
+    public fromArray(array: number[] | TypedArray, offset: number = 0): this {
         return this.set(array[offset], array[offset + 1]);
     }
 
-    public toArray(array: number[] = [], offset: number = 0): number[] {
+    public toArray(
+        array: number[] | TypedArray = [],
+        offset: number = 0,
+    ): number[] | TypedArray {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         return array;

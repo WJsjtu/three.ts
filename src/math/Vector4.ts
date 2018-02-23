@@ -1,3 +1,4 @@
+import { TypedArray } from "../core/BufferAttribute";
 import { Matrix4 } from "./Matrix4";
 import { Quaternion } from "./Quaternion";
 import { Vector3 } from "./Vector3";
@@ -97,7 +98,7 @@ export class Vector4 {
             y: number = this.y,
             z: number = this.z,
             w: number = this.w;
-        const e: number[] = m.toArray();
+        const e: number[] = m.elements;
         return this.set(
             e[0] * x + e[4] * y + e[8] * z + e[12] * w,
             e[1] * x + e[5] * y + e[9] * z + e[13] * w,
@@ -131,16 +132,16 @@ export class Vector4 {
         let angle: number, x: number, y: number, z: number; // variables for result
         const epsilon: number = 0.01, // margin to allow for rounding errors
             epsilon2: number = 0.1, // margin to distinguish between 0 and 180 degrees
-            te: number[] = m.toArray(),
-            m11 = te[0],
-            m12 = te[4],
-            m13 = te[8],
-            m21 = te[1],
-            m22 = te[5],
-            m23 = te[9],
-            m31 = te[2],
-            m32 = te[6],
-            m33 = te[10];
+            te: number[] = m.elements,
+            m11: number = te[0],
+            m12: number = te[4],
+            m13: number = te[8],
+            m21: number = te[1],
+            m22: number = te[5],
+            m23: number = te[9],
+            m31: number = te[2],
+            m32: number = te[6],
+            m33: number = te[10];
         if (
             Math.abs(m12 - m21) < epsilon &&
             Math.abs(m13 - m31) < epsilon &&
@@ -308,7 +309,7 @@ export class Vector4 {
         );
     }
 
-    public fromArray(array: number[], offset: number = 0): this {
+    public fromArray(array: number[] | TypedArray, offset: number = 0): this {
         return this.set(
             array[offset],
             array[offset + 1],
@@ -317,7 +318,10 @@ export class Vector4 {
         );
     }
 
-    public toArray(array: number[] = [], offset: number = 0): number[] {
+    public toArray(
+        array: number[] | TypedArray = [],
+        offset: number = 0,
+    ): number[] | TypedArray {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         array[offset + 2] = this.z;

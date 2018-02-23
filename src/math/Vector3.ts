@@ -1,3 +1,4 @@
+import { TypedArray } from "../core/BufferAttribute";
 import { Euler } from "./Euler";
 import { MathUtil } from "./Math";
 import { Matrix3 } from "./Matrix3";
@@ -101,7 +102,7 @@ export class Vector3 {
         const x: number = this.x,
             y: number = this.y,
             z: number = this.z;
-        const e: number[] = m.toArray();
+        const e: number[] = m.elements;
         return this.set(
             e[0] * x + e[3] * y + e[6] * z,
             e[1] * x + e[4] * y + e[7] * z,
@@ -113,7 +114,7 @@ export class Vector3 {
         const x: number = this.x,
             y: number = this.y,
             z: number = this.z;
-        const e: number[] = matrix.toArray();
+        const e: number[] = matrix.elements;
         const w: number = 1 / (e[3] * x + e[7] * y + e[11] * z + e[15]);
         return this.set(
             (e[0] * x + e[4] * y + e[8] * z + e[12]) * w,
@@ -149,7 +150,7 @@ export class Vector3 {
         const x: number = this.x,
             y: number = this.y,
             z: number = this.z;
-        const e: number[] = mat4.toArray();
+        const e: number[] = mat4.elements;
         return this.set(
             e[0] * x + e[4] * y + e[8] * z,
             e[1] * x + e[5] * y + e[9] * z,
@@ -290,15 +291,18 @@ export class Vector3 {
     }
 
     public setFromMatrixPosition(m: Matrix4): this {
-        const e: number[] = m.toArray();
+        const e: number[] = m.elements;
         return this.set(e[12], e[13], e[14]);
     }
 
-    public fromArray(array: ArrayLike<number>, offset: number = 0): this {
+    public fromArray(array: number[] | TypedArray, offset: number = 0): this {
         return this.set(array[offset], array[offset + 1], array[offset + 2]);
     }
 
-    public toArray(array: number[] = [], offset: number = 0): number[] {
+    public toArray(
+        array: number[] | TypedArray = [],
+        offset: number = 0,
+    ): number[] | TypedArray {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         array[offset + 2] = this.z;
