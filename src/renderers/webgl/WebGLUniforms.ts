@@ -447,7 +447,7 @@ const RePathPart: RegExp = /([\w\d_]+)(\])?(\[|\.)?/g;
 // allow straightforward parsing of the hierarchy that WebGL encodes
 // in the uniform names.
 
-class WebGLUniforms extends UniformContainer {
+export class WebGLUniformsWrapper extends UniformContainer {
     public renderer: WebGLRenderer = null;
     public program: WebGLProgram = null;
 
@@ -510,7 +510,7 @@ class WebGLUniforms extends UniformContainer {
                 (subscript === "[" && matchEnd + 2 === pathLength)
             ) {
                 // bare name or "pure" bottom-level array "[0]" suffix
-                WebGLUniforms.addUniform(
+                WebGLUniformsWrapper.addUniform(
                     container,
                     subscript === undefined
                         ? new SingleUniformSetter(
@@ -535,7 +535,7 @@ class WebGLUniforms extends UniformContainer {
                 ] as StructuredUniformSetter;
                 if (next === undefined) {
                     next = new StructuredUniformSetter(id);
-                    WebGLUniforms.addUniform(container, next);
+                    WebGLUniformsWrapper.addUniform(container, next);
                 }
                 container = next;
             }

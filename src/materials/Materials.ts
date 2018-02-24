@@ -1,5 +1,6 @@
 export { ShadowMaterial } from "./ShadowMaterial.js";
 export { SpriteMaterial } from "./SpriteMaterial.js";
+import { RawShaderMaterial } from "./RawShaderMaterial";
 export { ShaderMaterial } from "./ShaderMaterial.js";
 export { PointsMaterial } from "./PointsMaterial.js";
 export { MeshPhysicalMaterial } from "./MeshPhysicalMaterial.js";

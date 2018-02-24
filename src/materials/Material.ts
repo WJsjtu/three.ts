@@ -13,6 +13,7 @@ import { Color } from "../math/Color";
 import { MathUtil } from "../math/Math";
 import { Plane } from "../math/Plane";
 import { Vector3 } from "../math/Vector3";
+import { CubeTexture } from "../textures/CubeTexture";
 
 let materialId: number = 0;
 
@@ -128,6 +129,13 @@ export class Material extends EventDispatcher {
      * @type {number}
      */
     public visible: boolean = true;
+
+    public defines?: { [key: string]: object };
+    public depthPacking?: number;
+    public index0AttributeName?: string;
+    public envMap?: CubeTexture;
+    public combine?: number;
+    public extensions: { [key: string]: boolean };
 
     public setValues(values: IMaterialParameters): this {
         if (values === undefined) return this;

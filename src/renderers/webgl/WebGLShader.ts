@@ -6,7 +6,7 @@ function addLineNumbers(str: string): string {
     return lines.join("\n");
 }
 
-export class WebGLShader {
+export class WebGLShaderWrapper {
     constructor(gl: WebGLRenderingContext, type: number, str: string) {
         const shader = gl.createShader(type);
         gl.shaderSource(shader, str);

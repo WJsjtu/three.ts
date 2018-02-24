@@ -14,8 +14,16 @@ export interface IInfoRender {
     points: number;
 }
 
+export interface IShader {
+    name: string;
+    vertexShader: string;
+    fragmentShader: string;
+}
+
 export class WebGLRenderer {
     public context: WebGLRenderingContext = null;
+
+    public gammaFactor: number;
 
     public allocTextureUnit(): number {
         return 0;
