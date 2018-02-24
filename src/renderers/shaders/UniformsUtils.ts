@@ -5,21 +5,13 @@ import { Vector2 } from "../../math/Vector2";
 import { Vector3 } from "../../math/Vector3";
 import { Vector4 } from "../../math/Vector4";
 import { Texture } from "../../textures/Texture";
-
-export type BaseUniformType =
-    | number
-    | Color
-    | Matrix3
-    | Matrix4
-    | Vector2
-    | Vector3
-    | Vector4
-    | Texture;
+import { NestUniformType } from "../webgl/WebGLUniforms";
 
 export interface IUniform {
-    value?: BaseUniformType | BaseUniformType[];
+    value?: NestUniformType;
     properties?: object;
     type?: string;
+    needsUpdate?: boolean;
 }
 
 export class UniformsUtils {

@@ -49,9 +49,9 @@ export class InterleavedBufferAttribute {
     }
 
     public copy(source: InterleavedBufferAttribute): this {
-        this.array = new ((source.array as any).constructor as (
-            TypedArray,
-        ) => void)(source.array) as TypedArray;
+        this.array = new ((source.array as any).constructor as new (
+            arg: TypedArray,
+        ) => TypedArray)(source.array);
         this.stride = source.stride;
         this.count = source.count;
         this.dynamic = source.dynamic;
@@ -81,12 +81,10 @@ export class InterleavedBufferAttribute {
     }
 
     public clone(): InterleavedBufferAttribute {
-        return (new (this.constructor as (
+        return new (this.constructor as new (
             array: TypedArray,
             itemSize: number,
-        ) => void)(this.array, this.stride) as InterleavedBufferAttribute).copy(
-            this,
-        );
+        ) => InterleavedBufferAttribute)(this.array, this.stride).copy(this);
     }
 
     public setProperty(
@@ -242,5 +240,6 @@ export class InterleavedBufferAttribute {
                 );
             }
         }
+        return null;
     }
 }

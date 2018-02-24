@@ -98,6 +98,7 @@ export class Object3D extends EventDispatcher {
         for (let i: number = 0, l: number = children.length; i < l; i++) {
             children[i].updateMatrixWorld(force);
         }
+        return this;
     }
 
     public raycast(
@@ -329,7 +330,7 @@ export class Object3D extends EventDispatcher {
     }
 
     public clone(recursive: boolean = false) {
-        return (new (this.constructor as () => void)() as Object3D).copy(
+        return new (this.constructor as new () => Object3D)().copy(
             this,
             recursive,
         );

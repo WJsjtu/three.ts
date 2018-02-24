@@ -30,10 +30,10 @@ export class Fog {
     }
 
     public clone(): Fog {
-        return new (this.constructor as (
+        return new (this.constructor as new (
             color: Color,
             near: number,
             far: number,
-        ) => void)(this.color, this.near, this.far).copy(this);
+        ) => Fog)(this.color, this.near, this.far).copy(this);
     }
 }

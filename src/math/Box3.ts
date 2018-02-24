@@ -77,7 +77,7 @@ export class Box3 {
     }
 
     public clone(): Box3 {
-        return (new (this.constructor as () => void)() as Box3).copy(this);
+        return new (this.constructor as new () => Box3)().copy(this);
     }
 
     public copy(box: Box3): this {

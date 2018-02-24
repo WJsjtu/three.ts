@@ -956,6 +956,6 @@ export class Matrix4 {
     }
 
     public clone(): Matrix4 {
-        return (new (this.constructor as () => void)() as Matrix4).copy(this);
+        return new (this.constructor as new () => Matrix4)().copy(this);
     }
 }

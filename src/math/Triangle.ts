@@ -25,7 +25,7 @@ export class Triangle {
     }
 
     public clone(): Triangle {
-        return (new (this.constructor as () => void)() as Triangle).copy(this);
+        return new (this.constructor as new () => Triangle)().copy(this);
     }
 
     public copy(triangle: Triangle): this {

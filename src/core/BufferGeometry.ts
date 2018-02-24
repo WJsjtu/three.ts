@@ -604,9 +604,9 @@ export class BufferGeometry extends EventDispatcher {
             const attribute: BufferAttribute = attributes[name];
             const array: TypedArray = attribute.array;
             const itemSize: number = attribute.itemSize;
-            const array2: TypedArray = new (array.constructor as (
+            const array2: TypedArray = new (array.constructor as new (
                 length: number,
-            ) => void)(indices.length * itemSize) as TypedArray;
+            ) => TypedArray)(indices.length * itemSize);
             let index: number = 0,
                 index2: number = 0;
             for (let i: number = 0, l: number = indices.length; i < l; i++) {
@@ -622,12 +622,10 @@ export class BufferGeometry extends EventDispatcher {
     }
 
     public clone(): BufferGeometry {
-        return (new (this.constructor as () => void)() as BufferGeometry).copy(
-            this,
-        );
+        return new (this.constructor as new () => BufferGeometry)().copy(this);
     }
 
-    public copy(source): this {
+    public copy(source: BufferGeometry): this {
         // reset
         this.index = null;
         this.attributes = {};

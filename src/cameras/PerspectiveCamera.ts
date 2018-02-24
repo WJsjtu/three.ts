@@ -258,4 +258,10 @@ export class PerspectiveCamera extends Camera {
         this._filmOffset = source.filmOffset;
         return this.updateProjectionMatrix();
     }
+
+    public clone(): PerspectiveCamera {
+        return new (this.constructor as new () => PerspectiveCamera)().copy(
+            this,
+        );
+    }
 }

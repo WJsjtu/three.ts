@@ -324,6 +324,6 @@ export class Matrix3 {
     }
 
     public clone(): Matrix3 {
-        return (new (this.constructor as () => void)() as Matrix3).copy(this);
+        return new (this.constructor as new () => Matrix3)().copy(this);
     }
 }

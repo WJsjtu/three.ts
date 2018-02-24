@@ -1,6 +1,6 @@
 import { MathUtil } from "./Math";
 
-function HUE_TO_RGB(p, q, t) {
+function HUE_TO_RGB(p: number, q: number, t: number): number {
     if (t < 0) t += 1;
     if (t > 1) t -= 1;
     if (t < 1 / 6) return p + (q - p) * 6 * t;
@@ -453,6 +453,6 @@ export class Color {
     }
 
     public clone(): Color {
-        return (new (this.constructor as () => void)() as Color).copy(this);
+        return new (this.constructor as new () => Color)().copy(this);
     }
 }

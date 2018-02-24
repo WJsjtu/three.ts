@@ -1,13 +1,14 @@
 import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
 import { MathUtil } from "../math/Math";
 import { LightShadow } from "./LightShadow";
+import { SpotLight } from "./SpotLight";
 
 export class SpotLightShadow extends LightShadow {
     constructor() {
         super(new PerspectiveCamera(50, 1, 0.5, 500));
     }
 
-    public update(light): this {
+    public update(light: SpotLight): this {
         const camera: PerspectiveCamera = this.camera as PerspectiveCamera;
         const fov: number = MathUtil.RAD2DEG * 2 * light.angle;
         const aspect: number = this.mapSize.width / this.mapSize.height;

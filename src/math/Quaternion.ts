@@ -63,8 +63,8 @@ export class Quaternion {
     public setFromEuler(euler: Euler): this {
         const { x, y, z, order } = euler;
 
-        const cos: (number) => number = Math.cos;
-        const sin: (number) => number = Math.sin;
+        const cos: (arg: number) => number = Math.cos;
+        const sin: (arg: number) => number = Math.sin;
 
         const c1: number = cos(x / 2);
         const c2: number = cos(y / 2);
@@ -362,8 +362,6 @@ export class Quaternion {
     }
 
     public clone(): Quaternion {
-        return (new (this.constructor as () => void)() as Quaternion).copy(
-            this,
-        );
+        return new (this.constructor as new () => Quaternion)().copy(this);
     }
 }

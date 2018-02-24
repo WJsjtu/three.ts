@@ -40,7 +40,7 @@ export class Line extends Object3D {
         if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
         const sphere: Sphere = new Sphere().copy(geometry.boundingSphere);
         sphere.applyMatrix4(matrixWorld);
-        if (raycaster.ray.intersectsSphere(sphere) === false) return;
+        if (raycaster.ray.intersectsSphere(sphere) === false) return null;
         const inverseMatrix: Matrix4 = new Matrix4().getInverse(matrixWorld);
         const ray: Ray = new Ray();
         ray.copy(raycaster.ray).applyMatrix4(inverseMatrix);
@@ -158,9 +158,9 @@ export class Line extends Object3D {
     }
 
     public clone(): Line {
-        return new (this.constructor as (
+        return new (this.constructor as new (
             geometry: BufferGeometry | Geometry,
             material: LineBasicMaterial,
-        ) => void)(this.geometry, this.material).copy(this);
+        ) => Line)(this.geometry, this.material).copy(this);
     }
 }

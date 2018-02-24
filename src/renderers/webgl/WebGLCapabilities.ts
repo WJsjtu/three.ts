@@ -31,7 +31,7 @@ export class WebGLCapabilities {
     constructor(
         context: WebGLRenderingContext,
         extensions: WebGLExtensions,
-        parameters,
+        parameters: { [key: string]: any },
     ) {
         this.context = context;
         this.extensions = extensions;

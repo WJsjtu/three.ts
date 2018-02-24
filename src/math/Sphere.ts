@@ -36,7 +36,7 @@ export class Sphere {
     }
 
     public clone(): Sphere {
-        return (new (this.constructor as () => void)() as Sphere).copy(this);
+        return new (this.constructor as new () => Sphere)().copy(this);
     }
 
     public copy(sphere: Sphere): this {

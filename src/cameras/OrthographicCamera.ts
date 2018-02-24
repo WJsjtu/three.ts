@@ -175,4 +175,10 @@ export class OrthographicCamera extends Camera {
 
         return this.updateProjectionMatrix();
     }
+
+    public clone(): OrthographicCamera {
+        return new (this.constructor as new () => OrthographicCamera)().copy(
+            this,
+        );
+    }
 }

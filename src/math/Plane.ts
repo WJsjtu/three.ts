@@ -29,7 +29,7 @@ export class Plane {
         return this;
     }
 
-    public setFromCoplanarPoints(a, b, c): this {
+    public setFromCoplanarPoints(a: Vector3, b: Vector3, c: Vector3): this {
         const v1: Vector3 = new Vector3();
         const v2: Vector3 = new Vector3();
         const normal: Vector3 = v1
@@ -43,10 +43,10 @@ export class Plane {
     }
 
     public clone(): Plane {
-        return (new (this.constructor as () => void)() as Plane).copy(this);
+        return new (this.constructor as new () => Plane)().copy(this);
     }
 
-    public copy(plane): this {
+    public copy(plane: Plane): this {
         this.normal.copy(plane.normal);
         this.constant = plane.constant;
         return this;

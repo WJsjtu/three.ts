@@ -73,7 +73,11 @@ export class WebGLAttributes {
         };
     }
 
-    protected updateBuffer(buffer, attribute, bufferType): this {
+    protected updateBuffer(
+        buffer: WebGLBuffer,
+        attribute: TypedBufferAttribute,
+        bufferType: number,
+    ): this {
         const gl: WebGLRenderingContext = this.context;
         const array: TypedArray = attribute.array;
         const updateRange: IBufferRange = attribute.updateRange;

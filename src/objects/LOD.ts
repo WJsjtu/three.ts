@@ -90,6 +90,6 @@ export class LOD extends Object3D {
     }
 
     public clone(): LOD {
-        return new (this.constructor as () => void)().copy(this);
+        return new (this.constructor as new () => LOD)().copy(this);
     }
 }

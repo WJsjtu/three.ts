@@ -95,7 +95,7 @@ export class Vector2 {
         return this.set(e[0] * x + e[3] * y + e[6], e[1] * x + e[4] * y + e[7]);
     }
 
-    public clamp(min, max): this {
+    public clamp(min: Vector2, max: Vector2): this {
         return this.set(
             Math.max(min.x, Math.min(max.x, this.x)),
             Math.max(min.y, Math.min(max.y, this.y)),
@@ -170,6 +170,6 @@ export class Vector2 {
     }
 
     public clone(): Vector2 {
-        return (new (this.constructor as () => void)() as Vector2).copy(this);
+        return new (this.constructor as new () => Vector2)().copy(this);
     }
 }

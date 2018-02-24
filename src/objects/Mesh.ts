@@ -186,18 +186,18 @@ export class Mesh extends Object3D {
         const geometry: BufferGeometry | Geometry = this.geometry;
         const material: Material | Material[] = this.material;
         const matrixWorld: Matrix4 = this.matrixWorld;
-        if (material === undefined) return;
+        if (material === undefined) return null;
         // Checking boundingSphere distance to ray
         if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
         const sphere: Sphere = new Sphere()
             .copy(geometry.boundingSphere)
             .applyMatrix4(matrixWorld);
-        if (raycaster.ray.intersectsSphere(sphere) === false) return;
+        if (raycaster.ray.intersectsSphere(sphere) === false) return null;
         const inverseMatrix: Matrix4 = new Matrix4().getInverse(matrixWorld);
         const ray = new Ray().copy(raycaster.ray).applyMatrix4(inverseMatrix);
         // Check boundingBox before continuing
         if (geometry.boundingBox !== null) {
-            if (ray.intersectsBox(geometry.boundingBox) === false) return;
+            if (ray.intersectsBox(geometry.boundingBox) === false) return null;
         }
         if (geometry instanceof BufferGeometry) {
             const index: BufferAttribute = geometry.index;
@@ -345,9 +345,9 @@ export class Mesh extends Object3D {
     }
 
     public clone(): Mesh {
-        return new (this.constructor as (
+        return new (this.constructor as new (
             geometry: BufferGeometry | Geometry,
             material: Material | Material[],
-        ) => void)(this.geometry, this.material).copy(this);
+        ) => Mesh)(this.geometry, this.material).copy(this);
     }
 }

@@ -59,9 +59,7 @@ export class BufferAttribute {
     }
 
     public copy(source: BufferAttribute): this {
-        this.array = new ((source.array as any).constructor as (
-            TypedArray,
-        ) => void)(source.array) as TypedArray;
+        this.array = new (source.array as any).constructor() as TypedArray;
         this.itemSize = source.itemSize;
         this.count = source.count;
         this.normalized = source.normalized;
@@ -274,16 +272,15 @@ export class BufferAttribute {
                 );
             }
         }
+        return null;
     }
 
     public clone(): BufferAttribute {
-        return (new (this.constructor as (
+        return new (this.constructor as new (
             array: TypedArray,
             itemSize: number,
             normalized: boolean,
-        ) => void)(this.array, this.itemSize, true) as BufferAttribute).copy(
-            this,
-        );
+        ) => BufferAttribute)(this.array, this.itemSize, true).copy(this);
     }
 }
 
@@ -293,7 +290,7 @@ export class Int8BufferAttribute extends BufferAttribute {
         itemSize: number,
         normalized?: boolean,
     ) {
-        super(new Int8Array(array), itemSize, normalized);
+        super(new Int8Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
@@ -303,7 +300,7 @@ export class Uint8BufferAttribute extends BufferAttribute {
         itemSize: number,
         normalized?: boolean,
     ) {
-        super(new Uint8Array(array), itemSize, normalized);
+        super(new Uint8Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
@@ -313,7 +310,11 @@ export class Uint8ClampedBufferAttribute extends BufferAttribute {
         itemSize: number,
         normalized?: boolean,
     ) {
-        super(new Uint8ClampedArray(array), itemSize, normalized);
+        super(
+            new Uint8ClampedArray(array as ArrayBufferLike),
+            itemSize,
+            normalized,
+        );
     }
 }
 
@@ -323,7 +324,7 @@ export class Int16BufferAttribute extends BufferAttribute {
         itemSize: number,
         normalized?: boolean,
     ) {
-        super(new Int16Array(array), itemSize, normalized);
+        super(new Int16Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
@@ -333,7 +334,7 @@ export class Uint16BufferAttribute extends BufferAttribute {
         itemSize: number,
         normalized?: boolean,
     ) {
-        super(new Uint16Array(array), itemSize, normalized);
+        super(new Uint16Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
@@ -343,7 +344,7 @@ export class Int32BufferAttribute extends BufferAttribute {
         itemSize: number,
         normalized?: boolean,
     ) {
-        super(new Int32Array(array), itemSize, normalized);
+        super(new Int32Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
@@ -353,7 +354,7 @@ export class Uint32BufferAttribute extends BufferAttribute {
         itemSize: number,
         normalized?: boolean,
     ) {
-        super(new Uint32Array(array), itemSize, normalized);
+        super(new Uint32Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
@@ -363,7 +364,7 @@ export class Float32BufferAttribute extends BufferAttribute {
         itemSize: number,
         normalized?: boolean,
     ) {
-        super(new Float32Array(array), itemSize, normalized);
+        super(new Float32Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
@@ -373,7 +374,7 @@ export class Float64BufferAttribute extends BufferAttribute {
         itemSize: number,
         normalized?: boolean,
     ) {
-        super(new Float64Array(array), itemSize, normalized);
+        super(new Float64Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 

@@ -888,6 +888,6 @@ export class Geometry extends EventDispatcher {
     }
 
     public clone(): Geometry {
-        return (new (this.constructor as () => void)() as Geometry).copy(this);
+        return new (this.constructor as new () => Geometry)().copy(this);
     }
 }

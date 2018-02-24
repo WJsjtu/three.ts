@@ -31,6 +31,6 @@ export class Scene extends Object3D {
     }
 
     public clone(): Scene {
-        return new (this.constructor as () => void)().copy(this);
+        return new (this.constructor as new () => Scene)().copy(this);
     }
 }

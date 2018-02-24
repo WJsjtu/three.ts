@@ -196,6 +196,6 @@ export class Euler {
     }
 
     public clone(): Euler {
-        return (new (this.constructor as () => void)() as Euler).copy(this);
+        return new (this.constructor as new () => Euler)().copy(this);
     }
 }

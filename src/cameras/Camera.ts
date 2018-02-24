@@ -31,8 +31,8 @@ export class Camera extends Object3D {
             .applyQuaternion(this.worldQuaternion);
     }
 
-    public clone() {
-        return (new (this.constructor as () => void)() as Camera).copy(this);
+    public clone(): Camera {
+        return new (this.constructor as new () => Camera)().copy(this);
     }
 }
 

@@ -43,7 +43,7 @@ export class Points extends Object3D {
         sphere.applyMatrix4(matrixWorld);
         sphere.radius += threshold;
 
-        if (raycaster.ray.intersectsSphere(sphere) === false) return intersects;
+        if (raycaster.ray.intersectsSphere(sphere) === false) return null;
         const inverseMatrix: Matrix4 = new Matrix4().getInverse(matrixWorld);
         const ray: Ray = new Ray()
             .copy(raycaster.ray)
@@ -107,12 +107,13 @@ export class Points extends Object3D {
                 testPoint(vertices[i], i);
             }
         }
+        return intersects;
     }
 
-    public clone(): this {
-        return new (this.constructor as (
+    public clone(): Points {
+        return new (this.constructor as new (
             geometry: BufferGeometry | Geometry,
             material: Material | Material[],
-        ) => void)(this.geometry, this.material).copy(this);
+        ) => Points)(this.geometry, this.material).copy(this);
     }
 }

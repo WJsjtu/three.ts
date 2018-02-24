@@ -58,6 +58,6 @@ export class Face3 {
     }
 
     public clone(): Face3 {
-        return (new (this.constructor as () => void)() as Face3).copy(this);
+        return new (this.constructor as new () => Face3)().copy(this);
     }
 }

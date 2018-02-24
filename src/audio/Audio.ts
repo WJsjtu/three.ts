@@ -29,7 +29,7 @@ export class AudioWrapper extends Object3D {
         return this.gain as AudioNode;
     }
 
-    public setNodeSource(audioNode): this {
+    public setNodeSource(audioNode: AudioBufferSourceNode): this {
         this.hasPlaybackControl = false;
         this.source = audioNode;
         this.sourceType = "audioNode";
@@ -47,12 +47,12 @@ export class AudioWrapper extends Object3D {
     public play(): this {
         if (this.isPlaying === true) {
             console.warn(`THREE.Audio: Audio is already playing.`);
-            return;
+            return this;
         }
 
         if (this.hasPlaybackControl === false) {
             console.warn(`THREE.Audio: this Audio has no playback control.`);
-            return;
+            return this;
         }
 
         const source = this.context.createBufferSource();
@@ -71,7 +71,7 @@ export class AudioWrapper extends Object3D {
     public pause(): this {
         if (this.hasPlaybackControl === false) {
             console.warn(`THREE.Audio: this Audio has no playback control.`);
-            return;
+            return this;
         }
         if (this.isPlaying === true) {
             this.source.stop();
@@ -85,7 +85,7 @@ export class AudioWrapper extends Object3D {
     public stop(): this {
         if (this.hasPlaybackControl === false) {
             console.warn(`THREE.Audio: this Audio has no playback control.`);
-            return;
+            return this;
         }
         this.source.stop();
         this.offset = 0;
@@ -153,7 +153,7 @@ export class AudioWrapper extends Object3D {
     public setPlaybackRate(value: number): this {
         if (this.hasPlaybackControl === false) {
             console.warn(`THREE.Audio: this Audio has no playback control.`);
-            return;
+            return this;
         }
         this.playbackRate = value;
         if (this.isPlaying === true) {
@@ -184,7 +184,7 @@ export class AudioWrapper extends Object3D {
     public setLoop(value: boolean): this {
         if (this.hasPlaybackControl === false) {
             console.warn(`THREE.Audio: this Audio has no playback control.`);
-            return;
+            return this;
         }
         this.loop = value;
         if (this.isPlaying === true) {

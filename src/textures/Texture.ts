@@ -144,7 +144,7 @@ export class Texture extends EventDispatcher {
     }
 
     public clone(): Texture {
-        return (new (this.constructor as () => void)() as Texture).copy(this);
+        return new (this.constructor as new () => Texture)().copy(this);
     }
 
     public copy(source: Texture): this {

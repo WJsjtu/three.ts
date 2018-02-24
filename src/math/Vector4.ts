@@ -330,6 +330,6 @@ export class Vector4 {
     }
 
     public clone(): Vector4 {
-        return (new (this.constructor as () => void)() as Vector4).copy(this);
+        return new (this.constructor as new () => Vector4)().copy(this);
     }
 }

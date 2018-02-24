@@ -23,8 +23,6 @@ export class LightShadow {
     }
 
     public clone(): LightShadow {
-        return (new (this.constructor as () => void)() as LightShadow).copy(
-            this,
-        );
+        return new (this.constructor as new () => LightShadow)().copy(this);
     }
 }

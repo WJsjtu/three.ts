@@ -130,7 +130,7 @@ export class Material extends EventDispatcher {
     public visible: boolean = true;
 
     public setValues(values: IMaterialParameters): this {
-        if (values === undefined) return;
+        if (values === undefined) return this;
         for (const key in values) {
             if (!values.hasOwnProperty(key)) continue;
             const newValue = values[key];
@@ -189,7 +189,7 @@ export class Material extends EventDispatcher {
     }
 
     public clone(): Material {
-        return (new (this.constructor as () => void)() as Material).copy(this);
+        return new (this.constructor as new () => Material)().copy(this);
     }
 
     public copy(source: Material): this {

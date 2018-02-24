@@ -24,7 +24,7 @@ export class Ray {
     }
 
     public clone(): Ray {
-        return (new (this.constructor as () => void)() as Ray).copy(this);
+        return new (this.constructor as new () => Ray)().copy(this);
     }
 
     public copy(ray: Ray): this {

@@ -18,7 +18,7 @@ export class Line3 {
     }
 
     public clone(): Line3 {
-        return (new (this.constructor as () => void)() as Line3).copy(this);
+        return new (this.constructor as new () => Line3)().copy(this);
     }
 
     public copy(line: Line3): this {
@@ -46,7 +46,7 @@ export class Line3 {
         return this.start.distanceTo(this.end);
     }
 
-    public at(t): Vector3 {
+    public at(t: number): Vector3 {
         return this.delta()
             .multiplyScalar(t)
             .add(this.start);
