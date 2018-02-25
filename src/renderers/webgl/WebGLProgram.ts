@@ -32,6 +32,7 @@ import { WebGLExtensions } from "./WebGLExtensions";
 import { WebGLShaderWrapper } from "./WebGLShader";
 import { WebGLUniformsWrapper } from "./WebGLUniforms";
 import { ShaderMaterial } from "../../materials/Materials";
+import { IProgramParameters } from "./WebGLPrograms";
 
 function generateDefines(defines: { [key: string]: any }): string {
     const chunks: string[] = [];
@@ -45,7 +46,7 @@ function generateDefines(defines: { [key: string]: any }): string {
 
 function generateExtensions(
     extensions: { [key: string]: boolean },
-    parameters: any,
+    parameters: IProgramParameters,
     rendererExtensions: WebGLExtensions,
 ): string {
     extensions = extensions || {};
@@ -152,13 +153,13 @@ function getTexelEncodingFunction(functionName: string, encoding: number) {
     );
 }
 
-function replaceLightNums(str: string, parameters: { [key: string]: string }) {
+function replaceLightNums(str: string, parameters: IProgramParameters) {
     return str
-        .replace(/NUM_DIR_LIGHTS/g, parameters.numDirLights)
-        .replace(/NUM_SPOT_LIGHTS/g, parameters.numSpotLights)
-        .replace(/NUM_RECT_AREA_LIGHTS/g, parameters.numRectAreaLights)
-        .replace(/NUM_POINT_LIGHTS/g, parameters.numPointLights)
-        .replace(/NUM_HEMI_LIGHTS/g, parameters.numHemiLights);
+        .replace(/NUM_DIR_LIGHTS/g, parameters.numDirLights + "")
+        .replace(/NUM_SPOT_LIGHTS/g, parameters.numSpotLights + "")
+        .replace(/NUM_RECT_AREA_LIGHTS/g, parameters.numRectAreaLights + "")
+        .replace(/NUM_POINT_LIGHTS/g, parameters.numPointLights + "")
+        .replace(/NUM_HEMI_LIGHTS/g, parameters.numHemiLights + "");
 }
 
 function parseIncludes(str: string) {
@@ -228,7 +229,7 @@ export class WebGLProgramWrapper {
     public program: WebGLProgram;
     public usedTimes: number = 1;
     public id: number = programIdCount++;
-    public code: any;
+    public code: string;
     public diagnostics: IDiagnostics;
     // set up caching for attribute locations
     public cachedAttributes: { [key: string]: number };
@@ -238,10 +239,10 @@ export class WebGLProgramWrapper {
     constructor(
         renderer: WebGLRenderer,
         extensions: WebGLExtensions,
-        code: any,
+        code: string,
         material: Material,
         shader: IShader,
-        parameters: { [key: string]: any },
+        parameters: IProgramParameters,
     ) {
         this.renderer = renderer;
         const gl: WebGLRenderingContext = renderer.context;

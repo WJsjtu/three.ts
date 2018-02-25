@@ -9,8 +9,6 @@ export class ShadowMaterial extends Material {
     public readonly type: string = "ShadowMaterial";
 
     public color: Color = new Color().setHex(0x000000);
-    public opacity: number = 1.0;
-    public lights: boolean = true;
     public transparent: boolean = true;
 
     constructor(parameters: IShadowMaterialParameters) {

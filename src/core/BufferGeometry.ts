@@ -311,6 +311,10 @@ export class BufferGeometry extends EventDispatcher {
         return this;
     }
 
+    /**
+     * Geometry of a Mesh
+     * @param geometry
+     */
     public fromGeometry(geometry: Geometry): this {
         geometry.directGeometry = new DirectGeometry().fromGeometry(geometry);
         return this.fromDirectGeometry(geometry.directGeometry);
@@ -412,16 +416,13 @@ export class BufferGeometry extends EventDispatcher {
             );
         }
 
-        /**
-         * TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
-
-         if (geometry.boundingSphere !== null) {
+        if (geometry.boundingSphere !== null) {
             this.boundingSphere = geometry.boundingSphere.clone();
         }
-         if (geometry.boundingBox !== null) {
+        if (geometry.boundingBox !== null) {
             this.boundingBox = geometry.boundingBox.clone();
         }
-         */
+
         return this;
     }
 

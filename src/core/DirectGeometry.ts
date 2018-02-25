@@ -4,8 +4,8 @@ import { Vector2 } from "../math/Vector2";
 import { Vector3 } from "../math/Vector3";
 import { Vector4 } from "../math/Vector4";
 import { Geometry, GeometryFace, IMorphNormal, IMorphTarget } from "./Geometry";
-// import {Sphere} from "../math/Sphere";
-// import {Box3} from "../math/Box3";
+import { Sphere } from "../math/Sphere";
+import { Box3 } from "../math/Box3";
 
 export interface IGroup {
     start: number;
@@ -14,11 +14,6 @@ export interface IGroup {
 }
 
 export class DirectGeometry {
-    /**
-     * TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
-     * public indices: number[] = [];
-     */
-
     public vertices: Vector3[] = [];
     public normals: Vector3[] = [];
     public colors: Color[] = [];
@@ -35,11 +30,8 @@ export class DirectGeometry {
     public skinWeights: Vector4[] = [];
     public skinIndices: Vector4[] = [];
 
-    /*
-     TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
-     public boundingSphere: Sphere = null;
-     public boundingBox: Box3 = null;
-     */
+    public boundingSphere: Sphere = null;
+    public boundingBox: Box3 = null;
 
     public verticesNeedUpdate: boolean = false;
     public uvsNeedUpdate: boolean = false;
@@ -190,6 +182,13 @@ export class DirectGeometry {
                     skinWeights[face.c],
                 );
             }
+        }
+
+        if (geometry.boundingSphere !== null) {
+            this.boundingSphere = geometry.boundingSphere.clone();
+        }
+        if (geometry.boundingBox !== null) {
+            this.boundingBox = geometry.boundingBox.clone();
         }
 
         this.computeGroups(geometry);
