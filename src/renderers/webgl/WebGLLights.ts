@@ -14,6 +14,7 @@ import { Color } from "../../math/Color";
 import { Matrix4 } from "../../math/Matrix4";
 import { Vector2 } from "../../math/Vector2";
 import { Vector3 } from "../../math/Vector3";
+import { Texture } from "../../textures/Texture";
 
 interface ILightShadowUniforms {
     shadow: boolean;
@@ -150,6 +151,22 @@ export interface IWebGLLightsState {
     pointShadowMap: LightShadow[];
     pointShadowMatrix: Matrix4[];
     hemi: IHemisphereLightUniforms[];
+}
+
+export interface ILightState {
+    hash: string;
+    ambient: number[];
+    directional: ILightUniforms[];
+    directionalShadowMap: Texture[];
+    directionalShadowMatrix: Matrix4[];
+    spot: ILightUniforms[];
+    spotShadowMap: Texture[];
+    spotShadowMatrix: Matrix4[];
+    rectArea: ILightUniforms[];
+    point: ILightUniforms[];
+    pointShadowMap: Texture[];
+    pointShadowMatrix: Matrix4[];
+    hemi: ILightUniforms[];
 }
 
 export class WebGLLights {

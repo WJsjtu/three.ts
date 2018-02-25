@@ -77,7 +77,7 @@ export class WebGLCapabilities {
         this.maxAnisotropy = this.getMaxAnisotropy();
     }
 
-    protected getMaxPrecision(precision: string): string {
+    public getMaxPrecision(precision: string): string {
         const context: WebGLRenderingContext = this.context;
         if (precision === "highp") {
             if (
@@ -111,7 +111,7 @@ export class WebGLCapabilities {
         return "lowp";
     }
 
-    protected getMaxAnisotropy(): number {
+    public getMaxAnisotropy(): number {
         const extension: EXT_texture_filter_anisotropic = this.extensions.get(
             "EXT_texture_filter_anisotropic",
         );

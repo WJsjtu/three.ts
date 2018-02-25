@@ -14,6 +14,7 @@ import { MathUtil } from "../math/Math";
 import { Plane } from "../math/Plane";
 import { Vector3 } from "../math/Vector3";
 import { CubeTexture } from "../textures/CubeTexture";
+import { Texture } from "../textures/Texture";
 
 let materialId: number = 0;
 
@@ -91,6 +92,9 @@ export class Material extends EventDispatcher {
     public needsUpdate: boolean = true;
     public opacity: number = 1;
     public overdraw: number = 0;
+
+    public onBeforeCompile: (shader?: WebGLShader) => any;
+
     public polygonOffset: boolean = false;
     public polygonOffsetFactor: number = 0;
     public polygonOffsetUnits: number = 0;
@@ -130,12 +134,29 @@ export class Material extends EventDispatcher {
      */
     public visible: boolean = true;
 
+    public alphaMap?: Texture;
+    public aoMap?: Texture;
+    public bumpMap?: Texture;
+    public combine?: number;
     public defines?: { [key: string]: object };
     public depthPacking?: number;
-    public index0AttributeName?: string;
+    public displacementMap?: Texture;
+    public emissiveMap?: Texture;
     public envMap?: CubeTexture;
-    public combine?: number;
-    public extensions: { [key: string]: boolean };
+    public extensions?: { [key: string]: boolean };
+    public fragmentShader?: string;
+    public gradientMap?: Texture;
+    public index0AttributeName?: string;
+    public lightMap?: Texture;
+    public map?: Texture;
+    public metalnessMap?: Texture;
+    public morphNormals?: boolean;
+    public normalMap?: Texture;
+    public roughnessMap?: Texture;
+    public sizeAttenuation?: boolean;
+    public skinning?: boolean;
+    public specularMap?: Texture;
+    public vertexShader?: string;
 
     public setValues(values: IMaterialParameters): this {
         if (values === undefined) return this;
