@@ -15,6 +15,7 @@ import { DirectGeometry, IGroup } from "./DirectGeometry";
 import { EventDispatcher } from "./EventDispatcher";
 import { Face3 } from "./Face3";
 import { Object3D } from "./Object3D";
+import { IGeometeryBone } from "../objects/SkinnedMesh";
 
 export class GeometryFace extends Face3 {
     public id?: number;
@@ -71,7 +72,10 @@ export class Geometry extends EventDispatcher {
     public lineDistancesNeedUpdate: boolean = false;
     public groupsNeedUpdate: boolean = false;
 
+    // used for internal transform
     public directGeometry?: DirectGeometry;
+    // for SkinnedMesh SkeletonHelper Loaded Object from JSONLoader and etc
+    public bones?: IGeometeryBone[];
 
     public applyMatrix(matrix: Matrix4): this {
         const normalMatrix: Matrix3 = new Matrix3().getNormalMatrix(matrix);
@@ -526,14 +530,14 @@ export class Geometry extends EventDispatcher {
     ): this {
         let normalMatrix: Matrix3;
         const vertexOffset: number = this.vertices.length,
-            thisVertices = this.vertices,
-            thatVertices = geometry.vertices,
-            thisFaces = this.faces,
-            thatFaces = geometry.faces,
-            thisUvs = this.faceVertexUvs[0],
-            thatUvs = geometry.faceVertexUvs[0],
-            thisColors = this.colors,
-            thatColors = geometry.colors;
+            thisVertices: Vector3[] = this.vertices,
+            thatVertices: Vector3[] = geometry.vertices,
+            thisFaces: GeometryFace[] = this.faces,
+            thatFaces: GeometryFace[] = geometry.faces,
+            thisUvs: Vector2[][] = this.faceVertexUvs[0],
+            thatUvs: Vector2[][] = geometry.faceVertexUvs[0],
+            thisColors: Color[] = this.colors,
+            thatColors: Color[] = geometry.colors;
         if (matrix !== undefined) {
             normalMatrix = new Matrix3().getNormalMatrix(matrix);
         }
@@ -550,9 +554,9 @@ export class Geometry extends EventDispatcher {
         // faces
         for (let i: number = 0, il: number = thatFaces.length; i < il; i++) {
             const face: GeometryFace = thatFaces[i],
-                faceVertexNormals = face.vertexNormals,
-                faceVertexColors = face.vertexColors;
-            const faceCopy = new GeometryFace(
+                faceVertexNormals: Vector3[] = face.vertexNormals,
+                faceVertexColors: Color[] = face.vertexColors;
+            const faceCopy: GeometryFace = new GeometryFace(
                 face.a + vertexOffset,
                 face.b + vertexOffset,
                 face.c + vertexOffset,
@@ -582,8 +586,8 @@ export class Geometry extends EventDispatcher {
         }
         // uvs
         for (let i: number = 0, il: number = thatUvs.length; i < il; i++) {
-            const uv = thatUvs[i],
-                uvCopy = [];
+            const uv: Vector2[] = thatUvs[i],
+                uvCopy: Vector2[] = [];
             if (uv === undefined) {
                 continue;
             }

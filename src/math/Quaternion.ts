@@ -2,6 +2,7 @@ import { Euler, EulerOrder } from "./Euler";
 import { Matrix4 } from "./Matrix4";
 import { Vector3 } from "./Vector3";
 import { Vector4 } from "./Vector4";
+import { TypedArray } from "../core/BufferAttribute";
 
 export class Quaternion {
     protected _x: number;
@@ -344,7 +345,7 @@ export class Quaternion {
         );
     }
 
-    public fromArray(array: number[], offset: number = 0): this {
+    public fromArray(array: number[] | TypedArray, offset: number = 0): this {
         return this.set(
             array[offset],
             array[offset + 1],
@@ -353,7 +354,10 @@ export class Quaternion {
         );
     }
 
-    public toArray(array: number[] = [], offset: number = 0): number[] {
+    public toArray(
+        array: number[] | TypedArray = [],
+        offset: number = 0,
+    ): number[] | TypedArray {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         array[offset + 2] = this.z;
