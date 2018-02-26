@@ -1,6 +1,5 @@
 import { BufferGeometry } from "../../core/BufferGeometry";
 import { IGroup } from "../../core/DirectGeometry";
-import { Geometry } from "../../core/Geometry";
 import { Object3D } from "../../core/Object3D";
 import { Material } from "../../materials/Material";
 import { Scene } from "../../scenes/Scene";

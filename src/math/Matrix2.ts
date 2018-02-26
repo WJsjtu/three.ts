@@ -1,5 +1,4 @@
 import { TypedArray } from "../core/BufferAttribute";
-import { Matrix4 } from "./Matrix4";
 
 export class Matrix2 {
     public elements: number[] = [1, 0, 0, 1];

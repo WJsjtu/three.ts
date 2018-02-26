@@ -1,4 +1,3 @@
-import { Object3D } from "../core/Object3D";
 import { Vector3 } from "../math/Vector3";
 import { AudioWrapper } from "./Audio";
 import { AudioListenerWrapper } from "./AudioListener";

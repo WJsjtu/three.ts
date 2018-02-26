@@ -1,6 +1,4 @@
-import { Color } from "../math/Color";
 import { IUniform, UniformsUtils } from "../renderers/shaders/UniformsUtils";
-import { Texture } from "../textures/Texture";
 import { IMaterialParameters, Material } from "./Material";
 
 export interface IShaderMaterialParameters extends IMaterialParameters {

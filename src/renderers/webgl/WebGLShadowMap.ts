@@ -23,7 +23,6 @@ import { Scene } from "../../scenes/Scene.js";
 import { Camera } from "../../cameras/Camera.js";
 import { WebGLState } from "./WebGLState.js";
 import { PointLight } from "../../lights/PointLight.js";
-import { Light } from "../../lights/Light.js";
 import { LightShadow, LightShadowCamera } from "../../lights/LightShadow.js";
 import {
     WebGLRenderTarget,
@@ -32,7 +31,6 @@ import {
 import { SpotLightShadow } from "../../lights/SpotLightShadow.js";
 import { SpotLight } from "../../lights/SpotLight.js";
 import { DirectionalLight } from "../../lights/DirectionalLight.js";
-import { RectAreaLight } from "../../lights/RectAreaLight.js";
 import { Mesh } from "../../objects/Mesh.js";
 import { Line } from "../../objects/Line.js";
 import { Points } from "../../objects/Points.js";

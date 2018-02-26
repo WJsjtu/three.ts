@@ -1,7 +1,6 @@
 import { Float32BufferAttribute } from "../core/BufferAttribute";
 import { BufferGeometry } from "../core/BufferGeometry";
 import { Geometry } from "../core/Geometry";
-import { Vector2 } from "../math/Vector2";
 import { Vector3 } from "../math/Vector3";
 
 export interface ICylinderGeometryParameters {

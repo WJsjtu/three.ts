@@ -1,4 +1,3 @@
-import { Color } from "../math/Color";
 import { Vector2 } from "../math/Vector2";
 import { Texture } from "../textures/Texture";
 import { IMaterialParameters, Material } from "./Material";
