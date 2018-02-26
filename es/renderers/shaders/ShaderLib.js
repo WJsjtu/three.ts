@@ -1,6 +1,6 @@
 import { Color } from "../../math/Color";
 import { Vector3 } from "../../math/Vector3";
-import { ShaderChunk } from "./ShaderChunk.js";
+import { ShaderChunk } from "./ShaderChunk";
 import { UniformsLib } from "./UniformsLib";
 import { UniformsUtils } from "./UniformsUtils";
 const ShaderLib = {

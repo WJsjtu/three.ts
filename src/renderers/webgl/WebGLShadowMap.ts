@@ -6,40 +6,40 @@ import {
     NearestFilter,
     PCFShadowMap,
     RGBADepthPacking,
-} from "../../constants.js";
-import { Frustum } from "../../math/Frustum.js";
-import { Matrix4 } from "../../math/Matrix4.js";
-import { Vector2 } from "../../math/Vector2.js";
-import { Vector3 } from "../../math/Vector3.js";
-import { WebGLRenderer } from "../WebGLRenderer.js";
-import { Vector4 } from "../../math/Vector4.js";
+} from "../../constants";
+import { Frustum } from "../../math/Frustum";
+import { Matrix4 } from "../../math/Matrix4";
+import { Vector2 } from "../../math/Vector2";
+import { Vector3 } from "../../math/Vector3";
+import { WebGLRenderer } from "../WebGLRenderer";
+import { Vector4 } from "../../math/Vector4";
 import {
     MeshDepthMaterial,
     MeshDistanceMaterial,
     Material,
-} from "../../materials/Materials.js";
-import { WebGLObjects } from "./WebGLObjects.js";
-import { Scene } from "../../scenes/Scene.js";
-import { Camera } from "../../cameras/Camera.js";
-import { WebGLState } from "./WebGLState.js";
-import { PointLight } from "../../lights/PointLight.js";
-import { LightShadow, LightShadowCamera } from "../../lights/LightShadow.js";
+} from "../../materials/Materials";
+import { WebGLObjects } from "./WebGLObjects";
+import { Scene } from "../../scenes/Scene";
+import { Camera } from "../../cameras/Camera";
+import { WebGLState } from "./WebGLState";
+import { PointLight } from "../../lights/PointLight";
+import { LightShadow, LightShadowCamera } from "../../lights/LightShadow";
 import {
     WebGLRenderTarget,
     IWebGLRenderTargetOptions,
-} from "../WebGLRenderTarget.js";
-import { SpotLightShadow } from "../../lights/SpotLightShadow.js";
-import { SpotLight } from "../../lights/SpotLight.js";
-import { DirectionalLight } from "../../lights/DirectionalLight.js";
-import { Mesh } from "../../objects/Mesh.js";
-import { Line } from "../../objects/Line.js";
-import { Points } from "../../objects/Points.js";
-import { Object3D } from "../../core/Object3D.js";
-import { BufferGeometry } from "../../core/BufferGeometry.js";
-import { IGroup } from "../../core/DirectGeometry.js";
-import { SkinnedMesh } from "../../objects/SkinnedMesh.js";
-import { ObjectWithGeometry } from "../../math/Box3.js";
-import { Geometry } from "../../core/Geometry.js";
+} from "../WebGLRenderTarget";
+import { SpotLightShadow } from "../../lights/SpotLightShadow";
+import { SpotLight } from "../../lights/SpotLight";
+import { DirectionalLight } from "../../lights/DirectionalLight";
+import { Mesh } from "../../objects/Mesh";
+import { Line } from "../../objects/Line";
+import { Points } from "../../objects/Points";
+import { Object3D } from "../../core/Object3D";
+import { BufferGeometry } from "../../core/BufferGeometry";
+import { IGroup } from "../../core/DirectGeometry";
+import { SkinnedMesh } from "../../objects/SkinnedMesh";
+import { ObjectWithGeometry } from "../../math/Box3";
+import { Geometry } from "../../core/Geometry";
 
 export type ShadowLightWithoutPointLight = DirectionalLight | SpotLight;
 export type ShadowLight = ShadowLightWithoutPointLight | PointLight;

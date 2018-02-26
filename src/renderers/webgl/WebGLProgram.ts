@@ -26,7 +26,7 @@ import {
     RGBEEncoding,
     sRGBEncoding,
     LinearEncoding,
-} from "../../constants.js";
+} from "../../constants";
 import { RawShaderMaterial } from "../../materials/RawShaderMaterial";
 import { WebGLExtensions } from "./WebGLExtensions";
 import { WebGLShaderWrapper } from "./WebGLShader";

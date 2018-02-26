@@ -1,4 +1,4 @@
-import { ClampToEdgeWrapping, LinearEncoding, LinearFilter, LinearMipMapLinearFilter, MirroredRepeatWrapping, RepeatWrapping, RGBAFormat, UnsignedByteType, UVMapping, } from "../constants.js";
+import { ClampToEdgeWrapping, LinearEncoding, LinearFilter, LinearMipMapLinearFilter, MirroredRepeatWrapping, RepeatWrapping, RGBAFormat, UnsignedByteType, UVMapping, } from "../constants";
 import { EventDispatcher } from "../core/EventDispatcher";
 import { MathUtil } from "../math/Math";
 import { Matrix3 } from "../math/Matrix3";

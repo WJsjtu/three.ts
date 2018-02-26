@@ -8,7 +8,7 @@ import {
     RGBAFormat,
     UnsignedByteType,
     UVMapping,
-} from "../constants.js";
+} from "../constants";
 import { EventDispatcher } from "../core/EventDispatcher";
 import { MathUtil } from "../math/Math";
 import { Matrix3 } from "../math/Matrix3";

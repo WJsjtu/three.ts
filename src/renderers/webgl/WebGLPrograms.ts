@@ -5,7 +5,7 @@ import {
     CubeUVReflectionMapping,
     GammaEncoding,
     LinearEncoding,
-} from "../../constants.js";
+} from "../../constants";
 import { WebGLRenderer, IShader } from "../WebGLRenderer";
 import { WebGLExtensions } from "./WebGLExtensions";
 import { WebGLCapabilities } from "./WebGLCapabilities";
@@ -17,10 +17,10 @@ import { Material } from "../../materials/Material";
 import { WebGLRenderTarget } from "../WebGLRenderTarget";
 import { FogExp2 } from "../../scenes/FogExp2";
 import { Fog } from "../../scenes/Fog";
-import { ILightState } from "./WebGLLights.js";
-import { Texture } from "../../textures/Texture.js";
-import { WebGLProgramWrapper } from "./WebGLProgram.js";
-import { Light } from "../../lights/Light.js";
+import { ILightState } from "./WebGLLights";
+import { Texture } from "../../textures/Texture";
+import { WebGLProgramWrapper } from "./WebGLProgram";
+import { Light } from "../../lights/Light";
 
 export interface IProgramParameters {
     alphaMap: boolean;

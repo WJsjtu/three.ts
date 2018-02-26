@@ -4,7 +4,7 @@ import {
     NearestFilter,
     UnsignedInt248Type,
     UnsignedShortType,
-} from "../constants.js";
+} from "../constants";
 import { Texture } from "./Texture";
 
 export class DepthTexture extends Texture {

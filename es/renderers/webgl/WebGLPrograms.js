@@ -1,9 +1,9 @@
-import { BackSide, DoubleSide, CubeUVRefractionMapping, CubeUVReflectionMapping, GammaEncoding, LinearEncoding, } from "../../constants.js";
+import { BackSide, DoubleSide, CubeUVRefractionMapping, CubeUVReflectionMapping, GammaEncoding, LinearEncoding, } from "../../constants";
 import { SkinnedMesh } from "../../objects/SkinnedMesh";
 import { WebGLRenderTarget } from "../WebGLRenderTarget";
 import { FogExp2 } from "../../scenes/FogExp2";
-import { Texture } from "../../textures/Texture.js";
-import { WebGLProgramWrapper } from "./WebGLProgram.js";
+import { Texture } from "../../textures/Texture";
+import { WebGLProgramWrapper } from "./WebGLProgram";
 function getTextureEncodingFromMap(map, gammaOverrideLinear) {
     let encoding;
     if (!map) {

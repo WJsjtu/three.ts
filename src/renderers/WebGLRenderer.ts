@@ -10,20 +10,20 @@ import {
     TrianglesDrawMode,
     NoColors,
     LinearToneMapping,
-} from "../constants.js";
+} from "../constants";
 import { Texture } from "../textures/Texture";
 import { CubeTexture } from "../textures/CubeTexture";
 import { WebGLRenderTarget } from "./WebGLRenderTarget";
 import { WebGLShadowMap } from "./webgl/WebGLShadowMap";
-import { WebGLState } from "./webgl/WebGLState.js";
-import { Camera } from "../cameras/Camera.js";
-import { Fog } from "../scenes/Fog.js";
-import { Object3D } from "../core/Object3D.js";
-import { Material } from "../materials/Material.js";
-import { Geometry } from "../core/Geometry.js";
-import { BufferGeometry } from "../core/BufferGeometry.js";
-import { IGroup } from "../core/DirectGeometry.js";
-import { IUniform } from "./shaders/UniformsUtils.js";
+import { WebGLState } from "./webgl/WebGLState";
+import { Camera } from "../cameras/Camera";
+import { Fog } from "../scenes/Fog";
+import { Object3D } from "../core/Object3D";
+import { Material } from "../materials/Material";
+import { Geometry } from "../core/Geometry";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { IGroup } from "../core/DirectGeometry";
+import { IUniform } from "./shaders/UniformsUtils";
 
 export interface IInfoMemory {
     geometries: number;

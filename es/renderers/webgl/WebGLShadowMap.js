@@ -1,19 +1,19 @@
-import { FrontSide, BackSide, DoubleSide, RGBAFormat, NearestFilter, PCFShadowMap, RGBADepthPacking, } from "../../constants.js";
-import { Frustum } from "../../math/Frustum.js";
-import { Matrix4 } from "../../math/Matrix4.js";
-import { Vector2 } from "../../math/Vector2.js";
-import { Vector3 } from "../../math/Vector3.js";
-import { Vector4 } from "../../math/Vector4.js";
-import { MeshDepthMaterial, MeshDistanceMaterial, } from "../../materials/Materials.js";
-import { PointLight } from "../../lights/PointLight.js";
-import { WebGLRenderTarget, } from "../WebGLRenderTarget.js";
-import { SpotLightShadow } from "../../lights/SpotLightShadow.js";
-import { Mesh } from "../../objects/Mesh.js";
-import { Line } from "../../objects/Line.js";
-import { Points } from "../../objects/Points.js";
-import { BufferGeometry } from "../../core/BufferGeometry.js";
-import { SkinnedMesh } from "../../objects/SkinnedMesh.js";
-import { Geometry } from "../../core/Geometry.js";
+import { FrontSide, BackSide, DoubleSide, RGBAFormat, NearestFilter, PCFShadowMap, RGBADepthPacking, } from "../../constants";
+import { Frustum } from "../../math/Frustum";
+import { Matrix4 } from "../../math/Matrix4";
+import { Vector2 } from "../../math/Vector2";
+import { Vector3 } from "../../math/Vector3";
+import { Vector4 } from "../../math/Vector4";
+import { MeshDepthMaterial, MeshDistanceMaterial, } from "../../materials/Materials";
+import { PointLight } from "../../lights/PointLight";
+import { WebGLRenderTarget, } from "../WebGLRenderTarget";
+import { SpotLightShadow } from "../../lights/SpotLightShadow";
+import { Mesh } from "../../objects/Mesh";
+import { Line } from "../../objects/Line";
+import { Points } from "../../objects/Points";
+import { BufferGeometry } from "../../core/BufferGeometry";
+import { SkinnedMesh } from "../../objects/SkinnedMesh";
+import { Geometry } from "../../core/Geometry";
 export class WebGLShadowMap {
     constructor(renderer, objects, maxTextureSize) {
         this.type = PCFShadowMap;

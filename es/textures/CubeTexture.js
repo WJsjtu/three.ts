@@ -1,4 +1,4 @@
-import { CubeReflectionMapping } from "../constants.js";
+import { CubeReflectionMapping } from "../constants";
 import { Texture } from "./Texture";
 export class CubeTexture extends Texture {
     constructor(images = [], mapping = CubeReflectionMapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding) {

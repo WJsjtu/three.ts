@@ -1,4 +1,4 @@
-import { NearestFilter } from "../constants.js";
+import { NearestFilter } from "../constants";
 import { Texture } from "./Texture";
 
 export class DataTexture extends Texture {

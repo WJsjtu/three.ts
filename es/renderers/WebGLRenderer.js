@@ -1,4 +1,4 @@
-import { LinearToneMapping, } from "../constants.js";
+import { LinearToneMapping, } from "../constants";
 export class WebGLRenderer {
     constructor() {
         this.context = null;
