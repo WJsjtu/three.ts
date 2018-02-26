@@ -289,7 +289,13 @@ export class Int8BufferAttribute extends BufferAttribute {
         array: number | ArrayBufferLike | ArrayLike<number>,
         itemSize: number,
         normalized?: boolean,
-    ) {
+    );
+    constructor(
+        array: ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    );
+    constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Int8Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
@@ -299,7 +305,13 @@ export class Uint8BufferAttribute extends BufferAttribute {
         array: number | ArrayBufferLike | ArrayLike<number>,
         itemSize: number,
         normalized?: boolean,
-    ) {
+    );
+    constructor(
+        array: ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    );
+    constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Uint8Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
@@ -309,7 +321,13 @@ export class Uint8ClampedBufferAttribute extends BufferAttribute {
         array: number | ArrayBufferLike | ArrayLike<number>,
         itemSize: number,
         normalized?: boolean,
-    ) {
+    );
+    constructor(
+        array: ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    );
+    constructor(array: any, itemSize: number, normalized?: boolean) {
         super(
             new Uint8ClampedArray(array as ArrayBufferLike),
             itemSize,
@@ -323,7 +341,13 @@ export class Int16BufferAttribute extends BufferAttribute {
         array: number | ArrayBufferLike | ArrayLike<number>,
         itemSize: number,
         normalized?: boolean,
-    ) {
+    );
+    constructor(
+        array: ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    );
+    constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Int16Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
@@ -333,7 +357,13 @@ export class Uint16BufferAttribute extends BufferAttribute {
         array: number | ArrayBufferLike | ArrayLike<number>,
         itemSize: number,
         normalized?: boolean,
-    ) {
+    );
+    constructor(
+        array: ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    );
+    constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Uint16Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
@@ -343,7 +373,13 @@ export class Int32BufferAttribute extends BufferAttribute {
         array: number | ArrayBufferLike | ArrayLike<number>,
         itemSize: number,
         normalized?: boolean,
-    ) {
+    );
+    constructor(
+        array: ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    );
+    constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Int32Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
@@ -353,18 +389,26 @@ export class Uint32BufferAttribute extends BufferAttribute {
         array: number | ArrayBufferLike | ArrayLike<number>,
         itemSize: number,
         normalized?: boolean,
-    ) {
+    );
+    constructor(
+        array: ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    );
+    constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Uint32Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
 export class Float32BufferAttribute extends BufferAttribute {
+    constructor(array: number, itemSize: number, normalized?: boolean);
     constructor(
-        array: number | ArrayBufferLike | ArrayLike<number>,
+        array: ArrayBufferLike | ArrayLike<number>,
         itemSize: number,
         normalized?: boolean,
-    ) {
-        super(new Float32Array(array as ArrayBufferLike), itemSize, normalized);
+    );
+    constructor(array: any, itemSize: number, normalized?: boolean) {
+        super(new Float32Array(array), itemSize, normalized);
     }
 }
 
@@ -373,7 +417,13 @@ export class Float64BufferAttribute extends BufferAttribute {
         array: number | ArrayBufferLike | ArrayLike<number>,
         itemSize: number,
         normalized?: boolean,
-    ) {
+    );
+    constructor(
+        array: ArrayBufferLike | ArrayLike<number>,
+        itemSize: number,
+        normalized?: boolean,
+    );
+    constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Float64Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }

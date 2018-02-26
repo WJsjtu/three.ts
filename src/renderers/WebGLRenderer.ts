@@ -67,7 +67,7 @@ export class WebGLRenderer {
     public renderBufferDirect(
         camera: Camera,
         fog: Fog,
-        geometry: Geometry | BufferGeometry,
+        geometry: BufferGeometry,
         material: Material,
         object: Object3D,
         group: IGroup,
