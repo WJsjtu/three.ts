@@ -1,16 +1,26 @@
-import { Camera } from "../cameras/Camera";
 import { Matrix4 } from "../math/Matrix4";
 import { Vector2 } from "../math/Vector2";
+import { WebGLRenderTarget } from "../renderers/WebGLRenderTarget";
+import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
+import { OrthographicCamera } from "../cameras/OrthographicCamera";
+
+/**
+ * updateMatrixWorld
+ * near
+ * far
+ * Above properties and method is needed in WebGLShadowMap.render
+ */
+export type LightShadowCamera = PerspectiveCamera | OrthographicCamera;
 
 export class LightShadow {
-    public camera: Camera = null;
+    public camera: LightShadowCamera = null;
     public bias: number = 0;
     public radius: number = 1;
     public mapSize: Vector2 = new Vector2(512, 512);
-    public map: any = null;
+    public map: WebGLRenderTarget = null;
     public matrix: Matrix4 = new Matrix4();
 
-    constructor(camera: Camera) {
+    constructor(camera: LightShadowCamera) {
         this.camera = camera;
     }
 

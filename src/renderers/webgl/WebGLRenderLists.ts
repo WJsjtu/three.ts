@@ -99,7 +99,7 @@ export class WebGLRenderList {
 }
 
 export class WebGLRenderLists {
-    protected lists: { [key: string]: WebGLRenderList } = Object.create(null);
+    protected lists: { [key: string]: WebGLRenderList } = {};
 
     public get(scene: Scene, camera: Camera): WebGLRenderList {
         const hash: string = scene.id + "," + camera.id;
@@ -112,6 +112,6 @@ export class WebGLRenderLists {
     }
 
     public dispose() {
-        this.lists = Object.create(null);
+        this.lists = {};
     }
 }

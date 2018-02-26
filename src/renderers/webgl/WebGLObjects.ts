@@ -7,7 +7,7 @@ import { IInfoRender } from "../WebGLRenderer";
 export class WebGLObjects {
     protected geometries: WebGLGeometries = null;
     protected infoRender: IInfoRender = null;
-    protected updateList: { [key: number]: number } = Object.create(null);
+    protected updateList: { [key: number]: number } = {};
 
     constructor(geometries: WebGLGeometries, infoRender: IInfoRender) {
         this.geometries = geometries;
@@ -36,6 +36,6 @@ export class WebGLObjects {
     }
 
     public dispose() {
-        this.updateList = Object.create(null);
+        this.updateList = {};
     }
 }

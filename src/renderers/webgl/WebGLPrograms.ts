@@ -20,6 +20,7 @@ import { Fog } from "../../scenes/Fog";
 import { ILightState } from "./WebGLLights.js";
 import { Texture } from "../../textures/Texture.js";
 import { WebGLProgramWrapper } from "./WebGLProgram.js";
+import { Light } from "../../lights/Light.js";
 
 export interface IProgramParameters {
     alphaMap: boolean;
@@ -220,7 +221,7 @@ export class WebGLPrograms {
     public getParameters(
         material: Material,
         lights: ILightState,
-        shadows: Object3D[],
+        shadows: Light[],
         fog?: Fog | FogExp2,
         nClipPlanes?: number,
         nClipIntersection?: number,

@@ -295,6 +295,20 @@ export class Vector3 {
         return this.set(e[12], e[13], e[14]);
     }
 
+    public setFromMatrixScale(m: Matrix4): this {
+        const sx: number = this.setFromMatrixColumn(m, 0).length();
+        const sy: number = this.setFromMatrixColumn(m, 1).length();
+        const sz: number = this.setFromMatrixColumn(m, 2).length();
+        this.x = sx;
+        this.y = sy;
+        this.z = sz;
+        return this;
+    }
+
+    public setFromMatrixColumn(m: Matrix4, index: number): this {
+        return this.fromArray(m.elements, index * 4);
+    }
+
     public fromArray(array: number[] | TypedArray, offset: number = 0): this {
         return this.set(array[offset], array[offset + 1], array[offset + 2]);
     }

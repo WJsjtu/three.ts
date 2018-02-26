@@ -148,6 +148,7 @@ export class Material extends EventDispatcher {
     public gradientMap?: Texture;
     public index0AttributeName?: string;
     public lightMap?: Texture;
+    public linewidth?: number;
     public map?: Texture;
     public metalnessMap?: Texture;
     public morphNormals?: boolean;
@@ -157,6 +158,8 @@ export class Material extends EventDispatcher {
     public skinning?: boolean;
     public specularMap?: Texture;
     public vertexShader?: string;
+    public wireframe?: boolean;
+    public wireframeLinewidth?: number;
 
     public setValues(values: IMaterialParameters): this {
         if (values === undefined) return this;

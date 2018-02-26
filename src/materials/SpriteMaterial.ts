@@ -18,7 +18,7 @@ export class SpriteMaterial extends Material {
     public map: Texture = null;
     public rotation: number = 0;
 
-    constructor(parameters: ISpriteMaterialParameters) {
+    constructor(parameters?: ISpriteMaterialParameters) {
         super();
         this.setValues(parameters);
     }

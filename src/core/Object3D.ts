@@ -8,6 +8,10 @@ import { Vector4 } from "../math/Vector4";
 import { EventDispatcher } from "./EventDispatcher";
 import { Layers } from "./Layers";
 import { IIntersection, Raycaster } from "./Raycaster";
+import {
+    MeshDepthMaterial,
+    MeshDistanceMaterial,
+} from "../materials/Materials";
 
 let object3DId: number = 0;
 
@@ -34,42 +38,15 @@ export class Object3D extends EventDispatcher {
     public renderOrder: number = 0;
     public userData: any = {};
 
-    protected _position: Vector3 = new Vector3();
-    protected _rotation: Euler = new Euler();
-    protected _quaternion: Quaternion = new Quaternion();
-    protected _scale: Vector3 = new Vector3(1, 1, 1);
+    public position: Vector3 = new Vector3();
+    public rotation: Euler = new Euler();
+    public quaternion: Quaternion = new Quaternion();
+    public scale: Vector3 = new Vector3(1, 1, 1);
+    public modelViewMatrix: Matrix4 = new Matrix4();
+    public normalMatrix: Matrix4 = new Matrix4();
 
-    set position(_position: Vector3) {
-        this._position.copy(_position);
-    }
-
-    get position(): Vector3 {
-        return new Vector3().copy(this._position);
-    }
-
-    set rotation(_rotation: Euler) {
-        this._rotation.copy(_rotation);
-    }
-
-    get rotation(): Euler {
-        return new Euler().copy(this._rotation);
-    }
-
-    set quaternion(_quaternion: Quaternion) {
-        this._quaternion.copy(_quaternion);
-    }
-
-    get quaternion(): Quaternion {
-        return new Quaternion().copy(this._quaternion);
-    }
-
-    set scale(_scale: Vector3) {
-        this._scale.copy(_scale);
-    }
-
-    get scale(): Vector3 {
-        return new Vector3().copy(this._scale);
-    }
+    public customDepthMaterial?: MeshDepthMaterial;
+    public customDistanceMaterial?: MeshDistanceMaterial;
 
     public updateMatrix(): this {
         this.matrix.compose(this.position, this.quaternion, this.scale);
@@ -110,12 +87,12 @@ export class Object3D extends EventDispatcher {
 
     public applyMatrix(matrix: Matrix4): this {
         this.matrix.multiplyMatrices(matrix, this.matrix);
-        this.matrix.decompose(this._position, this._quaternion, this._scale);
+        this.matrix.decompose(this.position, this.quaternion, this.scale);
         return this;
     }
 
     public applyQuaternion(q: Quaternion): this {
-        this._quaternion.premultiply(q);
+        this.quaternion.premultiply(q);
         return this;
     }
 
@@ -126,12 +103,12 @@ export class Object3D extends EventDispatcher {
      * @returns {Object3D}
      */
     public setRotationFromAxisAngle(axis: Vector3, angle: number): this {
-        this._quaternion.setFromAxisAngle(axis, angle);
+        this.quaternion.setFromAxisAngle(axis, angle);
         return this;
     }
 
     public setRotationFromEuler(euler: Euler): this {
-        this._quaternion.setFromEuler(euler);
+        this.quaternion.setFromEuler(euler);
         return this;
     }
 
@@ -141,7 +118,7 @@ export class Object3D extends EventDispatcher {
      * @returns {Object3D}
      */
     public setRotationFromMatrix(m: Matrix4): this {
-        this._quaternion.setFromRotationMatrix(m);
+        this.quaternion.setFromRotationMatrix(m);
         return this;
     }
 
@@ -151,14 +128,14 @@ export class Object3D extends EventDispatcher {
      * @returns {Object3D}
      */
     public setRotationFromQuaternion(q: Quaternion): this {
-        this._quaternion.copy(q);
+        this.quaternion.copy(q);
         return this;
     }
 
     public rotateOnAxis(axis: Vector3, angle: number): this {
         const q: Quaternion = new Quaternion();
         q.setFromAxisAngle(axis, angle);
-        this._quaternion.multiply(q);
+        this.quaternion.multiply(q);
         return this;
     }
 
@@ -199,7 +176,7 @@ export class Object3D extends EventDispatcher {
     public translateOnAxis(axis: Vector3, distance: number): this {
         const vec = new Vector3();
         vec.copy(axis).applyQuaternion(this.quaternion);
-        this._position.add(vec.multiplyScalar(distance));
+        this.position.add(vec.multiplyScalar(distance));
         return this;
     }
 
@@ -290,7 +267,7 @@ export class Object3D extends EventDispatcher {
     get worldRotation(): Euler {
         return new Euler().setFromQuaternion(
             this.worldQuaternion,
-            this._rotation.order,
+            this.rotation.order,
         );
     }
 

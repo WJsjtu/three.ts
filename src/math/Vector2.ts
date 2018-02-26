@@ -95,6 +95,18 @@ export class Vector2 {
         return this.set(e[0] * x + e[3] * y + e[6], e[1] * x + e[4] * y + e[7]);
     }
 
+    public min(v: Vector2): this {
+        this.x = Math.min(this.x, v.x);
+        this.y = Math.min(this.y, v.y);
+        return this;
+    }
+
+    public max(v: Vector2): this {
+        this.x = Math.max(this.x, v.x);
+        this.y = Math.max(this.y, v.y);
+        return this;
+    }
+
     public clamp(min: Vector2, max: Vector2): this {
         return this.set(
             Math.max(min.x, Math.min(max.x, this.x)),

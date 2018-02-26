@@ -11,8 +11,8 @@ export interface IMeshDistanceMaterialParameters extends IMaterialParameters {
     farDistance?: number;
     map?: Texture;
     morphTargets?: boolean;
-    nearDistance: number;
-    referencePosition: Vector3;
+    nearDistance?: number;
+    referencePosition?: Vector3;
     skinning?: boolean;
 }
 

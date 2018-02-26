@@ -398,7 +398,7 @@ export type UniformSetterType =
 
 class UniformContainer {
     public seq: UniformSetterType[] = [];
-    public map: { [key: string]: UniformSetterType } = Object.create(null);
+    public map: { [key: string]: UniformSetterType } = {};
 }
 
 type AllUniformTypeObject = { [key: string]: AllUniformType };
