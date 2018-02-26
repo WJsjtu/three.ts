@@ -7,7 +7,7 @@
       "emitDecoratorMetadata": false,
       "experimentalDecorators": false,
       "outDir": "./es/",
-      "sourceMap": false,
+      "sourceMap": true,
       "noImplicitAny": true,
       "module": "es6",
       "target": "es6",
