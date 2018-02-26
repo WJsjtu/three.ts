@@ -23,6 +23,7 @@ import { Material } from "../materials/Material.js";
 import { Geometry } from "../core/Geometry.js";
 import { BufferGeometry } from "../core/BufferGeometry.js";
 import { IGroup } from "../core/DirectGeometry.js";
+import { IUniform } from "./shaders/UniformsUtils.js";
 
 export interface IInfoMemory {
     geometries: number;
@@ -39,6 +40,7 @@ export interface IInfoRender {
 
 export interface IShader {
     name: string;
+    uniforms: { [key: string]: IUniform };
     vertexShader: string;
     fragmentShader: string;
 }
