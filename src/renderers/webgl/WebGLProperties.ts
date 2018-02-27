@@ -34,6 +34,7 @@ export interface IMaterialProperties {
     uniformsList?: UniformSetterType[];
     numClippingPlanes?: number;
     numIntersection?: number;
+    clippingState?: Float32Array | null;
 }
 
 export interface IObjectProperties {

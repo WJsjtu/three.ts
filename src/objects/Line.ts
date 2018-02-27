@@ -64,7 +64,7 @@ export class Line extends Object3D {
                     const b: number = indices[i + 1];
                     vStart.fromArray(positions, a * 3);
                     vEnd.fromArray(positions, b * 3);
-                    const distSquared: number = ray.distanceSqToSegment(
+                    const distSquared: number = ray.distanceSquareToSegment(
                         vStart,
                         vEnd,
                         interRay,
@@ -97,7 +97,7 @@ export class Line extends Object3D {
                 ) {
                     vStart.fromArray(positions, 3 * i);
                     vEnd.fromArray(positions, 3 * i + 3);
-                    const distSquared: number = ray.distanceSqToSegment(
+                    const distSquared: number = ray.distanceSquareToSegment(
                         vStart,
                         vEnd,
                         interRay,
@@ -129,7 +129,7 @@ export class Line extends Object3D {
             const vertices: Vector3[] = geometry.vertices;
             const nbVertices: number = vertices.length;
             for (let i: number = 0; i < nbVertices - 1; i += step) {
-                const distSquared: number = ray.distanceSqToSegment(
+                const distSquared: number = ray.distanceSquareToSegment(
                     vertices[i],
                     vertices[i + 1],
                     interRay,

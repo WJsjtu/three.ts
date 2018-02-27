@@ -69,7 +69,7 @@ export class PerspectiveCamera extends Camera {
         this.updateProjectionMatrix();
     }
 
-    get view(): IFrustumView | null{
+    get view(): IFrustumView | null {
         return this._view;
     }
 

@@ -85,7 +85,7 @@ export class Ray {
             .distanceToSquared(point);
     }
 
-    public distanceSqToSegment(
+    public distanceSquareToSegment(
         v0: Vector3,
         v1: Vector3,
         optionalPointOnRay?: Vector3,

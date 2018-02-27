@@ -125,8 +125,9 @@ export class Plane {
         return new Vector3().copy(this.normal).multiplyScalar(-this.constant);
     }
 
-    public applyMatrix4(matrix: Matrix4): this {
-        const normalMatrix: Matrix3 = new Matrix3().getNormalMatrix(matrix);
+    public applyMatrix4(matrix: Matrix4, optionalNormalMatrix?: Matrix3): this {
+        const normalMatrix: Matrix3 =
+            optionalNormalMatrix || new Matrix3().getNormalMatrix(matrix);
         const referencePoint: Vector3 = this.coplanarPoint().applyMatrix4(
             matrix,
         );
