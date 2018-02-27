@@ -15,9 +15,9 @@ import { WebGLAttributes } from "./WebGLAttributes";
 export class WebGLGeometries {
     protected geometries: { [key: number]: BufferGeometry } = {};
     protected wireframeAttributes: { [key: number]: BufferAttribute } = {};
-    protected context: WebGLRenderingContext = null;
-    protected attributes: WebGLAttributes = null;
-    protected infoMemory: IInfoMemory = null;
+    protected context: WebGLRenderingContext;
+    protected attributes: WebGLAttributes;
+    protected infoMemory: IInfoMemory;
 
     constructor(
         context: WebGLRenderingContext,

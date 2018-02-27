@@ -40,7 +40,7 @@ export class Mesh extends Object3D {
         pB: Vector3,
         pC: Vector3,
         point: Vector3,
-    ): IIntersection {
+    ): IIntersection | null {
         let intersect: Vector3;
         const intersectionPointWorld: Vector3 = new Vector3();
         if (material.side === BackSide) {
@@ -116,8 +116,8 @@ export class Mesh extends Object3D {
 
     public readonly type: string = "Mesh";
 
-    public geometry: BufferGeometry | Geometry = null;
-    public material: Material | Material[] = null;
+    public geometry: BufferGeometry | Geometry;
+    public material: Material | Material[];
     public drawMode: number = TrianglesDrawMode;
 
     public morphTargetInfluences: number[] = [];
@@ -179,25 +179,22 @@ export class Mesh extends Object3D {
         return this;
     }
 
-    public raycast(
-        raycaster: Raycaster,
-        intersects: IIntersection[] = [],
-    ): IIntersection[] {
+    public raycast(raycaster: Raycaster, intersects: IIntersection[]): void {
         const geometry: BufferGeometry | Geometry = this.geometry;
         const material: Material | Material[] = this.material;
         const matrixWorld: Matrix4 = this.matrixWorld;
-        if (material === undefined) return null;
+        if (material === undefined) return;
         // Checking boundingSphere distance to ray
         if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
         const sphere: Sphere = new Sphere()
             .copy(geometry.boundingSphere)
             .applyMatrix4(matrixWorld);
-        if (raycaster.ray.intersectsSphere(sphere) === false) return null;
+        if (raycaster.ray.intersectsSphere(sphere) === false) return;
         const inverseMatrix: Matrix4 = new Matrix4().getInverse(matrixWorld);
         const ray = new Ray().copy(raycaster.ray).applyMatrix4(inverseMatrix);
         // Check boundingBox before continuing
         if (geometry.boundingBox !== null) {
-            if (ray.intersectsBox(geometry.boundingBox) === false) return null;
+            if (ray.intersectsBox(geometry.boundingBox) === false) return;
         }
         if (geometry instanceof BufferGeometry) {
             const index: BufferAttribute = geometry.index;
@@ -341,7 +338,6 @@ export class Mesh extends Object3D {
                 }
             }
         }
-        return intersects;
     }
 
     public clone(): Mesh {

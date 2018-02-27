@@ -18,7 +18,7 @@ export { ShapeGeometry, ShapeBufferGeometry } from './ShapeGeometry';
 export { ExtrudeGeometry, ExtrudeBufferGeometry } from './ExtrudeGeometry';
 export { EdgesGeometry } from './EdgesGeometry';
 */
-export { ConeGeometry, ConeBufferGeometry } from './ConeGeometry';
-export { CylinderGeometry, CylinderBufferGeometry } from './CylinderGeometry';
-export { CircleGeometry, CircleBufferGeometry } from './CircleGeometry';
-export { BoxGeometry, BoxBufferGeometry } from './BoxGeometry';
+export { ConeGeometry, ConeBufferGeometry } from "./ConeGeometry";
+export { CylinderGeometry, CylinderBufferGeometry } from "./CylinderGeometry";
+export { CircleGeometry, CircleBufferGeometry } from "./CircleGeometry";
+export { BoxGeometry, BoxBufferGeometry } from "./BoxGeometry";

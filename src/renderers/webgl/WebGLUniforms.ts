@@ -44,9 +44,9 @@ class UniformSetter {
     public static mat3array: Float32Array = new Float32Array(9);
     public static mat4array: Float32Array = new Float32Array(16);
 
-    public renderer: WebGLRenderer = null;
-    public context: WebGLRenderingContext = null;
-    public id: number | string = null;
+    public renderer: WebGLRenderer;
+    public context: WebGLRenderingContext;
+    public id: number | string;
     public activeInfo: WebGLActiveInfo;
     public addr: WebGLUniformLocation = 0;
     public size: number = 0;
@@ -406,10 +406,10 @@ type AllUniformTypeObject = { [key: string]: AllUniformType };
 export type NestUniformType =
     | AllUniformType
     | AllUniformTypeObject
-    | { [key: string]: AllUniformTypeObject };
+    | { [key: string]: AllUniformTypeObject | null };
 
 class StructuredUniformSetter extends UniformContainer {
-    public id: number | string = null;
+    public id: number | string;
 
     constructor(id: number | string) {
         super();
@@ -448,8 +448,8 @@ const RePathPart: RegExp = /([\w\d_]+)(\])?(\[|\.)?/g;
 // in the uniform names.
 
 export class WebGLUniformsWrapper extends UniformContainer {
-    public renderer: WebGLRenderer = null;
-    public program: WebGLProgram = null;
+    public renderer: WebGLRenderer;
+    public program: WebGLProgram;
 
     constructor(renderer: WebGLRenderer, program: WebGLProgram) {
         super();

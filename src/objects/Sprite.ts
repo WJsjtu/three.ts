@@ -7,17 +7,14 @@ import { Raycaster, IIntersection } from "../core/Raycaster";
 export class Sprite extends Object3D {
     public readonly type: string = "Sprite";
 
-    public material: Material = null;
+    public material: Material;
 
     constructor(material: Material = new SpriteMaterial()) {
         super();
         this.material = material;
     }
 
-    public raycast(
-        raycaster: Raycaster,
-        intersects: IIntersection[] = [],
-    ): IIntersection[] {
+    public raycast(raycaster: Raycaster, intersects: IIntersection[]): void {
         const worldPosition: Vector3 = new Vector3().setFromMatrixPosition(
             this.matrixWorld,
         );
@@ -29,20 +26,20 @@ export class Sprite extends Object3D {
         );
         const guessSizeSq: number = worldScale.x * worldScale.y / 4;
         if (worldPosition.distanceToSquared(intersectPoint) > guessSizeSq) {
-            return null;
+            return;
         }
         const distance: number = raycaster.ray.origin.distanceTo(
             intersectPoint,
         );
         if (distance < raycaster.near || distance > raycaster.far) {
-            return null;
+            return;
         }
         intersects.push({
             distance: distance,
+            face: null,
             point: intersectPoint.clone(),
             object: this,
         });
-        return intersects;
     }
 
     public clone(): Sprite {

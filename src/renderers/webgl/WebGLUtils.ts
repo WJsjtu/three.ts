@@ -70,8 +70,8 @@ import {
 import { WebGLExtensions } from "./WebGLExtensions";
 
 export class WebGLUtils {
-    public context: WebGLRenderingContext = null;
-    public extensions: WebGLExtensions = null;
+    public context: WebGLRenderingContext;
+    public extensions: WebGLExtensions;
 
     constructor(context: WebGLRenderingContext, extensions: WebGLExtensions) {
         this.context = context;
@@ -82,7 +82,7 @@ export class WebGLUtils {
         const extensions: WebGLExtensions = this.extensions;
         const context = this.context;
 
-        let extension;
+        let extension: any;
 
         if (parameter === RepeatWrapping) {
             return context.REPEAT;

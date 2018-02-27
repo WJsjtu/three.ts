@@ -10,7 +10,7 @@ export class PerspectiveCamera extends Camera {
     protected _near: number = 0.1;
     protected _far: number = 2000;
     protected _aspect: number = 1;
-    protected _view: IFrustumView = null;
+    protected _view: IFrustumView | null = null;
 
     /**
      * width of the film (default in millimeters)
@@ -69,7 +69,7 @@ export class PerspectiveCamera extends Camera {
         this.updateProjectionMatrix();
     }
 
-    get view(): IFrustumView {
+    get view(): IFrustumView | null{
         return this._view;
     }
 

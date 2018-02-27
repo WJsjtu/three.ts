@@ -6,7 +6,7 @@ import { BufferGeometry } from "../../core/BufferGeometry";
 import { BufferAttribute } from "../../core/BufferAttribute";
 
 export class WebGLMorphtargets {
-    protected context: WebGLRenderingContext = null;
+    protected context: WebGLRenderingContext;
     protected influencesList: { [key: number]: Array<[number, number]> } = {};
     protected morphInfluences: Float32Array = new Float32Array(8);
 
@@ -42,7 +42,7 @@ export class WebGLMorphtargets {
             material.morphNormals && geometry.morphAttributes.normal;
         // Remove current morphAttributes
         for (let i: number = 0; i < length; i++) {
-            var influence = influences[i];
+            const influence: [number, number] = influences[i];
             if (influence[1] !== 0) {
                 if (morphTargets) geometry.removeAttribute("morphTarget" + i);
                 if (morphNormals) geometry.removeAttribute("morphNormal" + i);
@@ -50,7 +50,7 @@ export class WebGLMorphtargets {
         }
         // Collect influences
         for (let i: number = 0; i < length; i++) {
-            var influence = influences[i];
+            const influence: [number, number] = influences[i];
             influence[0] = i;
             influence[1] = objectInfluences[i];
         }
@@ -58,11 +58,11 @@ export class WebGLMorphtargets {
             return Math.abs(b[1]) - Math.abs(a[1]);
         });
         // Add morphAttributes
-        for (var i = 0; i < 8; i++) {
-            var influence = influences[i];
+        for (let i: number = 0; i < 8; i++) {
+            const influence: [number, number] = influences[i];
             if (influence) {
-                var index = influence[0];
-                var value = influence[1];
+                const index: number = influence[0];
+                const value: number = influence[1];
                 if (value) {
                     if (morphTargets)
                         geometry.addAttribute(

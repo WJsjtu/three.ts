@@ -8,11 +8,11 @@ export class AudioWrapper extends Object3D {
     public offset: number = 0;
     public isPlaying: boolean = false;
     public hasPlaybackControl: boolean = true;
-    public source: AudioBufferSourceNode = null;
+    public source: AudioBufferSourceNode;
     public sourceType: string = "empty";
     public autoplay: boolean = false;
 
-    protected buffer: AudioBuffer = null;
+    protected buffer: AudioBuffer | null = null;
     protected gain: GainNode;
     protected loop: boolean = false;
     protected playbackRate: number = 1;

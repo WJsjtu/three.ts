@@ -7,7 +7,7 @@ export class PointLight extends Light {
     public readonly type: string = "PointLight";
     public distance: number = 0;
     public decay: number = 1;
-    public shadow: LightShadow = null;
+    public shadow: LightShadow;
 
     constructor(
         color: Color,

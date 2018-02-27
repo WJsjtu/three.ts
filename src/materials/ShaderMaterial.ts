@@ -51,10 +51,7 @@ export class ShaderMaterial extends Material {
         uv2: [0, 0],
     };
 
-    /**
-     * TODO: WebGLProgram undefined check change
-     */
-    public index0AttributeName: string = null;
+    public index0AttributeName: string;
 
     constructor(parameters: IShaderMaterialParameters) {
         super();

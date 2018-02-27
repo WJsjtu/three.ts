@@ -3,7 +3,7 @@ import { AudioWrapper } from "./Audio";
 import { AudioListenerWrapper } from "./AudioListener";
 
 export class PositionalAudio extends AudioWrapper {
-    public panner: PannerNode = null;
+    public panner: PannerNode;
 
     constructor(listener: AudioListenerWrapper) {
         super(listener);

@@ -2,7 +2,7 @@ import { Color } from "../math/Color";
 
 export class Fog {
     public name: string = "";
-    public color: Color = null;
+    public color: Color;
     public near: number = 1;
     public far: number = 1000;
 

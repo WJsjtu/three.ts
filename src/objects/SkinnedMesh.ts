@@ -21,7 +21,7 @@ export class SkinnedMesh extends Mesh {
     public bindMode: string = "attached";
     public bindMatrix: Matrix4 = new Matrix4();
     public bindMatrixInverse: Matrix4 = new Matrix4();
-    public skeleton: Skeleton = null;
+    public skeleton: Skeleton;
 
     /**
      * skinIndices and skinWeights should be set to true on the Geometry

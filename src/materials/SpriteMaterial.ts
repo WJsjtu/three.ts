@@ -15,7 +15,7 @@ export class SpriteMaterial extends Material {
     public color: Color = new Color().setHex(0xffffff);
     public fog: boolean = false;
     public lights: boolean = false;
-    public map: Texture = null;
+    public map: Texture | null = null;
     public rotation: number = 0;
 
     constructor(parameters?: ISpriteMaterialParameters) {

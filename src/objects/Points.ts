@@ -13,8 +13,8 @@ import { Vector3 } from "../math/Vector3";
 export class Points extends Object3D {
     public readonly type: string = "Points";
 
-    public geometry: Geometry | BufferGeometry = null;
-    public material: Material = null;
+    public geometry: Geometry | BufferGeometry;
+    public material: Material;
 
     constructor(
         geometry: Geometry | BufferGeometry = new BufferGeometry(),
@@ -27,10 +27,7 @@ export class Points extends Object3D {
         this.material = material;
     }
 
-    public raycast(
-        raycaster: Raycaster,
-        intersects: IIntersection[] = [],
-    ): IIntersection[] {
+    public raycast(raycaster: Raycaster, intersects: IIntersection[]): void {
         const geometry: Geometry | BufferGeometry = this.geometry;
         const matrixWorld: Matrix4 = this.matrixWorld;
         const threshold: number = raycaster.params.Points.threshold;
@@ -43,7 +40,7 @@ export class Points extends Object3D {
         sphere.applyMatrix4(matrixWorld);
         sphere.radius += threshold;
 
-        if (raycaster.ray.intersectsSphere(sphere) === false) return null;
+        if (raycaster.ray.intersectsSphere(sphere) === false) return;
         const inverseMatrix: Matrix4 = new Matrix4().getInverse(matrixWorld);
         const ray: Ray = new Ray()
             .copy(raycaster.ray)
@@ -69,6 +66,7 @@ export class Points extends Object3D {
                 intersects.push({
                     distance: distance,
                     distanceToRay: Math.sqrt(rayPointDistanceSquare),
+                    face: null,
                     index: index2,
                     object: this,
                     point: intersectPoint.clone(),
@@ -107,7 +105,6 @@ export class Points extends Object3D {
                 testPoint(vertices[i], i);
             }
         }
-        return intersects;
     }
 
     public clone(): Points {

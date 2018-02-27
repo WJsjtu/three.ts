@@ -13,11 +13,11 @@ import { OrthographicCamera } from "../cameras/OrthographicCamera";
 export type LightShadowCamera = PerspectiveCamera | OrthographicCamera;
 
 export class LightShadow {
-    public camera: LightShadowCamera = null;
+    public camera: LightShadowCamera;
     public bias: number = 0;
     public radius: number = 1;
     public mapSize: Vector2 = new Vector2(512, 512);
-    public map: WebGLRenderTarget = null;
+    public map: WebGLRenderTarget | null = null;
     public matrix: Matrix4 = new Matrix4();
 
     constructor(camera: LightShadowCamera) {

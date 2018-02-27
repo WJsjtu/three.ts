@@ -6,9 +6,9 @@ import { AudioContextWrapper } from "./AudioContext";
 export class AudioListenerWrapper extends Object3D {
     public type: string = "AudioListener";
     public context: AudioContext = AudioContextWrapper.getContext();
-    public gain: GainNode = null;
+    public gain: GainNode;
 
-    protected filter: AudioNode = null;
+    protected filter: AudioNode | null = null;
 
     constructor() {
         super();

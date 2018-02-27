@@ -6,10 +6,10 @@ export interface IWebGLCapabilitiesParameters {
 }
 
 export class WebGLCapabilities {
-    public extensions: WebGLExtensions = null;
-    public context: WebGLRenderingContext = null;
+    public extensions: WebGLExtensions;
+    public context: WebGLRenderingContext;
 
-    public precision: string = null;
+    public precision: string;
     public logarithmicDepthBuffer: boolean = false;
     public maxTextures: number = 0;
     public maxVertexTextures: number = 0;
@@ -26,7 +26,7 @@ export class WebGLCapabilities {
     public floatVertexTextures: boolean = false;
 
     public maxAnisotropy: number = 0;
-    public maxPrecision: string = null;
+    public maxPrecision: string;
 
     constructor(
         context: WebGLRenderingContext,
@@ -112,7 +112,7 @@ export class WebGLCapabilities {
     }
 
     public getMaxAnisotropy(): number {
-        const extension: EXT_texture_filter_anisotropic = this.extensions.get(
+        const extension: EXT_texture_filter_anisotropic | null = this.extensions.get(
             "EXT_texture_filter_anisotropic",
         );
         if (extension !== null) {

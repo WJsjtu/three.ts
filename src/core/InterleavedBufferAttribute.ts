@@ -170,7 +170,7 @@ export class InterleavedBufferAttribute {
     public getProperty(
         index: number,
         property: string,
-    ): Vector2 | Vector3 | Vector4 | number {
+    ): Vector2 | Vector3 | Vector4 | number | undefined {
         property = property.toLowerCase();
         if (
             property &&
@@ -240,6 +240,6 @@ export class InterleavedBufferAttribute {
                 );
             }
         }
-        return null;
+        return undefined;
     }
 }

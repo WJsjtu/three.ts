@@ -217,7 +217,7 @@ export class WebGLLights {
             const color = light.color;
             const intensity = light.intensity;
             const distance = light.distance;
-            const shadowMap =
+            const shadowMap: Texture | null =
                 light.shadow && light.shadow.map
                     ? light.shadow.map.texture
                     : null;

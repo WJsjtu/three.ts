@@ -19,8 +19,8 @@ export interface IMeshDistanceMaterialParameters extends IMaterialParameters {
 export class MeshDistanceMaterial extends Material {
     public readonly type: string = "MeshDepthMaterial";
 
-    public alphaMap: Texture = null;
-    public displacementMap: Texture = null;
+    public alphaMap: Texture | null = null;
+    public displacementMap: Texture | null = null;
     public displacementScale: number = 1;
     public displacementBias: number = 0;
 
@@ -28,7 +28,7 @@ export class MeshDistanceMaterial extends Material {
     public fog: boolean = false;
     public lights: boolean = false;
 
-    public map: Texture = null;
+    public map: Texture | null = null;
     public morphTargets: boolean = false;
     public nearDistance: number = 1;
     public referencePosition: Vector3 = new Vector3();

@@ -25,7 +25,7 @@ type InnerTextureSource =
 export type TextureSource = InnerTextureSource | InnerTextureSource[];
 
 export class Texture extends EventDispatcher {
-    public static DEFAULT_IMAGE: HTMLImageElement = null;
+    public static DEFAULT_IMAGE: HTMLImageElement;
     public static DEFAULT_MAPPING: number = UVMapping;
 
     public readonly id: number = textureId++;
@@ -67,7 +67,7 @@ export class Texture extends EventDispatcher {
     public version: number = 0;
 
     constructor(
-        image: TextureSource = Texture.DEFAULT_IMAGE,
+        image: TextureSource | null = Texture.DEFAULT_IMAGE,
         mapping: number = Texture.DEFAULT_MAPPING,
         wrapS: number = ClampToEdgeWrapping,
         wrapT: number = ClampToEdgeWrapping,

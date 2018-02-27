@@ -9,9 +9,9 @@ import { Material } from "../materials/Material";
 export class Scene extends Object3D {
     public readonly type: string = "Scene";
 
-    public background: Color | Texture | CubeTexture = null;
-    public fog: Fog | FogExp2 = null;
-    public overrideMaterial: Material = null;
+    public background: Color | Texture | CubeTexture | null = null;
+    public fog: Fog | FogExp2 | null = null;
+    public overrideMaterial: Material | null = null;
     public autoUpdate: boolean = true; // checked by the renderer
 
     public copy(source: Scene): this {

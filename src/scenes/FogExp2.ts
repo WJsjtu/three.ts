@@ -2,7 +2,7 @@ import { Color } from "../math/Color";
 
 export class FogExp2 {
     public name: string = "";
-    public color: Color = null;
+    public color: Color;
     public density: number = 0.00025;
 
     constructor(color: Color | number | string, density: number = 1) {

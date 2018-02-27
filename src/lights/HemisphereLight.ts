@@ -5,7 +5,7 @@ import { Light } from "./Light";
 export class HemisphereLight extends Light {
     public readonly type: string = "HemisphereLight";
     public castShadow: boolean = false;
-    public groundColor: Color = null;
+    public groundColor: Color;
 
     constructor(skyColor: Color, groundColor: Color, intensity: number) {
         super(skyColor, intensity);

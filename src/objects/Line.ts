@@ -12,8 +12,8 @@ import { LineSegments } from "./LineSegments";
 
 export class Line extends Object3D {
     public readonly type: string = "Line";
-    public geometry: BufferGeometry | Geometry = null;
-    public material: LineBasicMaterial = null;
+    public geometry: BufferGeometry | Geometry;
+    public material: LineBasicMaterial;
 
     constructor(
         geometry: BufferGeometry | Geometry = new BufferGeometry(),
@@ -26,10 +26,7 @@ export class Line extends Object3D {
         this.material = material;
     }
 
-    public raycast(
-        raycaster: Raycaster,
-        intersects: IIntersection[] = [],
-    ): IIntersection[] {
+    public raycast(raycaster: Raycaster, intersects: IIntersection[]): void {
         const precision: number = raycaster.linePrecision;
         const precisionSquared: number = precision * precision;
 
@@ -40,7 +37,7 @@ export class Line extends Object3D {
         if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
         const sphere: Sphere = new Sphere().copy(geometry.boundingSphere);
         sphere.applyMatrix4(matrixWorld);
-        if (raycaster.ray.intersectsSphere(sphere) === false) return null;
+        if (raycaster.ray.intersectsSphere(sphere) === false) return;
         const inverseMatrix: Matrix4 = new Matrix4().getInverse(matrixWorld);
         const ray: Ray = new Ray();
         ray.copy(raycaster.ray).applyMatrix4(inverseMatrix);
@@ -116,6 +113,8 @@ export class Line extends Object3D {
                     }
                     intersects.push({
                         distance: distance,
+                        face: null,
+                        faceIndex: null,
                         index: i,
                         object: this,
                         // What do we want? intersection point on the ray or on the segment??
@@ -146,6 +145,8 @@ export class Line extends Object3D {
                 }
                 intersects.push({
                     distance: distance,
+                    face: null,
+                    faceIndex: null,
                     index: i,
                     object: this,
                     // What do we want? intersection point on the ray or on the segment??
@@ -154,7 +155,6 @@ export class Line extends Object3D {
                 });
             }
         }
-        return intersects;
     }
 
     public clone(): Line {

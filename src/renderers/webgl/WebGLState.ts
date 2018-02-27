@@ -26,10 +26,10 @@ import { WebGLExtensions } from "./WebGLExtensions";
 import { WebGLUtils } from "./WebGLUtils";
 
 export class ColorBuffer {
-    protected context: WebGLRenderingContext = null;
+    protected context: WebGLRenderingContext;
     protected locked: boolean = false;
     protected color: Vector4 = new Vector4();
-    protected currentColorMask: boolean = false;
+    protected currentColorMask: boolean | null = null;
     protected currentColorClear: Vector4 = new Vector4(0, 0, 0, 0);
 
     constructor(context: WebGLRenderingContext) {
@@ -71,7 +71,7 @@ export class ColorBuffer {
 
     public reset(): this {
         this.locked = false;
-        this.currentColorMask = false;
+        this.currentColorMask = null;
         /**
          * set to invalid state
          */
@@ -81,12 +81,12 @@ export class ColorBuffer {
 }
 
 export class DepthBuffer {
-    protected context: WebGLRenderingContext = null;
-    protected capabilities: { [key: number]: boolean } = null;
+    protected context: WebGLRenderingContext;
+    protected capabilities: { [key: number]: boolean };
     protected locked: boolean = false;
-    protected currentDepthMask: boolean = false;
-    protected currentDepthFunc: number = 0;
-    protected currentDepthClear: number = 0;
+    protected currentDepthMask: boolean | null = null;
+    protected currentDepthFunc: number | null = null;
+    protected currentDepthClear: number | null = null;
 
     constructor(
         context: WebGLRenderingContext,
@@ -192,9 +192,9 @@ export class DepthBuffer {
 
     public reset(): this {
         this.locked = false;
-        this.currentDepthMask = false;
-        this.currentDepthFunc = 0;
-        this.currentDepthClear = 0;
+        this.currentDepthMask = null;
+        this.currentDepthFunc = null;
+        this.currentDepthClear = null;
         return this;
     }
 
@@ -216,17 +216,17 @@ export class DepthBuffer {
 }
 
 export class StencilBuffer {
-    protected context: WebGLRenderingContext = null;
-    protected capabilities: { [key: number]: boolean } = null;
+    protected context: WebGLRenderingContext;
+    protected capabilities: { [key: number]: boolean };
     protected locked: boolean = false;
-    protected currentStencilMask: number = 0;
-    protected currentStencilFunc: number = 0;
-    protected currentStencilRef: number = 0;
-    protected currentStencilFuncMask: number = 0;
-    protected currentStencilFail: number = 0;
-    protected currentStencilZFail: number = 0;
-    protected currentStencilZPass: number = 0;
-    protected currentStencilClear: number = 0;
+    protected currentStencilMask: number | null = null;
+    protected currentStencilFunc: number | null = null;
+    protected currentStencilRef: number | null = null;
+    protected currentStencilFuncMask: number | null = null;
+    protected currentStencilFail: number | null = null;
+    protected currentStencilZFail: number | null = null;
+    protected currentStencilZPass: number | null = null;
+    protected currentStencilClear: number | null = null;
 
     constructor(
         context: WebGLRenderingContext,
@@ -304,14 +304,14 @@ export class StencilBuffer {
 
     public reset(): this {
         this.locked = false;
-        this.currentStencilMask = 0;
-        this.currentStencilFunc = 0;
-        this.currentStencilRef = 0;
-        this.currentStencilFuncMask = 0;
-        this.currentStencilFail = 0;
-        this.currentStencilZFail = 0;
-        this.currentStencilZPass = 0;
-        this.currentStencilClear = 0;
+        this.currentStencilMask = null;
+        this.currentStencilFunc = null;
+        this.currentStencilRef = null;
+        this.currentStencilFuncMask = null;
+        this.currentStencilFail = null;
+        this.currentStencilZFail = null;
+        this.currentStencilZPass = null;
+        this.currentStencilClear = null;
         return this;
     }
 
@@ -336,21 +336,21 @@ export class WebGLState {
     public capabilities: { [key: number]: boolean } = {};
 
     public buffers: {
-        color: ColorBuffer;
-        depth: DepthBuffer;
-        stencil: StencilBuffer;
+        color: ColorBuffer | null;
+        depth: DepthBuffer | null;
+        stencil: StencilBuffer | null;
     } = {
         color: null,
         depth: null,
         stencil: null,
     };
 
-    public maxVertexAttributes: number = null;
-    public newAttributes: Uint8Array = null;
-    public enabledAttributes: Uint8Array = null;
-    public attributeDivisors: Uint8Array = null;
-    public maxTextures: number = null;
-    public version: number = null;
+    public maxVertexAttributes: number;
+    public newAttributes: Uint8Array;
+    public enabledAttributes: Uint8Array;
+    public attributeDivisors: Uint8Array;
+    public maxTextures: number;
+    public version: number;
     public lineWidthAvailable: boolean = false;
 
     public currentScissor: Vector4 = new Vector4();
@@ -358,29 +358,29 @@ export class WebGLState {
 
     public emptyTextures: { [key: number]: WebGLTexture } = {};
 
-    public currentFlipSided: boolean = false;
-    public currentCullFace: number = null;
+    public currentFlipSided: boolean | null = null;
+    public currentCullFace: number | null = null;
 
-    public currentBlending: number = null;
+    public currentBlending: number | null = null;
     public currentPremultipledAlpha: boolean = false;
 
-    public currentBlendEquation: number = null;
-    public currentBlendEquationAlpha: number = null;
+    public currentBlendEquation: number | null = null;
+    public currentBlendEquationAlpha: number | null = null;
 
-    public currentBlendSrc: number = null;
-    public currentBlendDst: number = null;
+    public currentBlendSrc: number | null = null;
+    public currentBlendDst: number | null = null;
 
-    public currentBlendSrcAlpha: number = null;
-    public currentBlendDstAlpha: number = null;
+    public currentBlendSrcAlpha: number | null = null;
+    public currentBlendDstAlpha: number | null = null;
 
-    public compressedTextureFormats: number[] = null;
+    public compressedTextureFormats: number[] | null = null;
 
-    public currentProgram: WebGLProgram = null;
+    public currentProgram: WebGLProgram | null = null;
 
-    public currentLineWidth: number = null;
+    public currentLineWidth: number | null = null;
 
-    public currentPolygonOffsetFactor: number = null;
-    public currentPolygonOffsetUnits: number = null;
+    public currentPolygonOffsetFactor: number | null = null;
+    public currentPolygonOffsetUnits: number | null = null;
 
     public currentTextureSlot: number | null = null;
 
@@ -388,9 +388,9 @@ export class WebGLState {
         [key: number]: { type: number; texture: WebGLTexture };
     } = {};
 
-    protected context: WebGLRenderingContext = null;
-    protected extensions: WebGLExtensions = null;
-    protected utils: WebGLUtils = null;
+    protected context: WebGLRenderingContext;
+    protected extensions: WebGLExtensions;
+    protected utils: WebGLUtils;
 
     constructor(
         context: WebGLRenderingContext,

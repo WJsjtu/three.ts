@@ -46,7 +46,7 @@ export interface IShader {
 }
 
 export class WebGLRenderer {
-    public context: WebGLRenderingContext = null;
+    public context: WebGLRenderingContext;
     public gammaInput: boolean;
     public gammaFactor: number;
     public gammaOutput: boolean;
@@ -58,7 +58,7 @@ export class WebGLRenderer {
     public toneMapping: number = LinearToneMapping;
     public state: WebGLState;
 
-    protected currentRendererTarget: WebGLRenderTarget;
+    protected currentRendererTarget: WebGLRenderTarget | null = null;
 
     public allocTextureUnit(): number {
         return 0;
@@ -66,18 +66,18 @@ export class WebGLRenderer {
 
     public renderBufferDirect(
         camera: Camera,
-        fog: Fog,
+        fog: Fog | null,
         geometry: BufferGeometry,
         material: Material,
         object: Object3D,
-        group: IGroup,
+        group: IGroup | null,
     ): void {}
 
     public setTexture2D(texture: Texture, unit: number) {}
 
     public setTextureCube(cubeTexture: CubeTexture, unit: number) {}
 
-    public getRenderTarget(): WebGLRenderTarget {
+    public getRenderTarget(): WebGLRenderTarget | null {
         return this.currentRendererTarget;
     }
 

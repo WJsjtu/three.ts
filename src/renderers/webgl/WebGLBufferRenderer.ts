@@ -6,9 +6,9 @@ import { IWebGLBufferWrapper } from "./WebGLAttributes";
 import { WebGLExtensions } from "./WebGLExtensions";
 
 export class WebGLBufferRenderer {
-    protected context: WebGLRenderingContext = null;
-    protected extensions: WebGLExtensions = null;
-    protected infoRender: IInfoRender = null;
+    protected context: WebGLRenderingContext;
+    protected extensions: WebGLExtensions;
+    protected infoRender: IInfoRender;
 
     protected mode: number = 0;
 

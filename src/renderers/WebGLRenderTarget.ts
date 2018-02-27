@@ -25,10 +25,10 @@ export class WebGLRenderTarget extends EventDispatcher {
     public scissor: Vector4;
     public scissorTest: boolean = false;
     public viewport: Vector4;
-    public texture: Texture = null;
+    public texture: Texture;
     public depthBuffer?: boolean;
     public stencilBuffer?: boolean;
-    public depthTexture?: boolean;
+    public depthTexture?: boolean | null; // Question type
 
     constructor(
         width: number,

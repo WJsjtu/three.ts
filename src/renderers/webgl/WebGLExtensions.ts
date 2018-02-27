@@ -1,5 +1,5 @@
 export class WebGLExtensions {
-    public context: WebGLRenderingContext = null;
+    public context: WebGLRenderingContext;
 
     protected extensions: { [key: string]: any } = {};
 

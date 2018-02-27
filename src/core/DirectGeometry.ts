@@ -30,8 +30,8 @@ export class DirectGeometry {
     public skinWeights: Vector4[] = [];
     public skinIndices: Vector4[] = [];
 
-    public boundingSphere: Sphere = null;
-    public boundingBox: Box3 = null;
+    public boundingSphere: Sphere | null = null;
+    public boundingBox: Box3 | null = null;
 
     public verticesNeedUpdate: boolean = false;
     public uvsNeedUpdate: boolean = false;

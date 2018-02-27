@@ -23,7 +23,7 @@ export type TypedArray =
 export class BufferAttribute {
     public readonly uuid: string = MathUtil.generateUUID();
     public name: string = "";
-    public array: TypedArray | undefined = undefined;
+    public array: TypedArray | undefined;
     public itemSize: number = 1;
     public count: number = 0;
     public normalized: boolean = false;
@@ -32,7 +32,7 @@ export class BufferAttribute {
     public version: number = 0;
 
     constructor(
-        array: TypedArray | undefined,
+        array?: TypedArray,
         itemSize: number = 0,
         normalized: boolean = false,
     ) {
@@ -46,7 +46,7 @@ export class BufferAttribute {
         if (value === true) this.version++;
     }
 
-    public setArray(array: TypedArray): this {
+    public setArray(array?: TypedArray): this {
         this.count = array !== undefined ? array.length / this.itemSize : 0;
         this.array = array;
         return this;
@@ -221,7 +221,7 @@ export class BufferAttribute {
     public getProperty(
         index: number,
         property: string,
-    ): Vector2 | Vector3 | Vector4 | number {
+    ): Vector2 | Vector3 | Vector4 | number | undefined {
         property = property.toLowerCase();
         if (
             property &&
@@ -271,7 +271,7 @@ export class BufferAttribute {
                 );
             }
         }
-        return null;
+        return undefined;
     }
 
     public clone(): BufferAttribute {

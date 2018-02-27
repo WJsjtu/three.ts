@@ -80,10 +80,8 @@ export class Object3D extends EventDispatcher {
 
     public raycast(
         raycaster: Raycaster,
-        intersections: IIntersection[] = [],
-    ): IIntersection[] {
-        return intersections;
-    }
+        intersections: IIntersection[],
+    ): void {}
 
     public applyMatrix(matrix: Matrix4): this {
         this.matrix.multiplyMatrices(matrix, this.matrix);

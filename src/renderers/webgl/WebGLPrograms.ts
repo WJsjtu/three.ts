@@ -172,9 +172,9 @@ export class WebGLPrograms {
         "dithering",
     ];
 
-    public renderer: WebGLRenderer = null;
-    public extensions: WebGLExtensions = null;
-    public capabilities: WebGLCapabilities = null;
+    public renderer: WebGLRenderer;
+    public extensions: WebGLExtensions;
+    public capabilities: WebGLCapabilities;
     public programs: WebGLProgramWrapper[];
 
     constructor(
@@ -247,7 +247,7 @@ export class WebGLPrograms {
                 );
             }
         }
-        const currentRenderTarget: WebGLRenderTarget = renderer.getRenderTarget();
+        const currentRenderTarget: WebGLRenderTarget | null = renderer.getRenderTarget();
         const parameters: IProgramParameters = {
             shaderID: shaderID,
             precision: precision,

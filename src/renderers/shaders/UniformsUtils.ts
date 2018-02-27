@@ -8,7 +8,7 @@ import { Texture } from "../../textures/Texture";
 import { NestUniformType } from "../webgl/WebGLUniforms";
 
 export interface IUniform {
-    value?: NestUniformType;
+    value?: NestUniformType | null;
     properties?: object;
     type?: string;
     needsUpdate?: boolean;

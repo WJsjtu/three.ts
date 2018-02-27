@@ -41,7 +41,7 @@ export class Geometry extends EventDispatcher {
      * Used in WebGLGeometries
      * @type {BufferGeometry}
      */
-    public bufferGeometry?: BufferGeometry = null;
+    public bufferGeometry?: BufferGeometry;
 
     public readonly id: number = (geometryId += 2);
     public readonly uuid: string = MathUtil.generateUUID();
@@ -61,8 +61,8 @@ export class Geometry extends EventDispatcher {
 
     public lineDistances: number[] = [];
 
-    public boundingBox: Box3 = null;
-    public boundingSphere: Sphere = null;
+    public boundingBox: Box3 | null = null;
+    public boundingSphere: Sphere | null = null;
 
     public elementsNeedUpdate: boolean = false;
     public verticesNeedUpdate: boolean = false;

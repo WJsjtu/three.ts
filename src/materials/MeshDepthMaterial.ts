@@ -18,16 +18,16 @@ export interface IMeshDepthMaterialParameters extends IMaterialParameters {
 export class MeshDepthMaterial extends Material {
     public readonly type: string = "MeshDepthMaterial";
 
-    public alphaMap: Texture = null;
+    public alphaMap: Texture | null = null;
     public depthPacking: number = BasicDepthPacking;
-    public displacementMap: Texture = null;
+    public displacementMap: Texture | null = null;
     public displacementScale: number = 1;
     public displacementBias: number = 0;
 
     public fog: boolean = false;
     public lights: boolean = false;
 
-    public map: Texture = null;
+    public map: Texture | null = null;
     public morphTargets: boolean = false;
     public skinning: boolean = false;
     public wireframe: boolean = false;

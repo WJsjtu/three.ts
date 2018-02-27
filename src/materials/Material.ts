@@ -64,14 +64,14 @@ export class Material extends EventDispatcher {
 
     public blending: number = NormalBlending;
     public blendDst: number = OneMinusSrcAlphaFactor;
-    public blendDstAlpha: number = null;
+    public blendDstAlpha: number | null = null;
     public blendEquation: number = AddEquation;
-    public blendEquationAlpha: number = null;
+    public blendEquationAlpha: number | null = null;
     public blendSrc: number = SrcAlphaFactor;
-    public blendSrcAlpha: number = null;
+    public blendSrcAlpha: number | null = null;
 
     public clipIntersection: boolean = false;
-    public clippingPlanes: Plane[] = [];
+    public clippingPlanes: Plane[] | null = null;
     public clipShadows: boolean = false;
 
     public colorWrite: boolean = true;
@@ -104,13 +104,13 @@ export class Material extends EventDispatcher {
      * "highp", "mediump" or "lowp"
      * @type {string}
      */
-    public precision: string = null;
+    public precision: string | null; // Question type
     public premultipliedAlpha: boolean = false;
 
     /**
      * For WebGLRenderList
      */
-    public program?: any = null;
+    public program?: any;
 
     /**
      * THREE.FrontSide  back side
@@ -118,7 +118,7 @@ export class Material extends EventDispatcher {
      * THREE.DoubleSide both sides
      * @type {number}
      */
-    public shadowSide: number = null;
+    public shadowSide: number | null; // Question type
     public side: number = FrontSide;
     public transparent: boolean = false;
     public userData: object = {};
@@ -257,7 +257,7 @@ export class Material extends EventDispatcher {
         this.clipShadows = source.clipShadows;
         this.clipIntersection = source.clipIntersection;
         const srcPlanes: Plane[] = source.clippingPlanes;
-        let dstPlanes: Plane[] = null;
+        let dstPlanes: Plane[] | null = null;
         if (srcPlanes !== null) {
             const n: number = srcPlanes.length;
             dstPlanes = new Array(n);

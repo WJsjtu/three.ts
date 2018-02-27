@@ -28,21 +28,21 @@ export interface IMeshBasicMaterialParameter extends IMaterialParameters {
 export class MeshBasicMaterial extends Material {
     public readonly type: string = "MeshBasicMaterial";
 
-    public alphaMap: Texture = null;
-    public aoMap: Texture = null;
+    public alphaMap: Texture | null = null;
+    public aoMap: Texture | null = null;
     public aoMapIntensity: number = 1.0;
     public color: Color = new Color().setHex(0xffffff);
     public combine: number = MultiplyOperation;
-    public envMap: CubeTexture = null;
+    public envMap: CubeTexture | null = null;
     public lights: boolean = false;
-    public lightMap: Texture = null;
+    public lightMap: Texture | null = null;
     public lightMapIntensity: number = 1.0;
-    public map: Texture = null;
+    public map: Texture | null = null;
     public morphTargets: boolean = false;
     public reflectivity: number = 1;
     public refractionRatio: number = 0.98;
     public skinning: boolean = false;
-    public specularMap: Texture = null;
+    public specularMap: Texture | null = null;
     public wireframe: boolean = false;
     public wireframeLinecap: string = "round";
     public wireframeLinejoin: string = "round";

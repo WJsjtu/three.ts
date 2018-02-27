@@ -21,7 +21,7 @@ export type TypedBufferAttribute =
     | InstancedInterleavedBufferAttribute;
 
 export class WebGLAttributes {
-    protected context: WebGLRenderingContext = null;
+    protected context: WebGLRenderingContext;
 
     protected buffers: { [key: string]: IWebGLBufferWrapper } = {};
 

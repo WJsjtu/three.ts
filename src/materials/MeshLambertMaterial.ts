@@ -32,20 +32,20 @@ export interface IMeshLambertMaterialParameters extends IMaterialParameters {
 export class MeshLambertMaterial extends Material {
     public readonly type: string = "MeshLambertMaterial";
 
-    public aoMap: Texture = null;
+    public aoMap: Texture | null = null;
     public aoMapIntensity: number = 1;
 
-    public alphaMap: Texture = null;
+    public alphaMap: Texture | null = null;
 
     public color: Color = new Color().setHex(0xffffff);
     public combine: number = MultiplyOperation;
 
     public emissive: Color = new Color().setHex(0x000000);
     public emissiveIntensity: number = 1;
-    public emissiveMap: Texture = null;
-    public envMap: CubeTexture = null;
+    public emissiveMap: Texture | null = null;
+    public envMap: CubeTexture | null = null;
 
-    public map: Texture = null;
+    public map: Texture | null = null;
     public morphNormals: boolean = true;
     public morphTargets: boolean = true;
 
@@ -53,7 +53,7 @@ export class MeshLambertMaterial extends Material {
     public lightMapIntensity: number = 1;
 
     public skinning: boolean = false;
-    public specularMap: Texture = null;
+    public specularMap: Texture | null = null;
 
     public reflectivity: number = 1;
     public refractionRatio: number = 0.98;

@@ -36,15 +36,15 @@ export class BufferGeometry extends EventDispatcher {
     public name: string = "";
     public readonly type: string = "BufferGeometry";
 
-    public index: BufferAttribute = null;
+    public index: BufferAttribute | null = null;
     public attributes: { [key: string]: BufferAttribute } = {};
 
     public morphAttributes: { [key: string]: BufferAttribute[] } = {};
 
     public groups: IGroup[] = [];
 
-    public boundingBox: Box3 = null;
-    public boundingSphere: Sphere = null;
+    public boundingBox: Box3 | null = null;
+    public boundingSphere: Sphere | null = null;
 
     public drawRange: IDrawRange = { start: 0, count: Infinity };
 
@@ -225,7 +225,7 @@ export class BufferGeometry extends EventDispatcher {
     public updateFromObject(object: ObjectWithGeometry): this {
         let geometry: Geometry | DirectGeometry = object.geometry as Geometry;
         if (object instanceof Mesh) {
-            let direct: DirectGeometry = geometry.directGeometry;
+            let direct: DirectGeometry | undefined = geometry.directGeometry;
             if (geometry.elementsNeedUpdate === true) {
                 direct = undefined;
                 geometry.elementsNeedUpdate = false;
@@ -481,7 +481,7 @@ export class BufferGeometry extends EventDispatcher {
     }
 
     public computeVertexNormals(): void {
-        const index: BufferAttribute = this.index;
+        const index: BufferAttribute | null = this.index;
         const attributes: { [key: string]: BufferAttribute } = this.attributes;
         const groups: IGroup[] = this.groups;
         if (attributes.position) {

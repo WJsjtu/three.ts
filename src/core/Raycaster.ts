@@ -11,8 +11,8 @@ import { Object3D } from "./Object3D";
 export interface IIntersection {
     index?: number;
     distanceToRay?: number;
-    face?: Face3;
-    faceIndex?: number;
+    face?: Face3 | null;
+    faceIndex?: number | null;
     uv?: Vector2;
     distance: number;
     point: Vector3;
@@ -46,7 +46,7 @@ export class Raycaster {
 
     public near: number = 0;
     public far: number = Infinity;
-    public ray: Ray = null;
+    public ray: Ray;
     public linePrecision: number = 1;
 
     constructor(

@@ -5,8 +5,8 @@ import { WebGLGeometries } from "./WebGLGeometries";
 import { IInfoRender } from "../WebGLRenderer";
 
 export class WebGLObjects {
-    protected geometries: WebGLGeometries = null;
-    protected infoRender: IInfoRender = null;
+    protected geometries: WebGLGeometries;
+    protected infoRender: IInfoRender;
     protected updateList: { [key: number]: number } = {};
 
     constructor(geometries: WebGLGeometries, infoRender: IInfoRender) {

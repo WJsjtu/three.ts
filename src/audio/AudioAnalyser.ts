@@ -1,8 +1,8 @@
 import { AudioWrapper } from "./Audio";
 
 export class AudioAnalyserWrapper {
-    public analyser: AnalyserNode = null;
-    public data: Uint8Array = null;
+    public analyser: AnalyserNode;
+    public data: Uint8Array;
 
     constructor(audio: AudioWrapper, fftSize: number = 2048) {
         this.analyser = audio.context.createAnalyser();

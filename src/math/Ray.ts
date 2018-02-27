@@ -315,7 +315,7 @@ export class Ray {
     public intersectTriangle(
         triangle: Triangle,
         backFaceCulling: boolean = false,
-    ): Vector3 {
+    ): Vector3 | null {
         // Compute the offset origin, edges, and normal.
         const a: Vector3 = triangle.a,
             b: Vector3 = triangle.b,

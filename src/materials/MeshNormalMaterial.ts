@@ -20,13 +20,13 @@ export interface IMeshNormalMaterialParameters extends IMaterialParameters {
 export class MeshNormalMaterial extends Material {
     public readonly type: string = "MeshNormalMaterial";
 
-    public bumpMap: Texture = null;
+    public bumpMap: Texture | null = null;
     public bumpScale: number = 1;
 
-    public normalMap: Texture = null;
+    public normalMap: Texture | null = null;
     public normalScale: Vector2 = new Vector2(1, 1);
 
-    public displacementMap: Texture = null;
+    public displacementMap: Texture | null = null;
     public displacementScale: number = 1;
     public displacementBias: number = 0;
 

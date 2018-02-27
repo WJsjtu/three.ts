@@ -7,9 +7,9 @@ const identityMatrix: Matrix4 = new Matrix4();
 
 export class Skeleton {
     public bones: Bone[] = [];
-    public boneMatrices: Float32Array = null;
+    public boneMatrices: Float32Array;
     public boneInverses: Matrix4[] = [];
-    public boneTexture?: DataTexture = null;
+    public boneTexture?: DataTexture;
 
     constructor(bones: Bone[] = [], boneInverses?: Matrix4[]) {
         this.bones = bones.slice(0);
@@ -88,14 +88,14 @@ export class Skeleton {
         }
     }
 
-    public getBoneByName(name: string): Bone | null {
+    public getBoneByName(name: string): Bone | undefined {
         for (let i: number = 0, il: number = this.bones.length; i < il; i++) {
             const bone: Bone = this.bones[i];
             if (bone.name === name) {
                 return bone;
             }
         }
-        return null;
+        return undefined;
     }
 
     public clone(): Skeleton {

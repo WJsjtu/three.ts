@@ -53,7 +53,7 @@ export class WebGLShadowMap {
     protected frustum: Frustum = new Frustum();
     protected projScreenMatrix: Matrix4 = new Matrix4();
     protected shadowMapSize: Vector2 = new Vector2();
-    protected maxShadowMapSize: Vector2 = null;
+    protected maxShadowMapSize: Vector2;
     protected lookTarget: Vector3 = new Vector3();
     protected lightPositionWorld: Vector3 = new Vector3();
     protected morphingFlag: number = 1;
@@ -72,8 +72,8 @@ export class WebGLShadowMap {
             [key: string]: MeshDepthMaterial | MeshDistanceMaterial;
         };
     } = {};
-    protected objects: WebGLObjects = null;
-    protected renderer: WebGLRenderer = null;
+    protected objects: WebGLObjects;
+    protected renderer: WebGLRenderer;
 
     protected shadowSide: { [key: number]: number };
     protected cubeDirections: Vector3[];
@@ -145,7 +145,7 @@ export class WebGLShadowMap {
         shadowCameraNear: number,
         shadowCameraFar: number,
     ): MeshDepthMaterial | MeshDistanceMaterial {
-        let result: MeshDepthMaterial | MeshDistanceMaterial = null;
+        let result: MeshDepthMaterial | MeshDistanceMaterial | null = null;
         let materialVariants:
             | MeshDepthMaterial[]
             | MeshDistanceMaterial[] = this.depthMaterials;

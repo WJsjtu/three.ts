@@ -5,7 +5,7 @@ import { LightShadow } from "./LightShadow";
 export class Light extends Object3D {
     public readonly type: string = "Light";
 
-    public color: Color = null;
+    public color: Color;
     public intensity: number = 1;
     public receiveShadow: boolean = false;
     public shadow?: LightShadow;

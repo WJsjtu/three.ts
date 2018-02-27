@@ -10,7 +10,7 @@ export class OrthographicCamera extends Camera {
     protected _zoom: number = 1;
     protected _near: number = 0.1;
     protected _far: number = 2000;
-    protected _view: IFrustumView = null;
+    protected _view: IFrustumView | null = null;
 
     constructor(
         left: number = 0,
@@ -96,7 +96,7 @@ export class OrthographicCamera extends Camera {
         this.updateProjectionMatrix();
     }
 
-    get view(): IFrustumView {
+    get view(): IFrustumView | null {
         return this._view;
     }
 

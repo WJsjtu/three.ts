@@ -4,9 +4,9 @@ import { IWebGLBufferWrapper } from "./WebGLAttributes";
 import { WebGLExtensions } from "./WebGLExtensions";
 
 export class WebGLIndexedBufferRenderer {
-    protected context: WebGLRenderingContext = null;
-    protected extensions: WebGLExtensions = null;
-    protected infoRender: IInfoRender = null;
+    protected context: WebGLRenderingContext;
+    protected extensions: WebGLExtensions;
+    protected infoRender: IInfoRender;
 
     protected mode: number = 0;
     protected type: number = 0;
@@ -59,7 +59,7 @@ export class WebGLIndexedBufferRenderer {
         count: number,
     ): this {
         const gl: WebGLRenderingContext = this.context;
-        const extension: ANGLE_instanced_arrays = this.extensions.get(
+        const extension: ANGLE_instanced_arrays | null = this.extensions.get(
             "ANGLE_instanced_arrays",
         );
         if (extension === null) {
