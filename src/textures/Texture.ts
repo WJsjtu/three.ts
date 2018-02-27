@@ -16,10 +16,14 @@ import { Vector2 } from "../math/Vector2";
 
 let textureId: number = 0;
 
-type InnerTextureSource =
+export type HTMLTextureSource =
     | HTMLImageElement
     | HTMLCanvasElement
     | HTMLVideoElement
+    | ImageBitmap;
+
+export type InnerTextureSource =
+    | HTMLTextureSource
     | { data?: any; width: number; height: number };
 
 export type TextureSource = InnerTextureSource | InnerTextureSource[];
