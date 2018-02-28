@@ -1,6 +1,11 @@
 import { Texture } from "./Texture";
 
 export class CanvasTexture extends Texture {
+    public image:
+        | HTMLImageElement
+        | HTMLCanvasElement
+        | ImageBitmap = Texture.DEFAULT_IMAGE;
+
     constructor(
         canvas: HTMLCanvasElement,
         mapping?: number,

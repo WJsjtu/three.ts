@@ -8,6 +8,8 @@ import {
 import { Texture } from "./Texture";
 
 export class DepthTexture extends Texture {
+    public image: { width: number; height: number };
+
     constructor(
         width: number,
         height: number,

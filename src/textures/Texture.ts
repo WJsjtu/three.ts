@@ -13,6 +13,7 @@ import { EventDispatcher } from "../core/EventDispatcher";
 import { MathUtil } from "../math/Math";
 import { Matrix3 } from "../math/Matrix3";
 import { Vector2 } from "../math/Vector2";
+import { TypedArray } from "../core/BufferAttribute";
 
 let textureId: number = 0;
 
@@ -22,20 +23,14 @@ export type HTMLTextureSource =
     | HTMLVideoElement
     | ImageBitmap;
 
-export type InnerTextureSource =
-    | HTMLTextureSource
-    | { data?: any; width: number; height: number };
-
-export type TextureSource = InnerTextureSource | InnerTextureSource[];
-
 export class Texture extends EventDispatcher {
-    public static DEFAULT_IMAGE: HTMLImageElement;
+    public static DEFAULT_IMAGE: undefined;
     public static DEFAULT_MAPPING: number = UVMapping;
 
     public readonly id: number = textureId++;
     public readonly uuid: string = MathUtil.generateUUID();
     public name: string = "";
-    public image: TextureSource = Texture.DEFAULT_IMAGE;
+    public image: HTMLTextureSource | any = Texture.DEFAULT_IMAGE;
     public mipmaps: Array<{ data: any; width: number; height: number }> = [];
     public mapping: number = Texture.DEFAULT_MAPPING;
     public wrapS: number = ClampToEdgeWrapping;
@@ -71,7 +66,7 @@ export class Texture extends EventDispatcher {
     public version: number = 0;
 
     constructor(
-        image: TextureSource | null = Texture.DEFAULT_IMAGE,
+        image: HTMLTextureSource | null = Texture.DEFAULT_IMAGE,
         mapping: number = Texture.DEFAULT_MAPPING,
         wrapS: number = ClampToEdgeWrapping,
         wrapT: number = ClampToEdgeWrapping,

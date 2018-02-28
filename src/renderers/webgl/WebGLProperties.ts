@@ -4,17 +4,15 @@ import { UniformSetterType } from "./WebGLUniforms";
 import { Object3D } from "../../core/Object3D";
 import { Material } from "../../materials/Material";
 import { Texture } from "../../textures/Texture";
-import { CubeTexture } from "../../textures/CubeTexture";
 import { WebGLRenderTarget } from "../WebGLRenderTarget";
 import { WebGLRenderTargetCube } from "../WebGLRenderTargetCube";
 
-export interface ITexture2DProperties {
+export interface ITextureProperties {
+    __version?: number;
     __webglInit?: boolean;
     __webglTexture?: WebGLTexture;
-}
-
-export interface ITextureCubeProperties {
     __image__webglTextureCube?: WebGLTexture;
+    __currentAnisotropy?: any;
 }
 
 export interface IRenderTargetProperties {
@@ -47,8 +45,7 @@ export interface IObjectProperties {
 export type WebGLPropertiesType =
     | IObjectProperties
     | IMaterialProperties
-    | ITexture2DProperties
-    | ITextureCubeProperties
+    | ITextureProperties
     | IRenderTargetProperties
     | IRenderTargetCubeProperties;
 
@@ -57,8 +54,7 @@ export class WebGLProperties {
 
     public get(object: Object3D): IObjectProperties;
     public get(object: Material): IMaterialProperties;
-    public get(object: Texture): ITexture2DProperties;
-    public get(object: CubeTexture): ITextureCubeProperties;
+    public get(object: Texture): ITextureProperties;
     public get(object: WebGLRenderTarget): IRenderTargetProperties;
     public get(object: WebGLRenderTargetCube): IRenderTargetCubeProperties;
     public get(object: any): WebGLPropertiesType {
@@ -76,7 +72,6 @@ export class WebGLProperties {
             | Object3D
             | Material
             | Texture
-            | CubeTexture
             | WebGLRenderTarget
             | WebGLRenderTargetCube,
     ): void {

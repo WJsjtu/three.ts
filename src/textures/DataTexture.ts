@@ -1,7 +1,10 @@
 import { NearestFilter } from "../constants";
 import { Texture } from "./Texture";
+import { TypedArray } from "../core/BufferAttribute";
 
 export class DataTexture extends Texture {
+    public image: { data: TypedArray; width: number; height: number };
+
     constructor(
         data: any,
         width: number,

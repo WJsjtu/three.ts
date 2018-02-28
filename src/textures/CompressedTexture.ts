@@ -1,6 +1,8 @@
 import { Texture } from "./Texture";
 
 export class CompressedTexture extends Texture {
+    public image: { width: number; height: number };
+
     constructor(
         mipmaps: Array<{ data: any; width: number; height: number }>,
         width: number,

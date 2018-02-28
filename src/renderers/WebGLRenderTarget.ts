@@ -3,6 +3,7 @@ import { Vector4 } from "../math/Vector4";
 import { LinearFilter } from "../constants";
 import { Texture } from "../textures/Texture";
 import { EventDispatcher } from "../core/EventDispatcher";
+import { DepthTexture } from "../textures/DepthTexture";
 
 export interface IWebGLRenderTargetOptions {
     minFilter?: number;
@@ -15,7 +16,7 @@ export interface IWebGLRenderTargetOptions {
     encoding?: number;
     depthBuffer?: boolean;
     stencilBuffer?: boolean;
-    depthTexture?: boolean;
+    depthTexture?: DepthTexture;
 }
 
 export class WebGLRenderTarget extends EventDispatcher {
@@ -28,7 +29,7 @@ export class WebGLRenderTarget extends EventDispatcher {
     public texture: Texture;
     public depthBuffer?: boolean;
     public stencilBuffer?: boolean;
-    public depthTexture?: boolean | null; // Question type
+    public depthTexture?: DepthTexture | null;
 
     constructor(
         width: number,

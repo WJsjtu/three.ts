@@ -1,9 +1,12 @@
 import { CubeReflectionMapping } from "../constants";
-import { Texture, TextureSource } from "./Texture";
+import { Texture, HTMLTextureSource } from "./Texture";
+import { DataTexture } from "./DataTexture";
 
 export class CubeTexture extends Texture {
+    public image: HTMLTextureSource[];
+
     constructor(
-        images: TextureSource = [],
+        images: HTMLTextureSource[] | DataTexture = [],
         mapping: number = CubeReflectionMapping,
         wrapS?: number,
         wrapT?: number,
@@ -15,7 +18,7 @@ export class CubeTexture extends Texture {
         encoding?: number,
     ) {
         super(
-            images,
+            images as any,
             mapping,
             wrapS,
             wrapT,
@@ -29,11 +32,11 @@ export class CubeTexture extends Texture {
         this.flipY = false;
     }
 
-    get images(): TextureSource {
+    get images(): HTMLTextureSource[] {
         return this.image;
     }
 
-    set images(images: TextureSource) {
+    set images(images: HTMLTextureSource[]) {
         this.image = images;
     }
 }

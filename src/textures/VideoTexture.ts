@@ -1,6 +1,8 @@
 import { Texture } from "./Texture";
 
 export class VideoTexture extends Texture {
+    public image: HTMLVideoElement = Texture.DEFAULT_IMAGE;
+
     constructor(
         video: HTMLVideoElement,
         mapping?: number,
