@@ -52,10 +52,7 @@ export class Line3 {
             .add(this.start);
     }
 
-    public closestPointToPointParameter(
-        point: Vector3,
-        clampToLine: boolean = false,
-    ): number {
+    public closestPointToPointParameter(point: Vector3, clampToLine: boolean = false): number {
         const startP = new Vector3();
         const startEnd = new Vector3();
         startP.copy(point).sub(this.start);
@@ -69,10 +66,7 @@ export class Line3 {
         return t;
     }
 
-    public closestPointToPoint(
-        point: Vector3,
-        clampToLine: boolean = false,
-    ): Vector3 {
+    public closestPointToPoint(point: Vector3, clampToLine: boolean = false): Vector3 {
         const t = this.closestPointToPointParameter(point, clampToLine);
         return this.delta()
             .multiplyScalar(t)

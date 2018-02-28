@@ -1,11 +1,7 @@
 import { Texture } from "../textures/Texture";
-import {
-    IMeshPhongMaterialParameters,
-    MeshPhongMaterial,
-} from "./MeshPhongMaterial";
+import { IMeshPhongMaterialParameters, MeshPhongMaterial } from "./MeshPhongMaterial";
 
-export interface IMeshToonMaterialParameters
-    extends IMeshPhongMaterialParameters {
+export interface IMeshToonMaterialParameters extends IMeshPhongMaterialParameters {
     gradientMap?: Texture;
 }
 

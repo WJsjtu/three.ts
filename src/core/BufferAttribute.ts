@@ -31,11 +31,7 @@ export class BufferAttribute {
     public updateRange: IBufferRange = { offset: 0, count: -1 };
     public version: number = 0;
 
-    constructor(
-        array?: TypedArray,
-        itemSize: number = 0,
-        normalized: boolean = false,
-    ) {
+    constructor(array?: TypedArray, itemSize: number = 0, normalized: boolean = false) {
         this.array = array;
         this.itemSize = itemSize;
         this.count = array !== undefined ? array.length / itemSize : 0;
@@ -75,11 +71,7 @@ export class BufferAttribute {
         return this.array.slice(offset, length);
     }
 
-    public copyAt(
-        index1: number,
-        attribute: BufferAttribute,
-        index2: number,
-    ): this {
+    public copyAt(index1: number, attribute: BufferAttribute, index2: number): this {
         index1 *= this.itemSize;
         index2 *= attribute.itemSize;
         for (let i: number = 0, l: number = this.itemSize; i < l; i++) {
@@ -158,116 +150,52 @@ export class BufferAttribute {
         return this;
     }
 
-    public setProperty(
-        index: number,
-        property: string,
-        value: Vector2 | Vector3 | Vector4 | number,
-    ): this {
+    public setProperty(index: number, property: string, value: Vector2 | Vector3 | Vector4 | number): this {
         property = property.toLowerCase();
-        if (
-            property &&
-            property.length <= 4 &&
-            property.replace(/[xyzw]/g, "").length === 0
-        ) {
+        if (property && property.length <= 4 && property.replace(/[xyzw]/g, "").length === 0) {
             const offsetMap = { x: 0, y: 1, z: 2 };
             if (property.length === 1 && typeof value === "number") {
-                this.array[
-                    index * this.itemSize + offsetMap[property.charAt(0)]
-                ] = value;
+                this.array[index * this.itemSize + offsetMap[property.charAt(0)]] = value;
             } else if (property.length === 2 && value instanceof Vector2) {
-                this.array[
-                    index * this.itemSize + offsetMap[property.charAt(0)]
-                ] =
-                    value.x;
-                this.array[
-                    index * this.itemSize + offsetMap[property.charAt(1)]
-                ] =
-                    value.y;
+                this.array[index * this.itemSize + offsetMap[property.charAt(0)]] = value.x;
+                this.array[index * this.itemSize + offsetMap[property.charAt(1)]] = value.y;
             } else if (property.length === 3 && value instanceof Vector3) {
-                this.array[
-                    index * this.itemSize + offsetMap[property.charAt(0)]
-                ] =
-                    value.x;
-                this.array[
-                    index * this.itemSize + offsetMap[property.charAt(1)]
-                ] =
-                    value.y;
-                this.array[
-                    index * this.itemSize + offsetMap[property.charAt(2)]
-                ] =
-                    value.z;
+                this.array[index * this.itemSize + offsetMap[property.charAt(0)]] = value.x;
+                this.array[index * this.itemSize + offsetMap[property.charAt(1)]] = value.y;
+                this.array[index * this.itemSize + offsetMap[property.charAt(2)]] = value.z;
             } else if (property.length === 4 && value instanceof Vector4) {
-                this.array[
-                    index * this.itemSize + offsetMap[property.charAt(0)]
-                ] =
-                    value.x;
-                this.array[
-                    index * this.itemSize + offsetMap[property.charAt(1)]
-                ] =
-                    value.y;
-                this.array[
-                    index * this.itemSize + offsetMap[property.charAt(2)]
-                ] =
-                    value.z;
-                this.array[
-                    index * this.itemSize + offsetMap[property.charAt(3)]
-                ] =
-                    value.w;
+                this.array[index * this.itemSize + offsetMap[property.charAt(0)]] = value.x;
+                this.array[index * this.itemSize + offsetMap[property.charAt(1)]] = value.y;
+                this.array[index * this.itemSize + offsetMap[property.charAt(2)]] = value.z;
+                this.array[index * this.itemSize + offsetMap[property.charAt(3)]] = value.w;
             }
         }
         return this;
     }
 
-    public getProperty(
-        index: number,
-        property: string,
-    ): Vector2 | Vector3 | Vector4 | number | undefined {
+    public getProperty(index: number, property: string): Vector2 | Vector3 | Vector4 | number | undefined {
         property = property.toLowerCase();
-        if (
-            property &&
-            property.length <= 4 &&
-            property.replace(/[xyzw]/g, "").length === 0
-        ) {
+        if (property && property.length <= 4 && property.replace(/[xyzw]/g, "").length === 0) {
             const offsetMap = { x: 0, y: 1, z: 2 };
             if (property.length === 1) {
-                return this.array[
-                    index * this.itemSize + offsetMap[property.charAt(0)]
-                ];
+                return this.array[index * this.itemSize + offsetMap[property.charAt(0)]];
             } else if (property.length === 2) {
                 return new Vector2(
-                    this.array[
-                        index * this.itemSize + offsetMap[property.charAt(0)]
-                    ],
-                    this.array[
-                        index * this.itemSize + offsetMap[property.charAt(1)]
-                    ],
+                    this.array[index * this.itemSize + offsetMap[property.charAt(0)]],
+                    this.array[index * this.itemSize + offsetMap[property.charAt(1)]],
                 );
             } else if (property.length === 3) {
                 return new Vector3(
-                    this.array[
-                        index * this.itemSize + offsetMap[property.charAt(0)]
-                    ],
-                    this.array[
-                        index * this.itemSize + offsetMap[property.charAt(1)]
-                    ],
-                    this.array[
-                        index * this.itemSize + offsetMap[property.charAt(2)]
-                    ],
+                    this.array[index * this.itemSize + offsetMap[property.charAt(0)]],
+                    this.array[index * this.itemSize + offsetMap[property.charAt(1)]],
+                    this.array[index * this.itemSize + offsetMap[property.charAt(2)]],
                 );
             } else if (property.length === 4) {
                 return new Vector4(
-                    this.array[
-                        index * this.itemSize + offsetMap[property.charAt(0)]
-                    ],
-                    this.array[
-                        index * this.itemSize + offsetMap[property.charAt(1)]
-                    ],
-                    this.array[
-                        index * this.itemSize + offsetMap[property.charAt(2)]
-                    ],
-                    this.array[
-                        index * this.itemSize + offsetMap[property.charAt(3)]
-                    ],
+                    this.array[index * this.itemSize + offsetMap[property.charAt(0)]],
+                    this.array[index * this.itemSize + offsetMap[property.charAt(1)]],
+                    this.array[index * this.itemSize + offsetMap[property.charAt(2)]],
+                    this.array[index * this.itemSize + offsetMap[property.charAt(3)]],
                 );
             }
         }
@@ -284,116 +212,56 @@ export class BufferAttribute {
 }
 
 export class Int8BufferAttribute extends BufferAttribute {
-    constructor(
-        array: number | ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
-    constructor(
-        array: ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
+    constructor(array: number | ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
+    constructor(array: ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
     constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Int8Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
 export class Uint8BufferAttribute extends BufferAttribute {
-    constructor(
-        array: number | ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
-    constructor(
-        array: ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
+    constructor(array: number | ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
+    constructor(array: ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
     constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Uint8Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
 export class Uint8ClampedBufferAttribute extends BufferAttribute {
-    constructor(
-        array: number | ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
-    constructor(
-        array: ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
+    constructor(array: number | ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
+    constructor(array: ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
     constructor(array: any, itemSize: number, normalized?: boolean) {
-        super(
-            new Uint8ClampedArray(array as ArrayBufferLike),
-            itemSize,
-            normalized,
-        );
+        super(new Uint8ClampedArray(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
 export class Int16BufferAttribute extends BufferAttribute {
-    constructor(
-        array: number | ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
-    constructor(
-        array: ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
+    constructor(array: number | ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
+    constructor(array: ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
     constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Int16Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
 export class Uint16BufferAttribute extends BufferAttribute {
-    constructor(
-        array: number | ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
-    constructor(
-        array: ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
+    constructor(array: number | ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
+    constructor(array: ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
     constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Uint16Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
 export class Int32BufferAttribute extends BufferAttribute {
-    constructor(
-        array: number | ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
-    constructor(
-        array: ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
+    constructor(array: number | ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
+    constructor(array: ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
     constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Int32Array(array as ArrayBufferLike), itemSize, normalized);
     }
 }
 
 export class Uint32BufferAttribute extends BufferAttribute {
-    constructor(
-        array: number | ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
-    constructor(
-        array: ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
+    constructor(array: number | ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
+    constructor(array: ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
     constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Uint32Array(array as ArrayBufferLike), itemSize, normalized);
     }
@@ -401,27 +269,15 @@ export class Uint32BufferAttribute extends BufferAttribute {
 
 export class Float32BufferAttribute extends BufferAttribute {
     constructor(array: number, itemSize: number, normalized?: boolean);
-    constructor(
-        array: ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
+    constructor(array: ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
     constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Float32Array(array), itemSize, normalized);
     }
 }
 
 export class Float64BufferAttribute extends BufferAttribute {
-    constructor(
-        array: number | ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
-    constructor(
-        array: ArrayBufferLike | ArrayLike<number>,
-        itemSize: number,
-        normalized?: boolean,
-    );
+    constructor(array: number | ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
+    constructor(array: ArrayBufferLike | ArrayLike<number>, itemSize: number, normalized?: boolean);
     constructor(array: any, itemSize: number, normalized?: boolean) {
         super(new Float64Array(array as ArrayBufferLike), itemSize, normalized);
     }

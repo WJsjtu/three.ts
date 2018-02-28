@@ -1,8 +1,4 @@
-import {
-    BufferAttribute,
-    IBufferRange,
-    TypedArray,
-} from "../../core/BufferAttribute";
+import { BufferAttribute, IBufferRange, TypedArray } from "../../core/BufferAttribute";
 import { InstancedBufferAttribute } from "../../core/InstancedBufferAttribute";
 import { InterleavedBufferAttribute } from "../../core/InterleavedBufferAttribute";
 import { InstancedInterleavedBufferAttribute } from "../../core/InstancedInterleavedBufferAttribute";
@@ -29,15 +25,10 @@ export class WebGLAttributes {
         this.context = context;
     }
 
-    protected createBuffer(
-        attribute: TypedBufferAttribute,
-        bufferType: number,
-    ): IWebGLBufferWrapper {
+    protected createBuffer(attribute: TypedBufferAttribute, bufferType: number): IWebGLBufferWrapper {
         const gl: WebGLRenderingContext = this.context;
         const array: TypedArray = attribute.array;
-        const usage: number = attribute.dynamic
-            ? gl.DYNAMIC_DRAW
-            : gl.STATIC_DRAW;
+        const usage: number = attribute.dynamic ? gl.DYNAMIC_DRAW : gl.STATIC_DRAW;
         const buffer = gl.createBuffer();
         gl.bindBuffer(bufferType, buffer);
         gl.bufferData(bufferType, array, usage);
@@ -49,9 +40,7 @@ export class WebGLAttributes {
         if (array instanceof Float32Array) {
             type = gl.FLOAT;
         } else if (array instanceof Float64Array) {
-            console.warn(
-                `THREE.WebGLAttributes: Unsupported data buffer format: Float64Array.`,
-            );
+            console.warn(`THREE.WebGLAttributes: Unsupported data buffer format: Float64Array.`);
         } else if (array instanceof Uint16Array) {
             type = gl.UNSIGNED_SHORT;
         } else if (array instanceof Int16Array) {
@@ -73,11 +62,7 @@ export class WebGLAttributes {
         };
     }
 
-    protected updateBuffer(
-        buffer: WebGLBuffer,
-        attribute: TypedBufferAttribute,
-        bufferType: number,
-    ): this {
+    protected updateBuffer(buffer: WebGLBuffer, attribute: TypedBufferAttribute, bufferType: number): this {
         const gl: WebGLRenderingContext = this.context;
         const array: TypedArray = attribute.array;
         const updateRange: IBufferRange = attribute.updateRange;
@@ -95,10 +80,7 @@ export class WebGLAttributes {
             gl.bufferSubData(
                 bufferType,
                 updateRange.offset * array.BYTES_PER_ELEMENT,
-                array.subarray(
-                    updateRange.offset,
-                    updateRange.offset + updateRange.count,
-                ),
+                array.subarray(updateRange.offset, updateRange.offset + updateRange.count),
             );
             updateRange.count = -1; // reset range
         }
@@ -122,10 +104,7 @@ export class WebGLAttributes {
     public update(attribute: TypedBufferAttribute, bufferType: number): this {
         const data = this.buffers[attribute.uuid];
         if (data === undefined) {
-            this.buffers[attribute.uuid] = this.createBuffer(
-                attribute,
-                bufferType,
-            );
+            this.buffers[attribute.uuid] = this.createBuffer(attribute, bufferType);
         } else if (data.version < attribute.version) {
             this.updateBuffer(data.buffer, attribute, bufferType);
             data.version = attribute.version;

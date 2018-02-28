@@ -21,14 +21,7 @@ export class Frustum {
         this.planes = [p0, p1, p2, p3, p4, p5];
     }
 
-    public set(
-        p0: Plane,
-        p1: Plane,
-        p2: Plane,
-        p3: Plane,
-        p4: Plane,
-        p5: Plane,
-    ): this {
+    public set(p0: Plane, p1: Plane, p2: Plane, p3: Plane, p4: Plane, p5: Plane): this {
         const planes: Plane[] = this.planes;
         planes[0].copy(p0);
         planes[1].copy(p1);
@@ -70,13 +63,7 @@ export class Frustum {
             me13: number = me[13],
             me14: number = me[14],
             me15: number = me[15];
-        const setPlane = (
-            plane: Plane,
-            x: number,
-            y: number,
-            z: number,
-            w: number,
-        ) => {
+        const setPlane = (plane: Plane, x: number, y: number, z: number, w: number) => {
             plane.normal.set(x, y, z);
             plane.constant = w;
             plane.normalize();
@@ -95,9 +82,7 @@ export class Frustum {
         if (geometry.boundingSphere === null) {
             geometry.computeBoundingSphere();
         }
-        const sphere = new Sphere()
-            .copy(geometry.boundingSphere)
-            .applyMatrix4(object.matrixWorld);
+        const sphere = new Sphere().copy(geometry.boundingSphere).applyMatrix4(object.matrixWorld);
         return this.intersectsSphere(sphere);
     }
 

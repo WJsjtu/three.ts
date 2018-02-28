@@ -188,11 +188,7 @@ export class WebGLLights {
         hemi: [],
     };
 
-    public setup(
-        lights: Light[],
-        shadows: LightShadow[],
-        camera: Camera,
-    ): this {
+    public setup(lights: Light[], shadows: LightShadow[], camera: Camera): this {
         const vector3: Vector3 = new Vector3();
         const matrix4: Matrix4 = new Matrix4();
         const matrix42: Matrix4 = new Matrix4();
@@ -217,22 +213,15 @@ export class WebGLLights {
             const color = light.color;
             const intensity = light.intensity;
             const distance = light.distance;
-            const shadowMap: Texture | null =
-                light.shadow && light.shadow.map
-                    ? light.shadow.map.texture
-                    : null;
+            const shadowMap: Texture | null = light.shadow && light.shadow.map ? light.shadow.map.texture : null;
 
             if (light instanceof AmbientLight) {
                 r += color.r * intensity;
                 g += color.g * intensity;
                 b += color.b * intensity;
             } else if (light instanceof DirectionalLight) {
-                const uniforms: IDirectionalLightUniforms = cache.get(
-                    light,
-                ) as IDirectionalLightUniforms;
-                uniforms.color
-                    .copy(light.color)
-                    .multiplyScalar(light.intensity);
+                const uniforms: IDirectionalLightUniforms = cache.get(light) as IDirectionalLightUniforms;
+                uniforms.color.copy(light.color).multiplyScalar(light.intensity);
                 uniforms.direction.setFromMatrixPosition(light.matrixWorld);
                 vector3.setFromMatrixPosition(light.target.matrixWorld);
                 uniforms.direction.sub(vector3);
@@ -245,14 +234,11 @@ export class WebGLLights {
                     uniforms.shadowMapSize = shadow.mapSize;
                 }
                 state.directionalShadowMap[directionalLength] = shadowMap;
-                state.directionalShadowMatrix[directionalLength] =
-                    light.shadow.matrix;
+                state.directionalShadowMatrix[directionalLength] = light.shadow.matrix;
                 state.directional[directionalLength] = uniforms;
                 directionalLength++;
             } else if (light instanceof SpotLight) {
-                const uniforms: ISpotLightUniforms = cache.get(
-                    light,
-                ) as ISpotLightUniforms;
+                const uniforms: ISpotLightUniforms = cache.get(light) as ISpotLightUniforms;
                 uniforms.position.setFromMatrixPosition(light.matrixWorld);
                 uniforms.position.applyMatrix4(viewMatrix);
                 uniforms.color.copy(color).multiplyScalar(intensity);
@@ -262,9 +248,7 @@ export class WebGLLights {
                 uniforms.direction.sub(vector3);
                 uniforms.direction.transformDirection(viewMatrix);
                 uniforms.coneCos = Math.cos(light.angle);
-                uniforms.penumbraCos = Math.cos(
-                    light.angle * (1 - light.penumbra),
-                );
+                uniforms.penumbraCos = Math.cos(light.angle * (1 - light.penumbra));
                 uniforms.decay = light.distance === 0 ? 0.0 : light.decay;
                 uniforms.shadow = light.castShadow;
                 if (light.castShadow) {
@@ -278,9 +262,7 @@ export class WebGLLights {
                 state.spot[spotLength] = uniforms;
                 spotLength++;
             } else if (light instanceof RectAreaLight) {
-                const uniforms: IRectAreaLightUniforms = cache.get(
-                    light,
-                ) as IRectAreaLightUniforms;
+                const uniforms: IRectAreaLightUniforms = cache.get(light) as IRectAreaLightUniforms;
 
                 // (a) intensity is the total visible light emitted
                 // uniforms.color.copy( color ).multiplyScalar( intensity / ( light.width * light.height * Math.PI ) );
@@ -308,14 +290,10 @@ export class WebGLLights {
                 state.rectArea[rectAreaLength] = uniforms;
                 rectAreaLength++;
             } else if (light instanceof PointLight) {
-                const uniforms: IPointLightUniforms = cache.get(
-                    light,
-                ) as IPointLightUniforms;
+                const uniforms: IPointLightUniforms = cache.get(light) as IPointLightUniforms;
                 uniforms.position.setFromMatrixPosition(light.matrixWorld);
                 uniforms.position.applyMatrix4(viewMatrix);
-                uniforms.color
-                    .copy(light.color)
-                    .multiplyScalar(light.intensity);
+                uniforms.color.copy(light.color).multiplyScalar(light.intensity);
                 uniforms.distance = light.distance;
                 uniforms.decay = light.distance === 0 ? 0.0 : light.decay;
                 uniforms.shadow = light.castShadow;
@@ -332,16 +310,12 @@ export class WebGLLights {
                 state.point[pointLength] = uniforms;
                 pointLength++;
             } else if (light instanceof HemisphereLight) {
-                const uniforms: IHemisphereLightUniforms = cache.get(
-                    light,
-                ) as IHemisphereLightUniforms;
+                const uniforms: IHemisphereLightUniforms = cache.get(light) as IHemisphereLightUniforms;
                 uniforms.direction.setFromMatrixPosition(light.matrixWorld);
                 uniforms.direction.transformDirection(viewMatrix);
                 uniforms.direction.normalize();
                 uniforms.skyColor.copy(light.color).multiplyScalar(intensity);
-                uniforms.groundColor
-                    .copy(light.groundColor)
-                    .multiplyScalar(intensity);
+                uniforms.groundColor.copy(light.groundColor).multiplyScalar(intensity);
                 state.hemi[hemisphereLength] = uniforms;
                 hemisphereLength++;
             }

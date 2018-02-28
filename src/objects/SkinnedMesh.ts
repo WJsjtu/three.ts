@@ -29,10 +29,7 @@ export class SkinnedMesh extends Mesh {
      * @param geometry
      * @param material
      */
-    constructor(
-        geometry: Geometry | BufferGeometry,
-        material?: Material | Material[],
-    ) {
+    constructor(geometry: Geometry | BufferGeometry, material?: Material | Material[]) {
         super(geometry, material);
         const bones: Bone[] = this.initBones();
         const skeleton: Skeleton = new Skeleton(bones);
@@ -42,17 +39,9 @@ export class SkinnedMesh extends Mesh {
 
     public initBones(): Bone[] {
         const bones: Bone[] = [];
-        if (
-            this.geometry &&
-            this.geometry instanceof Geometry &&
-            this.geometry.bones !== undefined
-        ) {
+        if (this.geometry && this.geometry instanceof Geometry && this.geometry.bones !== undefined) {
             // first, create array of 'Bone' objects from geometry data
-            for (
-                let i: number = 0, il: number = this.geometry.bones.length;
-                i < il;
-                i++
-            ) {
+            for (let i: number = 0, il: number = this.geometry.bones.length; i < il; i++) {
                 const gbone = this.geometry.bones[i];
                 // create new 'Bone' object
                 const bone: Bone = new Bone();
@@ -66,17 +55,9 @@ export class SkinnedMesh extends Mesh {
                 }
             }
             // second, create bone hierarchy
-            for (
-                let i: number = 0, il: number = this.geometry.bones.length;
-                i < il;
-                i++
-            ) {
+            for (let i: number = 0, il: number = this.geometry.bones.length; i < il; i++) {
                 const gbone = this.geometry.bones[i];
-                if (
-                    gbone.parent !== -1 &&
-                    gbone.parent !== null &&
-                    bones[gbone.parent] !== undefined
-                ) {
+                if (gbone.parent !== -1 && gbone.parent !== null && bones[gbone.parent] !== undefined) {
                     // subsequent bones in the hierarchy
                     bones[gbone.parent].add(bones[i]);
                 } else {
@@ -119,8 +100,7 @@ export class SkinnedMesh extends Mesh {
             }
         } else if (this.geometry && this.geometry instanceof BufferGeometry) {
             const vec: Vector4 = new Vector4();
-            const skinWeight: BufferAttribute = this.geometry.attributes
-                .skinWeight;
+            const skinWeight: BufferAttribute = this.geometry.attributes.skinWeight;
             for (let i: number = 0; i < skinWeight.count; i++) {
                 vec.x = skinWeight.getProperty(i, "x") as number;
                 vec.y = skinWeight.getProperty(i, "y") as number;
@@ -144,9 +124,7 @@ export class SkinnedMesh extends Mesh {
         } else if (this.bindMode === "detached") {
             this.bindMatrixInverse.getInverse(this.bindMatrix);
         } else {
-            console.warn(
-                "THREE.SkinnedMesh: Unrecognized bindMode: " + this.bindMode,
-            );
+            console.warn("THREE.SkinnedMesh: Unrecognized bindMode: " + this.bindMode);
         }
         return this;
     }

@@ -20,9 +20,7 @@ export class Skeleton {
             if (this.bones.length === boneInverses.length) {
                 this.boneInverses = boneInverses.slice(0);
             } else {
-                console.warn(
-                    "THREE.Skeleton boneInverses is the wrong length.",
-                );
+                console.warn("THREE.Skeleton boneInverses is the wrong length.");
                 for (let i = 0, il = this.bones.length; i < il; i++) {
                     this.boneInverses.push(new Matrix4());
                 }
@@ -60,11 +58,7 @@ export class Skeleton {
                 } else {
                     bone.matrix.copy(bone.matrixWorld);
                 }
-                bone.matrix.decompose(
-                    bone.position,
-                    bone.quaternion,
-                    bone.scale,
-                );
+                bone.matrix.decompose(bone.position, bone.quaternion, bone.scale);
             }
         }
     }
@@ -77,9 +71,7 @@ export class Skeleton {
         // flatten bone matrices to array
         for (let i: number = 0, il: number = bones.length; i < il; i++) {
             // compute the offset between the current and the original transform
-            const matrix: Matrix4 = bones[i]
-                ? bones[i].matrixWorld
-                : identityMatrix;
+            const matrix: Matrix4 = bones[i] ? bones[i].matrixWorld : identityMatrix;
             offsetMatrix.multiplyMatrices(matrix, boneInverses[i]);
             offsetMatrix.toArray(boneMatrices, i * 16);
         }
@@ -99,9 +91,9 @@ export class Skeleton {
     }
 
     public clone(): Skeleton {
-        return new (this.constructor as new (
-            bones: Bone[],
-            boneInverses: Matrix4[],
-        ) => Skeleton)(this.bones, this.boneInverses);
+        return new (this.constructor as new (bones: Bone[], boneInverses: Matrix4[]) => Skeleton)(
+            this.bones,
+            this.boneInverses,
+        );
     }
 }

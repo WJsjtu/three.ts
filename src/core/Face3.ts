@@ -40,18 +40,10 @@ export class Face3 {
         this.normal.copy(source.normal);
         this.color.copy(source.color);
         this.materialIndex = source.materialIndex;
-        for (
-            let i: number = 0, il: number = source.vertexNormals.length;
-            i < il;
-            i++
-        ) {
+        for (let i: number = 0, il: number = source.vertexNormals.length; i < il; i++) {
             this.vertexNormals[i] = source.vertexNormals[i].clone();
         }
-        for (
-            let i: number = 0, il: number = source.vertexColors.length;
-            i < il;
-            i++
-        ) {
+        for (let i: number = 0, il: number = source.vertexColors.length; i < il; i++) {
             this.vertexColors[i] = source.vertexColors[i].clone();
         }
         return this;

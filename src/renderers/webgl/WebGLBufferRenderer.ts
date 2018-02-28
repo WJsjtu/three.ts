@@ -12,11 +12,7 @@ export class WebGLBufferRenderer {
 
     protected mode: number = 0;
 
-    constructor(
-        context: WebGLRenderingContext,
-        extensions: WebGLExtensions,
-        infoRender: IInfoRender,
-    ) {
+    constructor(context: WebGLRenderingContext, extensions: WebGLExtensions, infoRender: IInfoRender) {
         this.context = context;
         this.extensions = extensions;
         this.infoRender = infoRender;
@@ -42,15 +38,9 @@ export class WebGLBufferRenderer {
         return this;
     }
 
-    public renderInstances(
-        geometry: InstancedBufferGeometry,
-        start: number,
-        count: number,
-    ): this {
+    public renderInstances(geometry: InstancedBufferGeometry, start: number, count: number): this {
         const gl: WebGLRenderingContext = this.context;
-        const extension: ANGLE_instanced_arrays = this.extensions.get(
-            "ANGLE_instanced_arrays",
-        );
+        const extension: ANGLE_instanced_arrays = this.extensions.get("ANGLE_instanced_arrays");
         if (extension === null) {
             console.error(
                 `THREE.WebGLIndexedBufferRenderer: using THREE.InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays.`,
@@ -60,19 +50,9 @@ export class WebGLBufferRenderer {
         const position: BufferAttribute = geometry.attributes.position;
         if (position instanceof InterleavedBufferAttribute) {
             count = position.count;
-            extension.drawArraysInstancedANGLE(
-                this.mode,
-                0,
-                count,
-                geometry.maxInstancedCount,
-            );
+            extension.drawArraysInstancedANGLE(this.mode, 0, count, geometry.maxInstancedCount);
         } else {
-            extension.drawArraysInstancedANGLE(
-                this.mode,
-                start,
-                count,
-                geometry.maxInstancedCount,
-            );
+            extension.drawArraysInstancedANGLE(this.mode, start, count, geometry.maxInstancedCount);
         }
 
         this.infoRender.calls++;

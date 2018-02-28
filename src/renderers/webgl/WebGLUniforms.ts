@@ -10,14 +10,7 @@ import { Matrix4 } from "../../math/Matrix4";
 import { WebGLRenderer } from "../WebGLRenderer";
 import { IUniform } from "../shaders/UniformsUtils";
 
-export type ArrayUniformSource =
-    | Vector2[]
-    | Vector3[]
-    | Vector4[]
-    | Matrix2[]
-    | Matrix3[]
-    | Matrix4[]
-    | Float32Array;
+export type ArrayUniformSource = Vector2[] | Vector3[] | Vector4[] | Matrix2[] | Matrix3[] | Matrix4[] | Float32Array;
 
 export type AllUniformType =
     | number
@@ -51,12 +44,7 @@ class UniformSetter {
     public addr: WebGLUniformLocation = 0;
     public size: number = 0;
 
-    constructor(
-        renderer: WebGLRenderer,
-        id: number | string,
-        activeInfo: WebGLActiveInfo,
-        addr: WebGLUniformLocation,
-    ) {
+    constructor(renderer: WebGLRenderer, id: number | string, activeInfo: WebGLActiveInfo, addr: WebGLUniformLocation) {
         this.renderer = renderer;
         this.context = renderer.context;
         this.id = id;
@@ -73,9 +61,7 @@ class UniformSetter {
         this.context.uniform1i(this.addr, v);
     };
 
-    public setValue2fv: (arg: AllUniformType) => void = (
-        v: Vector2 | Float32Array | number[],
-    ): void => {
+    public setValue2fv: (arg: AllUniformType) => void = (v: Vector2 | Float32Array | number[]): void => {
         if (v instanceof Float32Array || Array.isArray(v)) {
             this.context.uniform2fv(this.addr, v);
         } else {
@@ -83,9 +69,7 @@ class UniformSetter {
         }
     };
 
-    public setValue3fv: (arg: AllUniformType) => void = (
-        v: Vector3 | Float32Array | number[] | Color,
-    ): void => {
+    public setValue3fv: (arg: AllUniformType) => void = (v: Vector3 | Float32Array | number[] | Color): void => {
         if (v instanceof Float32Array || Array.isArray(v)) {
             this.context.uniform3fv(this.addr, v);
         } else if (v instanceof Vector3) {
@@ -95,9 +79,7 @@ class UniformSetter {
         }
     };
 
-    public setValue4fv: (arg: AllUniformType) => void = (
-        v: Vector4 | Float32Array | number[],
-    ): void => {
+    public setValue4fv: (arg: AllUniformType) => void = (v: Vector4 | Float32Array | number[]): void => {
         if (v instanceof Float32Array || Array.isArray(v)) {
             this.context.uniform4fv(this.addr, v);
         } else {
@@ -105,46 +87,28 @@ class UniformSetter {
         }
     };
 
-    public setValue2fm: (arg: AllUniformType) => void = (
-        v: Float32Array | number[] | Matrix2,
-    ): void => {
+    public setValue2fm: (arg: AllUniformType) => void = (v: Float32Array | number[] | Matrix2): void => {
         if (v instanceof Matrix2) {
             UniformSetter.mat2array.set(v.elements);
-            this.context.uniformMatrix2fv(
-                this.addr,
-                false,
-                UniformSetter.mat2array,
-            );
+            this.context.uniformMatrix2fv(this.addr, false, UniformSetter.mat2array);
         } else {
             this.context.uniformMatrix2fv(this.addr, false, v);
         }
     };
 
-    public setValue3fm: (arg: AllUniformType) => void = (
-        v: Float32Array | number[] | Matrix3,
-    ): void => {
+    public setValue3fm: (arg: AllUniformType) => void = (v: Float32Array | number[] | Matrix3): void => {
         if (v instanceof Matrix3) {
             UniformSetter.mat3array.set(v.elements);
-            this.context.uniformMatrix3fv(
-                this.addr,
-                false,
-                UniformSetter.mat3array,
-            );
+            this.context.uniformMatrix3fv(this.addr, false, UniformSetter.mat3array);
         } else {
             this.context.uniformMatrix3fv(this.addr, false, v);
         }
     };
 
-    public setValue4fm: (arg: AllUniformType) => void = (
-        v: Float32Array | number[] | Matrix4,
-    ): void => {
+    public setValue4fm: (arg: AllUniformType) => void = (v: Float32Array | number[] | Matrix4): void => {
         if (v instanceof Matrix4) {
             UniformSetter.mat4array.set(v.elements);
-            this.context.uniformMatrix4fv(
-                this.addr,
-                false,
-                UniformSetter.mat4array,
-            );
+            this.context.uniformMatrix4fv(this.addr, false, UniformSetter.mat4array);
         } else {
             this.context.uniformMatrix4fv(this.addr, false, v);
         }
@@ -156,29 +120,21 @@ class UniformSetter {
         this.renderer.setTexture2D(v || emptyTexture, unit);
     };
 
-    public setValueT6: (arg: AllUniformType) => void = (
-        v: CubeTexture,
-    ): void => {
+    public setValueT6: (arg: AllUniformType) => void = (v: CubeTexture): void => {
         const unit: number = this.renderer.allocTextureUnit();
         this.context.uniform1i(this.addr, unit);
         this.renderer.setTextureCube(v || emptyCubeTexture, unit);
     };
 
-    public setValue2iv: (arg: AllUniformType) => void = (
-        v: Int32Array | number[],
-    ): void => {
+    public setValue2iv: (arg: AllUniformType) => void = (v: Int32Array | number[]): void => {
         this.context.uniform2iv(this.addr, v);
     };
 
-    public setValue3iv: (arg: AllUniformType) => void = (
-        v: Int32Array | number[],
-    ): void => {
+    public setValue3iv: (arg: AllUniformType) => void = (v: Int32Array | number[]): void => {
         this.context.uniform3iv(this.addr, v);
     };
 
-    public setValue4iv: (arg: AllUniformType) => void = (
-        v: Int32Array | number[],
-    ): void => {
+    public setValue4iv: (arg: AllUniformType) => void = (v: Int32Array | number[]): void => {
         this.context.uniform4iv(this.addr, v);
     };
 
@@ -219,31 +175,21 @@ class UniformSetter {
             case 0x8b59:
                 return this.setValue4iv; // _VEC4
         }
-        throw new Error(
-            `Unknown type for getSingularSetter: ${this.activeInfo.type}`,
-        );
+        throw new Error(`Unknown type for getSingularSetter: ${this.activeInfo.type}`);
     }
 
-    public setValue1fv: (arg: AllUniformType) => void = (
-        v: Float32Array | number[],
-    ) => {
+    public setValue1fv: (arg: AllUniformType) => void = (v: Float32Array | number[]) => {
         this.context.uniform1fv(this.addr, v);
     };
 
-    public setValue1iv: (arg: AllUniformType) => void = (
-        v: Int32Array | number[],
-    ) => {
+    public setValue1iv: (arg: AllUniformType) => void = (v: Int32Array | number[]) => {
         this.context.uniform1iv(this.addr, v);
     };
 
     public static arrayCacheF32: Float32Array[] = [];
     public static arrayCacheI32: Int32Array[] = [];
 
-    public static flatten(
-        array: ArrayUniformSource,
-        nBlocks: number,
-        blockSize: number,
-    ): Float32Array {
+    public static flatten(array: ArrayUniformSource, nBlocks: number, blockSize: number): Float32Array {
         if (array instanceof Float32Array) {
             return array;
         }
@@ -275,48 +221,27 @@ class UniformSetter {
     }
 
     public setValueV2a: (arg: AllUniformType) => void = (v: Vector2[]) => {
-        this.context.uniform2fv(
-            this.addr,
-            UniformSetter.flatten(v, this.size, 2),
-        );
+        this.context.uniform2fv(this.addr, UniformSetter.flatten(v, this.size, 2));
     };
 
     public setValueV3a: (arg: AllUniformType) => void = (v: Vector3[]) => {
-        this.context.uniform3fv(
-            this.addr,
-            UniformSetter.flatten(v, this.size, 3),
-        );
+        this.context.uniform3fv(this.addr, UniformSetter.flatten(v, this.size, 3));
     };
 
     public setValueV4a: (arg: AllUniformType) => void = (v: Vector4[]) => {
-        this.context.uniform4fv(
-            this.addr,
-            UniformSetter.flatten(v, this.size, 4),
-        );
+        this.context.uniform4fv(this.addr, UniformSetter.flatten(v, this.size, 4));
     };
 
     public setValueM2a: (arg: AllUniformType) => void = (v: Matrix2[]) => {
-        this.context.uniformMatrix2fv(
-            this.addr,
-            false,
-            UniformSetter.flatten(v, this.size, 4),
-        );
+        this.context.uniformMatrix2fv(this.addr, false, UniformSetter.flatten(v, this.size, 4));
     };
 
     public setValueM3a: (arg: AllUniformType) => void = (v: Matrix3[]) => {
-        this.context.uniformMatrix3fv(
-            this.addr,
-            false,
-            UniformSetter.flatten(v, this.size, 9),
-        );
+        this.context.uniformMatrix3fv(this.addr, false, UniformSetter.flatten(v, this.size, 9));
     };
 
     public setValueM4a: (arg: AllUniformType) => void = (v: Matrix4[]) => {
-        this.context.uniformMatrix4fv(
-            this.addr,
-            false,
-            UniformSetter.flatten(v, this.size, 16),
-        );
+        this.context.uniformMatrix4fv(this.addr, false, UniformSetter.flatten(v, this.size, 16));
     };
 
     public setValueT1a: (arg: AllUniformType) => void = (v: Texture[]) => {
@@ -373,9 +298,7 @@ class UniformSetter {
             case 0x8b59:
                 return this.setValue4iv; // _VEC4
         }
-        throw new Error(
-            `Unknown type for getSingularSetter: ${this.activeInfo.type}`,
-        );
+        throw new Error(`Unknown type for getSingularSetter: ${this.activeInfo.type}`);
     }
 }
 
@@ -391,10 +314,7 @@ class PureArrayUniformSetter extends UniformSetter {
     }
 }
 
-export type UniformSetterType =
-    | SingleUniformSetter
-    | PureArrayUniformSetter
-    | StructuredUniformSetter;
+export type UniformSetterType = SingleUniformSetter | PureArrayUniformSetter | StructuredUniformSetter;
 
 class UniformContainer {
     public seq: UniformSetterType[] = [];
@@ -403,10 +323,7 @@ class UniformContainer {
 
 type AllUniformTypeObject = { [key: string]: AllUniformType };
 
-export type NestUniformType =
-    | AllUniformType
-    | AllUniformTypeObject
-    | { [key: string]: AllUniformTypeObject | null };
+export type NestUniformType = AllUniformType | AllUniformTypeObject | { [key: string]: AllUniformTypeObject | null };
 
 class StructuredUniformSetter extends UniformContainer {
     public id: number | string;
@@ -421,8 +338,7 @@ class StructuredUniformSetter extends UniformContainer {
         // are not allowed in structured uniforms.
         for (let i: number = 0, n: number = this.seq.length; i !== n; i++) {
             const u: UniformSetterType = this.seq[i];
-            const v: AllUniformType | { [key: string]: AllUniformType } =
-                value[u.id as string];
+            const v: AllUniformType | { [key: string]: AllUniformType } = value[u.id as string];
             /**
              * Well the following is the actually type logic...
              * if(u instanceof StructuredUniformSetter) {
@@ -460,27 +376,17 @@ export class WebGLUniformsWrapper extends UniformContainer {
         for (let i: number = 0; i < n; ++i) {
             const info: WebGLActiveInfo = gl.getActiveUniform(program, i),
                 path: string = info.name,
-                addr: WebGLUniformLocation = gl.getUniformLocation(
-                    program,
-                    path,
-                );
+                addr: WebGLUniformLocation = gl.getUniformLocation(program, path);
             this.parseUniform(info, addr, this);
         }
     }
 
-    protected static addUniform(
-        container: UniformContainer,
-        uniformObject: UniformSetterType,
-    ): void {
+    protected static addUniform(container: UniformContainer, uniformObject: UniformSetterType): void {
         container.seq.push(uniformObject);
         container.map[uniformObject.id as string] = uniformObject;
     }
 
-    protected parseUniform(
-        activeInfo: WebGLActiveInfo,
-        addr: WebGLUniformLocation,
-        container: UniformContainer,
-    ): void {
+    protected parseUniform(activeInfo: WebGLActiveInfo, addr: WebGLUniformLocation, container: UniformContainer): void {
         /**
          * Hard to explain, take an example.
          * When there is a single basic type uniform the typeInfo will be [\d\w_]+
@@ -505,34 +411,19 @@ export class WebGLUniformsWrapper extends UniformContainer {
             const idIsIndex: boolean = match[2] === "]";
             const subscript: string = match[3];
             if (idIsIndex) id = parseInt(id, 10); // convert to integer
-            if (
-                subscript === undefined ||
-                (subscript === "[" && matchEnd + 2 === pathLength)
-            ) {
+            if (subscript === undefined || (subscript === "[" && matchEnd + 2 === pathLength)) {
                 // bare name or "pure" bottom-level array "[0]" suffix
                 WebGLUniformsWrapper.addUniform(
                     container,
                     subscript === undefined
-                        ? new SingleUniformSetter(
-                              this.renderer,
-                              id,
-                              activeInfo,
-                              addr,
-                          )
-                        : new PureArrayUniformSetter(
-                              this.renderer,
-                              id,
-                              activeInfo,
-                              addr,
-                          ),
+                        ? new SingleUniformSetter(this.renderer, id, activeInfo, addr)
+                        : new PureArrayUniformSetter(this.renderer, id, activeInfo, addr),
                 );
                 break;
             } else {
                 // step into inner node / create it in case it doesn't exist
                 const map: { [key: string]: UniformSetterType } = container.map;
-                let next: StructuredUniformSetter = map[
-                    id
-                ] as StructuredUniformSetter;
+                let next: StructuredUniformSetter = map[id] as StructuredUniformSetter;
                 if (next === undefined) {
                     next = new StructuredUniformSetter(id);
                     WebGLUniformsWrapper.addUniform(container, next);
@@ -549,20 +440,14 @@ export class WebGLUniformsWrapper extends UniformContainer {
         }
     }
 
-    public setOptional(
-        object: { [key: string]: NestUniformType },
-        name: string,
-    ): void {
+    public setOptional(object: { [key: string]: NestUniformType }, name: string): void {
         const v: NestUniformType = object[name];
         if (v !== undefined) {
             this.setValue(name, v);
         }
     }
 
-    public static upload(
-        seq: UniformSetterType[],
-        values: { [key: string]: IUniform },
-    ) {
+    public static upload(seq: UniformSetterType[], values: { [key: string]: IUniform }) {
         for (let i: number = 0, n: number = seq.length; i !== n; i++) {
             const u: UniformSetterType = seq[i],
                 v = values[u.id];
@@ -573,10 +458,7 @@ export class WebGLUniformsWrapper extends UniformContainer {
         }
     }
 
-    public static seqWithValue(
-        seq: UniformSetterType[],
-        values: { [key: string]: any },
-    ): UniformSetterType[] {
+    public static seqWithValue(seq: UniformSetterType[], values: { [key: string]: any }): UniformSetterType[] {
         const r: UniformSetterType[] = [];
         for (let i: number = 0, n: number = seq.length; i !== n; i++) {
             const u: UniformSetterType = seq[i];

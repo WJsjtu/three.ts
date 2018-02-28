@@ -88,9 +88,7 @@ export { InstancedBufferGeometry } from "./core/InstancedBufferGeometry";
 export { BufferGeometry } from "./core/BufferGeometry";
 export { Geometry } from "./core/Geometry";
 export { InterleavedBufferAttribute } from "./core/InterleavedBufferAttribute";
-export {
-    InstancedInterleavedBufferAttribute,
-} from "./core/InstancedInterleavedBufferAttribute";
+export { InstancedInterleavedBufferAttribute } from "./core/InstancedInterleavedBufferAttribute";
 export { InstancedBufferAttribute } from "./core/InstancedBufferAttribute";
 export * from "./core/BufferAttribute";
 export { Face3 } from "./core/Face3";

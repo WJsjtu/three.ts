@@ -1,10 +1,7 @@
 import { Texture } from "./Texture";
 
 export class CanvasTexture extends Texture {
-    public image:
-        | HTMLImageElement
-        | HTMLCanvasElement
-        | ImageBitmap = Texture.DEFAULT_IMAGE;
+    public image: HTMLImageElement | HTMLCanvasElement | ImageBitmap = Texture.DEFAULT_IMAGE;
 
     constructor(
         canvas: HTMLCanvasElement,
@@ -17,17 +14,7 @@ export class CanvasTexture extends Texture {
         type?: number,
         anisotropy?: number,
     ) {
-        super(
-            canvas,
-            mapping,
-            wrapS,
-            wrapT,
-            magFilter,
-            minFilter,
-            format,
-            type,
-            anisotropy,
-        );
+        super(canvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy);
         this.needsUpdate = true;
     }
 }

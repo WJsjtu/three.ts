@@ -85,13 +85,7 @@ export class MathUtil {
      * @param b2
      * @returns {number}
      */
-    public static mapLinear(
-        x: number,
-        a1: number,
-        a2: number,
-        b1: number,
-        b2: number,
-    ): number {
+    public static mapLinear(x: number, a1: number, a2: number, b1: number, b2: number): number {
         return b1 + (x - a1) * (b2 - b1) / (a2 - a1);
     }
 

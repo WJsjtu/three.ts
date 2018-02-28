@@ -32,20 +32,12 @@ export class WebGLClipping {
             if (skipTransform !== true || dstArray === null) {
                 const flatSize: number = dstOffset + nPlanes * 4;
                 const viewMatrix: Matrix4 = camera.matrixWorldInverse;
-                const viewNormalMatrix: Matrix3 = new Matrix3().getNormalMatrix(
-                    viewMatrix,
-                );
+                const viewNormalMatrix: Matrix3 = new Matrix3().getNormalMatrix(viewMatrix);
                 if (dstArray === null || dstArray.length < flatSize) {
                     dstArray = new Float32Array(flatSize);
                 }
-                for (
-                    let i: number = 0, i4: number = dstOffset;
-                    i !== nPlanes;
-                    ++i, i4 += 4
-                ) {
-                    const plane: Plane = new Plane()
-                        .copy(planes[i])
-                        .applyMatrix4(viewMatrix, viewNormalMatrix);
+                for (let i: number = 0, i4: number = dstOffset; i !== nPlanes; ++i, i4 += 4) {
+                    const plane: Plane = new Plane().copy(planes[i]).applyMatrix4(viewMatrix, viewNormalMatrix);
                     plane.normal.toArray(dstArray, i4);
                     dstArray[i4 + 3] = plane.constant;
                 }
@@ -57,11 +49,7 @@ export class WebGLClipping {
         return dstArray;
     }
 
-    public init(
-        planes: Plane[],
-        enableLocalClipping: boolean,
-        camera: Camera,
-    ): boolean {
+    public init(planes: Plane[], enableLocalClipping: boolean, camera: Camera): boolean {
         const enabled: boolean =
             planes.length !== 0 ||
             enableLocalClipping ||
@@ -119,9 +107,7 @@ export class WebGLClipping {
                 this.resetGlobalState();
             }
         } else {
-            const nGlobal: number = this.renderingShadows
-                    ? 0
-                    : this.numGlobalPlanes,
+            const nGlobal: number = this.renderingShadows ? 0 : this.numGlobalPlanes,
                 lGlobal = nGlobal * 4;
             let dstArray: Float32Array | null = cache.clippingState || null;
             this.uniform.value = dstArray; // ensure unique state

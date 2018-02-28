@@ -79,10 +79,7 @@ export interface IProgramParameters {
     vertexColors: number;
 }
 
-function getTextureEncodingFromMap(
-    map: Texture | WebGLRenderTarget,
-    gammaOverrideLinear: boolean,
-): number {
+function getTextureEncodingFromMap(map: Texture | WebGLRenderTarget, gammaOverrideLinear: boolean): number {
     let encoding: number;
     if (!map) {
         encoding = LinearEncoding;
@@ -177,11 +174,7 @@ export class WebGLPrograms {
     public capabilities: WebGLCapabilities;
     public programs: WebGLProgramWrapper[];
 
-    constructor(
-        renderer: WebGLRenderer,
-        extensions: WebGLExtensions,
-        capabilities: WebGLCapabilities,
-    ) {
+    constructor(renderer: WebGLRenderer, extensions: WebGLExtensions, capabilities: WebGLCapabilities) {
         this.renderer = renderer;
         this.extensions = extensions;
         this.capabilities = capabilities;
@@ -200,17 +193,11 @@ export class WebGLPrograms {
             //  - limit here is ANGLE's 254 max uniform vectors
             //    (up to 54 should be safe)
             const nVertexUniforms: number = this.capabilities.maxVertexUniforms;
-            const nVertexMatrices: number = Math.floor(
-                (nVertexUniforms - 20) / 4,
-            );
+            const nVertexMatrices: number = Math.floor((nVertexUniforms - 20) / 4);
             const maxBones: number = Math.min(nVertexMatrices, bones.length);
             if (maxBones < bones.length) {
                 console.warn(
-                    "THREE.WebGLRenderer: Skeleton has " +
-                        bones.length +
-                        " bones. This GPU supports " +
-                        maxBones +
-                        ".",
+                    "THREE.WebGLRenderer: Skeleton has " + bones.length + " bones. This GPU supports " + maxBones + ".",
                 );
                 return 0;
             }
@@ -232,8 +219,7 @@ export class WebGLPrograms {
         const shaderID: string = WebGLPrograms.shaderIDs[material.type];
         // heuristics to create shader parameters according to lights in the scene
         // (not to blow over maxLights budget)
-        const maxBones: number =
-            object instanceof SkinnedMesh ? this.allocateBones(object) : 0;
+        const maxBones: number = object instanceof SkinnedMesh ? this.allocateBones(object) : 0;
         let precision: string = capabilities.precision;
         if (material.precision !== null) {
             precision = capabilities.getMaxPrecision(material.precision);
@@ -257,16 +243,10 @@ export class WebGLPrograms {
                 renderer.gammaOutput,
             ),
             map: !!material.map,
-            mapEncoding: getTextureEncodingFromMap(
-                material.map,
-                renderer.gammaInput,
-            ),
+            mapEncoding: getTextureEncodingFromMap(material.map, renderer.gammaInput),
             envMap: !!material.envMap,
             envMapMode: material.envMap && material.envMap.mapping,
-            envMapEncoding: getTextureEncodingFromMap(
-                material.envMap,
-                renderer.gammaInput,
-            ),
+            envMapEncoding: getTextureEncodingFromMap(material.envMap, renderer.gammaInput),
             envMapCubeUV:
                 !!material.envMap &&
                 (material.envMap.mapping === CubeUVReflectionMapping ||
@@ -274,10 +254,7 @@ export class WebGLPrograms {
             lightMap: !!material.lightMap,
             aoMap: !!material.aoMap,
             emissiveMap: !!material.emissiveMap,
-            emissiveMapEncoding: getTextureEncodingFromMap(
-                material.emissiveMap,
-                renderer.gammaInput,
-            ),
+            emissiveMapEncoding: getTextureEncodingFromMap(material.emissiveMap, renderer.gammaInput),
             bumpMap: !!material.bumpMap,
             normalMap: !!material.normalMap,
             displacementMap: !!material.displacementMap,
@@ -309,10 +286,7 @@ export class WebGLPrograms {
             numClippingPlanes: nClipPlanes,
             numClipIntersection: nClipIntersection,
             dithering: material.dithering,
-            shadowMapEnabled:
-                renderer.shadowMap.enabled &&
-                object.receiveShadow &&
-                shadows.length > 0,
+            shadowMapEnabled: renderer.shadowMap.enabled && object.receiveShadow && shadows.length > 0,
             shadowMapType: renderer.shadowMap.type,
             toneMapping: renderer.toneMapping,
             physicallyCorrectLights: renderer.physicallyCorrectLights,
@@ -320,18 +294,12 @@ export class WebGLPrograms {
             alphaTest: material.alphaTest,
             doubleSided: material.side === DoubleSide,
             flipSided: material.side === BackSide,
-            depthPacking:
-                material.depthPacking !== undefined
-                    ? material.depthPacking
-                    : false,
+            depthPacking: material.depthPacking !== undefined ? material.depthPacking : false,
         };
         return parameters;
     }
 
-    public getProgramCode(
-        material: Material,
-        parameters: IProgramParameters,
-    ): string {
+    public getProgramCode(material: Material, parameters: IProgramParameters): string {
         const array: any[] = [];
         if (parameters.shaderID) {
             array.push(parameters.shaderID);
@@ -363,11 +331,7 @@ export class WebGLPrograms {
     ): WebGLProgramWrapper {
         let program: WebGLProgramWrapper;
         // Check if code has been already compiled
-        for (
-            let p: number = 0, pl: number = this.programs.length;
-            p < pl;
-            p++
-        ) {
+        for (let p: number = 0, pl: number = this.programs.length; p < pl; p++) {
             const programInfo = this.programs[p];
             if (programInfo.code === code) {
                 program = programInfo;
@@ -376,14 +340,7 @@ export class WebGLPrograms {
             }
         }
         if (program === undefined) {
-            program = new WebGLProgramWrapper(
-                this.renderer,
-                this.extensions,
-                code,
-                material,
-                shader,
-                parameters,
-            );
+            program = new WebGLProgramWrapper(this.renderer, this.extensions, code, material, shader, parameters);
             this.programs.push(program);
         }
         return program;

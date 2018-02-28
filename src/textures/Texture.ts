@@ -17,11 +17,7 @@ import { TypedArray } from "../core/BufferAttribute";
 
 let textureId: number = 0;
 
-export type HTMLTextureSource =
-    | HTMLImageElement
-    | HTMLCanvasElement
-    | HTMLVideoElement
-    | ImageBitmap;
+export type HTMLTextureSource = HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageBitmap;
 
 export class Texture extends EventDispatcher {
     public static DEFAULT_IMAGE: undefined;

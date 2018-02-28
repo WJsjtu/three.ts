@@ -103,11 +103,7 @@ export class Vector3 {
             y: number = this.y,
             z: number = this.z;
         const e: number[] = m.elements;
-        return this.set(
-            e[0] * x + e[3] * y + e[6] * z,
-            e[1] * x + e[4] * y + e[7] * z,
-            e[2] * x + e[5] * y + e[8] * z,
-        );
+        return this.set(e[0] * x + e[3] * y + e[6] * z, e[1] * x + e[4] * y + e[7] * z, e[2] * x + e[5] * y + e[8] * z);
     }
 
     public applyMatrix4(matrix: Matrix4): this {
@@ -159,19 +155,11 @@ export class Vector3 {
     }
 
     public min(vec: Vector3): this {
-        return this.set(
-            Math.min(this.x, vec.x),
-            Math.min(this.y, vec.y),
-            Math.min(this.z, vec.z),
-        );
+        return this.set(Math.min(this.x, vec.x), Math.min(this.y, vec.y), Math.min(this.z, vec.z));
     }
 
     public max(vec: Vector3): this {
-        return this.set(
-            Math.max(this.x, vec.x),
-            Math.max(this.y, vec.y),
-            Math.max(this.z, vec.z),
-        );
+        return this.set(Math.max(this.x, vec.x), Math.max(this.y, vec.y), Math.max(this.z, vec.z));
     }
 
     public clamp(min: Vector3, max: Vector3): this {
@@ -220,11 +208,7 @@ export class Vector3 {
     }
 
     public lerp(vec: Vector3, alpha: number): this {
-        return this.set(
-            (vec.x - this.x) * alpha,
-            (vec.y - this.y) * alpha,
-            (vec.z - this.z) * alpha,
-        );
+        return this.set((vec.x - this.x) * alpha, (vec.y - this.y) * alpha, (vec.z - this.z) * alpha);
     }
 
     public lerpVectors(v1: Vector3, v2: Vector3, alpha: number): this {
@@ -240,11 +224,7 @@ export class Vector3 {
         const bx: number = vec.x,
             by: number = vec.y,
             bz: number = vec.z;
-        return this.set(
-            ay * bz - az * by,
-            az * bx - ax * bz,
-            ax * by - ay * bx,
-        );
+        return this.set(ay * bz - az * by, az * bx - ax * bz, ax * by - ay * bx);
     }
 
     public projectOnVector(vector: Vector3): this {
@@ -270,8 +250,7 @@ export class Vector3 {
     }
 
     public angleTo(v: Vector3): number {
-        const theta: number =
-            this.dot(v) / Math.sqrt(this.lengthSquared() * v.lengthSquared());
+        const theta: number = this.dot(v) / Math.sqrt(this.lengthSquared() * v.lengthSquared());
         return Math.acos(MathUtil.clamp(theta, -1, 1));
     }
 
@@ -313,10 +292,7 @@ export class Vector3 {
         return this.set(array[offset], array[offset + 1], array[offset + 2]);
     }
 
-    public toArray(
-        array: number[] | TypedArray = [],
-        offset: number = 0,
-    ): number[] | TypedArray {
+    public toArray(array: number[] | TypedArray = [], offset: number = 0): number[] | TypedArray {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         array[offset + 2] = this.z;

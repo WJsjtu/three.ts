@@ -96,11 +96,7 @@ export class Box3 {
      * @returns {boolean}
      */
     public isEmpty(): boolean {
-        return (
-            this.max.x < this.min.x ||
-            this.max.y < this.min.y ||
-            this.max.z < this.min.z
-        );
+        return this.max.x < this.min.x || this.max.y < this.min.y || this.max.z < this.min.z;
     }
 
     public getCenter(): Vector3 {
@@ -115,9 +111,7 @@ export class Box3 {
 
     public getSize(): Vector3 {
         const result = new Vector3();
-        return this.isEmpty()
-            ? result.set(0, 0, 0)
-            : result.copy(this.max).sub(this.min);
+        return this.isEmpty() ? result.set(0, 0, 0) : result.copy(this.max).sub(this.min);
     }
 
     public expandByPoint(point: Vector3): this {
@@ -151,29 +145,18 @@ export class Box3 {
             if (geometry !== undefined) {
                 if (geometry instanceof Geometry) {
                     const vertices: Vector3[] = geometry.vertices;
-                    for (
-                        let i: number = 0, l: number = vertices.length;
-                        i < l;
-                        i++
-                    ) {
+                    for (let i: number = 0, l: number = vertices.length; i < l; i++) {
                         const v1: Vector3 = new Vector3().copy(vertices[i]);
                         v1.applyMatrix4(node.matrixWorld);
                         this.expandByPoint(v1);
                     }
                 } else if (geometry instanceof BufferGeometry) {
-                    const attribute: BufferAttribute =
-                        geometry.attributes.position;
+                    const attribute: BufferAttribute = geometry.attributes.position;
                     if (attribute !== undefined) {
-                        for (
-                            let i: number = 0, l: number = attribute.count;
-                            i < l;
-                            i++
-                        ) {
-                            const v1: Vector3 = vectorFromBufferAttribute(
-                                new Vector3(),
-                                attribute,
-                                i,
-                            ).applyMatrix4(node.matrixWorld);
+                        for (let i: number = 0, l: number = attribute.count; i < l; i++) {
+                            const v1: Vector3 = vectorFromBufferAttribute(new Vector3(), attribute, i).applyMatrix4(
+                                node.matrixWorld,
+                            );
                             this.expandByPoint(v1);
                         }
                     }
@@ -245,10 +228,7 @@ export class Box3 {
      */
     public intersectsSphere(sphere: Sphere): boolean {
         const closestPoint: Vector3 = this.clampPoint(sphere.center);
-        return (
-            closestPoint.distanceToSquared(sphere.center) <=
-            sphere.radius * sphere.radius
-        );
+        return closestPoint.distanceToSquared(sphere.center) <= sphere.radius * sphere.radius;
     }
 
     /**
@@ -288,9 +268,7 @@ export class Box3 {
     }
 
     public distanceToPoint(point: Vector3): number {
-        const clampedPoint: Vector3 = new Vector3()
-            .copy(point)
-            .clamp(this.min, this.max);
+        const clampedPoint: Vector3 = new Vector3().copy(point).clamp(this.min, this.max);
         return clampedPoint.sub(point).length();
     }
 

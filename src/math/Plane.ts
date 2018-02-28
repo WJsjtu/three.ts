@@ -20,10 +20,7 @@ export class Plane {
         return this;
     }
 
-    public setFromNormalAndCoplanarPoint(
-        normal: Vector3,
-        point: Vector3,
-    ): this {
+    public setFromNormalAndCoplanarPoint(normal: Vector3, point: Vector3): this {
         this.normal.copy(normal);
         this.constant = -point.dot(this.normal);
         return this;
@@ -95,8 +92,7 @@ export class Plane {
             // Unsure if this is the correct method to handle this case.
             return undefined;
         }
-        const t: number =
-            -(line.start.dot(this.normal) + this.constant) / denominator;
+        const t: number = -(line.start.dot(this.normal) + this.constant) / denominator;
         if (t < 0 || t > 1) {
             return undefined;
         }
@@ -126,14 +122,9 @@ export class Plane {
     }
 
     public applyMatrix4(matrix: Matrix4, optionalNormalMatrix?: Matrix3): this {
-        const normalMatrix: Matrix3 =
-            optionalNormalMatrix || new Matrix3().getNormalMatrix(matrix);
-        const referencePoint: Vector3 = this.coplanarPoint().applyMatrix4(
-            matrix,
-        );
-        const normal: Vector3 = this.normal
-            .applyMatrix3(normalMatrix)
-            .normalize();
+        const normalMatrix: Matrix3 = optionalNormalMatrix || new Matrix3().getNormalMatrix(matrix);
+        const referencePoint: Vector3 = this.coplanarPoint().applyMatrix4(matrix);
+        const normal: Vector3 = this.normal.applyMatrix3(normalMatrix).normalize();
         this.constant = -referencePoint.dot(normal);
         return this;
     }
@@ -144,8 +135,6 @@ export class Plane {
     }
 
     public equals(plane: Plane): boolean {
-        return (
-            plane.normal.equals(this.normal) && plane.constant === this.constant
-        );
+        return plane.normal.equals(this.normal) && plane.constant === this.constant;
     }
 }

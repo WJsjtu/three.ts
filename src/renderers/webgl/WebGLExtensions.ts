@@ -47,9 +47,7 @@ export class WebGLExtensions {
                 extension = gl.getExtension(name);
         }
         if (extension === null) {
-            console.warn(
-                `THREE.WebGLRenderer: ${name} extension not supported.`,
-            );
+            console.warn(`THREE.WebGLRenderer: ${name} extension not supported.`);
         }
         this.extensions[name] = extension;
         return extension;

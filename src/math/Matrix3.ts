@@ -51,17 +51,7 @@ export class Matrix3 {
 
     public setFromMatrix4(mat4: Matrix4): this {
         const me: number[] = mat4.elements;
-        return this.set(
-            me[0],
-            me[4],
-            me[8],
-            me[1],
-            me[5],
-            me[9],
-            me[2],
-            me[6],
-            me[10],
-        );
+        return this.set(me[0], me[4], me[8], me[1], me[5], me[9], me[2], me[6], me[10]);
     }
 
     public multiply(mat3: Matrix3): this {
@@ -137,20 +127,10 @@ export class Matrix3 {
             g: number = te[6],
             h: number = te[7],
             i: number = te[8];
-        return (
-            a * e * i -
-            a * f * h -
-            b * d * i +
-            b * f * g +
-            c * d * h -
-            c * e * g
-        );
+        return a * e * i - a * f * h - b * d * i + b * f * g + c * d * h - c * e * g;
     }
 
-    public getInverse(
-        matrix: Matrix3,
-        throwOnDegenerate: boolean = false,
-    ): this {
+    public getInverse(matrix: Matrix3, throwOnDegenerate: boolean = false): this {
         const me: number[] = matrix.elements,
             te: number[] = this.elements,
             n11: number = me[0],
@@ -302,10 +282,7 @@ export class Matrix3 {
         return this;
     }
 
-    public toArray(
-        array: number[] | TypedArray = [],
-        offset: number = 0,
-    ): number[] | TypedArray {
+    public toArray(array: number[] | TypedArray = [], offset: number = 0): number[] | TypedArray {
         const te: number[] = this.elements;
 
         array[offset] = te[0];

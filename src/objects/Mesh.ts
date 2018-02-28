@@ -46,18 +46,13 @@ export class Mesh extends Object3D {
         if (material.side === BackSide) {
             intersect = ray.intersectTriangle(new Triangle(pC, pB, pA), true);
         } else {
-            intersect = ray.intersectTriangle(
-                new Triangle(pC, pB, pA),
-                material.side !== DoubleSide,
-            );
+            intersect = ray.intersectTriangle(new Triangle(pC, pB, pA), material.side !== DoubleSide);
         }
         if (intersect === null) return null;
         point.copy(intersect);
         intersectionPointWorld.copy(point);
         intersectionPointWorld.applyMatrix4(object.matrixWorld);
-        const distance: number = raycaster.ray.origin.distanceTo(
-            intersectionPointWorld,
-        );
+        const distance: number = raycaster.ray.origin.distanceTo(intersectionPointWorld);
         if (distance < raycaster.near || distance > raycaster.far) return null;
         return {
             distance: distance,
@@ -100,13 +95,7 @@ export class Mesh extends Object3D {
                 const uvA = vectorFromBufferAttribute(new Vector2(), uv, a);
                 const uvB = vectorFromBufferAttribute(new Vector2(), uv, b);
                 const uvC = vectorFromBufferAttribute(new Vector2(), uv, c);
-                intersection.uv = Mesh.uvIntersection(
-                    intersectionPoint,
-                    triangle,
-                    uvA,
-                    uvB,
-                    uvC,
-                );
+                intersection.uv = Mesh.uvIntersection(intersectionPoint, triangle, uvA, uvB, uvC);
             }
             intersection.face = new Face3(a, b, c, triangle.normal());
             intersection.faceIndex = a;
@@ -143,20 +132,13 @@ export class Mesh extends Object3D {
     public updateMorphTargets(): this {
         const geometry: BufferGeometry | Geometry = this.geometry;
         if (geometry instanceof BufferGeometry) {
-            const morphAttributes: { [key: string]: BufferAttribute[] } =
-                geometry.morphAttributes;
+            const morphAttributes: { [key: string]: BufferAttribute[] } = geometry.morphAttributes;
             const keys: string[] = Object.keys(morphAttributes);
             if (keys.length > 0) {
-                const morphAttribute: BufferAttribute[] =
-                    morphAttributes[keys[0]];
+                const morphAttribute: BufferAttribute[] = morphAttributes[keys[0]];
                 if (morphAttribute !== undefined) {
-                    for (
-                        let m: number = 0, ml: number = morphAttribute.length;
-                        m < ml;
-                        m++
-                    ) {
-                        const name: string =
-                            morphAttribute[m].name || String(m);
+                    for (let m: number = 0, ml: number = morphAttribute.length; m < ml; m++) {
+                        const name: string = morphAttribute[m].name || String(m);
                         this.morphTargetInfluences.push(0);
                         this.morphTargetDictionary[name] = m;
                     }
@@ -165,11 +147,7 @@ export class Mesh extends Object3D {
         } else if (geometry instanceof Geometry) {
             const morphTargets: IMorphTarget[] = geometry.morphTargets;
             if (morphTargets !== undefined && morphTargets.length > 0) {
-                for (
-                    let m: number = 0, ml: number = morphTargets.length;
-                    m < ml;
-                    m++
-                ) {
+                for (let m: number = 0, ml: number = morphTargets.length; m < ml; m++) {
                     const name: string = morphTargets[m].name || String(m);
                     this.morphTargetInfluences.push(0);
                     this.morphTargetDictionary[name] = m;
@@ -186,9 +164,7 @@ export class Mesh extends Object3D {
         if (material === undefined) return;
         // Checking boundingSphere distance to ray
         if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
-        const sphere: Sphere = new Sphere()
-            .copy(geometry.boundingSphere)
-            .applyMatrix4(matrixWorld);
+        const sphere: Sphere = new Sphere().copy(geometry.boundingSphere).applyMatrix4(matrixWorld);
         if (raycaster.ray.intersectsSphere(sphere) === false) return;
         const inverseMatrix: Matrix4 = new Matrix4().getInverse(matrixWorld);
         const ray = new Ray().copy(raycaster.ray).applyMatrix4(inverseMatrix);
@@ -202,11 +178,7 @@ export class Mesh extends Object3D {
             const uv: BufferAttribute = geometry.attributes.uv;
             if (index !== null) {
                 // indexed buffer geometry
-                for (
-                    let i: number = 0, l: number = index.count;
-                    i < l;
-                    i += 3
-                ) {
+                for (let i: number = 0, l: number = index.count; i < l; i += 3) {
                     const a: number = index.getProperty(i, "x") as number;
                     const b: number = index.getProperty(i + 1, "x") as number;
                     const c: number = index.getProperty(i + 2, "x") as number;
@@ -227,11 +199,7 @@ export class Mesh extends Object3D {
                 }
             } else if (position !== undefined) {
                 // non-indexed buffer geometry
-                for (
-                    let i: number = 0, l: number = position.count;
-                    i < l;
-                    i += 3
-                ) {
+                for (let i: number = 0, l: number = position.count; i < l; i += 3) {
                     const a: number = i;
                     const b: number = i + 1;
                     const c: number = i + 2;
@@ -259,9 +227,7 @@ export class Mesh extends Object3D {
             if (faceVertexUvs.length > 0) uvs = faceVertexUvs;
             for (let f: number = 0, fl: number = faces.length; f < fl; f++) {
                 const face: Face3 = faces[f];
-                const faceMaterial: Material = Array.isArray(material)
-                    ? material[face.materialIndex]
-                    : material;
+                const faceMaterial: Material = Array.isArray(material) ? material[face.materialIndex] : material;
                 if (faceMaterial === undefined) continue;
                 let fvA: Vector3 = vertices[face.a];
                 let fvB: Vector3 = vertices[face.b];
@@ -271,11 +237,7 @@ export class Mesh extends Object3D {
                     const vA = new Vector3(),
                         vB = new Vector3(),
                         vC = new Vector3();
-                    for (
-                        let t: number = 0, tl: number = morphTargets.length;
-                        t < tl;
-                        t++
-                    ) {
+                    for (let t: number = 0, tl: number = morphTargets.length; t < tl; t++) {
                         const influence: number = this.morphTargetInfluences[t];
                         if (influence === 0) continue;
                         const targets: Vector3[] = morphTargets[t].vertices;

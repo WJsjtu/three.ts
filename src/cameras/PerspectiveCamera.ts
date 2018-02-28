@@ -91,12 +91,7 @@ export class PerspectiveCamera extends Camera {
         this.updateProjectionMatrix();
     }
 
-    constructor(
-        fov: number = 50,
-        aspect: number = 1,
-        near: number = 0.1,
-        far: number = 2000,
-    ) {
+    constructor(fov: number = 50, aspect: number = 1, near: number = 0.1, far: number = 2000) {
         super();
         this._fov = fov;
         this._aspect = aspect;
@@ -128,11 +123,7 @@ export class PerspectiveCamera extends Camera {
     }
 
     public getEffectiveFOV(): number {
-        return (
-            MathUtil.RAD2DEG *
-            2 *
-            Math.atan(Math.tan(MathUtil.DEG2RAD * 0.5 * this.fov) / this.zoom)
-        );
+        return MathUtil.RAD2DEG * 2 * Math.atan(Math.tan(MathUtil.DEG2RAD * 0.5 * this.fov) / this.zoom);
     }
 
     /**
@@ -215,8 +206,7 @@ export class PerspectiveCamera extends Camera {
 
     public updateProjectionMatrix(): this {
         const near: number = this.near;
-        let top: number =
-            near * Math.tan(MathUtil.DEG2RAD * 0.5 * this.fov) / this.zoom;
+        let top: number = near * Math.tan(MathUtil.DEG2RAD * 0.5 * this.fov) / this.zoom;
         let height: number = 2 * top;
         let width: number = this.aspect * height;
         let left: number = -0.5 * width;
@@ -231,14 +221,7 @@ export class PerspectiveCamera extends Camera {
         }
         const skew: number = this.filmOffset;
         if (skew !== 0) left += near * skew / this.getFilmWidth();
-        this.projectionMatrix.makePerspective(
-            left,
-            left + width,
-            top,
-            top - height,
-            near,
-            this.far,
-        );
+        this.projectionMatrix.makePerspective(left, left + width, top, top - height, near, this.far);
         return this;
     }
 
@@ -260,8 +243,6 @@ export class PerspectiveCamera extends Camera {
     }
 
     public clone(): PerspectiveCamera {
-        return new (this.constructor as new () => PerspectiveCamera)().copy(
-            this,
-        );
+        return new (this.constructor as new () => PerspectiveCamera)().copy(this);
     }
 }

@@ -67,14 +67,7 @@ export class WebGLProperties {
         return map;
     }
 
-    public remove(
-        object:
-            | Object3D
-            | Material
-            | Texture
-            | WebGLRenderTarget
-            | WebGLRenderTargetCube,
-    ): void {
+    public remove(object: Object3D | Material | Texture | WebGLRenderTarget | WebGLRenderTargetCube): void {
         delete this.properties[object.uuid];
     }
 

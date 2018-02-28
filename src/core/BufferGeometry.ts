@@ -4,11 +4,7 @@ import { Matrix3 } from "../math/Matrix3";
 import { Matrix4 } from "../math/Matrix4";
 import { Sphere } from "../math/Sphere";
 import { Vector3 } from "../math/Vector3";
-import {
-    applyMatrixToBufferAttribute,
-    arrayMax,
-    setBoxFromBufferAttribute,
-} from "../utils";
+import { applyMatrixToBufferAttribute, arrayMax, setBoxFromBufferAttribute } from "../utils";
 import {
     BufferAttribute,
     Float32BufferAttribute,
@@ -50,9 +46,7 @@ export class BufferGeometry extends EventDispatcher {
 
     public setIndex(index: number[] | BufferAttribute): this {
         if (Array.isArray(index)) {
-            this.index = new (arrayMax(index) > 65535
-                ? Uint32BufferAttribute
-                : Uint16BufferAttribute)(index, 1);
+            this.index = new (arrayMax(index) > 65535 ? Uint32BufferAttribute : Uint16BufferAttribute)(index, 1);
         } else {
             this.index = index;
         }
@@ -77,11 +71,7 @@ export class BufferGeometry extends EventDispatcher {
         return this;
     }
 
-    public addGroup(
-        start: number,
-        count: number,
-        materialIndex: number = 0,
-    ): this {
+    public addGroup(start: number, count: number, materialIndex: number = 0): this {
         this.groups.push({
             count: count,
             materialIndex: materialIndex,
@@ -162,31 +152,16 @@ export class BufferGeometry extends EventDispatcher {
     public setFromObject(object: ObjectWithGeometry): this {
         const geometry: Geometry = object.geometry as Geometry;
         if (object instanceof Points || object instanceof Line) {
-            const positions: Float32BufferAttribute = new Float32BufferAttribute(
-                geometry.vertices.length * 3,
-                3,
-            );
-            const colors: Float32BufferAttribute = new Float32BufferAttribute(
-                geometry.colors.length * 3,
-                3,
-            );
-            this.addAttribute(
-                "position",
-                positions.copyVector3sArray(geometry.vertices),
-            );
+            const positions: Float32BufferAttribute = new Float32BufferAttribute(geometry.vertices.length * 3, 3);
+            const colors: Float32BufferAttribute = new Float32BufferAttribute(geometry.colors.length * 3, 3);
+            this.addAttribute("position", positions.copyVector3sArray(geometry.vertices));
             this.addAttribute("color", colors.copyColorsArray(geometry.colors));
-            if (
-                geometry.lineDistances &&
-                geometry.lineDistances.length === geometry.vertices.length
-            ) {
+            if (geometry.lineDistances && geometry.lineDistances.length === geometry.vertices.length) {
                 const lineDistances: Float32BufferAttribute = new Float32BufferAttribute(
                     geometry.lineDistances.length,
                     1,
                 );
-                this.addAttribute(
-                    "lineDistance",
-                    lineDistances.copyArray(geometry.lineDistances),
-                );
+                this.addAttribute("lineDistance", lineDistances.copyArray(geometry.lineDistances));
             }
             if (geometry.boundingSphere !== null) {
                 this.boundingSphere = geometry.boundingSphere.clone();
@@ -258,10 +233,7 @@ export class BufferGeometry extends EventDispatcher {
         }
 
         // Used only by DirectGeometry
-        if (
-            geometry instanceof DirectGeometry &&
-            geometry.normalsNeedUpdate === true
-        ) {
+        if (geometry instanceof DirectGeometry && geometry.normalsNeedUpdate === true) {
             const attribute: BufferAttribute = this.attributes.normal;
             if (attribute !== undefined) {
                 attribute.copyVector3sArray(geometry.normals);
@@ -321,50 +293,23 @@ export class BufferGeometry extends EventDispatcher {
     }
 
     public fromDirectGeometry(geometry: DirectGeometry): this {
-        const positions: Float32Array = new Float32Array(
-            geometry.vertices.length * 3,
-        );
-        this.addAttribute(
-            "position",
-            new BufferAttribute(positions, 3).copyVector3sArray(
-                geometry.vertices,
-            ),
-        );
+        const positions: Float32Array = new Float32Array(geometry.vertices.length * 3);
+        this.addAttribute("position", new BufferAttribute(positions, 3).copyVector3sArray(geometry.vertices));
         if (geometry.normals.length > 0) {
-            const normals: Float32Array = new Float32Array(
-                geometry.normals.length * 3,
-            );
-            this.addAttribute(
-                "normal",
-                new BufferAttribute(normals, 3).copyVector3sArray(
-                    geometry.normals,
-                ),
-            );
+            const normals: Float32Array = new Float32Array(geometry.normals.length * 3);
+            this.addAttribute("normal", new BufferAttribute(normals, 3).copyVector3sArray(geometry.normals));
         }
         if (geometry.colors.length > 0) {
-            const colors: Float32Array = new Float32Array(
-                geometry.colors.length * 3,
-            );
-            this.addAttribute(
-                "color",
-                new BufferAttribute(colors, 3).copyColorsArray(geometry.colors),
-            );
+            const colors: Float32Array = new Float32Array(geometry.colors.length * 3);
+            this.addAttribute("color", new BufferAttribute(colors, 3).copyColorsArray(geometry.colors));
         }
         if (geometry.uvs.length > 0) {
             const uvs: Float32Array = new Float32Array(geometry.uvs.length * 2);
-            this.addAttribute(
-                "uv",
-                new BufferAttribute(uvs, 2).copyVector2sArray(geometry.uvs),
-            );
+            this.addAttribute("uv", new BufferAttribute(uvs, 2).copyVector2sArray(geometry.uvs));
         }
         if (geometry.uvs2.length > 0) {
-            const uvs2: Float32Array = new Float32Array(
-                geometry.uvs2.length * 2,
-            );
-            this.addAttribute(
-                "uv2",
-                new BufferAttribute(uvs2, 2).copyVector2sArray(geometry.uvs2),
-            );
+            const uvs2: Float32Array = new Float32Array(geometry.uvs2.length * 2);
+            this.addAttribute("uv2", new BufferAttribute(uvs2, 2).copyVector2sArray(geometry.uvs2));
         }
         /**
          * TODO question https://discourse.threejs.org/t/question-about-fromdirectgeometry-function-of-buffergeometry/1890/2
@@ -380,11 +325,7 @@ export class BufferGeometry extends EventDispatcher {
             if (!geometry.morphTargets.hasOwnProperty(name)) continue;
             const array: Float32BufferAttribute[] = [];
             const morphTargets: Vector3[][] = geometry.morphTargets[name];
-            for (
-                let i: number = 0, l: number = morphTargets.length;
-                i < l;
-                i++
-            ) {
+            for (let i: number = 0, l: number = morphTargets.length; i < l; i++) {
                 const morphTarget: Vector3[] = morphTargets[i];
                 const attribute: Float32BufferAttribute = new Float32BufferAttribute(
                     new Array(morphTarget.length * 3),
@@ -400,20 +341,14 @@ export class BufferGeometry extends EventDispatcher {
                 new Array(geometry.skinIndices.length * 4),
                 4,
             );
-            this.addAttribute(
-                "skinIndex",
-                skinIndices.copyVector4sArray(geometry.skinIndices),
-            );
+            this.addAttribute("skinIndex", skinIndices.copyVector4sArray(geometry.skinIndices));
         }
         if (geometry.skinWeights.length > 0) {
             const skinWeights: Float32BufferAttribute = new Float32BufferAttribute(
                 new Array(geometry.skinWeights.length * 4),
                 4,
             );
-            this.addAttribute(
-                "skinWeight",
-                skinWeights.copyVector4sArray(geometry.skinWeights),
-            );
+            this.addAttribute("skinWeight", skinWeights.copyVector4sArray(geometry.skinWeights));
         }
 
         if (geometry.boundingSphere !== null) {
@@ -436,11 +371,7 @@ export class BufferGeometry extends EventDispatcher {
         } else {
             this.boundingBox.makeEmpty();
         }
-        if (
-            isNaN(this.boundingBox.min.x) ||
-            isNaN(this.boundingBox.min.y) ||
-            isNaN(this.boundingBox.min.z)
-        ) {
+        if (isNaN(this.boundingBox.min.x) || isNaN(this.boundingBox.min.y) || isNaN(this.boundingBox.min.z)) {
             console.error(
                 `THREE.BufferGeometry.computeBoundingBox: Computed min/max have NaN values. The "position" attribute is likely to have NaN values.`,
                 this,
@@ -465,10 +396,7 @@ export class BufferGeometry extends EventDispatcher {
                 vector.x = position.getProperty(i, "x") as number;
                 vector.y = position.getProperty(i, "y") as number;
                 vector.z = position.getProperty(i, "z") as number;
-                maxRadiusSquare = Math.max(
-                    maxRadiusSquare,
-                    center.distanceToSquared(vector),
-                );
+                maxRadiusSquare = Math.max(maxRadiusSquare, center.distanceToSquared(vector));
             }
             this.boundingSphere.radius = Math.sqrt(maxRadiusSquare);
             if (isNaN(this.boundingSphere.radius)) {
@@ -487,18 +415,11 @@ export class BufferGeometry extends EventDispatcher {
         if (attributes.position) {
             const positions: TypedArray = attributes.position.array;
             if (attributes.normal === undefined) {
-                this.addAttribute(
-                    "normal",
-                    new BufferAttribute(new Float32Array(positions.length), 3),
-                );
+                this.addAttribute("normal", new BufferAttribute(new Float32Array(positions.length), 3));
             } else {
                 // reset existing normals to zero
                 const array: TypedArray = attributes.normal.array;
-                for (
-                    let i: number = 0, il: number = array.length;
-                    i < il;
-                    i++
-                ) {
+                for (let i: number = 0, il: number = array.length; i < il; i++) {
                     array[i] = 0;
                 }
             }
@@ -516,19 +437,11 @@ export class BufferGeometry extends EventDispatcher {
                 if (groups.length === 0) {
                     this.addGroup(0, indices.length);
                 }
-                for (
-                    let j: number = 0, jl: number = groups.length;
-                    j < jl;
-                    ++j
-                ) {
+                for (let j: number = 0, jl: number = groups.length; j < jl; ++j) {
                     const group: IGroup = groups[j];
                     const start: number = group.start;
                     const count: number = group.count;
-                    for (
-                        let i: number = start, il: number = start + count;
-                        i < il;
-                        i += 3
-                    ) {
+                    for (let i: number = start, il: number = start + count; i < il; i += 3) {
                         vA = indices[i] * 3;
                         vB = indices[i + 1] * 3;
                         vC = indices[i + 2] * 3;
@@ -551,11 +464,7 @@ export class BufferGeometry extends EventDispatcher {
                 }
             } else {
                 // non-indexed elements (unconnected triangle soup)
-                for (
-                    let i: number = 0, il: number = positions.length;
-                    i < il;
-                    i += 9
-                ) {
+                for (let i: number = 0, il: number = positions.length; i < il; i += 9) {
                     pA.fromArray(positions, i);
                     pB.fromArray(positions, i + 3);
                     pC.fromArray(positions, i + 6);
@@ -592,9 +501,7 @@ export class BufferGeometry extends EventDispatcher {
 
     public toNonIndexed(): BufferGeometry {
         if (this.index === null) {
-            console.warn(
-                `THREE.BufferGeometry.toNonIndexed(): Geometry is already non-indexed.`,
-            );
+            console.warn(`THREE.BufferGeometry.toNonIndexed(): Geometry is already non-indexed.`);
             return this;
         }
         const geometry2: BufferGeometry = new BufferGeometry();
@@ -605,9 +512,9 @@ export class BufferGeometry extends EventDispatcher {
             const attribute: BufferAttribute = attributes[name];
             const array: TypedArray = attribute.array;
             const itemSize: number = attribute.itemSize;
-            const array2: TypedArray = new (array.constructor as new (
-                length: number,
-            ) => TypedArray)(indices.length * itemSize);
+            const array2: TypedArray = new (array.constructor as new (length: number) => TypedArray)(
+                indices.length * itemSize,
+            );
             let index: number = 0,
                 index2: number = 0;
             for (let i: number = 0, l: number = indices.length; i < l; i++) {
@@ -642,25 +549,19 @@ export class BufferGeometry extends EventDispatcher {
             this.setIndex(index.clone());
         }
         // attributes
-        const attributes: { [key: string]: BufferAttribute } =
-            source.attributes;
+        const attributes: { [key: string]: BufferAttribute } = source.attributes;
         for (const name in attributes) {
             if (!attributes.hasOwnProperty(name)) continue;
             const attribute: BufferAttribute = attributes[name];
             this.addAttribute(name, attribute.clone());
         }
         // morph attributes
-        const morphAttributes: { [key: string]: BufferAttribute[] } =
-            source.morphAttributes;
+        const morphAttributes: { [key: string]: BufferAttribute[] } = source.morphAttributes;
         for (const name in morphAttributes) {
             if (!attributes.hasOwnProperty(name)) continue;
             const array: BufferAttribute[] = [];
             const morphAttribute: BufferAttribute[] = morphAttributes[name]; // morphAttribute: array of Float32BufferAttributes
-            for (
-                let i: number = 0, l: number = morphAttribute.length;
-                i < l;
-                i++
-            ) {
+            for (let i: number = 0, l: number = morphAttribute.length; i < l; i++) {
                 array.push(morphAttribute[i].clone());
             }
             this.morphAttributes[name] = array;

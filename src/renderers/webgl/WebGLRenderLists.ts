@@ -30,13 +30,7 @@ export class WebGLRenderList {
         return this;
     }
 
-    public push(
-        object: Object3D,
-        geometry: BufferGeometry,
-        material: Material,
-        z: number,
-        group: IGroup,
-    ) {
+    public push(object: Object3D, geometry: BufferGeometry, material: Material, z: number, group: IGroup) {
         let renderItem: IRenderItem = this.renderItems[this.renderItemsIndex];
         if (renderItem === undefined) {
             renderItem = {
@@ -60,9 +54,7 @@ export class WebGLRenderList {
             renderItem.z = z;
             renderItem.group = group;
         }
-        (material.transparent === true ? this.transparent : this.opaque).push(
-            renderItem,
-        );
+        (material.transparent === true ? this.transparent : this.opaque).push(renderItem);
         this.renderItemsIndex++;
     }
 

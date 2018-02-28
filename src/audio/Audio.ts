@@ -75,8 +75,7 @@ export class AudioWrapper extends Object3D {
         }
         if (this.isPlaying === true) {
             this.source.stop();
-            this.offset +=
-                (this.context.currentTime - this.startTime) * this.playbackRate;
+            this.offset += (this.context.currentTime - this.startTime) * this.playbackRate;
             this.isPlaying = false;
         }
         return this;
@@ -96,11 +95,7 @@ export class AudioWrapper extends Object3D {
     public connect(): this {
         if (this.filters.length > 0) {
             this.source.connect(this.filters[0]);
-            for (
-                let i: number = 1, l: number = this.filters.length;
-                i < l;
-                i++
-            ) {
+            for (let i: number = 1, l: number = this.filters.length; i < l; i++) {
                 this.filters[i - 1].connect(this.filters[i]);
             }
             this.filters[this.filters.length - 1].connect(this.getOutput());
@@ -113,11 +108,7 @@ export class AudioWrapper extends Object3D {
     public disconnect(): this {
         if (this.filters.length > 0) {
             this.source.disconnect(this.filters[0]);
-            for (
-                let i: number = 1, l: number = this.filters.length;
-                i < l;
-                i++
-            ) {
+            for (let i: number = 1, l: number = this.filters.length; i < l; i++) {
                 this.filters[i - 1].disconnect(this.filters[i]);
             }
             this.filters[this.filters.length - 1].disconnect(this.getOutput());
@@ -157,10 +148,7 @@ export class AudioWrapper extends Object3D {
         }
         this.playbackRate = value;
         if (this.isPlaying === true) {
-            this.source.playbackRate.setValueAtTime(
-                this.playbackRate,
-                this.context.currentTime,
-            );
+            this.source.playbackRate.setValueAtTime(this.playbackRate, this.context.currentTime);
         }
         return this;
     }

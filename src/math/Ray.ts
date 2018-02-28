@@ -9,10 +9,7 @@ export class Ray {
     public origin: Vector3 = new Vector3();
     public direction: Vector3 = new Vector3();
 
-    constructor(
-        origin: Vector3 = new Vector3(),
-        direction: Vector3 = new Vector3(),
-    ) {
+    constructor(origin: Vector3 = new Vector3(), direction: Vector3 = new Vector3()) {
         this.origin = origin;
         this.direction = direction;
     }
@@ -132,10 +129,7 @@ export class Ray {
                         const invDet: number = 1 / det;
                         s0 *= invDet;
                         s1 *= invDet;
-                        sqrDist =
-                            s0 * (s0 + a01 * s1 + 2 * b0) +
-                            s1 * (a01 * s0 + s1 + 2 * b1) +
-                            c;
+                        sqrDist = s0 * (s0 + a01 * s1 + 2 * b0) + s1 * (a01 * s0 + s1 + 2 * b1) + c;
                     } else {
                         // region 1
                         s1 = segExtent;
@@ -152,10 +146,7 @@ export class Ray {
                 if (s1 <= -extDet) {
                     // region 4
                     s0 = Math.max(0, -(-a01 * segExtent + b0));
-                    s1 =
-                        s0 > 0
-                            ? -segExtent
-                            : Math.min(Math.max(-segExtent, -b1), segExtent);
+                    s1 = s0 > 0 ? -segExtent : Math.min(Math.max(-segExtent, -b1), segExtent);
                     sqrDist = -s0 * s0 + s1 * (s1 + 2 * b1) + c;
                 } else if (s1 <= extDet) {
                     // region 3
@@ -165,10 +156,7 @@ export class Ray {
                 } else {
                     // region 2
                     s0 = Math.max(0, -(a01 * segExtent + b0));
-                    s1 =
-                        s0 > 0
-                            ? segExtent
-                            : Math.min(Math.max(-segExtent, -b1), segExtent);
+                    s1 = s0 > 0 ? segExtent : Math.min(Math.max(-segExtent, -b1), segExtent);
                     sqrDist = -s0 * s0 + s1 * (s1 + 2 * b1) + c;
                 }
             }
@@ -235,8 +223,7 @@ export class Ray {
             // Null is preferable to undefined since undefined means.... it is undefined
             return Infinity;
         }
-        const t: number =
-            -(this.origin.dot(plane.normal) + plane.constant) / denominator;
+        const t: number = -(this.origin.dot(plane.normal) + plane.constant) / denominator;
         // Return if the ray never intersects the plane
         return t >= 0 ? t : Infinity;
     }
@@ -264,12 +251,7 @@ export class Ray {
     }
 
     public intersectBox(box: Box3): Vector3 {
-        let tmin: number,
-            tmax: number,
-            tymin: number,
-            tymax: number,
-            tzmin: number,
-            tzmax: number;
+        let tmin: number, tmax: number, tymin: number, tymax: number, tzmin: number, tzmax: number;
         const invdirx: number = 1 / this.direction.x,
             invdiry: number = 1 / this.direction.y,
             invdirz: number = 1 / this.direction.z;
@@ -312,10 +294,7 @@ export class Ray {
         return this.intersectBox(box) !== null;
     }
 
-    public intersectTriangle(
-        triangle: Triangle,
-        backFaceCulling: boolean = false,
-    ): Vector3 | null {
+    public intersectTriangle(triangle: Triangle, backFaceCulling: boolean = false): Vector3 | null {
         // Compute the offset origin, edges, and normal.
         const a: Vector3 = triangle.a,
             b: Vector3 = triangle.b,
@@ -340,8 +319,7 @@ export class Ray {
             return null;
         }
         const diff: Vector3 = new Vector3().copy(this.origin).sub(a);
-        const DdQxE2: number =
-            sign * this.direction.dot(edge2.copy(diff).cross(edge2));
+        const DdQxE2: number = sign * this.direction.dot(edge2.copy(diff).cross(edge2));
         // b1 < 0, no intersection
         if (DdQxE2 < 0) {
             return null;
@@ -376,9 +354,6 @@ export class Ray {
     }
 
     public equals(ray: Ray): boolean {
-        return (
-            ray.origin.equals(this.origin) &&
-            ray.direction.equals(this.direction)
-        );
+        return ray.origin.equals(this.origin) && ray.direction.equals(this.direction);
     }
 }

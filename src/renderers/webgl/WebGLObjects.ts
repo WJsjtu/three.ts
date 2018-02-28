@@ -18,10 +18,7 @@ export class WebGLObjects {
         const frame: number = this.infoRender.frame;
 
         const geometry: BufferGeometry | Geometry = object.geometry;
-        const bufferGeometry: BufferGeometry = this.geometries.get(
-            object,
-            geometry,
-        );
+        const bufferGeometry: BufferGeometry = this.geometries.get(object, geometry);
 
         // Update once per frame
         if (this.updateList[bufferGeometry.id] !== frame) {

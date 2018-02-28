@@ -17,18 +17,7 @@ export class CompressedTexture extends Texture {
         anisotropy?: number,
         encoding?: number,
     ) {
-        super(
-            null,
-            mapping,
-            wrapS,
-            wrapT,
-            magFilter,
-            minFilter,
-            format,
-            type,
-            anisotropy,
-            encoding,
-        );
+        super(null, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding);
         this.image = { width: width, height: height };
         this.mipmaps = mipmaps;
 

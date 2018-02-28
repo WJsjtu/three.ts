@@ -14,17 +14,7 @@ export class VideoTexture extends Texture {
         type?: number,
         anisotropy?: number,
     ) {
-        super(
-            video,
-            mapping,
-            wrapS,
-            wrapT,
-            magFilter,
-            minFilter,
-            format,
-            type,
-            anisotropy,
-        );
+        super(video, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy);
         this.generateMipmaps = false;
     }
 

@@ -23,9 +23,8 @@ export class FogExp2 {
     }
 
     public clone(): FogExp2 {
-        return new (this.constructor as new (
-            color: Color,
-            density: number,
-        ) => FogExp2)(this.color, this.density).copy(this);
+        return new (this.constructor as new (color: Color, density: number) => FogExp2)(this.color, this.density).copy(
+            this,
+        );
     }
 }

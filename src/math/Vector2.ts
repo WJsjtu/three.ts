@@ -108,10 +108,7 @@ export class Vector2 {
     }
 
     public clamp(min: Vector2, max: Vector2): this {
-        return this.set(
-            Math.max(min.x, Math.min(max.x, this.x)),
-            Math.max(min.y, Math.min(max.y, this.y)),
-        );
+        return this.set(Math.max(min.x, Math.min(max.x, this.x)), Math.max(min.y, Math.min(max.y, this.y)));
     }
 
     public negate(): this {
@@ -143,10 +140,7 @@ export class Vector2 {
     }
 
     public lerp(v: Vector2, alpha: number): this {
-        return this.set(
-            this.x + (v.x - this.x) * alpha,
-            this.y + (v.y - this.y) * alpha,
-        );
+        return this.set(this.x + (v.x - this.x) * alpha, this.y + (v.y - this.y) * alpha);
     }
 
     public lerpVectors(v1: Vector2, v2: Vector2, alpha: number): this {
@@ -164,10 +158,7 @@ export class Vector2 {
         return this.set(array[offset], array[offset + 1]);
     }
 
-    public toArray(
-        array: number[] | TypedArray = [],
-        offset: number = 0,
-    ): number[] | TypedArray {
+    public toArray(array: number[] | TypedArray = [], offset: number = 0): number[] | TypedArray {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         return array;

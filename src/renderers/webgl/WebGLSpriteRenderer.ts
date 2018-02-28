@@ -3,16 +3,7 @@ import { WebGLRenderer } from "../WebGLRenderer";
 import { WebGLState } from "./WebGLState";
 import { WebGLTextures } from "./WebGLTextures";
 import { WebGLCapabilities } from "./WebGLCapabilities";
-import {
-    Vector3,
-    Quaternion,
-    Scene,
-    Camera,
-    Fog,
-    FogExp2,
-    Sprite,
-    Material,
-} from "../../Three";
+import { Vector3, Quaternion, Scene, Camera, Fog, FogExp2, Sprite, Material } from "../../Three";
 
 export class WebGLSpriteRenderer {
     public renderer: WebGLRenderer;
@@ -27,12 +18,7 @@ export class WebGLSpriteRenderer {
     protected uniforms: { [key: string]: WebGLUniformLocation };
     protected texture: CanvasTexture;
 
-    constructor(
-        renderer: WebGLRenderer,
-        state: WebGLState,
-        textures: WebGLTextures,
-        capabilities: WebGLCapabilities,
-    ) {
+    constructor(renderer: WebGLRenderer, state: WebGLState, textures: WebGLTextures, capabilities: WebGLCapabilities) {
         this.renderer = renderer;
         this.state = state;
         this.textures = textures;
@@ -81,10 +67,7 @@ export class WebGLSpriteRenderer {
             map: gl.getUniformLocation(program, "map"),
             opacity: gl.getUniformLocation(program, "opacity"),
             modelViewMatrix: gl.getUniformLocation(program, "modelViewMatrix"),
-            projectionMatrix: gl.getUniformLocation(
-                program,
-                "projectionMatrix",
-            ),
+            projectionMatrix: gl.getUniformLocation(program, "projectionMatrix"),
             fogType: gl.getUniformLocation(program, "fogType"),
             fogDensity: gl.getUniformLocation(program, "fogDensity"),
             fogNear: gl.getUniformLocation(program, "fogNear"),
@@ -200,33 +183,17 @@ export class WebGLSpriteRenderer {
         state.disable(gl.CULL_FACE);
         state.enable(gl.BLEND);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-        gl.vertexAttribPointer(
-            attributes.position,
-            2,
-            gl.FLOAT,
-            false,
-            2 * 8,
-            0,
-        );
+        gl.vertexAttribPointer(attributes.position, 2, gl.FLOAT, false, 2 * 8, 0);
         gl.vertexAttribPointer(attributes.uv, 2, gl.FLOAT, false, 2 * 8, 8);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
-        gl.uniformMatrix4fv(
-            uniforms.projectionMatrix,
-            false,
-            camera.projectionMatrix.elements,
-        );
+        gl.uniformMatrix4fv(uniforms.projectionMatrix, false, camera.projectionMatrix.elements);
         state.activeTexture(gl.TEXTURE0);
         gl.uniform1i(uniforms.map, 0);
         let oldFogType: number = 0;
         let sceneFogType: number = 0;
         const fog: Fog | FogExp2 = scene.fog;
         if (fog) {
-            gl.uniform3f(
-                uniforms.fogColor,
-                fog.color.r,
-                fog.color.g,
-                fog.color.b,
-            );
+            gl.uniform3f(uniforms.fogColor, fog.color.r, fog.color.g, fog.color.b);
             if (fog instanceof Fog) {
                 gl.uniform1f(uniforms.fogNear, fog.near);
                 gl.uniform1f(uniforms.fogFar, fog.far);
@@ -247,10 +214,7 @@ export class WebGLSpriteRenderer {
         // update positions and sort
         for (let i: number = 0, l: number = sprites.length; i < l; i++) {
             const sprite: Sprite = sprites[i];
-            sprite.modelViewMatrix.multiplyMatrices(
-                camera.matrixWorldInverse,
-                sprite.matrixWorld,
-            );
+            sprite.modelViewMatrix.multiplyMatrices(camera.matrixWorldInverse, sprite.matrixWorld);
             sprite.z = -sprite.modelViewMatrix.elements[14];
         }
         sprites.sort((a, b) => {
@@ -270,19 +234,11 @@ export class WebGLSpriteRenderer {
             if (material.visible === false) continue;
             //sprite.onBeforeRender(this.renderer, scene, camera, undefined, material, undefined );
             gl.uniform1f(uniforms.alphaTest, material.alphaTest);
-            gl.uniformMatrix4fv(
-                uniforms.modelViewMatrix,
-                false,
-                sprite.modelViewMatrix.elements,
-            );
+            gl.uniformMatrix4fv(uniforms.modelViewMatrix, false, sprite.modelViewMatrix.elements);
             const spritePosition: Vector3 = new Vector3();
             const spriteRotation: Quaternion = new Quaternion();
             const spriteScale: Vector3 = new Vector3();
-            sprite.matrixWorld.decompose(
-                spritePosition,
-                spriteRotation,
-                spriteScale,
-            );
+            sprite.matrixWorld.decompose(spritePosition, spriteRotation, spriteScale);
             scale[0] = spriteScale.x;
             scale[1] = spriteScale.y;
             let fogType: number = 0;
@@ -294,27 +250,14 @@ export class WebGLSpriteRenderer {
                 oldFogType = fogType;
             }
             if (material.map !== null) {
-                gl.uniform2f(
-                    uniforms.uvOffset,
-                    material.map.offset.x,
-                    material.map.offset.y,
-                );
-                gl.uniform2f(
-                    uniforms.uvScale,
-                    material.map.repeat.x,
-                    material.map.repeat.y,
-                );
+                gl.uniform2f(uniforms.uvOffset, material.map.offset.x, material.map.offset.y);
+                gl.uniform2f(uniforms.uvScale, material.map.repeat.x, material.map.repeat.y);
             } else {
                 gl.uniform2f(uniforms.uvOffset, 0, 0);
                 gl.uniform2f(uniforms.uvScale, 1, 1);
             }
             gl.uniform1f(uniforms.opacity, material.opacity);
-            gl.uniform3f(
-                uniforms.color,
-                material.color.r,
-                material.color.g,
-                material.color.b,
-            );
+            gl.uniform3f(uniforms.color, material.color.r, material.color.g, material.color.b);
             gl.uniform1f(uniforms.rotation, material.rotation);
             gl.uniform2fv(uniforms.scale, scale);
             state.setBlending(

@@ -12,11 +12,7 @@ export class WebGLIndexedBufferRenderer {
     protected type: number = 0;
     protected bytesPerElement: number = 0;
 
-    constructor(
-        context: WebGLRenderingContext,
-        extensions: WebGLExtensions,
-        infoRender: IInfoRender,
-    ) {
+    constructor(context: WebGLRenderingContext, extensions: WebGLExtensions, infoRender: IInfoRender) {
         this.context = context;
         this.extensions = extensions;
         this.infoRender = infoRender;
@@ -35,12 +31,7 @@ export class WebGLIndexedBufferRenderer {
 
     public render(start: number, count: number): this {
         const gl: WebGLRenderingContext = this.context;
-        gl.drawElements(
-            this.mode,
-            count,
-            this.type,
-            start * this.bytesPerElement,
-        );
+        gl.drawElements(this.mode, count, this.type, start * this.bytesPerElement);
 
         this.infoRender.calls++;
         this.infoRender.vertices += count;
@@ -53,15 +44,9 @@ export class WebGLIndexedBufferRenderer {
         return this;
     }
 
-    public renderInstances(
-        geometry: InstancedBufferGeometry,
-        start: number,
-        count: number,
-    ): this {
+    public renderInstances(geometry: InstancedBufferGeometry, start: number, count: number): this {
         const gl: WebGLRenderingContext = this.context;
-        const extension: ANGLE_instanced_arrays | null = this.extensions.get(
-            "ANGLE_instanced_arrays",
-        );
+        const extension: ANGLE_instanced_arrays | null = this.extensions.get("ANGLE_instanced_arrays");
         if (extension === null) {
             console.error(
                 `THREE.WebGLIndexedBufferRenderer: using THREE.InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays.`,

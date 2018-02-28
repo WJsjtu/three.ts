@@ -61,12 +61,7 @@ export class Vector4 {
     }
 
     public copy(v: Vector4 | Vector3): this {
-        return this.set(
-            v.x,
-            v.y,
-            v.z,
-            (v instanceof Vector4 ? v.w : undefined) || 1,
-        );
+        return this.set(v.x, v.y, v.z, (v instanceof Vector4 ? v.w : undefined) || 1);
     }
 
     public add(v: Vector4): this {
@@ -142,11 +137,7 @@ export class Vector4 {
             m31: number = te[2],
             m32: number = te[6],
             m33: number = te[10];
-        if (
-            Math.abs(m12 - m21) < epsilon &&
-            Math.abs(m13 - m31) < epsilon &&
-            Math.abs(m23 - m32) < epsilon
-        ) {
+        if (Math.abs(m12 - m21) < epsilon && Math.abs(m13 - m31) < epsilon && Math.abs(m23 - m32) < epsilon) {
             // singularity found
             // first check for identity matrix which must have +1 for all terms
             // in leading diagonal and zero in other terms
@@ -206,38 +197,19 @@ export class Vector4 {
             return this.set(x, y, z, angle);
         }
         // as we have reached here there are no singularities so we can handle normally
-        let s: number = Math.sqrt(
-            (m32 - m23) * (m32 - m23) +
-                (m13 - m31) * (m13 - m31) +
-                (m21 - m12) * (m21 - m12),
-        ); // used to normalize
+        let s: number = Math.sqrt((m32 - m23) * (m32 - m23) + (m13 - m31) * (m13 - m31) + (m21 - m12) * (m21 - m12)); // used to normalize
         if (Math.abs(s) < 0.001) s = 1;
         // prevent divide by zero, should not happen if matrix is orthogonal and should be
         // caught by singularity test above, but I"ve left it in just in case
-        return this.set(
-            (m32 - m23) / s,
-            (m13 - m31) / s,
-            (m21 - m12) / s,
-            Math.acos((m11 + m22 + m33 - 1) / 2),
-        );
+        return this.set((m32 - m23) / s, (m13 - m31) / s, (m21 - m12) / s, Math.acos((m11 + m22 + m33 - 1) / 2));
     }
 
     public min(v: Vector4): this {
-        return this.set(
-            Math.min(this.x, v.x),
-            Math.min(this.y, v.y),
-            Math.min(this.z, v.z),
-            Math.min(this.w, v.w),
-        );
+        return this.set(Math.min(this.x, v.x), Math.min(this.y, v.y), Math.min(this.z, v.z), Math.min(this.w, v.w));
     }
 
     public max(v: Vector4): this {
-        return this.set(
-            Math.max(this.x, v.x),
-            Math.max(this.y, v.y),
-            Math.max(this.z, v.z),
-            Math.max(this.w, v.w),
-        );
+        return this.set(Math.max(this.x, v.x), Math.max(this.y, v.y), Math.max(this.z, v.z), Math.max(this.w, v.w));
     }
 
     public clamp(min: Vector4, max: Vector4): this {
@@ -258,12 +230,7 @@ export class Vector4 {
     }
 
     public lengthSquared(): number {
-        return (
-            this.x * this.x +
-            this.y * this.y +
-            this.z * this.z +
-            this.w * this.w
-        );
+        return this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
     }
 
     public length(): number {
@@ -271,12 +238,7 @@ export class Vector4 {
     }
 
     public manhattanLength(): number {
-        return (
-            Math.abs(this.x) +
-            Math.abs(this.y) +
-            Math.abs(this.z) +
-            Math.abs(this.w)
-        );
+        return Math.abs(this.x) + Math.abs(this.y) + Math.abs(this.z) + Math.abs(this.w);
     }
 
     public normalize(): this {
@@ -304,24 +266,14 @@ export class Vector4 {
     }
 
     public equals(v: Vector4): boolean {
-        return (
-            v.x === this.x && v.y === this.y && v.z === this.z && v.w === this.w
-        );
+        return v.x === this.x && v.y === this.y && v.z === this.z && v.w === this.w;
     }
 
     public fromArray(array: number[] | TypedArray, offset: number = 0): this {
-        return this.set(
-            array[offset],
-            array[offset + 1],
-            array[offset + 2],
-            array[offset + 3],
-        );
+        return this.set(array[offset], array[offset + 1], array[offset + 2], array[offset + 3]);
     }
 
-    public toArray(
-        array: number[] | TypedArray = [],
-        offset: number = 0,
-    ): number[] | TypedArray {
+    public toArray(array: number[] | TypedArray = [], offset: number = 0): number[] | TypedArray {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         array[offset + 2] = this.z;

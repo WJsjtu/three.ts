@@ -42,24 +42,16 @@ export class Points extends Object3D {
 
         if (raycaster.ray.intersectsSphere(sphere) === false) return;
         const inverseMatrix: Matrix4 = new Matrix4().getInverse(matrixWorld);
-        const ray: Ray = new Ray()
-            .copy(raycaster.ray)
-            .applyMatrix4(inverseMatrix);
+        const ray: Ray = new Ray().copy(raycaster.ray).applyMatrix4(inverseMatrix);
 
         const testPoint = (point: Vector3, index2: number): void => {
-            const localThreshold: number =
-                threshold / ((this.scale.x + this.scale.y + this.scale.z) / 3);
-            const localThresholdSquare: number =
-                localThreshold * localThreshold;
-            const rayPointDistanceSquare: number = ray.distanceSquaredToPoint(
-                point,
-            );
+            const localThreshold: number = threshold / ((this.scale.x + this.scale.y + this.scale.z) / 3);
+            const localThresholdSquare: number = localThreshold * localThreshold;
+            const rayPointDistanceSquare: number = ray.distanceSquaredToPoint(point);
             if (rayPointDistanceSquare < localThresholdSquare) {
                 const intersectPoint = ray.closestPointToPoint(point);
                 intersectPoint.applyMatrix4(matrixWorld);
-                const distance = raycaster.ray.origin.distanceTo(
-                    intersectPoint,
-                );
+                const distance = raycaster.ray.origin.distanceTo(intersectPoint);
                 if (distance < raycaster.near || distance > raycaster.far) {
                     return;
                 }
@@ -80,21 +72,13 @@ export class Points extends Object3D {
             const positions: TypedArray = geometry.attributes.position.array;
             if (index !== null) {
                 const indices: TypedArray = index.array;
-                for (
-                    let i: number = 0, il: number = indices.length;
-                    i < il;
-                    i++
-                ) {
+                for (let i: number = 0, il: number = indices.length; i < il; i++) {
                     const a: number = indices[i];
                     position.fromArray(positions, a * 3);
                     testPoint(position, a);
                 }
             } else {
-                for (
-                    let i: number = 0, l: number = positions.length / 3;
-                    i < l;
-                    i++
-                ) {
+                for (let i: number = 0, l: number = positions.length / 3; i < l; i++) {
                     position.fromArray(positions, i * 3);
                     testPoint(position, i);
                 }

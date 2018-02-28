@@ -118,10 +118,7 @@ const ShaderLib: {
     },
 
     depth: {
-        uniforms: UniformsUtils.merge([
-            UniformsLib.common,
-            UniformsLib.displacementmap,
-        ]),
+        uniforms: UniformsUtils.merge([UniformsLib.common, UniformsLib.displacementmap]),
 
         vertexShader: ShaderChunk.depth_vert,
         fragmentShader: ShaderChunk.depth_frag,

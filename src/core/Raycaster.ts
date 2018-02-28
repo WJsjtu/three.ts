@@ -49,12 +49,7 @@ export class Raycaster {
     public ray: Ray;
     public linePrecision: number = 1;
 
-    constructor(
-        origin: Vector3,
-        direction: Vector3,
-        near: number = 0,
-        far: number = Infinity,
-    ) {
+    constructor(origin: Vector3, direction: Vector3, near: number = 0, far: number = Infinity) {
         this.ray = new Ray(origin, direction);
         this.near = near;
         this.far = far;
@@ -72,44 +67,28 @@ export class Raycaster {
             unprojectVector3onCamera(this.ray.direction, camera);
             this.ray.direction.sub(this.ray.origin).normalize();
         } else if (camera && camera instanceof OrthographicCamera) {
-            this.ray.origin.set(
-                coords.x,
-                coords.y,
-                (camera.near + camera.far) / (camera.near - camera.far),
-            );
+            this.ray.origin.set(coords.x, coords.y, (camera.near + camera.far) / (camera.near - camera.far));
             unprojectVector3onCamera(this.ray.origin, camera); // set origin in plane of camera
-            this.ray.direction
-                .set(0, 0, -1)
-                .transformDirection(camera.matrixWorld);
+            this.ray.direction.set(0, 0, -1).transformDirection(camera.matrixWorld);
         } else {
             console.error(`THREE.Raycaster: Unsupported camera type.`);
         }
         return this;
     }
 
-    public intersectObject(
-        object: Object3D,
-        recursive: boolean = false,
-    ): IIntersection[] {
+    public intersectObject(object: Object3D, recursive: boolean = false): IIntersection[] {
         const intersects: IIntersection[] = [];
         intersectObject(object, this, intersects, recursive);
-        intersects.sort(
-            (a: IIntersection, b: IIntersection) => a.distance - b.distance,
-        );
+        intersects.sort((a: IIntersection, b: IIntersection) => a.distance - b.distance);
         return intersects;
     }
 
-    public intersectObjects(
-        objects: Object3D[],
-        recursive: boolean = false,
-    ): IIntersection[] {
+    public intersectObjects(objects: Object3D[], recursive: boolean = false): IIntersection[] {
         const intersects: IIntersection[] = [];
         for (let i: number = 0, l: number = objects.length; i < l; i++) {
             intersectObject(objects[i], this, intersects, recursive);
         }
-        intersects.sort(
-            (a: IIntersection, b: IIntersection) => a.distance - b.distance,
-        );
+        intersects.sort((a: IIntersection, b: IIntersection) => a.distance - b.distance);
         return intersects;
     }
 }

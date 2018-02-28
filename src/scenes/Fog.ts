@@ -6,11 +6,7 @@ export class Fog {
     public near: number = 1;
     public far: number = 1000;
 
-    constructor(
-        color: Color | number | string,
-        near: number = 1,
-        far: number = 1000,
-    ) {
+    constructor(color: Color | number | string, near: number = 1, far: number = 1000) {
         if (color instanceof Color) {
             this.color = new Color().copy(color);
         } else if (typeof color === "number") {
@@ -30,10 +26,10 @@ export class Fog {
     }
 
     public clone(): Fog {
-        return new (this.constructor as new (
-            color: Color,
-            near: number,
-            far: number,
-        ) => Fog)(this.color, this.near, this.far).copy(this);
+        return new (this.constructor as new (color: Color, near: number, far: number) => Fog)(
+            this.color,
+            this.near,
+            this.far,
+        ).copy(this);
     }
 }

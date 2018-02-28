@@ -17,18 +17,7 @@ export class CubeTexture extends Texture {
         anisotropy?: number,
         encoding?: number,
     ) {
-        super(
-            images as any,
-            mapping,
-            wrapS,
-            wrapT,
-            magFilter,
-            minFilter,
-            format,
-            type,
-            anisotropy,
-            encoding,
-        );
+        super(images as any, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding);
         this.flipY = false;
     }
 

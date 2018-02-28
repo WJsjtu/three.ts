@@ -236,11 +236,7 @@ export class Color {
             switch (name) {
                 case "rgb":
                 case "rgba":
-                    if (
-                        (color = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(,\s*([0-9]*\.?[0-9]+)\s*)?$/.exec(
-                            components,
-                        ))
-                    ) {
+                    if ((color = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(,\s*([0-9]*\.?[0-9]+)\s*)?$/.exec(components))) {
                         // rgb(255,0,0) rgba(255,0,0,0.5)
                         this.r = Math.min(255, parseInt(color[1], 10)) / 255;
                         this.g = Math.min(255, parseInt(color[2], 10)) / 255;
@@ -250,9 +246,7 @@ export class Color {
                     }
 
                     if (
-                        (color = /^(\d+)\%\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(,\s*([0-9]*\.?[0-9]+)\s*)?$/.exec(
-                            components,
-                        ))
+                        (color = /^(\d+)\%\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(,\s*([0-9]*\.?[0-9]+)\s*)?$/.exec(components))
                     ) {
                         // rgb(100%,0%,0%) rgba(100%,0%,0%,0.5)
                         this.r = Math.min(100, parseInt(color[1], 10)) / 100;
@@ -328,11 +322,7 @@ export class Color {
     }
 
     public getHex(): number {
-        return (
-            ((this.r * 255) << 16) ^
-            ((this.g * 255) << 8) ^
-            ((this.b * 255) << 0)
-        );
+        return ((this.r * 255) << 16) ^ ((this.g * 255) << 8) ^ ((this.b * 255) << 0);
     }
 
     public getHexString(): string {
@@ -355,10 +345,7 @@ export class Color {
             saturation = 0;
         } else {
             const delta = max - min;
-            saturation =
-                lightness <= 0.5
-                    ? delta / (max + min)
-                    : delta / (2 - max - min);
+            saturation = lightness <= 0.5 ? delta / (max + min) : delta / (2 - max - min);
             switch (max) {
                 case r:
                     hue = (g - b) / delta + (g < b ? 6 : 0);
@@ -380,15 +367,7 @@ export class Color {
 
     public getStyle(): string {
         const { r, g, b } = this;
-        return (
-            "rgb(" +
-            ((r * 255) | 0) +
-            "," +
-            ((g * 255) | 0) +
-            "," +
-            ((b * 255) | 0) +
-            ")"
-        );
+        return "rgb(" + ((r * 255) | 0) + "," + ((g * 255) | 0) + "," + ((b * 255) | 0) + ")";
     }
 
     public offsetHSL(h: number, s: number, l: number): this {

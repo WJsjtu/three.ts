@@ -131,12 +131,7 @@ export class Quaternion {
     public setFromAxisAngle(axis: Vector3, angle: number): this {
         const halfAngle: number = angle / 2,
             s: number = Math.sin(halfAngle);
-        return this.set(
-            axis.x * s,
-            axis.y * s,
-            axis.z * s,
-            Math.cos(halfAngle),
-        );
+        return this.set(axis.x * s, axis.y * s, axis.z * s, Math.cos(halfAngle));
     }
 
     /**
@@ -161,36 +156,16 @@ export class Quaternion {
 
         if (trace > 0) {
             s = 0.5 / Math.sqrt(trace + 1.0);
-            return this.set(
-                (m32 - m23) * s,
-                (m13 - m31) * s,
-                (m21 - m12) * s,
-                0.25 / s,
-            );
+            return this.set((m32 - m23) * s, (m13 - m31) * s, (m21 - m12) * s, 0.25 / s);
         } else if (m11 > m22 && m11 > m33) {
             s = 2.0 * Math.sqrt(1.0 + m11 - m22 - m33);
-            return this.set(
-                0.25 * s,
-                (m12 + m21) / s,
-                (m13 + m31) / s,
-                (m32 - m23) / s,
-            );
+            return this.set(0.25 * s, (m12 + m21) / s, (m13 + m31) / s, (m32 - m23) / s);
         } else if (m22 > m33) {
             s = 2.0 * Math.sqrt(1.0 + m22 - m11 - m33);
-            return this.set(
-                (m12 + m21) / s,
-                0.25 * s,
-                (m23 + m32) / s,
-                (m13 - m31) / s,
-            );
+            return this.set((m12 + m21) / s, 0.25 * s, (m23 + m32) / s, (m13 - m31) / s);
         } else {
             s = 2.0 * Math.sqrt(1.0 + m33 - m11 - m22);
-            return this.set(
-                (m13 + m31) / s,
-                (m23 + m32) / s,
-                0.25 * s,
-                (m21 - m12) / s,
-            );
+            return this.set((m13 + m31) / s, (m23 + m32) / s, 0.25 * s, (m21 - m12) / s);
         }
     }
 
@@ -230,9 +205,7 @@ export class Quaternion {
     }
 
     public dot(vec: Vector4): number {
-        return (
-            this.x * vec.x + this.y * vec.y + this.z * vec.z + this.w * vec.w
-        );
+        return this.x * vec.x + this.y * vec.y + this.z * vec.z + this.w * vec.w;
     }
 
     public lengthSquared(): number {
@@ -310,17 +283,10 @@ export class Quaternion {
             return this.set(x, y, z, w);
         }
 
-        const sinHalfTheta: number = Math.sqrt(
-            1.0 - cosHalfTheta * cosHalfTheta,
-        );
+        const sinHalfTheta: number = Math.sqrt(1.0 - cosHalfTheta * cosHalfTheta);
 
         if (Math.abs(sinHalfTheta) < 0.001) {
-            return this.set(
-                0.5 * (x + this.x),
-                0.5 * (y + this.y),
-                0.5 * (z + this.z),
-                0.5 * (w + this.w),
-            );
+            return this.set(0.5 * (x + this.x), 0.5 * (y + this.y), 0.5 * (z + this.z), 0.5 * (w + this.w));
         }
 
         const halfTheta: number = Math.atan2(sinHalfTheta, cosHalfTheta);
@@ -337,27 +303,14 @@ export class Quaternion {
 
     public equals(quaternion: Quaternion): boolean {
         const { x, y, z, w } = this;
-        return (
-            quaternion.x === x &&
-            quaternion.y === y &&
-            quaternion.z === z &&
-            quaternion.w === w
-        );
+        return quaternion.x === x && quaternion.y === y && quaternion.z === z && quaternion.w === w;
     }
 
     public fromArray(array: number[] | TypedArray, offset: number = 0): this {
-        return this.set(
-            array[offset],
-            array[offset + 1],
-            array[offset + 2],
-            array[offset + 3],
-        );
+        return this.set(array[offset], array[offset + 1], array[offset + 2], array[offset + 3]);
     }
 
-    public toArray(
-        array: number[] | TypedArray = [],
-        offset: number = 0,
-    ): number[] | TypedArray {
+    public toArray(array: number[] | TypedArray = [], offset: number = 0): number[] | TypedArray {
         array[offset] = this.x;
         array[offset + 1] = this.y;
         array[offset + 2] = this.z;

@@ -1,10 +1,6 @@
-import {
-    ILineBasicMaterialParameters,
-    LineBasicMaterial,
-} from "./LineBasicMaterial";
+import { ILineBasicMaterialParameters, LineBasicMaterial } from "./LineBasicMaterial";
 
-export interface ILineDashedMaterialParameters
-    extends ILineBasicMaterialParameters {
+export interface ILineDashedMaterialParameters extends ILineBasicMaterialParameters {
     dashSize?: number;
     gapSize?: number;
     scale?: number;

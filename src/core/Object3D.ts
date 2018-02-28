@@ -8,10 +8,7 @@ import { Vector4 } from "../math/Vector4";
 import { EventDispatcher } from "./EventDispatcher";
 import { Layers } from "./Layers";
 import { IIntersection, Raycaster } from "./Raycaster";
-import {
-    MeshDepthMaterial,
-    MeshDistanceMaterial,
-} from "../materials/Materials";
+import { MeshDepthMaterial, MeshDistanceMaterial } from "../materials/Materials";
 
 let object3DId: number = 0;
 
@@ -62,10 +59,7 @@ export class Object3D extends EventDispatcher {
             if (this.parent === null) {
                 this.matrixWorld.copy(this.matrix);
             } else {
-                this.matrixWorld.multiplyMatrices(
-                    this.parent.matrixWorld,
-                    this.matrix,
-                );
+                this.matrixWorld.multiplyMatrices(this.parent.matrixWorld, this.matrix);
             }
             this.matrixWorldNeedsUpdate = false;
             force = true;
@@ -78,10 +72,7 @@ export class Object3D extends EventDispatcher {
         return this;
     }
 
-    public raycast(
-        raycaster: Raycaster,
-        intersections: IIntersection[],
-    ): void {}
+    public raycast(raycaster: Raycaster, intersections: IIntersection[]): void {}
 
     public applyMatrix(matrix: Matrix4): this {
         this.matrix.multiplyMatrices(matrix, this.matrix);
@@ -218,9 +209,7 @@ export class Object3D extends EventDispatcher {
             return this;
         }
         if (object === this) {
-            console.error(
-                `THREE.Object3D.add: object can't be added as a child of itself. ${object}`,
-            );
+            console.error(`THREE.Object3D.add: object can't be added as a child of itself. ${object}`);
             return this;
         }
         if (object.parent !== null) {
@@ -263,10 +252,7 @@ export class Object3D extends EventDispatcher {
     }
 
     get worldRotation(): Euler {
-        return new Euler().setFromQuaternion(
-            this.worldQuaternion,
-            this.rotation.order,
-        );
+        return new Euler().setFromQuaternion(this.worldQuaternion, this.rotation.order);
     }
 
     get worldScale(): Vector3 {
@@ -305,10 +291,7 @@ export class Object3D extends EventDispatcher {
     }
 
     public clone(recursive: boolean = false) {
-        return new (this.constructor as new () => Object3D)().copy(
-            this,
-            recursive,
-        );
+        return new (this.constructor as new () => Object3D)().copy(this, recursive);
     }
 
     public copy(source: Object3D, recursive: boolean = true): this {

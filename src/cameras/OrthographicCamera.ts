@@ -149,14 +149,7 @@ export class OrthographicCamera extends Camera {
             bottom = top - scaleH * (this.view.height / zoomH);
         }
 
-        this.projectionMatrix.makeOrthographic(
-            left,
-            right,
-            top,
-            bottom,
-            this.near,
-            this.far,
-        );
+        this.projectionMatrix.makeOrthographic(left, right, top, bottom, this.near, this.far);
         return this;
     }
 
@@ -177,8 +170,6 @@ export class OrthographicCamera extends Camera {
     }
 
     public clone(): OrthographicCamera {
-        return new (this.constructor as new () => OrthographicCamera)().copy(
-            this,
-        );
+        return new (this.constructor as new () => OrthographicCamera)().copy(this);
     }
 }

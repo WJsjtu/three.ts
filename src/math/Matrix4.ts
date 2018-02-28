@@ -7,24 +7,7 @@ import { Vector3 } from "./Vector3";
  * TODO: applyToBufferAttribute
  */
 export class Matrix4 {
-    public elements: number[] = [
-        1,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        0,
-        1,
-    ];
+    public elements: number[] = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
     public copy(mat4: Matrix4): this {
         const te: number[] = this.elements;
@@ -722,8 +705,7 @@ export class Matrix4 {
         const te: number[] = this.elements;
         const scaleXSq: number = te[0] * te[0] + te[1] * te[1] + te[2] * te[2];
         const scaleYSq: number = te[4] * te[4] + te[5] * te[5] + te[6] * te[6];
-        const scaleZSq: number =
-            te[8] * te[8] + te[9] * te[9] + te[10] * te[10];
+        const scaleZSq: number = te[8] * te[8] + te[9] * te[9] + te[10] * te[10];
         return Math.sqrt(Math.max(scaleXSq, scaleYSq, scaleZSq));
     }
 
@@ -792,22 +774,14 @@ export class Matrix4 {
         return this.set(1, y, z, 0, x, 1, z, 0, x, y, 1, 0, 0, 0, 0, 1);
     }
 
-    public compose(
-        position: Vector3,
-        quaternion: Quaternion,
-        scale: Vector3,
-    ): this {
+    public compose(position: Vector3, quaternion: Quaternion, scale: Vector3): this {
         this.makeRotationFromQuaternion(quaternion);
         this.scale(scale);
         this.setPosition(position);
         return this;
     }
 
-    public decompose(
-        position: Vector3,
-        quaternion: Quaternion,
-        scale: Vector3,
-    ): this {
+    public decompose(position: Vector3, quaternion: Quaternion, scale: Vector3): this {
         const vector: Vector3 = new Vector3();
         const matrix: Matrix4 = new Matrix4();
         const te: number[] = this.elements;
@@ -848,14 +822,7 @@ export class Matrix4 {
         return this;
     }
 
-    public makePerspective(
-        left: number,
-        right: number,
-        top: number,
-        bottom: number,
-        near: number,
-        far: number,
-    ): this {
+    public makePerspective(left: number, right: number, top: number, bottom: number, near: number, far: number): this {
         return this.set(
             2 * near / (right - left),
             0,
@@ -876,14 +843,7 @@ export class Matrix4 {
         );
     }
 
-    public makeOrthographic(
-        left: number,
-        right: number,
-        top: number,
-        bottom: number,
-        near: number,
-        far: number,
-    ): this {
+    public makeOrthographic(left: number, right: number, top: number, bottom: number, near: number, far: number): this {
         const w: number = 1.0 / (right - left);
         const h: number = 1.0 / (top - bottom);
         const p: number = 1.0 / (far - near);
@@ -892,24 +852,7 @@ export class Matrix4 {
         const y: number = (top + bottom) * h;
         const z: number = (far + near) * p;
 
-        return this.set(
-            2 * w,
-            0,
-            0,
-            -x,
-            0,
-            2 * h,
-            0,
-            -y,
-            0,
-            0,
-            -2 * p,
-            -z,
-            0,
-            0,
-            0,
-            1,
-        );
+        return this.set(2 * w, 0, 0, -x, 0, 2 * h, 0, -y, 0, 0, -2 * p, -z, 0, 0, 0, 1);
     }
 
     public equals(matrix: Matrix4): boolean {
@@ -927,10 +870,7 @@ export class Matrix4 {
         return this;
     }
 
-    public toArray(
-        array: number[] | TypedArray = [],
-        offset: number = 0,
-    ): number[] | TypedArray {
+    public toArray(array: number[] | TypedArray = [], offset: number = 0): number[] | TypedArray {
         const te: number[] = this.elements;
 
         array[offset] = te[0];

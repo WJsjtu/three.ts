@@ -25,10 +25,7 @@ export function arrayMax(array: number[]): number {
     return max;
 }
 
-export function applyMatrixToBufferAttribute(
-    matrix: Matrix4 | Matrix3,
-    attribute: BufferAttribute,
-): BufferAttribute {
+export function applyMatrixToBufferAttribute(matrix: Matrix4 | Matrix3, attribute: BufferAttribute): BufferAttribute {
     const vec: Vector3 = new Vector3();
     for (let i: number = 0, l: number = attribute.count; i < l; i++) {
         vec.x = attribute.getProperty(i, "x") as number;
@@ -44,10 +41,7 @@ export function applyMatrixToBufferAttribute(
     return attribute;
 }
 
-export function setBoxFromBufferAttribute(
-    target: Box3,
-    attribute: BufferAttribute,
-): void {
+export function setBoxFromBufferAttribute(target: Box3, attribute: BufferAttribute): void {
     let minX: number = +Infinity;
     let minY: number = +Infinity;
     let minZ: number = +Infinity;
@@ -69,17 +63,9 @@ export function setBoxFromBufferAttribute(
     target.max.set(maxX, maxY, maxZ);
 }
 
-export function unprojectVector3onCamera(
-    vector: Vector3,
-    camera: Camera,
-): Vector3 {
+export function unprojectVector3onCamera(vector: Vector3, camera: Camera): Vector3 {
     const matrix: Matrix4 = new Matrix4();
-    vector.applyMatrix4(
-        matrix.multiplyMatrices(
-            camera.matrixWorld,
-            matrix.getInverse(camera.projectionMatrix),
-        ),
-    );
+    vector.applyMatrix4(matrix.multiplyMatrices(camera.matrixWorld, matrix.getInverse(camera.projectionMatrix)));
     return vector;
 }
 
@@ -89,10 +75,7 @@ export function vectorFromBufferAttribute<T = Vector4 | Vector3 | Vector2>(
     index: number = 0,
 ): T {
     if (vector instanceof Vector2) {
-        return vector.set(
-            attribute.getProperty(index, "x") as number,
-            attribute.getProperty(index, "y") as number,
-        );
+        return vector.set(attribute.getProperty(index, "x") as number, attribute.getProperty(index, "y") as number);
     } else if (vector instanceof Vector3) {
         return vector.set(
             attribute.getProperty(index, "x") as number,

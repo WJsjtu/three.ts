@@ -135,8 +135,7 @@ export class BoxBufferGeometry extends BufferGeometry {
                 for (let ix: number = 0; ix < gridX; ix++) {
                     const a: number = numberOfVertices + ix + gridX1 * iy;
                     const b: number = numberOfVertices + ix + gridX1 * (iy + 1);
-                    const c: number =
-                        numberOfVertices + (ix + 1) + gridX1 * (iy + 1);
+                    const c: number = numberOfVertices + (ix + 1) + gridX1 * (iy + 1);
                     const d: number = numberOfVertices + (ix + 1) + gridX1 * iy;
                     // faces
                     indices.push(a, b, d);
@@ -154,84 +153,12 @@ export class BoxBufferGeometry extends BufferGeometry {
         };
 
         // build each side of the box geometry
-        buildPlane(
-            "z",
-            "y",
-            "x",
-            -1,
-            -1,
-            depth,
-            height,
-            width,
-            depthSegments,
-            heightSegments,
-            0,
-        ); // px
-        buildPlane(
-            "z",
-            "y",
-            "x",
-            1,
-            -1,
-            depth,
-            height,
-            -width,
-            depthSegments,
-            heightSegments,
-            1,
-        ); // nx
-        buildPlane(
-            "x",
-            "z",
-            "y",
-            1,
-            1,
-            width,
-            depth,
-            height,
-            widthSegments,
-            depthSegments,
-            2,
-        ); // py
-        buildPlane(
-            "x",
-            "z",
-            "y",
-            1,
-            -1,
-            width,
-            depth,
-            -height,
-            widthSegments,
-            depthSegments,
-            3,
-        ); // ny
-        buildPlane(
-            "x",
-            "y",
-            "z",
-            1,
-            -1,
-            width,
-            height,
-            depth,
-            widthSegments,
-            heightSegments,
-            4,
-        ); // pz
-        buildPlane(
-            "x",
-            "y",
-            "z",
-            -1,
-            -1,
-            width,
-            height,
-            -depth,
-            widthSegments,
-            heightSegments,
-            5,
-        ); // nz
+        buildPlane("z", "y", "x", -1, -1, depth, height, width, depthSegments, heightSegments, 0); // px
+        buildPlane("z", "y", "x", 1, -1, depth, height, -width, depthSegments, heightSegments, 1); // nx
+        buildPlane("x", "z", "y", 1, 1, width, depth, height, widthSegments, depthSegments, 2); // py
+        buildPlane("x", "z", "y", 1, -1, width, depth, -height, widthSegments, depthSegments, 3); // ny
+        buildPlane("x", "y", "z", 1, -1, width, height, depth, widthSegments, heightSegments, 4); // pz
+        buildPlane("x", "y", "z", -1, -1, width, height, -depth, widthSegments, heightSegments, 5); // nz
 
         // build geometry
         this.setIndex(indices);

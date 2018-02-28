@@ -15,9 +15,7 @@ export interface IUniform {
 }
 
 export class UniformsUtils {
-    public static merge(
-        uniforms: Array<{ [key: string]: IUniform }>,
-    ): { [key: string]: IUniform } {
+    public static merge(uniforms: Array<{ [key: string]: IUniform }>): { [key: string]: IUniform } {
         const merged: { [key: string]: IUniform } = {};
         for (let u: number = 0; u < uniforms.length; u++) {
             const tmp = this.clone(uniforms[u]);
@@ -30,9 +28,7 @@ export class UniformsUtils {
         return merged;
     }
 
-    public static clone(uniformsSrc: {
-        [key: string]: IUniform;
-    }): { [key: string]: IUniform } {
+    public static clone(uniformsSrc: { [key: string]: IUniform }): { [key: string]: IUniform } {
         const uniformsDst: { [key: string]: IUniform } = {};
         for (const u in uniformsSrc) {
             if (!uniformsSrc.hasOwnProperty(u)) continue;

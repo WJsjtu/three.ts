@@ -7,11 +7,7 @@ export class Triangle {
     public b: Vector3 = new Vector3();
     public c: Vector3 = new Vector3();
 
-    constructor(
-        a: Vector3 = new Vector3(),
-        b: Vector3 = new Vector3(),
-        c: Vector3 = new Vector3(),
-    ) {
+    constructor(a: Vector3 = new Vector3(), b: Vector3 = new Vector3(), c: Vector3 = new Vector3()) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -105,11 +101,7 @@ export class Triangle {
 
     public closestPointToPoint(point: Vector3): Vector3 {
         // project the point onto the plane of the triangle
-        const plane: Plane = new Plane().setFromCoplanarPoints(
-            this.a,
-            this.b,
-            this.c,
-        );
+        const plane: Plane = new Plane().setFromCoplanarPoints(this.a, this.b, this.c);
         const projectedPoint: Vector3 = plane.projectPoint(point);
 
         // check if the projection lies within the triangle
@@ -121,20 +113,11 @@ export class Triangle {
             let minDistance: number = Infinity;
 
             // if not, the point falls outside the triangle. the result is the closest point to the triangle's edges or vertices
-            const edgeList: Line3[] = [
-                new Line3(this.a, this.b),
-                new Line3(this.b, this.c),
-                new Line3(this.c, this.a),
-            ];
+            const edgeList: Line3[] = [new Line3(this.a, this.b), new Line3(this.b, this.c), new Line3(this.c, this.a)];
 
             for (let i: number = 0; i < edgeList.length; i++) {
-                const closestPoint: Vector3 = edgeList[i].closestPointToPoint(
-                    projectedPoint,
-                    true,
-                );
-                const distance: number = projectedPoint.distanceToSquared(
-                    closestPoint,
-                );
+                const closestPoint: Vector3 = edgeList[i].closestPointToPoint(projectedPoint, true);
+                const distance: number = projectedPoint.distanceToSquared(closestPoint);
                 if (distance < minDistance) {
                     minDistance = distance;
                     result.copy(closestPoint);
@@ -145,10 +128,6 @@ export class Triangle {
     }
 
     public equals(triangle: Triangle): boolean {
-        return (
-            triangle.a.equals(this.a) &&
-            triangle.b.equals(this.b) &&
-            triangle.c.equals(this.c)
-        );
+        return triangle.a.equals(this.a) && triangle.b.equals(this.b) && triangle.c.equals(this.c);
     }
 }

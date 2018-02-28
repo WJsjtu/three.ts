@@ -31,11 +31,7 @@ export class WebGLRenderTarget extends EventDispatcher {
     public stencilBuffer?: boolean;
     public depthTexture?: DepthTexture | null;
 
-    constructor(
-        width: number,
-        height: number,
-        options: IWebGLRenderTargetOptions = {},
-    ) {
+    constructor(width: number, height: number, options: IWebGLRenderTargetOptions = {}) {
         super();
         this.width = width;
         this.height = height;
@@ -56,12 +52,9 @@ export class WebGLRenderTarget extends EventDispatcher {
             options.anisotropy,
             options.encoding,
         );
-        this.depthBuffer =
-            options.depthBuffer !== undefined ? options.depthBuffer : true;
-        this.stencilBuffer =
-            options.stencilBuffer !== undefined ? options.stencilBuffer : true;
-        this.depthTexture =
-            options.depthTexture !== undefined ? options.depthTexture : null;
+        this.depthBuffer = options.depthBuffer !== undefined ? options.depthBuffer : true;
+        this.stencilBuffer = options.stencilBuffer !== undefined ? options.stencilBuffer : true;
+        this.depthTexture = options.depthTexture !== undefined ? options.depthTexture : null;
     }
 
     public setSize(width: number, height: number): void {
@@ -86,9 +79,7 @@ export class WebGLRenderTarget extends EventDispatcher {
     }
 
     public clone(): WebGLRenderTarget {
-        return new (this.constructor as new () => WebGLRenderTarget)().copy(
-            this,
-        );
+        return new (this.constructor as new () => WebGLRenderTarget)().copy(this);
     }
 
     public dispose(): void {

@@ -169,31 +169,21 @@ export class Material extends EventDispatcher {
             if (!values.hasOwnProperty(key)) continue;
             const newValue = values[key];
             if (newValue === undefined) {
-                console.warn(
-                    `THREE.Material: "${key}" parameter is undefined.`,
-                );
+                console.warn(`THREE.Material: "${key}" parameter is undefined.`);
                 continue;
             }
             /**
              * for backward compatability if shading is set in the constructor
              */
             if (key === "shading") {
-                console.warn(
-                    `THREE.${
-                        this.type
-                    }: .shading has been removed. Use the boolean .flatShading instead.`,
-                );
+                console.warn(`THREE.${this.type}: .shading has been removed. Use the boolean .flatShading instead.`);
                 this.flatShading = newValue === FlatShading;
                 continue;
             }
 
             const currentValue = this[key];
             if (currentValue === undefined) {
-                console.warn(
-                    `THREE.${
-                        this.type
-                    }: "${key}" is not a property of this material.`,
-                );
+                console.warn(`THREE.${this.type}: "${key}" is not a property of this material.`);
                 continue;
             }
             if (currentValue && currentValue instanceof Color) {
@@ -203,11 +193,7 @@ export class Material extends EventDispatcher {
                 } else if (typeof newValue === "string") {
                     currentValue.setStyle(newValue);
                 }
-            } else if (
-                currentValue &&
-                currentValue instanceof Vector3 &&
-                (newValue && newValue instanceof Vector3)
-            ) {
+            } else if (currentValue && currentValue instanceof Vector3 && (newValue && newValue instanceof Vector3)) {
                 currentValue.copy(newValue);
             } else if (key === "overdraw") {
                 /**

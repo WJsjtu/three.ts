@@ -78,12 +78,8 @@ export class Euler {
      * @param order
      * @returns {Euler}
      */
-    public setFromRotationMatrix(
-        m: Matrix4,
-        order: EulerOrder = this.order,
-    ): this {
-        const clamp: (value: number, min: number, max: number) => number =
-            MathUtil.clamp;
+    public setFromRotationMatrix(m: Matrix4, order: EulerOrder = this.order): this {
+        const clamp: (value: number, min: number, max: number) => number = MathUtil.clamp;
         const te: number[] = m.elements;
         const m11: number = te[0],
             m12: number = te[4],
@@ -172,17 +168,10 @@ export class Euler {
     }
 
     public equals(euler: Euler): boolean {
-        return (
-            euler.x === this.x &&
-            euler.y === this.y &&
-            euler.z === this.z &&
-            euler.order === this.order
-        );
+        return euler.x === this.x && euler.y === this.y && euler.z === this.z && euler.order === this.order;
     }
 
-    public fromArray(
-        array: [number, number, number] | [number, number, number, EulerOrder],
-    ): this {
+    public fromArray(array: [number, number, number] | [number, number, number, EulerOrder]): this {
         return this.set(array[0], array[1], array[2], array[3] || this.order);
     }
 

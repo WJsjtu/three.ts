@@ -26,10 +26,7 @@ export class Sphere {
         }
         let maxRadiusSq: number = 0;
         for (let i: number = 0, il: number = points.length; i < il; i++) {
-            maxRadiusSq = Math.max(
-                maxRadiusSq,
-                this.center.distanceToSquared(points[i]),
-            );
+            maxRadiusSq = Math.max(maxRadiusSq, this.center.distanceToSquared(points[i]));
         }
         this.radius = Math.sqrt(maxRadiusSq);
         return this;
@@ -50,9 +47,7 @@ export class Sphere {
     }
 
     public containsPoint(point: Vector3): boolean {
-        return (
-            point.distanceToSquared(this.center) <= this.radius * this.radius
-        );
+        return point.distanceToSquared(this.center) <= this.radius * this.radius;
     }
 
     public distanceToPoint(point: Vector3): number {
@@ -61,10 +56,7 @@ export class Sphere {
 
     public intersectsSphere(sphere: Sphere): boolean {
         const radiusSum: number = this.radius + sphere.radius;
-        return (
-            sphere.center.distanceToSquared(this.center) <=
-            radiusSum * radiusSum
-        );
+        return sphere.center.distanceToSquared(this.center) <= radiusSum * radiusSum;
     }
 
     public intersectsBox(box: Box3): boolean {
@@ -86,9 +78,7 @@ export class Sphere {
     }
 
     public getBoundingBox(): Box3 {
-        return new Box3()
-            .set(this.center, this.center)
-            .expandByScalar(this.radius);
+        return new Box3().set(this.center, this.center).expandByScalar(this.radius);
     }
 
     public applyMatrix4(matrix: Matrix4) {
@@ -103,8 +93,6 @@ export class Sphere {
     }
 
     public equals(sphere: Sphere): boolean {
-        return (
-            sphere.center.equals(this.center) && sphere.radius === this.radius
-        );
+        return sphere.center.equals(this.center) && sphere.radius === this.radius;
     }
 }

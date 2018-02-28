@@ -79,21 +79,13 @@ export class Geometry extends EventDispatcher {
 
     public applyMatrix(matrix: Matrix4): this {
         const normalMatrix: Matrix3 = new Matrix3().getNormalMatrix(matrix);
-        for (
-            let i: number = 0, il: number = this.vertices.length;
-            i < il;
-            i++
-        ) {
+        for (let i: number = 0, il: number = this.vertices.length; i < il; i++) {
             this.vertices[i].applyMatrix4(matrix);
         }
         for (let i: number = 0, il: number = this.faces.length; i < il; i++) {
             const face: GeometryFace = this.faces[i];
             face.normal.applyMatrix3(normalMatrix).normalize();
-            for (
-                let j: number = 0, jl: number = face.vertexNormals.length;
-                j < jl;
-                j++
-            ) {
+            for (let j: number = 0, jl: number = face.vertexNormals.length; j < jl; j++) {
                 face.vertexNormals[j].applyMatrix3(normalMatrix).normalize();
             }
         }
@@ -135,44 +127,26 @@ export class Geometry extends EventDispatcher {
     }
 
     public fromBufferGeometry(geometry: BufferGeometry): this {
-        const indices: TypedArray =
-            geometry.index !== null ? geometry.index.array : undefined;
-        const attributes: { [key: string]: BufferAttribute } =
-            geometry.attributes;
+        const indices: TypedArray = geometry.index !== null ? geometry.index.array : undefined;
+        const attributes: { [key: string]: BufferAttribute } = geometry.attributes;
         const positions: TypedArray = attributes.position.array;
-        const normals: TypedArray =
-            attributes.normal !== undefined
-                ? attributes.normal.array
-                : undefined;
-        const colors: TypedArray =
-            attributes.color !== undefined ? attributes.color.array : undefined;
-        const uvs: TypedArray =
-            attributes.uv !== undefined ? attributes.uv.array : undefined;
-        const uvs2: TypedArray =
-            attributes.uv2 !== undefined ? attributes.uv2.array : undefined;
+        const normals: TypedArray = attributes.normal !== undefined ? attributes.normal.array : undefined;
+        const colors: TypedArray = attributes.color !== undefined ? attributes.color.array : undefined;
+        const uvs: TypedArray = attributes.uv !== undefined ? attributes.uv.array : undefined;
+        const uvs2: TypedArray = attributes.uv2 !== undefined ? attributes.uv2.array : undefined;
 
         if (uvs2 !== undefined) this.faceVertexUvs[1] = [];
         const tempNormals: Vector3[] = [];
         const tempUVs: Vector2[] = [];
         const tempUVs2: Vector2[] = [];
 
-        for (
-            let i: number = 0, j: number = 0;
-            i < positions.length;
-            i += 3, j += 2
-        ) {
-            this.vertices.push(
-                new Vector3(positions[i], positions[i + 1], positions[i + 2]),
-            );
+        for (let i: number = 0, j: number = 0; i < positions.length; i += 3, j += 2) {
+            this.vertices.push(new Vector3(positions[i], positions[i + 1], positions[i + 2]));
             if (normals !== undefined) {
-                tempNormals.push(
-                    new Vector3(normals[i], normals[i + 1], normals[i + 2]),
-                );
+                tempNormals.push(new Vector3(normals[i], normals[i + 1], normals[i + 2]));
             }
             if (colors !== undefined) {
-                this.colors.push(
-                    new Color(colors[i], colors[i + 1], colors[i + 2]),
-                );
+                this.colors.push(new Color(colors[i], colors[i + 1], colors[i + 2]));
             }
             if (uvs !== undefined) {
                 tempUVs.push(new Vector2(uvs[j], uvs[j + 1]));
@@ -181,50 +155,18 @@ export class Geometry extends EventDispatcher {
                 tempUVs2.push(new Vector2(uvs2[j], uvs2[j + 1]));
             }
         }
-        const addFace = (
-            a: number,
-            b: number,
-            c: number,
-            materialIndex?: number,
-        ): void => {
+        const addFace = (a: number, b: number, c: number, materialIndex?: number): void => {
             const vertexNormals: Vector3[] =
-                normals !== undefined
-                    ? [
-                          tempNormals[a].clone(),
-                          tempNormals[b].clone(),
-                          tempNormals[c].clone(),
-                      ]
-                    : [];
+                normals !== undefined ? [tempNormals[a].clone(), tempNormals[b].clone(), tempNormals[c].clone()] : [];
             const vertexColors: Color[] =
-                colors !== undefined
-                    ? [
-                          this.colors[a].clone(),
-                          this.colors[b].clone(),
-                          this.colors[c].clone(),
-                      ]
-                    : [];
-            const face: Face3 = new Face3(
-                a,
-                b,
-                c,
-                vertexNormals,
-                vertexColors,
-                materialIndex,
-            );
+                colors !== undefined ? [this.colors[a].clone(), this.colors[b].clone(), this.colors[c].clone()] : [];
+            const face: Face3 = new Face3(a, b, c, vertexNormals, vertexColors, materialIndex);
             this.faces.push(face);
             if (uvs !== undefined) {
-                this.faceVertexUvs[0].push([
-                    tempUVs[a].clone(),
-                    tempUVs[b].clone(),
-                    tempUVs[c].clone(),
-                ]);
+                this.faceVertexUvs[0].push([tempUVs[a].clone(), tempUVs[b].clone(), tempUVs[c].clone()]);
             }
             if (uvs2 !== undefined) {
-                this.faceVertexUvs[1].push([
-                    tempUVs2[a].clone(),
-                    tempUVs2[b].clone(),
-                    tempUVs2[c].clone(),
-                ]);
+                this.faceVertexUvs[1].push([tempUVs2[a].clone(), tempUVs2[b].clone(), tempUVs2[c].clone()]);
             }
         };
 
@@ -234,18 +176,9 @@ export class Geometry extends EventDispatcher {
                 const group: IGroup = groups[i];
                 const start: number = group.start;
                 const count: number = group.count;
-                for (
-                    let j: number = start, jl: number = start + count;
-                    j < jl;
-                    j += 3
-                ) {
+                for (let j: number = start, jl: number = start + count; j < jl; j += 3) {
                     if (indices !== undefined) {
-                        addFace(
-                            indices[j],
-                            indices[j + 1],
-                            indices[j + 2],
-                            group.materialIndex,
-                        );
+                        addFace(indices[j], indices[j + 1], indices[j + 2], group.materialIndex);
                     } else {
                         addFace(j, j + 1, j + 2, group.materialIndex);
                     }
@@ -285,24 +218,7 @@ export class Geometry extends EventDispatcher {
         const radius: number = this.boundingSphere.radius;
         const s: number = radius === 0 ? 1 : 1.0 / radius;
         const matrix: Matrix4 = new Matrix4();
-        matrix.set(
-            s,
-            0,
-            0,
-            -s * center.x,
-            0,
-            s,
-            0,
-            -s * center.y,
-            0,
-            0,
-            s,
-            -s * center.z,
-            0,
-            0,
-            0,
-            1,
-        );
+        matrix.set(s, 0, 0, -s * center.x, 0, s, 0, -s * center.y, 0, 0, s, -s * center.z, 0, 0, 0, 1);
         return this.applyMatrix(matrix);
     }
 
@@ -325,21 +241,13 @@ export class Geometry extends EventDispatcher {
 
     public computeVertexNormals(areaWeighted: boolean = true): this {
         const vertices: Vector3[] = new Array(this.vertices.length);
-        for (
-            let v: number = 0, vl: number = this.vertices.length;
-            v < vl;
-            v++
-        ) {
+        for (let v: number = 0, vl: number = this.vertices.length; v < vl; v++) {
             vertices[v] = new Vector3();
         }
         if (areaWeighted) {
             // vertex normals weighted by triangle areas
             // http://www.iquilezles.org/www/articles/normals/normals.htm
-            for (
-                let f: number = 0, fl: number = this.faces.length;
-                f < fl;
-                f++
-            ) {
+            for (let f: number = 0, fl: number = this.faces.length; f < fl; f++) {
                 const face: GeometryFace = this.faces[f];
                 const vA: Vector3 = this.vertices[face.a];
                 const vB: Vector3 = this.vertices[face.b];
@@ -353,22 +261,14 @@ export class Geometry extends EventDispatcher {
             }
         } else {
             this.computeFaceNormals();
-            for (
-                let f: number = 0, fl: number = this.faces.length;
-                f < fl;
-                f++
-            ) {
+            for (let f: number = 0, fl: number = this.faces.length; f < fl; f++) {
                 const face: GeometryFace = this.faces[f];
                 vertices[face.a].add(face.normal);
                 vertices[face.b].add(face.normal);
                 vertices[face.c].add(face.normal);
             }
         }
-        for (
-            let v: number = 0, vl: number = this.vertices.length;
-            v < vl;
-            v++
-        ) {
+        for (let v: number = 0, vl: number = this.vertices.length; v < vl; v++) {
             vertices[v].normalize();
         }
         for (let f: number = 0, fl: number = this.faces.length; f < fl; f++) {
@@ -424,15 +324,9 @@ export class Geometry extends EventDispatcher {
                 face.originalFaceNormal.copy(face.normal);
             }
             if (!face.originalVertexNormals) face.originalVertexNormals = [];
-            for (
-                let i: number = 0, il: number = face.vertexNormals.length;
-                i < il;
-                i++
-            ) {
+            for (let i: number = 0, il: number = face.vertexNormals.length; i < il; i++) {
                 if (!face.originalVertexNormals[i]) {
-                    face.originalVertexNormals[i] = face.vertexNormals[
-                        i
-                    ].clone();
+                    face.originalVertexNormals[i] = face.vertexNormals[i].clone();
                 } else {
                     face.originalVertexNormals[i].copy(face.vertexNormals[i]);
                 }
@@ -444,22 +338,14 @@ export class Geometry extends EventDispatcher {
         const tmpGeo: Geometry = new Geometry();
         tmpGeo.faces = this.faces;
 
-        for (
-            let i: number = 0, il: number = this.morphTargets.length;
-            i < il;
-            i++
-        ) {
+        for (let i: number = 0, il: number = this.morphTargets.length; i < il; i++) {
             // create on first access
             if (!this.morphNormals[i]) {
                 this.morphNormals[i] = {
                     faceNormals: [],
                     vertexNormals: [],
                 };
-                for (
-                    let f: number = 0, fl: number = this.faces.length;
-                    f < fl;
-                    f++
-                ) {
+                for (let f: number = 0, fl: number = this.faces.length; f < fl; f++) {
                     this.morphNormals[i].faceNormals.push(new Vector3());
                     this.morphNormals[i].vertexNormals.push(new Triangle());
                 }
@@ -471,11 +357,7 @@ export class Geometry extends EventDispatcher {
             tmpGeo.computeFaceNormals();
             tmpGeo.computeVertexNormals();
             // store morph normals
-            for (
-                let f: number = 0, fl: number = this.faces.length;
-                f < fl;
-                f++
-            ) {
+            for (let f: number = 0, fl: number = this.faces.length; f < fl; f++) {
                 const face: GeometryFace = this.faces[f];
                 const faceNormal = morphNormals.faceNormals[f];
                 const vertexNormals = morphNormals.vertexNormals[f];
@@ -523,11 +405,7 @@ export class Geometry extends EventDispatcher {
         return this;
     }
 
-    public merge(
-        geometry: Geometry,
-        matrix?: Matrix4,
-        materialIndexOffset: number = 0,
-    ): this {
+    public merge(geometry: Geometry, matrix?: Matrix4, materialIndexOffset: number = 0): this {
         let normalMatrix: Matrix3;
         const vertexOffset: number = this.vertices.length,
             thisVertices: Vector3[] = this.vertices,
@@ -565,11 +443,7 @@ export class Geometry extends EventDispatcher {
             if (normalMatrix !== undefined) {
                 faceCopy.normal.applyMatrix3(normalMatrix).normalize();
             }
-            for (
-                let j: number = 0, jl: number = faceVertexNormals.length;
-                j < jl;
-                j++
-            ) {
+            for (let j: number = 0, jl: number = faceVertexNormals.length; j < jl; j++) {
                 const normal: Vector3 = faceVertexNormals[j].clone();
                 if (normalMatrix !== undefined) {
                     normal.applyMatrix3(normalMatrix).normalize();
@@ -606,10 +480,7 @@ export class Geometry extends EventDispatcher {
             }
             this.merge(mesh.geometry, mesh.matrix);
         } else {
-            console.error(
-                `THREE.Geometry.merge(): geometry not an instance of THREE.Geometry.`,
-                mesh.geometry,
-            );
+            console.error(`THREE.Geometry.merge(): geometry not an instance of THREE.Geometry.`, mesh.geometry);
         }
     }
 
@@ -635,11 +506,7 @@ export class Geometry extends EventDispatcher {
         const precisionPoints: number = 4;
         const precision: number = Math.pow(10, precisionPoints);
 
-        for (
-            let i: number = 0, il: number = this.vertices.length;
-            i < il;
-            i++
-        ) {
+        for (let i: number = 0, il: number = this.vertices.length; i < il; i++) {
             const v = this.vertices[i];
             const key: string = [
                 Math.round(v.x * precision),
@@ -678,11 +545,7 @@ export class Geometry extends EventDispatcher {
         for (let i: number = faceIndicesToRemove.length - 1; i >= 0; i--) {
             const idx: number = faceIndicesToRemove[i];
             this.faces.splice(idx, 1);
-            for (
-                let j: number = 0, jl: number = this.faceVertexUvs.length;
-                j < jl;
-                j++
-            ) {
+            for (let j: number = 0, jl: number = this.faceVertexUvs.length; j < jl; j++) {
                 this.faceVertexUvs[j].splice(idx, 1);
             }
         }
@@ -760,20 +623,12 @@ export class Geometry extends EventDispatcher {
             this.faces.push(faces[i].clone() as GeometryFace);
         }
         // face vertex uvs
-        for (
-            let i: number = 0, il: number = source.faceVertexUvs.length;
-            i < il;
-            i++
-        ) {
+        for (let i: number = 0, il: number = source.faceVertexUvs.length; i < il; i++) {
             const faceVertexUvs: Vector2[][] = source.faceVertexUvs[i];
             if (this.faceVertexUvs[i] === undefined) {
                 this.faceVertexUvs[i] = [];
             }
-            for (
-                let j: number = 0, jl: number = faceVertexUvs.length;
-                j < jl;
-                j++
-            ) {
+            for (let j: number = 0, jl: number = faceVertexUvs.length; j < jl; j++) {
                 const uvs: Vector2[] = faceVertexUvs[j];
                 const uvsCopy: Vector2[] = [];
                 for (let k: number = 0, kl: number = uvs.length; k < kl; k++) {
@@ -790,29 +645,15 @@ export class Geometry extends EventDispatcher {
             // vertices
             if (morphTargets[i].vertices !== undefined) {
                 morphTarget.vertices = [];
-                for (
-                    let j: number = 0,
-                        jl: number = morphTargets[i].vertices.length;
-                    j < jl;
-                    j++
-                ) {
-                    morphTarget.vertices.push(
-                        morphTargets[i].vertices[j].clone(),
-                    );
+                for (let j: number = 0, jl: number = morphTargets[i].vertices.length; j < jl; j++) {
+                    morphTarget.vertices.push(morphTargets[i].vertices[j].clone());
                 }
             }
             // normals
             if (morphTargets[i].normals !== undefined) {
                 morphTarget.normals = [];
-                for (
-                    let j: number = 0,
-                        jl: number = morphTargets[i].normals.length;
-                    j < jl;
-                    j++
-                ) {
-                    morphTarget.normals.push(
-                        morphTargets[i].normals[j].clone(),
-                    );
+                for (let j: number = 0, jl: number = morphTargets[i].normals.length; j < jl; j++) {
+                    morphTarget.normals.push(morphTargets[i].normals[j].clone());
                 }
             }
             this.morphTargets.push(morphTarget);
@@ -824,29 +665,15 @@ export class Geometry extends EventDispatcher {
             // vertex normals
             if (morphNormals[i].vertexNormals !== undefined) {
                 morphNormal.vertexNormals = [];
-                for (
-                    let j: number = 0,
-                        jl: number = morphNormals[i].vertexNormals.length;
-                    j < jl;
-                    j++
-                ) {
-                    morphNormal.vertexNormals.push(
-                        morphNormals[i].vertexNormals[j].clone(),
-                    );
+                for (let j: number = 0, jl: number = morphNormals[i].vertexNormals.length; j < jl; j++) {
+                    morphNormal.vertexNormals.push(morphNormals[i].vertexNormals[j].clone());
                 }
             }
             // face normals
             if (morphNormals[i].faceNormals !== undefined) {
                 morphNormal.faceNormals = [];
-                for (
-                    let j: number = 0,
-                        jl: number = morphNormals[i].faceNormals.length;
-                    j < jl;
-                    j++
-                ) {
-                    morphNormal.faceNormals.push(
-                        morphNormals[i].faceNormals[j].clone(),
-                    );
+                for (let j: number = 0, jl: number = morphNormals[i].faceNormals.length; j < jl; j++) {
+                    morphNormal.faceNormals.push(morphNormals[i].faceNormals[j].clone());
                 }
             }
             this.morphNormals.push(morphNormal);
@@ -863,11 +690,7 @@ export class Geometry extends EventDispatcher {
         }
         // line distances
         const lineDistances: number[] = source.lineDistances;
-        for (
-            let i: number = 0, il: number = lineDistances.length;
-            i < il;
-            i++
-        ) {
+        for (let i: number = 0, il: number = lineDistances.length; i < il; i++) {
             this.lineDistances.push(lineDistances[i]);
         }
         // bounding box

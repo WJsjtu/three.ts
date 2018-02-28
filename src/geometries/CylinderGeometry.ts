@@ -125,11 +125,7 @@ export class CylinderBufferGeometry extends BufferGeometry {
                 const sinTheta: number = Math.sin(theta);
                 // vertex
 
-                vertices.push(
-                    radius * sinTheta,
-                    halfHeight * sign,
-                    radius * cosTheta,
-                );
+                vertices.push(radius * sinTheta, halfHeight * sign, radius * cosTheta);
                 // normal
                 normals.push(0, sign, 0);
                 // uv
@@ -165,19 +161,14 @@ export class CylinderBufferGeometry extends BufferGeometry {
                 const indexRow: number[] = [];
                 const v: number = y / heightSegments;
                 // calculate the radius of the current row
-                const radius: number =
-                    v * (radiusBottom - radiusTop) + radiusTop;
+                const radius: number = v * (radiusBottom - radiusTop) + radiusTop;
                 for (let x: number = 0; x <= radialSegments; x++) {
                     const u: number = x / radialSegments;
                     const theta: number = u * thetaLength + thetaStart;
                     const sinTheta: number = Math.sin(theta);
                     const cosTheta: number = Math.cos(theta);
                     // vertex
-                    vertices.push(
-                        radius * sinTheta,
-                        -v * height + halfHeight,
-                        radius * cosTheta,
-                    );
+                    vertices.push(radius * sinTheta, -v * height + halfHeight, radius * cosTheta);
                     // normal
                     const normal: Vector3 = new Vector3();
                     normal.set(sinTheta, slope, cosTheta).normalize();

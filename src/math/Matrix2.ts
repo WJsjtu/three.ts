@@ -109,10 +109,7 @@ export class Matrix2 {
         return this;
     }
 
-    public toArray(
-        array: number[] | TypedArray = [],
-        offset: number = 0,
-    ): number[] | TypedArray {
+    public toArray(array: number[] | TypedArray = [], offset: number = 0): number[] | TypedArray {
         const te: number[] = this.elements;
 
         array[offset] = te[0];

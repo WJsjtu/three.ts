@@ -14,20 +14,13 @@ export class WebGLMorphtargets {
         this.context = context;
     }
 
-    public update(
-        object: Object3D,
-        geometry: BufferGeometry,
-        material: Material,
-        program: WebGLProgramWrapper,
-    ) {
+    public update(object: Object3D, geometry: BufferGeometry, material: Material, program: WebGLProgramWrapper) {
         /**
          * Another not well designed
          */
         const objectInfluences = (object as any).morphTargetInfluences;
         const length: number = objectInfluences.length;
-        let influences: Array<[number, number]> = this.influencesList[
-            geometry.id
-        ];
+        let influences: Array<[number, number]> = this.influencesList[geometry.id];
         if (influences === undefined) {
             // initialise list
             influences = [];
@@ -36,10 +29,8 @@ export class WebGLMorphtargets {
             }
             this.influencesList[geometry.id] = influences;
         }
-        const morphTargets: BufferAttribute[] =
-            material.morphTargets && geometry.morphAttributes.position;
-        const morphNormals: BufferAttribute[] =
-            material.morphNormals && geometry.morphAttributes.normal;
+        const morphTargets: BufferAttribute[] = material.morphTargets && geometry.morphAttributes.position;
+        const morphNormals: BufferAttribute[] = material.morphNormals && geometry.morphAttributes.normal;
         // Remove current morphAttributes
         for (let i: number = 0; i < length; i++) {
             const influence: [number, number] = influences[i];
@@ -64,24 +55,14 @@ export class WebGLMorphtargets {
                 const index: number = influence[0];
                 const value: number = influence[1];
                 if (value) {
-                    if (morphTargets)
-                        geometry.addAttribute(
-                            "morphTarget" + i,
-                            morphTargets[index],
-                        );
-                    if (morphNormals)
-                        geometry.addAttribute(
-                            "morphNormal" + i,
-                            morphNormals[index],
-                        );
+                    if (morphTargets) geometry.addAttribute("morphTarget" + i, morphTargets[index]);
+                    if (morphNormals) geometry.addAttribute("morphNormal" + i, morphNormals[index]);
                     this.morphInfluences[i] = value;
                     continue;
                 }
             }
             this.morphInfluences[i] = 0;
         }
-        program
-            .getUniforms()
-            .setValue("morphTargetInfluences", this.morphInfluences);
+        program.getUniforms().setValue("morphTargetInfluences", this.morphInfluences);
     }
 }

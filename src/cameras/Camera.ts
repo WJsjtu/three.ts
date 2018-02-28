@@ -26,9 +26,7 @@ export class Camera extends Object3D {
     }
 
     get worldDirection(): Vector3 {
-        return new Vector3()
-            .set(0, 0, -1)
-            .applyQuaternion(this.worldQuaternion);
+        return new Vector3().set(0, 0, -1).applyQuaternion(this.worldQuaternion);
     }
 
     public clone(): Camera {
