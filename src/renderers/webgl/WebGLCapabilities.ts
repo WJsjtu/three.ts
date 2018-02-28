@@ -1,4 +1,5 @@
 import { WebGLExtensions } from "./WebGLExtensions";
+import { IWebGLRendererParameters } from "../WebGLRenderer";
 
 export interface IWebGLCapabilitiesParameters {
     precision?: string;
@@ -31,7 +32,7 @@ export class WebGLCapabilities {
     constructor(
         context: WebGLRenderingContext,
         extensions: WebGLExtensions,
-        parameters: { [key: string]: any },
+        parameters: IWebGLRendererParameters,
     ) {
         this.context = context;
         this.extensions = extensions;

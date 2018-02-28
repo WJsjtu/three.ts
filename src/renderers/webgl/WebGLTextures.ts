@@ -48,46 +48,65 @@ function clampToMaxSize(
     image: PlainTextureImage,
     maxSize: number,
 ): PlainTextureImage {
-    if (
-        ((image instanceof HTMLImageElement ||
-            image instanceof HTMLCanvasElement ||
-            image instanceof ImageBitmap) &&
-            image.width > maxSize) ||
-        image.height > maxSize
-    ) {
-        // Warning: Scaling through the canvas will only work with images that use
-        // premultiplied alpha.
+    if (image.width > maxSize || image.height > maxSize) {
         const scale: number = maxSize / Math.max(image.width, image.height);
-        const canvas: HTMLCanvasElement = document.createElementNS(
-            "http://www.w3.org/1999/xhtml",
-            "canvas",
-        ) as HTMLCanvasElement;
-        canvas.width = Math.floor(image.width * scale);
-        canvas.height = Math.floor(image.height * scale);
-        const context: CanvasRenderingContext2D = canvas.getContext("2d");
-        context.drawImage(
-            image as HTMLImageElement | HTMLCanvasElement | ImageBitmap,
-            0,
-            0,
-            image.width,
-            image.height,
-            0,
-            0,
-            canvas.width,
-            canvas.height,
-        );
-        console.warn(
-            "THREE.WebGLRenderer: image is too big (" +
-                image.width +
-                "x" +
-                image.height +
-                "). Resized to " +
-                canvas.width +
-                "x" +
+        if (
+            image instanceof HTMLImageElement ||
+            image instanceof HTMLCanvasElement ||
+            image instanceof ImageBitmap
+        ) {
+            // Warning: Scaling through the canvas will only work with images that use
+            // premultiplied alpha.
+            const canvas: HTMLCanvasElement = document.createElementNS(
+                "http://www.w3.org/1999/xhtml",
+                "canvas",
+            ) as HTMLCanvasElement;
+            canvas.width = Math.max(Math.floor(image.width * scale), 1);
+            canvas.height = Math.max(Math.floor(image.height * scale), 1);
+            const context: CanvasRenderingContext2D = canvas.getContext("2d");
+            context.drawImage(
+                image,
+                0,
+                0,
+                image.width,
+                image.height,
+                0,
+                0,
+                canvas.width,
                 canvas.height,
-            image,
-        );
-        return canvas;
+            );
+            console.warn(
+                "THREE.WebGLRenderer: image is too big (" +
+                    image.width +
+                    "x" +
+                    image.height +
+                    "). Resized to " +
+                    canvas.width +
+                    "x" +
+                    canvas.height,
+                image,
+            );
+            return canvas;
+        } else {
+            const width: number = Math.max(Math.floor(image.width * scale), 1);
+            const height: number = Math.max(
+                Math.floor(image.height * scale),
+                1,
+            );
+            console.warn(
+                "THREE.WebGLRenderer: image is too big (" +
+                    image.width +
+                    "x" +
+                    image.height +
+                    "). Resized to " +
+                    width +
+                    "x" +
+                    height,
+                image,
+            );
+            (image as any).width = width;
+            (image as any).height = height;
+        }
     }
     return image;
 }
@@ -103,7 +122,7 @@ function isPowerOfTwo(image: PlainTextureImage): boolean {
     );
 }
 
-function makePowerOfTwo(image: HTMLTextureSource): HTMLTextureSource {
+function makePowerOfTwo(image: PlainTextureImage): PlainTextureImage {
     if (
         image instanceof HTMLImageElement ||
         image instanceof HTMLCanvasElement ||
@@ -320,8 +339,10 @@ export class WebGLTextures {
              * 为什么这里的 texture.image 肯定是 HTMLTextureSource?
              * 因为在 WebGLRenderer.setProgram 中 SkinnedMesh 中的 Skeleton 的 boneTexture 被强制调整为2的幂次
              * 所以这个判断中 DataTexture 永远到不了，只能是 CanvasTexture 或者 VideoTexture
+             *
+             * Edited: 原本是这么认为的，但是不是
              */
-            image = makePowerOfTwo(image as HTMLTextureSource);
+            image = makePowerOfTwo(image);
         }
         const isPowerOfTwoImage: boolean = isPowerOfTwo(image);
         let glFormat: number = utils.convert(texture.format),
@@ -1070,14 +1091,14 @@ export class WebGLTextures {
         const gl: WebGLRenderingContext = this.context;
         const state: WebGLState = this.state;
         const properties: WebGLProperties = this.properties;
-        var texture = renderTarget.texture;
-        var isTargetPowerOfTwo = isPowerOfTwo(renderTarget);
+        const texture: Texture = renderTarget.texture;
+        const isTargetPowerOfTwo = isPowerOfTwo(renderTarget);
         if (textureNeedsGenerateMipmaps(texture, isTargetPowerOfTwo)) {
-            var target =
+            const target: number =
                 renderTarget instanceof WebGLRenderTargetCube
                     ? gl.TEXTURE_CUBE_MAP
                     : gl.TEXTURE_2D;
-            var webglTexture = properties.get(texture).__webglTexture;
+            const webglTexture = properties.get(texture).__webglTexture;
             state.bindTexture(target, webglTexture);
             gl.generateMipmap(target);
             state.bindTexture(target, null);
