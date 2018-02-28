@@ -7,9 +7,10 @@ import { Raycaster, IIntersection } from "../core/Raycaster";
 export class Sprite extends Object3D {
     public readonly type: string = "Sprite";
 
-    public material: Material;
+    public material: SpriteMaterial;
+    public z?: number;
 
-    constructor(material: Material = new SpriteMaterial()) {
+    constructor(material: SpriteMaterial = new SpriteMaterial()) {
         super();
         this.material = material;
     }

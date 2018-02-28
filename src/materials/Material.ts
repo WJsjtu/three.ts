@@ -138,6 +138,7 @@ export class Material extends EventDispatcher {
     public aoMap?: Texture;
     public bumpMap?: Texture;
     public combine?: number;
+    public color?: Color;
     public defines?: { [key: string]: object };
     public depthPacking?: number;
     public displacementMap?: Texture;
@@ -153,6 +154,7 @@ export class Material extends EventDispatcher {
     public metalnessMap?: Texture;
     public morphNormals?: boolean;
     public normalMap?: Texture;
+    public rotation?: number;
     public roughnessMap?: Texture;
     public sizeAttenuation?: boolean;
     public skinning?: boolean;
