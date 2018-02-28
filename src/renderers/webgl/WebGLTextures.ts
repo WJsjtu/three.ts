@@ -38,11 +38,23 @@ import { CanvasTexture } from "../../textures/CanvasTexture";
 import { CubeTexture } from "../../textures/CubeTexture";
 import { TypedArray } from "../../core/BufferAttribute";
 
+declare class ImageBitmap {
+    width: number;
+    height: number;
+    close: any;
+}
+
 function clampToMaxSize(
-    image: HTMLTextureSource,
+    image: PlainTextureImage,
     maxSize: number,
-): HTMLTextureSource {
-    if (image.width > maxSize || image.height > maxSize) {
+): PlainTextureImage {
+    if (
+        ((image instanceof HTMLImageElement ||
+            image instanceof HTMLCanvasElement ||
+            image instanceof ImageBitmap) &&
+            image.width > maxSize) ||
+        image.height > maxSize
+    ) {
         // Warning: Scaling through the canvas will only work with images that use
         // premultiplied alpha.
         const scale: number = maxSize / Math.max(image.width, image.height);
@@ -54,7 +66,7 @@ function clampToMaxSize(
         canvas.height = Math.floor(image.height * scale);
         const context: CanvasRenderingContext2D = canvas.getContext("2d");
         context.drawImage(
-            image,
+            image as HTMLImageElement | HTMLCanvasElement | ImageBitmap,
             0,
             0,
             image.width,
@@ -90,8 +102,6 @@ function isPowerOfTwo(image: PlainTextureImage): boolean {
         MathUtil.isPowerOfTwo(image.height)
     );
 }
-
-declare class ImageBitmap {}
 
 function makePowerOfTwo(image: HTMLTextureSource): HTMLTextureSource {
     if (
@@ -301,7 +311,7 @@ export class WebGLTextures {
          * 为什么 texture.image 肯定是 HTMLTextureSource?
          * Need to be fixed
          */
-        let image: HTMLTextureSource = clampToMaxSize(
+        let image: PlainTextureImage = clampToMaxSize(
             texture.image,
             this.capabilities.maxTextureSize,
         );
