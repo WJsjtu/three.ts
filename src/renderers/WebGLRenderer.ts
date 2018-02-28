@@ -286,6 +286,24 @@ export class WebGLRenderer {
         this.shadowMap = new WebGLShadowMap(this, this.objects, this.capabilities.maxTextureSize);
     }
 
+    public getContext(): WebGLRenderingContext {
+        return this.context;
+    }
+
+    public getContextAttributes(): WebGLContextAttributes {
+        return this.context.getContextAttributes();
+    }
+
+    public forceContextLoss(): void {
+        const extension = this.extensions.get("WEBGL_lose_context");
+        if (extension) extension.loseContext();
+    }
+
+    public forceContextRestore(): void {
+        const extension = this.extensions.get("WEBGL_lose_context");
+        if (extension) extension.restoreContext();
+    }
+
     protected onContextLost = (event: Event): void => {
         event.preventDefault();
         console.log("THREE.WebGLRenderer: Context Lost.");
