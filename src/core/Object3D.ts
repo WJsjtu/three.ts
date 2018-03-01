@@ -10,6 +10,8 @@ import { EventDispatcher } from "./EventDispatcher";
 import { Layers } from "./Layers";
 import { IIntersection, Raycaster } from "./Raycaster";
 import { MeshDepthMaterial, MeshDistanceMaterial } from "../materials/Materials";
+import { WebGLRenderer } from "../renderers/WebGLRenderer";
+import { Scene } from "../scenes/Scene";
 
 let object3DId: number = 0;
 
@@ -45,6 +47,19 @@ export class Object3D extends EventDispatcher {
 
     public customDepthMaterial?: MeshDepthMaterial;
     public customDistanceMaterial?: MeshDistanceMaterial;
+
+    public onBeforeRender: (
+        renderer?: WebGLRenderer,
+        scene?: Scene,
+        camera?: Camera,
+        ...args: any[]
+    ) => any = function() {};
+    public onAfterRender: (
+        renderer?: WebGLRenderer,
+        scene?: Scene,
+        camera?: Camera,
+        ...args: any[]
+    ) => any = function() {};
 
     public updateMatrix(): this {
         this.matrix.compose(this.position, this.quaternion, this.scale);

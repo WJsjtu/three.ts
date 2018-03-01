@@ -213,7 +213,7 @@ export class WebGLRenderer {
     // clipping
     protected clipping: WebGLClipping = new WebGLClipping();
     protected clippingEnabled: boolean = false;
-    protected localClippingEnabled: boolean = false;
+    public localClippingEnabled: boolean = false;
 
     // camera matrices cache
     protected projScreenMatrix: Matrix4 = new Matrix4();
@@ -436,7 +436,7 @@ export class WebGLRenderer {
         this.background.setClearAlpha(alpha);
     }
 
-    public clear(color: boolean, depth: boolean, stencil: boolean): void {
+    public clear(color?: boolean, depth?: boolean, stencil?: boolean): void {
         const gl: WebGLRenderingContext = this.context;
         let bits: number = 0;
         if (color === undefined || color) bits |= gl.COLOR_BUFFER_BIT;
@@ -603,7 +603,7 @@ export class WebGLRenderer {
         if (scene.autoUpdate === true) scene.updateMatrixWorld();
         // update camera matrices and frustum
         if (camera.parent === null) camera.updateMatrixWorld();
-        //scene.onBeforeRender(this, scene, camera, renderTarget );
+        scene.onBeforeRender(this, scene, camera, renderTarget);
         this.projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
         this.frustum.setFromMatrix(this.projScreenMatrix);
         this.lightsArray.length = 0;
@@ -751,7 +751,7 @@ export class WebGLRenderer {
         material: Material,
         group: IGroup,
     ): void {
-        //object.onBeforeRender(this, scene, camera, geometry, material, group );
+        object.onBeforeRender(this, scene, camera, geometry, material, group);
         object.modelViewMatrix.multiplyMatrices(camera.matrixWorldInverse, object.matrixWorld);
         object.normalMatrix.getNormalMatrix(object.modelViewMatrix);
         if (object instanceof ImmediateRenderObject) {
