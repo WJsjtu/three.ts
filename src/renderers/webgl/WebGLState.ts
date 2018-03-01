@@ -755,7 +755,7 @@ export class WebGLState {
      * @param factor
      * @param units
      */
-    public setPolygonOffset(polygonOffset: boolean, factor: number, units: number): this {
+    public setPolygonOffset(polygonOffset: boolean, factor?: number, units?: number): this {
         const gl: WebGLRenderingContext = this.context;
         if (polygonOffset) {
             this.enable(gl.POLYGON_OFFSET_FILL);

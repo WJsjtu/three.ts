@@ -1,6 +1,7 @@
 import { Camera } from "../cameras/Camera";
 import { Euler } from "../math/Euler";
 import { MathUtil } from "../math/Math";
+import { Matrix3 } from "../math/Matrix3";
 import { Matrix4 } from "../math/Matrix4";
 import { Quaternion } from "../math/Quaternion";
 import { Vector3 } from "../math/Vector3";
@@ -40,7 +41,7 @@ export class Object3D extends EventDispatcher {
     public quaternion: Quaternion = new Quaternion();
     public scale: Vector3 = new Vector3(1, 1, 1);
     public modelViewMatrix: Matrix4 = new Matrix4();
-    public normalMatrix: Matrix4 = new Matrix4();
+    public normalMatrix: Matrix3 = new Matrix3();
 
     public customDepthMaterial?: MeshDepthMaterial;
     public customDistanceMaterial?: MeshDistanceMaterial;

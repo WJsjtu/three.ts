@@ -1,7 +1,10 @@
 import { WebGLRenderer } from "../WebGLRenderer";
+import { Camera } from "../../cameras/Camera";
+import { Color } from "../../math/Color";
+import { Scene } from "../../scenes/Scene";
 import { WebGLState } from "./WebGLState";
 import { WebGLGeometries } from "./WebGLGeometries";
-import { Color } from "../../math/Color";
+import { WebGLRenderList } from "./WebGLRenderLists";
 
 export class WebGLBackground {
     protected clearColor: Color;
@@ -20,4 +23,6 @@ export class WebGLBackground {
     }
 
     public setClearAlpha(alpha: number): void {}
+
+    public render(renderList: WebGLRenderList, scene: Scene, camera: Camera, forceClear: boolean): void {}
 }
