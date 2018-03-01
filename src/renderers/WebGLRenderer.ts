@@ -61,6 +61,7 @@ import { Skeleton } from "../objects/Skeleton";
 import { SkinnedMesh } from "../objects/SkinnedMesh";
 import { Fog } from "../scenes/Fog";
 import { FogExp2 } from "../scenes/FogExp2";
+import { Scene } from "../scenes/Scene";
 import { DataTexture } from "../textures/DataTexture";
 import { Texture } from "../textures/Texture";
 import { CubeTexture } from "../textures/CubeTexture";
@@ -636,6 +637,54 @@ export class WebGLRenderer {
         }
     }
 
+    public compile(scene: Scene, camera: Camera): void {
+        this.lightsArray.length = 0;
+        this.shadowsArray.length = 0;
+        scene.traverse((object: Object3D): void => {
+            if (object instanceof Light) {
+                this.lightsArray.push(object);
+                if (object.castShadow) {
+                    this.shadowsArray.push(object);
+                }
+            }
+        });
+        this.lights.setup(this.lightsArray, this.shadowsArray, camera);
+        scene.traverse((obj: Object3D): void => {
+            const object: Line | Mesh | Points = obj as Line | Mesh | Points;
+            if (object.material) {
+                if (Array.isArray(object.material)) {
+                    for (let i: number = 0; i < object.material.length; i++) {
+                        this.initMaterial(object.material[i], scene.fog, object);
+                    }
+                } else {
+                    this.initMaterial(object.material, scene.fog, object);
+                }
+            }
+        });
+    }
+
+    protected isAnimating: boolean = false;
+    protected onAnimationFrame: (time: number) => any | null = null;
+    protected start(): void {
+        if (this.isAnimating) return;
+        window.requestAnimationFrame(this.loop);
+        this.isAnimating = true;
+    }
+
+    protected loop = (time: number): void => {
+        if (this.onAnimationFrame !== null) this.onAnimationFrame(time);
+        window.requestAnimationFrame(this.loop);
+    };
+
+    public animate(callback: (time: number) => any): void {
+        this.onAnimationFrame = callback;
+        this.start();
+    }
+
+    public render(): void {
+
+    }
+
     protected setProgram(camera: Camera, fog: Fog | null, material: Material, object: Object3D): WebGLProgramWrapper {
         const gl: WebGLRenderingContext = this.context;
         this.usedTextureUnits = 0;
@@ -940,7 +989,7 @@ export class WebGLRenderer {
         state.disableUnusedAttributes();
     }
 
-    protected initMaterial(material: Material, fog: Fog | null, object: Object3D) {
+    protected initMaterial(material: Material, fog: Fog | FogExp2 | null, object: Object3D) {
         const lights: WebGLLights = this.lights;
         const clipping: WebGLClipping = this.clipping;
         const materialProperties: IMaterialProperties = this.properties.get(material);

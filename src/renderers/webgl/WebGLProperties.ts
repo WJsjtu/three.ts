@@ -7,6 +7,7 @@ import { Texture } from "../../textures/Texture";
 import { WebGLRenderTarget } from "../WebGLRenderTarget";
 import { WebGLRenderTargetCube } from "../WebGLRenderTargetCube";
 import { Fog } from "../../scenes/Fog";
+import { FogExp2 } from "../../scenes/FogExp2";
 
 export interface ITextureProperties {
     __version?: number;
@@ -34,7 +35,7 @@ export interface IMaterialProperties {
     numClippingPlanes?: number;
     numIntersection?: number;
     clippingState?: Float32Array | null;
-    fog?: Fog;
+    fog?: Fog | FogExp2;
 }
 
 export interface IImmediateRenderObjectProperties {
