@@ -71,21 +71,10 @@ function clampToMaxSize(image: PlainTextureImage, maxSize: number): PlainTexture
             );
             return canvas;
         } else {
+            // https://github.com/mrdoob/three.js/issues/13454#issuecomment-369244843
             const width: number = Math.max(Math.floor(image.width * scale), 1);
             const height: number = Math.max(Math.floor(image.height * scale), 1);
-            console.warn(
-                "THREE.WebGLRenderer: image is too big (" +
-                    image.width +
-                    "x" +
-                    image.height +
-                    "). Resized to " +
-                    width +
-                    "x" +
-                    height,
-                image,
-            );
-            (image as any).width = width;
-            (image as any).height = height;
+            console.warn("THREE.WebGLRenderer: image is too big (" + image.width + "x" + image.height + ").", image);
         }
     }
     return image;
