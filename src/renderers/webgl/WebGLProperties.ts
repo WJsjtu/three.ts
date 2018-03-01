@@ -6,6 +6,7 @@ import { Material } from "../../materials/Material";
 import { Texture } from "../../textures/Texture";
 import { WebGLRenderTarget } from "../WebGLRenderTarget";
 import { WebGLRenderTargetCube } from "../WebGLRenderTargetCube";
+import { Fog } from "../../scenes/Fog";
 
 export interface ITextureProperties {
     __version?: number;
@@ -33,9 +34,10 @@ export interface IMaterialProperties {
     numClippingPlanes?: number;
     numIntersection?: number;
     clippingState?: Float32Array | null;
+    fog?: Fog;
 }
 
-export interface IObjectProperties {
+export interface IImmediateRenderObjectProperties {
     position?: WebGLBuffer;
     normal?: WebGLBuffer;
     uv?: WebGLBuffer;
@@ -43,7 +45,7 @@ export interface IObjectProperties {
 }
 
 export type WebGLPropertiesType =
-    | IObjectProperties
+    | IImmediateRenderObjectProperties
     | IMaterialProperties
     | ITextureProperties
     | IRenderTargetProperties
@@ -52,7 +54,7 @@ export type WebGLPropertiesType =
 export class WebGLProperties {
     protected properties: { [key: string]: WebGLPropertiesType } = {};
 
-    public get(object: Object3D): IObjectProperties;
+    public get(object: Object3D): IImmediateRenderObjectProperties;
     public get(object: Material): IMaterialProperties;
     public get(object: Texture): ITextureProperties;
     public get(object: WebGLRenderTarget): IRenderTargetProperties;

@@ -9,6 +9,8 @@ import { Matrix3 } from "../../math/Matrix3";
 import { Matrix4 } from "../../math/Matrix4";
 import { WebGLRenderer } from "../WebGLRenderer";
 import { IUniform } from "../shaders/UniformsUtils";
+import { Object3D } from "../../core/Object3D";
+import { Skeleton } from "../../objects/Skeleton";
 
 export type ArrayUniformSource = Vector2[] | Vector3[] | Vector4[] | Matrix2[] | Matrix3[] | Matrix4[] | Float32Array;
 
@@ -178,11 +180,11 @@ class UniformSetter {
         throw new Error(`Unknown type for getSingularSetter: ${this.activeInfo.type}`);
     }
 
-    public setValue1fv: (arg: AllUniformType) => void = (v: Float32Array | number[]) => {
+    public setValue1fv: (arg: AllUniformType) => void = (v: Float32Array) => {
         this.context.uniform1fv(this.addr, v);
     };
 
-    public setValue1iv: (arg: AllUniformType) => void = (v: Int32Array | number[]) => {
+    public setValue1iv: (arg: AllUniformType) => void = (v: Int32Array) => {
         this.context.uniform1iv(this.addr, v);
     };
 
@@ -303,14 +305,14 @@ class UniformSetter {
 }
 
 class SingleUniformSetter extends UniformSetter {
-    public setValue(value: AllUniformType) {
-        return super.getSingularSetter()(value);
+    public setValue(value: AllUniformType): void {
+        super.getSingularSetter()(value);
     }
 }
 
 class PureArrayUniformSetter extends UniformSetter {
-    public setValue(value: AllUniformType) {
-        return super.getPureArraySetter()(value);
+    public setValue(value: AllUniformType): void {
+        super.getPureArraySetter()(value);
     }
 }
 
@@ -333,7 +335,7 @@ class StructuredUniformSetter extends UniformContainer {
         this.id = id;
     }
 
-    public setValue(value: NestUniformType) {
+    public setValue(value: NestUniformType): void {
         // Note: Don't need an extra 'renderer' parameter, since samplers
         // are not allowed in structured uniforms.
         for (let i: number = 0, n: number = this.seq.length; i !== n; i++) {
@@ -440,7 +442,7 @@ export class WebGLUniformsWrapper extends UniformContainer {
         }
     }
 
-    public setOptional(object: { [key: string]: NestUniformType }, name: string): void {
+    public setOptional(object: Object3D | Skeleton, name: string): void {
         const v: NestUniformType = object[name];
         if (v !== undefined) {
             this.setValue(name, v);

@@ -10,6 +10,7 @@ export class Skeleton {
     public boneMatrices: Float32Array;
     public boneInverses: Matrix4[] = [];
     public boneTexture?: DataTexture;
+    public boneTextureSize?: number;
 
     constructor(bones: Bone[] = [], boneInverses?: Matrix4[]) {
         this.bones = bones.slice(0);

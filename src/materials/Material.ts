@@ -139,6 +139,7 @@ export class Material extends EventDispatcher {
     public bumpMap?: Texture;
     public combine?: number;
     public color?: Color;
+    public defaultAttributeValues?: { [key: string]: number[] };
     public defines?: { [key: string]: object };
     public depthPacking?: number;
     public displacementMap?: Texture;
@@ -162,6 +163,10 @@ export class Material extends EventDispatcher {
     public vertexShader?: string;
     public wireframe?: boolean;
     public wireframeLinewidth?: number;
+
+    // in renderer
+    public numSupportedMorphNormals: number;
+    public numSupportedMorphTargets: number;
 
     public setValues(values: IMaterialParameters): this {
         if (values === undefined) return this;
