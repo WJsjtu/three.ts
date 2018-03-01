@@ -26,9 +26,11 @@ import { IGroup } from "../core/DirectGeometry";
 import { Light } from "../lights/Light";
 import { Color } from "../math/Color";
 import { MathUtil } from "../math/Math";
+import { Vector2 } from "../math/Vector2";
 import { Vector3 } from "../math/Vector3";
 import { Vector4 } from "../math/Vector4";
 import { Frustum } from "../math/Frustum";
+import { Matrix3 } from "../math/Matrix3";
 import { Matrix4 } from "../math/Matrix4";
 import { WebGLUniformsWrapper, UniformSetterType, AllUniformType, NestUniformType } from "./webgl/WebGLUniforms";
 import {
@@ -58,6 +60,7 @@ import { Bone } from "../objects/Bone";
 import { Skeleton } from "../objects/Skeleton";
 import { SkinnedMesh } from "../objects/SkinnedMesh";
 import { Fog } from "../scenes/Fog";
+import { FogExp2 } from "../scenes/FogExp2";
 import { DataTexture } from "../textures/DataTexture";
 import { Texture } from "../textures/Texture";
 import { CubeTexture } from "../textures/CubeTexture";
@@ -86,6 +89,7 @@ import { WebGLIndexedBufferRenderer } from "./webgl/WebGLIndexedBufferRenderer";
 import { WebGLSpriteRenderer } from "./webgl/WebGLSpriteRenderer";
 import { WebGLBackground } from "./webgl/WebGLBackground";
 import { WebGLRenderTarget } from "./WebGLRenderTarget";
+import { WebGLRenderTargetCube } from "./WebGLRenderTargetCube";
 
 export interface IInfoMemory {
     geometries: number;
@@ -172,7 +176,7 @@ export class WebGLRenderer {
     protected isContextLost: boolean = false;
 
     // internal state cache
-    protected currentRenderTarget: WebGLRenderer | null = null;
+    protected currentRenderTarget: WebGLRenderTarget | WebGLRenderTargetCube | null = null;
     protected currentFramebuffer: WebGLFramebuffer | null = null;
     protected currentMaterialId: number = -1;
     protected currentGeometryProgram: string = "";
@@ -777,47 +781,47 @@ export class WebGLRenderer {
                 //
                 // use the current material's .needsUpdate flags to set
                 // the GL state when required
-                markUniformsLightsNeedsUpdate(m_uniforms, refreshLights);
+                this.markUniformsLightsNeedsUpdate(m_uniforms, refreshLights);
             }
             // refresh uniforms common to several materials
             if (fog && material.fog) {
-                refreshUniformsFog(m_uniforms, fog);
+                this.refreshUniformsFog(m_uniforms, fog);
             }
             if (material instanceof MeshBasicMaterial) {
-                refreshUniformsCommon(m_uniforms, material);
+                this.refreshUniformsCommon(m_uniforms, material);
             } else if (material instanceof MeshLambertMaterial) {
-                refreshUniformsCommon(m_uniforms, material);
-                refreshUniformsLambert(m_uniforms, material);
+                this.refreshUniformsCommon(m_uniforms, material);
+                this.refreshUniformsLambert(m_uniforms, material);
             } else if (material instanceof MeshPhongMaterial) {
-                refreshUniformsCommon(m_uniforms, material);
+                this.refreshUniformsCommon(m_uniforms, material);
                 if (material instanceof MeshToonMaterial) {
-                    refreshUniformsToon(m_uniforms, material);
+                    this.refreshUniformsToon(m_uniforms, material);
                 } else {
-                    refreshUniformsPhong(m_uniforms, material);
+                    this.refreshUniformsPhong(m_uniforms, material);
                 }
             } else if (material instanceof MeshStandardMaterial) {
-                refreshUniformsCommon(m_uniforms, material);
+                this.refreshUniformsCommon(m_uniforms, material);
                 if (material instanceof MeshPhysicalMaterial) {
-                    refreshUniformsPhysical(m_uniforms, material);
+                    this.refreshUniformsPhysical(m_uniforms, material);
                 } else {
-                    refreshUniformsStandard(m_uniforms, material);
+                    this.refreshUniformsStandard(m_uniforms, material);
                 }
             } else if (material instanceof MeshDepthMaterial) {
-                refreshUniformsCommon(m_uniforms, material);
-                refreshUniformsDepth(m_uniforms, material);
+                this.refreshUniformsCommon(m_uniforms, material);
+                this.refreshUniformsDepth(m_uniforms, material);
             } else if (material instanceof MeshDistanceMaterial) {
-                refreshUniformsCommon(m_uniforms, material);
-                refreshUniformsDistance(m_uniforms, material);
+                this.refreshUniformsCommon(m_uniforms, material);
+                this.refreshUniformsDistance(m_uniforms, material);
             } else if (material instanceof MeshNormalMaterial) {
-                refreshUniformsCommon(m_uniforms, material);
-                refreshUniformsNormal(m_uniforms, material);
+                this.refreshUniformsCommon(m_uniforms, material);
+                this.refreshUniformsNormal(m_uniforms, material);
             } else if (material instanceof LineBasicMaterial) {
-                refreshUniformsLine(m_uniforms, material);
+                this.refreshUniformsLine(m_uniforms, material);
                 if (material instanceof LineDashedMaterial) {
-                    refreshUniformsDash(m_uniforms, material);
+                    this.refreshUniformsDash(m_uniforms, material);
                 }
             } else if (material instanceof PointsMaterial) {
-                refreshUniformsPoints(m_uniforms, material);
+                this.refreshUniformsPoints(m_uniforms, material);
             } else if (material instanceof ShadowMaterial) {
                 m_uniforms.color.value = material.color;
                 m_uniforms.opacity.value = material.opacity;
@@ -1061,17 +1065,359 @@ export class WebGLRenderer {
         }
     }
 
-    public allocTextureUnit(): number {
-        return 0;
+    public setFaceCulling(cullFace: number, frontFaceDirection: number): void {
+        this.state.setCullFace(cullFace);
+        this.state.setFlipSided(frontFaceDirection === FrontFaceDirectionCW);
     }
 
-    public setTexture2D(texture: Texture, unit: number) {}
+    public allocTextureUnit(): number {
+        const textureUnit = this.usedTextureUnits;
+        if (textureUnit >= this.capabilities.maxTextures) {
+            console.warn(
+                "THREE.WebGLRenderer: Trying to use " +
+                    textureUnit +
+                    " texture units while this GPU supports only " +
+                    this.capabilities.maxTextures,
+            );
+        }
+        this.usedTextureUnits += 1;
+        return textureUnit;
+    }
 
-    public setTextureCube(cubeTexture: CubeTexture, unit: number) {}
+    protected setTexture2DWarned: boolean = false;
+
+    public setTexture2D(texture: Texture | WebGLRenderTarget, unit: number): void {
+        if (texture && texture instanceof WebGLRenderTarget) {
+            if (!this.setTexture2DWarned) {
+                console.warn(
+                    "THREE.WebGLRenderer.setTexture2D: don't use render targets as textures. Use their .texture property instead.",
+                );
+                this.setTexture2DWarned = true;
+            }
+            texture = texture.texture;
+        }
+        this.textures.setTexture2D(texture as Texture, unit);
+    }
+
+    protected setTextureCubeWarned: boolean = false;
+
+    public setTextureCube(cubeTexture: CubeTexture | WebGLRenderTargetCube, slot: number): void {
+        let texture: CubeTexture | WebGLRenderTargetCube | Texture = cubeTexture;
+        // backwards compatibility: peel texture.texture
+        if (cubeTexture && cubeTexture instanceof WebGLRenderTargetCube) {
+            if (!this.setTextureCubeWarned) {
+                console.warn(
+                    "THREE.WebGLRenderer.setTextureCube: don't use cube render targets as textures. Use their .texture property instead.",
+                );
+                this.setTextureCubeWarned = true;
+            }
+            texture = cubeTexture.texture;
+        }
+        // currently relying on the fact that WebGLRenderTargetCube.texture is a Texture and NOT a CubeTexture
+        // TODO: unify these code paths
+        if (
+            (texture && texture instanceof CubeTexture) ||
+            (Array.isArray((texture as CubeTexture).image) && (texture as CubeTexture).image.length === 6)
+        ) {
+            // CompressedTexture can have Array in image :/
+            // this function alone should take care of cube textures
+            this.textures.setTextureCube(texture as CubeTexture, slot);
+        } else {
+            // assumed: texture property of THREE.WebGLRenderTargetCube
+            this.textures.setTextureCubeDynamic(texture as Texture, slot);
+        }
+    }
 
     public getRenderTarget(): WebGLRenderTarget | null {
         return this.currentRendererTarget;
     }
 
-    public setRenderTarget(currentRendererTarget: WebGLRenderTarget): void {}
+    public setRenderTarget(renderTarget: WebGLRenderTarget | WebGLRenderTargetCube): void {
+        const properties: WebGLProperties = this.properties;
+        this.currentRenderTarget = renderTarget;
+        if (renderTarget && properties.get(renderTarget).__webglFramebuffer === undefined) {
+            this.textures.setupRenderTarget(renderTarget);
+        }
+        let framebuffer: WebGLFramebuffer = null;
+        let isCube: boolean = false;
+        if (renderTarget) {
+            const __webglFramebuffer: WebGLFramebuffer = properties.get(renderTarget).__webglFramebuffer;
+            if (renderTarget instanceof WebGLRenderTargetCube) {
+                framebuffer = __webglFramebuffer[renderTarget.activeCubeFace];
+                isCube = true;
+            } else {
+                framebuffer = __webglFramebuffer;
+            }
+            this.currentViewport.copy(renderTarget.viewport);
+            this.currentScissor.copy(renderTarget.scissor);
+            this.currentScissorTest = renderTarget.scissorTest;
+        } else {
+            this.currentViewport.copy(this.viewport).multiplyScalar(this.pixelRatio);
+            this.currentScissor.copy(this.scissor).multiplyScalar(this.pixelRatio);
+            this.currentScissorTest = this.scissorTest;
+        }
+        const gl: WebGLRenderingContext = this.context;
+        const state: WebGLState = this.state;
+        if (this.currentFramebuffer !== framebuffer) {
+            gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+            this.currentFramebuffer = framebuffer;
+        }
+        state.viewport(this.currentViewport);
+        state.scissor(this.currentScissor);
+        state.setScissorTest(this.currentScissorTest);
+        if (isCube) {
+            var textureProperties = properties.get(renderTarget.texture);
+            gl.framebufferTexture2D(
+                gl.FRAMEBUFFER,
+                gl.COLOR_ATTACHMENT0,
+                gl.TEXTURE_CUBE_MAP_POSITIVE_X + (renderTarget as WebGLRenderTargetCube).activeCubeFace,
+                textureProperties.__webglTexture,
+                (renderTarget as WebGLRenderTargetCube).activeMipMapLevel,
+            );
+        }
+    }
+
+    // TODO readRenderTargetPixels copyFramebufferToTexture
+
+    // Uniforms (refresh uniforms objects)
+    protected refreshUniformsCommon(uniforms: { [key: string]: IUniform }, material: Material): void {
+        uniforms.opacity.value = material.opacity;
+        if (material.color) {
+            uniforms.diffuse.value = material.color;
+        }
+        if (material.emissive) {
+            (uniforms.emissive.value as Color).copy(material.emissive).multiplyScalar(material.emissiveIntensity);
+        }
+        if (material.map) {
+            uniforms.map.value = material.map;
+        }
+        if (material.alphaMap) {
+            uniforms.alphaMap.value = material.alphaMap;
+        }
+        if (material.specularMap) {
+            uniforms.specularMap.value = material.specularMap;
+        }
+        if (material.envMap) {
+            uniforms.envMap.value = material.envMap;
+            // don't flip CubeTexture envMaps, flip everything else:
+            //  WebGLRenderTargetCube will be flipped for backwards compatibility
+            //  WebGLRenderTargetCube.texture will be flipped because it's a Texture and NOT a CubeTexture
+            // this check must be handled differently, or removed entirely, if WebGLRenderTargetCube uses a CubeTexture in the future
+            uniforms.flipEnvMap.value = !(material.envMap && material.envMap instanceof CubeTexture) ? 1 : -1;
+            uniforms.reflectivity.value = material.reflectivity;
+            uniforms.refractionRatio.value = material.refractionRatio;
+        }
+        if (material.lightMap) {
+            uniforms.lightMap.value = material.lightMap;
+            uniforms.lightMapIntensity.value = material.lightMapIntensity;
+        }
+        if (material.aoMap) {
+            uniforms.aoMap.value = material.aoMap;
+            uniforms.aoMapIntensity.value = material.aoMapIntensity;
+        }
+        // uv repeat and offset setting priorities
+        // 1. color map
+        // 2. specular map
+        // 3. normal map
+        // 4. bump map
+        // 5. alpha map
+        // 6. emissive map
+        let uvScaleMap: WebGLRenderTarget | Texture;
+        if (material.map) {
+            uvScaleMap = material.map;
+        } else if (material.specularMap) {
+            uvScaleMap = material.specularMap;
+        } else if (material.displacementMap) {
+            uvScaleMap = material.displacementMap;
+        } else if (material.normalMap) {
+            uvScaleMap = material.normalMap;
+        } else if (material.bumpMap) {
+            uvScaleMap = material.bumpMap;
+        } else if (material.roughnessMap) {
+            uvScaleMap = material.roughnessMap;
+        } else if (material.metalnessMap) {
+            uvScaleMap = material.metalnessMap;
+        } else if (material.alphaMap) {
+            uvScaleMap = material.alphaMap;
+        } else if (material.emissiveMap) {
+            uvScaleMap = material.emissiveMap;
+        }
+        if (uvScaleMap !== undefined) {
+            // backwards compatibility
+            if (uvScaleMap instanceof WebGLRenderTarget) {
+                uvScaleMap = uvScaleMap.texture;
+            }
+            if (uvScaleMap.matrixAutoUpdate === true) {
+                const offset: Vector2 = uvScaleMap.offset;
+                const repeat: Vector2 = uvScaleMap.repeat;
+                const rotation: number = uvScaleMap.rotation;
+                const center: Vector2 = uvScaleMap.center;
+                uvScaleMap.matrix.setUvTransform(offset.x, offset.y, repeat.x, repeat.y, rotation, center.x, center.y);
+            }
+            (uniforms.uvTransform.value as Matrix3).copy(uvScaleMap.matrix);
+        }
+    }
+
+    protected refreshUniformsLine(uniforms: { [key: string]: IUniform }, material: Material): void {
+        uniforms.diffuse.value = material.color;
+        uniforms.opacity.value = material.opacity;
+    }
+
+    protected refreshUniformsDash(uniforms: { [key: string]: IUniform }, material: Material): void {
+        uniforms.dashSize.value = material.dashSize;
+        uniforms.totalSize.value = material.dashSize + material.gapSize;
+        uniforms.scale.value = material.scale;
+    }
+
+    protected refreshUniformsPoints(uniforms: { [key: string]: IUniform }, material: Material): void {
+        uniforms.diffuse.value = material.color;
+        uniforms.opacity.value = material.opacity;
+        uniforms.size.value = material.size * this.pixelRatio;
+        uniforms.scale.value = this.height * 0.5;
+        uniforms.map.value = material.map;
+        if (material.map !== null) {
+            if (material.map.matrixAutoUpdate === true) {
+                const offset: Vector2 = material.map.offset;
+                const repeat: Vector2 = material.map.repeat;
+                const rotation: number = material.map.rotation;
+                const center: Vector2 = material.map.center;
+                material.map.matrix.setUvTransform(
+                    offset.x,
+                    offset.y,
+                    repeat.x,
+                    repeat.y,
+                    rotation,
+                    center.x,
+                    center.y,
+                );
+            }
+            (uniforms.uvTransform.value as Matrix3).copy(material.map.matrix);
+        }
+    }
+
+    protected refreshUniformsFog(uniforms: { [key: string]: IUniform }, fog: Fog | FogExp2): void {
+        uniforms.fogColor.value = fog.color;
+        if (fog instanceof Fog) {
+            uniforms.fogNear.value = fog.near;
+            uniforms.fogFar.value = fog.far;
+        } else if (fog instanceof FogExp2) {
+            uniforms.fogDensity.value = fog.density;
+        }
+    }
+
+    protected refreshUniformsLambert(uniforms: { [key: string]: IUniform }, material: Material): void {
+        if (material.emissiveMap) {
+            uniforms.emissiveMap.value = material.emissiveMap;
+        }
+    }
+
+    protected refreshUniformsPhong(uniforms: { [key: string]: IUniform }, material: Material): void {
+        uniforms.specular.value = material.specular;
+        uniforms.shininess.value = Math.max(material.shininess, 1e-4); // to prevent pow( 0.0, 0.0 )
+        if (material.emissiveMap) {
+            uniforms.emissiveMap.value = material.emissiveMap;
+        }
+        if (material.bumpMap) {
+            uniforms.bumpMap.value = material.bumpMap;
+            uniforms.bumpScale.value = material.bumpScale;
+        }
+        if (material.normalMap) {
+            uniforms.normalMap.value = material.normalMap;
+            (uniforms.normalScale.value as Vector2).copy(material.normalScale);
+        }
+        if (material.displacementMap) {
+            uniforms.displacementMap.value = material.displacementMap;
+            uniforms.displacementScale.value = material.displacementScale;
+            uniforms.displacementBias.value = material.displacementBias;
+        }
+    }
+
+    protected refreshUniformsToon(uniforms: { [key: string]: IUniform }, material: Material): void {
+        this.refreshUniformsPhong(uniforms, material);
+        if (material.gradientMap) {
+            uniforms.gradientMap.value = material.gradientMap;
+        }
+    }
+
+    protected refreshUniformsStandard(uniforms: { [key: string]: IUniform }, material: Material): void {
+        uniforms.roughness.value = material.roughness;
+        uniforms.metalness.value = material.metalness;
+        if (material.roughnessMap) {
+            uniforms.roughnessMap.value = material.roughnessMap;
+        }
+        if (material.metalnessMap) {
+            uniforms.metalnessMap.value = material.metalnessMap;
+        }
+        if (material.emissiveMap) {
+            uniforms.emissiveMap.value = material.emissiveMap;
+        }
+        if (material.bumpMap) {
+            uniforms.bumpMap.value = material.bumpMap;
+            uniforms.bumpScale.value = material.bumpScale;
+        }
+        if (material.normalMap) {
+            uniforms.normalMap.value = material.normalMap;
+            (uniforms.normalScale.value as Vector2).copy(material.normalScale);
+        }
+        if (material.displacementMap) {
+            uniforms.displacementMap.value = material.displacementMap;
+            uniforms.displacementScale.value = material.displacementScale;
+            uniforms.displacementBias.value = material.displacementBias;
+        }
+        if (material.envMap) {
+            //uniforms.envMap.value = material.envMap; // part of uniforms common
+            uniforms.envMapIntensity.value = material.envMapIntensity;
+        }
+    }
+
+    protected refreshUniformsPhysical(uniforms: { [key: string]: IUniform }, material: Material): void {
+        uniforms.clearCoat.value = material.clearCoat;
+        uniforms.clearCoatRoughness.value = material.clearCoatRoughness;
+        this.refreshUniformsStandard(uniforms, material);
+    }
+
+    protected refreshUniformsDepth(uniforms: { [key: string]: IUniform }, material: Material): void {
+        if (material.displacementMap) {
+            uniforms.displacementMap.value = material.displacementMap;
+            uniforms.displacementScale.value = material.displacementScale;
+            uniforms.displacementBias.value = material.displacementBias;
+        }
+    }
+
+    protected refreshUniformsDistance(uniforms: { [key: string]: IUniform }, material: Material): void {
+        if (material.displacementMap) {
+            uniforms.displacementMap.value = material.displacementMap;
+            uniforms.displacementScale.value = material.displacementScale;
+            uniforms.displacementBias.value = material.displacementBias;
+        }
+        (uniforms.referencePosition.value as Vector3).copy(material.referencePosition);
+        uniforms.nearDistance.value = material.nearDistance;
+        uniforms.farDistance.value = material.farDistance;
+    }
+
+    protected refreshUniformsNormal(uniforms: { [key: string]: IUniform }, material: Material): void {
+        if (material.bumpMap) {
+            uniforms.bumpMap.value = material.bumpMap;
+            uniforms.bumpScale.value = material.bumpScale;
+        }
+        if (material.normalMap) {
+            uniforms.normalMap.value = material.normalMap;
+            (uniforms.normalScale.value as Vector2).copy(material.normalScale);
+        }
+        if (material.displacementMap) {
+            uniforms.displacementMap.value = material.displacementMap;
+            uniforms.displacementScale.value = material.displacementScale;
+            uniforms.displacementBias.value = material.displacementBias;
+        }
+    }
+
+    // If uniforms are marked as clean, they don't need to be loaded to the GPU.
+    protected markUniformsLightsNeedsUpdate(uniforms: { [key: string]: IUniform }, value: boolean): void {
+        uniforms.ambientLightColor.needsUpdate = value;
+        uniforms.directionalLights.needsUpdate = value;
+        uniforms.pointLights.needsUpdate = value;
+        uniforms.spotLights.needsUpdate = value;
+        uniforms.rectAreaLights.needsUpdate = value;
+        uniforms.hemisphereLights.needsUpdate = value;
+    }
 }
