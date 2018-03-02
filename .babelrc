@@ -1,0 +1,9 @@
+{
+  "presets": [
+    ["@babel/env", {
+      "targets": {
+        "browsers": "ie 9"
+      }
+    }]
+  ]
+}

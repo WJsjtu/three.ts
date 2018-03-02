@@ -4,6 +4,7 @@ import { MathUtil } from "./Math";
 import { Matrix3 } from "./Matrix3";
 import { Matrix4 } from "./Matrix4";
 import { Quaternion } from "./Quaternion";
+import { Spherical } from "./Spherical";
 import { Vector4 } from "./Vector4";
 
 export class Vector3 {
@@ -267,6 +268,13 @@ export class Vector3 {
 
     public equals(vec: Vector3): boolean {
         return vec.x === this.x && vec.y === this.y && vec.z === this.z;
+    }
+    public setFromSpherical(s: Spherical): this {
+        const sinPhiRadius: number = Math.sin(s.phi) * s.radius;
+        this.x = sinPhiRadius * Math.sin(s.theta);
+        this.y = Math.cos(s.phi) * s.radius;
+        this.z = sinPhiRadius * Math.cos(s.theta);
+        return this;
     }
 
     public setFromMatrixPosition(m: Matrix4): this {

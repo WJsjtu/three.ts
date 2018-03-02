@@ -156,6 +156,7 @@ export class WebGLTextures {
         this.properties = properties;
         this.capabilities = capabilities;
         this.utils = utils;
+        this.state = state;
         this.infoMemory = infoMemory;
         this.infoRender = infoRender;
     }
@@ -237,11 +238,7 @@ export class WebGLTextures {
         }
     }
 
-    protected uploadTexture(
-        textureProperties: ITextureProperties,
-        texture: CanvasTexture | VideoTexture | DataTexture,
-        slot: number,
-    ): void {
+    protected uploadTexture(textureProperties: ITextureProperties, texture: Texture, slot: number): void {
         const gl: WebGLRenderingContext = this.context;
         const state: WebGLState = this.state;
         const utils: WebGLUtils = this.utils;
@@ -488,7 +485,8 @@ export class WebGLTextures {
                         }
                     } else {
                         let mipmap;
-                        const mipmaps = cubeImage[i].mipmaps;
+                        // 未能解决的疑惑！！！ as any
+                        const mipmaps = (cubeImage[i] as any).mipmaps;
                         for (let j: number = 0, jl: number = mipmaps.length; j < jl; j++) {
                             mipmap = mipmaps[j];
                             if (texture.format !== RGBAFormat && texture.format !== RGBFormat) {

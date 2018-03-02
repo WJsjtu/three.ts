@@ -109,7 +109,7 @@ import points_vert from "./ShaderLib/points_vert.glsl";
 import shadow_frag from "./ShaderLib/shadow_frag.glsl";
 import shadow_vert from "./ShaderLib/shadow_vert.glsl";
 
-export const ShaderChunk = {
+const ShaderChunk = {
 	alphamap_fragment: alphamap_fragment,
 	alphamap_pars_fragment: alphamap_pars_fragment,
 	alphatest_fragment: alphatest_fragment,
@@ -221,3 +221,5 @@ export const ShaderChunk = {
 	shadow_frag: shadow_frag,
 	shadow_vert: shadow_vert
 };
+
+export { ShaderChunk };

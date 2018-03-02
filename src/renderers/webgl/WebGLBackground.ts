@@ -17,8 +17,8 @@ import { OrthographicCamera } from "../../cameras/OrthographicCamera";
 import { PlaneBufferGeometry } from "../../geometries/PlaneGeometry";
 
 export class WebGLBackground {
-    protected clearColor: Color;
-    protected clearAlpha: number;
+    protected clearColor: Color = new Color().setHex(0x000000);
+    protected clearAlpha: number = 0;
     protected renderer: WebGLRenderer;
     protected state: WebGLState;
     protected geometries: WebGLGeometries;

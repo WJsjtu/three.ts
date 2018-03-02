@@ -8,7 +8,7 @@ import { Matrix4 } from "../math/Matrix4";
 import { Ray } from "../math/Ray";
 import { Sphere } from "../math/Sphere";
 import { Vector3 } from "../math/Vector3";
-import { LineSegments } from "./LineSegments";
+// import { LineSegments } from "./LineSegments";
 
 export class Line extends Object3D {
     public readonly type: string = "Line";
@@ -46,7 +46,8 @@ export class Line extends Object3D {
         const vEnd: Vector3 = new Vector3();
         const interSegment: Vector3 = new Vector3();
         const interRay: Vector3 = new Vector3();
-        const step: number = this instanceof LineSegments ? 2 : 1;
+        //const step: number = this instanceof LineSegments ? 2 : 1;
+        const step: number = 1;
 
         if (geometry instanceof BufferGeometry) {
             const index: BufferAttribute = geometry.index;

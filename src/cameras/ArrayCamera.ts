@@ -2,7 +2,7 @@ import { Vector4 } from "../math/Vector4";
 import { PerspectiveCamera } from "./PerspectiveCamera";
 import { Camera } from "./Camera";
 
-export interface ArrayCameraCamera extends Camera {
+export interface ArrayCameraCamera extends PerspectiveCamera {
     bounds: Vector4;
 }
 

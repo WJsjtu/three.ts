@@ -5,9 +5,19 @@
   "scripts": {
     "test": "tslint -c tslint.json 'src/**/*.ts'",
     "prettify": "prettier --config ./.prettierrc.json --write 'src/**/*.ts'",
-    "prebuild": "rm -rf build && mkdir build",
-    "build": "cross-env NODE_ENV=development webpack",
-    "postbuild": "cross-env NODE_ENV=production webpack"
+
+    "pretsc": "rm -rf es && mkdir es",
+    "tsc": "tsc",
+    "posttsc": "cp -rf src/renderers/shaders/ShaderChunk es/renderers/shaders && cp -rf src/renderers/shaders/ShaderLib es/renderers/shaders",
+
+    "prebuildes": "rm -rf build/es && mkdir build/es && yarn run tsc",
+    "buildes": "cross-env NODE_ENV=development BUILD_SOURCE=es webpack && cross-env NODE_ENV=production BUILD_SOURCE=es webpack",
+    
+    "prebuildts": "rm -rf build/ts && mkdir build/ts",
+    "buildts": "cross-env NODE_ENV=development BUILD_SOURCE=ts webpack && cross-env NODE_ENV=production BUILD_SOURCE=ts webpack",
+    
+    "prebuild": "rm -rf build && mkdir build && yarn run prettify",
+    "build": "yarn run buildes && yarn run buildts"
   },
   "files": [
     "src"
@@ -24,6 +34,9 @@
     "webpack-cli": "^2.0.9"
   },
   "dependencies": {
+    "@babel/core": "^7.0.0-beta.40",
+    "@babel/preset-env": "^7.0.0-beta.40",
+    "babel-loader": "8.0.0-beta.0"
   },
   "author": {
     "name": "王健（Jason Wang）",

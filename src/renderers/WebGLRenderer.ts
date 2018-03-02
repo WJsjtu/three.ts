@@ -97,6 +97,7 @@ import { WebGLBackground } from "./webgl/WebGLBackground";
 import { WebGLRenderTarget } from "./WebGLRenderTarget";
 import { WebGLRenderTargetCube } from "./WebGLRenderTargetCube";
 import { ImmediateRenderObject } from "../extras/objects/ImmediateRenderObject";
+import { PerspectiveCamera, OrthographicCamera } from "../Three";
 
 export interface IInfoMemory {
     geometries: number;
@@ -199,12 +200,12 @@ export class WebGLRenderer {
     protected usedTextureUnits: number = 0;
 
     //
-    protected width = this.domElement.width;
-    protected height = this.domElement.height;
+    protected width: number;
+    protected height: number;
 
     protected pixelRatio: number = 1;
-    protected viewport: Vector4 = new Vector4(0, 0, this.width, this.height);
-    protected scissor: Vector4 = new Vector4(0, 0, this.width, this.height);
+    protected viewport: Vector4;
+    protected scissor: Vector4;
     protected scissorTest: boolean = false;
 
     // frustum
@@ -292,6 +293,10 @@ export class WebGLRenderer {
                 parameters.preserveDrawingBuffer !== undefined ? parameters.preserveDrawingBuffer : false),
             (this.powerPreference = parameters.powerPreference !== undefined ? parameters.powerPreference : "default");
 
+        this.width = this.domElement.width;
+        this.height = this.domElement.height;
+        this.viewport = new Vector4(0, 0, this.width, this.height);
+        this.scissor = new Vector4(0, 0, this.width, this.height);
         try {
             const contextAttributes = {
                 alpha: this.alpha,
@@ -589,7 +594,12 @@ export class WebGLRenderer {
         this.start();
     }
 
-    public render(scene: Scene, camera: Camera, renderTarget: WebGLRenderTarget, forceClear: boolean): void {
+    public render(
+        scene: Scene,
+        camera: PerspectiveCamera | OrthographicCamera,
+        renderTarget: WebGLRenderTarget,
+        forceClear: boolean,
+    ): void {
         if (!(camera && camera instanceof Camera)) {
             console.error("THREE.WebGLRenderer.render: camera is not an instance of THREE.Camera.");
             return;
@@ -710,7 +720,7 @@ export class WebGLRenderer {
     protected renderObjects(
         renderList: IRenderItem[],
         scene: Scene,
-        camera: Camera,
+        camera: PerspectiveCamera | OrthographicCamera,
         overrideMaterial?: Material,
     ): void {
         for (let i: number = 0, l: number = renderList.length; i < l; i++) {
@@ -746,7 +756,7 @@ export class WebGLRenderer {
     protected renderObject(
         object: Object3D,
         scene: Scene,
-        camera: Camera,
+        camera: PerspectiveCamera | OrthographicCamera,
         geometry: BufferGeometry,
         material: Material,
         group: IGroup,
@@ -845,7 +855,7 @@ export class WebGLRenderer {
     }
 
     public renderBufferDirect(
-        camera: Camera,
+        camera: PerspectiveCamera | OrthographicCamera,
         fog: Fog | FogExp2 | null,
         geometry: BufferGeometry,
         material: Material,
@@ -944,7 +954,7 @@ export class WebGLRenderer {
     }
 
     protected setProgram(
-        camera: Camera,
+        camera: PerspectiveCamera | OrthographicCamera,
         fog: Fog | FogExp2 | null,
         material: Material,
         object: Object3D,
