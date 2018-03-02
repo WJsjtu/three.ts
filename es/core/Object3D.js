@@ -10,7 +10,7 @@ import { Layers } from "./Layers";
 let object3DId = 0;
 export class Object3D extends EventDispatcher {
     constructor() {
-        super(...arguments);
+        super();
         this.id = object3DId++;
         this.uuid = MathUtil.generateUUID();
         this.name = "";
@@ -37,6 +37,12 @@ export class Object3D extends EventDispatcher {
         this.normalMatrix = new Matrix3();
         this.onBeforeRender = function () { };
         this.onAfterRender = function () { };
+        this.rotation.onChange(() => {
+            this.quaternion.setFromEuler(this.rotation, false);
+        });
+        this.quaternion.onChange(() => {
+            this.rotation.setFromQuaternion(this.quaternion, undefined, false);
+        });
     }
     updateMatrix() {
         this.matrix.compose(this.position, this.quaternion, this.scale);
@@ -165,12 +171,11 @@ export class Object3D extends EventDispatcher {
     }
     lookAt(vec) {
         const mat = new Matrix4();
-        const vector = new Vector3();
         if (this instanceof Camera) {
-            mat.lookAt(this.position, vector, this.up);
+            mat.lookAt(this.position, vec, this.up);
         }
         else {
-            mat.lookAt(vector, this.position, this.up);
+            mat.lookAt(vec, this.position, this.up);
         }
         this.quaternion.setFromRotationMatrix(mat);
         return this;
@@ -222,7 +227,7 @@ export class Object3D extends EventDispatcher {
         return result;
     }
     get worldRotation() {
-        return new Euler().setFromQuaternion(this.worldQuaternion, this.rotation.order);
+        return new Euler().setFromQuaternion(this.worldQuaternion, this.rotation.order, false);
     }
     get worldScale() {
         const position = new Vector3();

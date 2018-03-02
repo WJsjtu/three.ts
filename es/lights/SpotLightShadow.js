@@ -14,6 +14,7 @@ export class SpotLightShadow extends LightShadow {
             camera.fov = fov;
             camera.aspect = aspect;
             camera.far = far;
+            camera.updateProjectionMatrix();
         }
         return this;
     }

@@ -13,6 +13,7 @@ import { Object3D } from "./Object3D";
 import { Mesh } from "../objects/Mesh";
 import { Line } from "../objects/Line";
 import { Points } from "../objects/Points";
+const object = new Object3D();
 let bufferGeometryId = 1;
 export class BufferGeometry extends EventDispatcher {
     constructor() {
@@ -106,7 +107,7 @@ export class BufferGeometry extends EventDispatcher {
         return this.applyMatrix(new Matrix4().makeScale(x, y, z));
     }
     lookAt(vector) {
-        const obj = new Object3D().lookAt(vector);
+        const obj = object.lookAt(vector);
         obj.updateMatrix();
         return this.applyMatrix(obj.matrix);
     }

@@ -17,6 +17,8 @@ import { Face3 } from "./Face3";
 import { Object3D } from "./Object3D";
 import { IGeometeryBone } from "../objects/SkinnedMesh";
 
+const object: Object3D = new Object3D();
+
 export class GeometryFace extends Face3 {
     public id?: number;
     public originalFaceNormal?: Vector3;
@@ -121,7 +123,7 @@ export class Geometry extends EventDispatcher {
     }
 
     public lookAt(vector: Vector3): this {
-        const obj: Object3D = new Object3D().lookAt(vector);
+        const obj: Object3D = object.lookAt(vector);
         obj.updateMatrix();
         return this.applyMatrix(obj.matrix);
     }

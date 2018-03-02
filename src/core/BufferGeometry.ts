@@ -20,6 +20,8 @@ import { Mesh } from "../objects/Mesh";
 import { Line } from "../objects/Line";
 import { Points } from "../objects/Points";
 
+const object: Object3D = new Object3D();
+
 export interface IDrawRange {
     start: number;
     count: number;
@@ -133,7 +135,7 @@ export class BufferGeometry extends EventDispatcher {
     }
 
     public lookAt(vector: Vector3): this {
-        const obj: Object3D = new Object3D().lookAt(vector);
+        const obj: Object3D = object.lookAt(vector);
         obj.updateMatrix();
         return this.applyMatrix(obj.matrix);
     }

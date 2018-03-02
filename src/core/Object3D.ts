@@ -61,6 +61,16 @@ export class Object3D extends EventDispatcher {
         ...args: any[]
     ) => any = function() {};
 
+    constructor() {
+        super();
+        this.rotation.onChange(() => {
+            this.quaternion.setFromEuler(this.rotation, false);
+        });
+        this.quaternion.onChange(() => {
+            this.rotation.setFromQuaternion(this.quaternion, undefined, false);
+        });
+    }
+
     public updateMatrix(): this {
         this.matrix.compose(this.position, this.quaternion, this.scale);
         this.matrixWorldNeedsUpdate = true;
@@ -207,11 +217,10 @@ export class Object3D extends EventDispatcher {
 
     public lookAt(vec: Vector3): this {
         const mat: Matrix4 = new Matrix4();
-        const vector: Vector3 = new Vector3();
         if (this instanceof Camera) {
-            mat.lookAt(this.position, vector, this.up);
+            mat.lookAt(this.position, vec, this.up);
         } else {
-            mat.lookAt(vector, this.position, this.up);
+            mat.lookAt(vec, this.position, this.up);
         }
         this.quaternion.setFromRotationMatrix(mat);
         return this;
@@ -268,7 +277,7 @@ export class Object3D extends EventDispatcher {
     }
 
     get worldRotation(): Euler {
-        return new Euler().setFromQuaternion(this.worldQuaternion, this.rotation.order);
+        return new Euler().setFromQuaternion(this.worldQuaternion, this.rotation.order, false);
     }
 
     get worldScale(): Vector3 {

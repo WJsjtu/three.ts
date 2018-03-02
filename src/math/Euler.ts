@@ -22,6 +22,12 @@ export class Euler {
     protected _y: number;
     protected _z: number;
 
+    protected onChangeCallback: (arg1?: any, ...arg2: any[]) => any = function() {};
+    public onChange(callback: (arg1?: any, ...arg2: any[]) => any): this {
+        this.onChangeCallback = callback;
+        return this;
+    }
+
     constructor(x: number = 0, y: number = 0, z: number = 0) {
         this._x = x;
         this._y = y;
@@ -34,6 +40,7 @@ export class Euler {
 
     set x(x: number) {
         this._x = x;
+        this.onChangeCallback();
     }
 
     get y() {
@@ -42,6 +49,7 @@ export class Euler {
 
     set y(y: number) {
         this._y = y;
+        this.onChangeCallback();
     }
 
     get z() {
@@ -50,6 +58,7 @@ export class Euler {
 
     set z(z: number) {
         this._z = z;
+        this.onChangeCallback();
     }
 
     get order(): EulerOrder {
@@ -58,6 +67,7 @@ export class Euler {
 
     set order(_order: EulerOrder) {
         this._order = _order;
+        this.onChangeCallback();
     }
 
     public set(x: number, y: number, z: number, order: EulerOrder): this {
@@ -65,11 +75,14 @@ export class Euler {
         this._y = y;
         this._z = z;
         this._order = order;
+        this.onChangeCallback();
         return this;
     }
 
     public copy(euler: Euler): this {
-        return this.set(euler.x, euler.y, euler.z, euler.order);
+        this.set(euler.x, euler.y, euler.z, euler.order);
+        this.onChangeCallback();
+        return this;
     }
 
     /**
@@ -78,7 +91,7 @@ export class Euler {
      * @param order
      * @returns {Euler}
      */
-    public setFromRotationMatrix(m: Matrix4, order: EulerOrder = this.order): this {
+    public setFromRotationMatrix(m: Matrix4, order: EulerOrder = this.order, update?: boolean): this {
         const clamp: (value: number, min: number, max: number) => number = MathUtil.clamp;
         const te: number[] = m.elements;
         const m11: number = te[0],
@@ -147,13 +160,14 @@ export class Euler {
             }
         }
         this.order = order;
+        if (update !== false) this.onChangeCallback();
         return this;
     }
 
-    public setFromQuaternion(q: Quaternion, order: EulerOrder): this {
+    public setFromQuaternion(q: Quaternion, order: EulerOrder, update?: boolean): this {
         const matrix: Matrix4 = new Matrix4();
         matrix.makeRotationFromQuaternion(q);
-        return this.setFromRotationMatrix(matrix, order);
+        return this.setFromRotationMatrix(matrix, order, update);
     }
 
     /**
@@ -172,7 +186,12 @@ export class Euler {
     }
 
     public fromArray(array: [number, number, number] | [number, number, number, EulerOrder]): this {
-        return this.set(array[0], array[1], array[2], array[3] || this.order);
+        this._x = array[0];
+        this._y = array[1];
+        this._z = array[2];
+        this._order = array[3] || this.order;
+        this.onChangeCallback();
+        return this;
     }
 
     public toArray(array: any[] = [], offset: number = 0): any[] {

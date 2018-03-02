@@ -16,43 +16,55 @@ export var EulerOrder;
 export class Euler {
     constructor(x = 0, y = 0, z = 0) {
         this._order = Euler.DefaultOrder;
+        this.onChangeCallback = function () { };
         this._x = x;
         this._y = y;
         this._z = z;
+    }
+    onChange(callback) {
+        this.onChangeCallback = callback;
+        return this;
     }
     get x() {
         return this._x;
     }
     set x(x) {
         this._x = x;
+        this.onChangeCallback();
     }
     get y() {
         return this._y;
     }
     set y(y) {
         this._y = y;
+        this.onChangeCallback();
     }
     get z() {
         return this._z;
     }
     set z(z) {
         this._z = z;
+        this.onChangeCallback();
     }
     get order() {
         return this._order;
     }
     set order(_order) {
         this._order = _order;
+        this.onChangeCallback();
     }
     set(x, y, z, order) {
         this._x = x;
         this._y = y;
         this._z = z;
         this._order = order;
+        this.onChangeCallback();
         return this;
     }
     copy(euler) {
-        return this.set(euler.x, euler.y, euler.z, euler.order);
+        this.set(euler.x, euler.y, euler.z, euler.order);
+        this.onChangeCallback();
+        return this;
     }
     /**
      * assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
@@ -60,7 +72,7 @@ export class Euler {
      * @param order
      * @returns {Euler}
      */
-    setFromRotationMatrix(m, order = this.order) {
+    setFromRotationMatrix(m, order = this.order, update) {
         const clamp = MathUtil.clamp;
         const te = m.elements;
         const m11 = te[0], m12 = te[4], m13 = te[8];
@@ -133,12 +145,14 @@ export class Euler {
             }
         }
         this.order = order;
+        if (update !== false)
+            this.onChangeCallback();
         return this;
     }
-    setFromQuaternion(q, order) {
+    setFromQuaternion(q, order, update) {
         const matrix = new Matrix4();
         matrix.makeRotationFromQuaternion(q);
-        return this.setFromRotationMatrix(matrix, order);
+        return this.setFromRotationMatrix(matrix, order, update);
     }
     /**
      * this discards revolution information -bhouston
@@ -154,7 +168,12 @@ export class Euler {
         return euler.x === this.x && euler.y === this.y && euler.z === this.z && euler.order === this.order;
     }
     fromArray(array) {
-        return this.set(array[0], array[1], array[2], array[3] || this.order);
+        this._x = array[0];
+        this._y = array[1];
+        this._z = array[2];
+        this._order = array[3] || this.order;
+        this.onChangeCallback();
+        return this;
     }
     toArray(array = [], offset = 0) {
         array[offset] = this.x;

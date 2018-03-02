@@ -10,6 +10,7 @@ import { Vector3 } from "../math/Vector3";
 import { EventDispatcher } from "./EventDispatcher";
 import { Face3 } from "./Face3";
 import { Object3D } from "./Object3D";
+const object = new Object3D();
 export class GeometryFace extends Face3 {
 }
 let geometryId = 0;
@@ -77,7 +78,7 @@ export class Geometry extends EventDispatcher {
         return this.applyMatrix(new Matrix4().makeScale(x, y, z));
     }
     lookAt(vector) {
-        const obj = new Object3D().lookAt(vector);
+        const obj = object.lookAt(vector);
         obj.updateMatrix();
         return this.applyMatrix(obj.matrix);
     }
