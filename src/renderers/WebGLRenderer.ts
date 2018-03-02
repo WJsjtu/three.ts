@@ -784,7 +784,7 @@ export class WebGLRenderer {
         program: WebGLProgramWrapper,
         material: Material,
     ): void {
-        object.render(() => {
+        object.render((object: ImmediateRenderObject) => {
             this.renderBufferImmediate(object, program, material);
         });
     }

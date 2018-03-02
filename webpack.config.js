@@ -8,7 +8,7 @@ const development = process.env.NODE_ENV === 'development';
 
 const esConfig = {
     mode: development ? 'development': 'production',
-    entry: path.resolve(__dirname, 'es/Three'),
+    entry: path.resolve(__dirname, (process.env.BUILD_SOURCE == 'ts' ? 'src' : 'es'), 'Three'),
     output: {
         filename: development ? 'three.js' : 'three.min.js',
         path: path.resolve(__dirname, 'build', process.env.BUILD_SOURCE == 'ts' ? 'ts' : 'es'),
@@ -25,13 +25,14 @@ const esConfig = {
     module: {
         rules: [
             {
-                test: /\.glsl$/,
-                exclude: [/node_modules/],
-                loader: path.resolve(__dirname, 'glslLoader')
-            }, {
                 test: /\.js$/,
                 exclude: [/node_modules/],
                 loader: 'babel-loader'
+            },
+            {
+                test: /\.glsl$/,
+                exclude: [/node_modules/],
+                loader: path.resolve(__dirname, 'glslLoader')
             }
         ]
     },
@@ -61,9 +62,9 @@ const esConfig = {
     stats: 'normal'
 };
 
-if(process.env.ts) {
-    esConfig.extensions.unshift('.ts');
-    esConfig.rules.module.rules.unshift({
+if(process.env.BUILD_SOURCE == 'ts') {
+    esConfig.resolve.extensions.unshift('.ts');
+    esConfig.module.rules.unshift({
         test: /\.ts$/,
         exclude: [
             /node_modules/

@@ -581,7 +581,7 @@ export class WebGLRenderer {
     // Buffer rendering
     // renderObjectImmediate 目前看来很有问题
     renderObjectImmediate(object, program, material) {
-        object.render(() => {
+        object.render((object) => {
             this.renderBufferImmediate(object, program, material);
         });
     }

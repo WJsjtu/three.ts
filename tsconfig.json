@@ -7,11 +7,9 @@
       "emitDecoratorMetadata": false,
       "experimentalDecorators": false,
       "outDir": "./es/",
-      "sourceMap": false,
       "noImplicitAny": true,
-      "module": "es6",
-      "target": "es6",
-      "jsx": "react",
+      "module": "ES6",
+      "target": "ES6",
       "lib": ["es5", "es6", "es7", "dom"],
       "pretty": true,
       "allowJs": true,
@@ -25,6 +23,15 @@
       "noUnusedLocals": false,
       "allowUnusedLabels": false,
       "suppressExcessPropertyErrors": true
+    },
+    "awesomeTypescriptLoaderOptions": {
+      "target": "ES3",
+      "sourceMap": true,
+      "useBabel": true,
+      "babelOptions": {
+        "babelrc": true
+      },
+      "babelCore": "@babel/core",
     },
     "include": [
       "./src/**/*"
