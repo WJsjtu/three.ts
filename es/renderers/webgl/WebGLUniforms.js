@@ -240,14 +240,18 @@ UniformSetter.mat3array = new Float32Array(9);
 UniformSetter.mat4array = new Float32Array(16);
 UniformSetter.arrayCacheF32 = [];
 UniformSetter.arrayCacheI32 = [];
-class SingleUniformSetter extends UniformSetter {
-    setValue(value) {
-        super.getSingularSetter()(value);
+class SingleUniformSetter {
+    constructor(renderer, id, activeInfo, addr) {
+        const setter = new UniformSetter(renderer, id, activeInfo, addr);
+        this.id = id;
+        this.setValue = setter.getSingularSetter();
     }
 }
-class PureArrayUniformSetter extends UniformSetter {
-    setValue(value) {
-        super.getPureArraySetter()(value);
+class PureArrayUniformSetter {
+    constructor(renderer, id, activeInfo, addr) {
+        const setter = new UniformSetter(renderer, id, activeInfo, addr);
+        this.id = id;
+        this.setValue = setter.getPureArraySetter();
     }
 }
 class UniformContainer {

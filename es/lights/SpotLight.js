@@ -10,13 +10,13 @@ export class SpotLight extends Light {
         this.angle = Math.PI / 3;
         this.penumbra = 0;
         this.decay = 0;
+        this.shadow = new SpotLightShadow();
         this.position = Object3D.DefaultUp.clone();
         this.updateMatrix();
         this.distance = distance;
         this.angle = angle;
         this.penumbra = penumbra;
         this.decay = decay;
-        this.shadow = new SpotLightShadow();
     }
     get power() {
         return this.intensity * Math.PI;

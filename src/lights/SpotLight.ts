@@ -10,7 +10,7 @@ export class SpotLight extends Light {
     public angle: number = Math.PI / 3;
     public penumbra: number = 0;
     public decay: number = 0;
-    public shadow: SpotLightShadow;
+    public shadow: SpotLightShadow = new SpotLightShadow();
 
     constructor(
         color: Color,
@@ -27,7 +27,6 @@ export class SpotLight extends Light {
         this.angle = angle;
         this.penumbra = penumbra;
         this.decay = decay;
-        this.shadow = new SpotLightShadow();
     }
 
     get power(): number {

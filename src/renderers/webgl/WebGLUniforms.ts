@@ -304,15 +304,24 @@ class UniformSetter {
     }
 }
 
-class SingleUniformSetter extends UniformSetter {
-    public setValue(value: AllUniformType): void {
-        super.getSingularSetter()(value);
+class SingleUniformSetter {
+    public setValue: (value: AllUniformType) => void;
+    public id: number | string;
+
+    constructor(renderer: WebGLRenderer, id: number | string, activeInfo: WebGLActiveInfo, addr: WebGLUniformLocation) {
+        const setter: UniformSetter = new UniformSetter(renderer, id, activeInfo, addr);
+        this.id = id;
+        this.setValue = setter.getSingularSetter();
     }
 }
 
-class PureArrayUniformSetter extends UniformSetter {
-    public setValue(value: AllUniformType): void {
-        super.getPureArraySetter()(value);
+class PureArrayUniformSetter {
+    public setValue: (value: AllUniformType) => void;
+    public id: number | string;
+    constructor(renderer: WebGLRenderer, id: number | string, activeInfo: WebGLActiveInfo, addr: WebGLUniformLocation) {
+        const setter: UniformSetter = new UniformSetter(renderer, id, activeInfo, addr);
+        this.id = id;
+        this.setValue = setter.getPureArraySetter();
     }
 }
 
