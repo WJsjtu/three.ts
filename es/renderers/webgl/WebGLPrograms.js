@@ -24,6 +24,7 @@ function getTextureEncodingFromMap(map, gammaOverrideLinear) {
 }
 export class WebGLPrograms {
     constructor(renderer, extensions, capabilities) {
+        this.programs = [];
         this.renderer = renderer;
         this.extensions = extensions;
         this.capabilities = capabilities;

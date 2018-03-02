@@ -37,10 +37,24 @@ export class Material extends EventDispatcher {
         this.needsUpdate = true;
         this.opacity = 1;
         this.overdraw = 0;
+        this.onBeforeCompile = function () { };
         this.polygonOffset = false;
         this.polygonOffsetFactor = 0;
         this.polygonOffsetUnits = 0;
+        /**
+         * override the renderer's default precision for this material
+         * "highp", "mediump" or "lowp"
+         * @type {string}
+         */
+        this.precision = null; // Question type
         this.premultipliedAlpha = false;
+        /**
+         * THREE.FrontSide  back side
+         * THREE.BackSide   front side
+         * THREE.DoubleSide both sides
+         * @type {number}
+         */
+        this.shadowSide = null; // Question type
         this.side = FrontSide;
         this.transparent = false;
         this.userData = {};

@@ -206,7 +206,7 @@ export class Matrix4 {
         const y = new Vector3();
         const z = new Vector3();
         const te = this.elements;
-        z.copy(eye).cross(target);
+        z.copy(eye).sub(target);
         if (z.lengthSquared() === 0) {
             // eye and target are in the same position
             z.z = 1;

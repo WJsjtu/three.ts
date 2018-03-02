@@ -16,5 +16,6 @@ export class WebGLShaderWrapper {
         if (gl.getShaderInfoLog(shader) !== "") {
             console.warn(`THREE.WebGLShader: gl.getShaderInfoLog() ${type === gl.VERTEX_SHADER ? "vertex" : "fragment"} ${gl.getShaderInfoLog(shader)} ${addLineNumbers(str)}`);
         }
+        this.shader = shader;
     }
 }

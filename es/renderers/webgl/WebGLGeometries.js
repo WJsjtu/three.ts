@@ -46,7 +46,7 @@ export class WebGLGeometries {
             bufferGeometry = geometry;
         }
         else if (geometry instanceof Geometry) {
-            if (geometry.bufferGeometry === null) {
+            if (geometry.bufferGeometry === undefined) {
                 geometry.bufferGeometry = new BufferGeometry().setFromObject(object);
             }
             bufferGeometry = geometry.bufferGeometry;

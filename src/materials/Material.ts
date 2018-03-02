@@ -94,7 +94,7 @@ export class Material extends EventDispatcher {
     public opacity: number = 1;
     public overdraw: number = 0;
 
-    public onBeforeCompile: (shader?: WebGLShader) => any;
+    public onBeforeCompile: (shader?: WebGLShader) => any = function() {};
 
     public polygonOffset: boolean = false;
     public polygonOffsetFactor: number = 0;
@@ -105,7 +105,7 @@ export class Material extends EventDispatcher {
      * "highp", "mediump" or "lowp"
      * @type {string}
      */
-    public precision: string | null; // Question type
+    public precision: string | null = null; // Question type
     public premultipliedAlpha: boolean = false;
 
     /**
@@ -119,7 +119,7 @@ export class Material extends EventDispatcher {
      * THREE.DoubleSide both sides
      * @type {number}
      */
-    public shadowSide: number | null; // Question type
+    public shadowSide: number | null = null; // Question type
     public side: number = FrontSide;
     public transparent: boolean = false;
     public userData: object = {};

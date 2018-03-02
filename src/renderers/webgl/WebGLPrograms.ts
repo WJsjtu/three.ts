@@ -172,7 +172,7 @@ export class WebGLPrograms {
     public renderer: WebGLRenderer;
     public extensions: WebGLExtensions;
     public capabilities: WebGLCapabilities;
-    public programs: WebGLProgramWrapper[];
+    public programs: WebGLProgramWrapper[] = [];
 
     constructor(renderer: WebGLRenderer, extensions: WebGLExtensions, capabilities: WebGLCapabilities) {
         this.renderer = renderer;

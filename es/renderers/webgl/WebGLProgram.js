@@ -353,8 +353,8 @@ export class WebGLProgramWrapper {
         }
         const vertexGlsl = prefixVertex + vertexShader;
         const fragmentGlsl = prefixFragment + fragmentShader;
-        const glVertexShader = new WebGLShaderWrapper(gl, gl.VERTEX_SHADER, vertexGlsl);
-        const glFragmentShader = new WebGLShaderWrapper(gl, gl.FRAGMENT_SHADER, fragmentGlsl);
+        const glVertexShader = new WebGLShaderWrapper(gl, gl.VERTEX_SHADER, vertexGlsl).shader;
+        const glFragmentShader = new WebGLShaderWrapper(gl, gl.FRAGMENT_SHADER, fragmentGlsl).shader;
         gl.attachShader(program, glVertexShader);
         gl.attachShader(program, glFragmentShader);
         // Force a particular attribute to index 0.

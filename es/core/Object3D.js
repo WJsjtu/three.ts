@@ -45,7 +45,7 @@ export class Object3D extends EventDispatcher {
     }
     updateMatrixWorld(force = false) {
         if (this.matrixAutoUpdate) {
-            return this.updateMatrix();
+            this.updateMatrix();
         }
         if (this.matrixWorldNeedsUpdate || force) {
             if (this.parent === null) {

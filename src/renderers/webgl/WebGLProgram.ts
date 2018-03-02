@@ -187,8 +187,8 @@ export interface IDiagnostics {
 
 export class WebGLProgramWrapper {
     public renderer: WebGLRenderer;
-    public vertexShader: WebGLShaderWrapper;
-    public fragmentShader: WebGLShaderWrapper;
+    public vertexShader: WebGLShader;
+    public fragmentShader: WebGLShader;
     public program: WebGLProgram;
     public usedTimes: number = 1;
     public id: number = programIdCount++;
@@ -439,8 +439,8 @@ export class WebGLProgramWrapper {
         }
         const vertexGlsl: string = prefixVertex + vertexShader;
         const fragmentGlsl: string = prefixFragment + fragmentShader;
-        const glVertexShader: WebGLShaderWrapper = new WebGLShaderWrapper(gl, gl.VERTEX_SHADER, vertexGlsl);
-        const glFragmentShader: WebGLShaderWrapper = new WebGLShaderWrapper(gl, gl.FRAGMENT_SHADER, fragmentGlsl);
+        const glVertexShader: WebGLShader = new WebGLShaderWrapper(gl, gl.VERTEX_SHADER, vertexGlsl).shader;
+        const glFragmentShader: WebGLShader = new WebGLShaderWrapper(gl, gl.FRAGMENT_SHADER, fragmentGlsl).shader;
         gl.attachShader(program, glVertexShader);
         gl.attachShader(program, glFragmentShader);
         // Force a particular attribute to index 0.

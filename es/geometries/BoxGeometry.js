@@ -14,6 +14,8 @@ export class BoxGeometry extends Geometry {
             width: width,
             widthSegments: widthSegments,
         };
+        this.fromBufferGeometry(new BoxBufferGeometry(width, height, depth, widthSegments, heightSegments, depthSegments));
+        this.mergeVertices();
     }
 }
 export class BoxBufferGeometry extends BufferGeometry {
