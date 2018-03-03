@@ -415,7 +415,7 @@ export class WebGLState {
      * @param blendDstAlpha
      * @param premultipliedAlpha
      */
-    setBlending(blending, blendEquation = 0, blendSrc = 0, blendDst = 0, blendEquationAlpha = 0, blendSrcAlpha = 0, blendDstAlpha = 0, premultipliedAlpha = false) {
+    setBlending(blending, blendEquation, blendSrc, blendDst, blendEquationAlpha, blendSrcAlpha, blendDstAlpha, premultipliedAlpha = false) {
         const gl = this.context;
         if (blending !== NoBlending) {
             this.enable(gl.BLEND);
@@ -467,12 +467,12 @@ export class WebGLState {
                         }
                 }
             }
-            this.currentBlendEquation = 0;
-            this.currentBlendSrc = 0;
-            this.currentBlendDst = 0;
-            this.currentBlendEquationAlpha = 0;
-            this.currentBlendSrcAlpha = 0;
-            this.currentBlendDstAlpha = 0;
+            this.currentBlendEquation = null;
+            this.currentBlendSrc = null;
+            this.currentBlendDst = null;
+            this.currentBlendEquationAlpha = null;
+            this.currentBlendSrcAlpha = null;
+            this.currentBlendDstAlpha = null;
         }
         else {
             blendEquationAlpha = blendEquationAlpha || blendEquation;

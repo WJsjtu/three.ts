@@ -515,12 +515,12 @@ export class WebGLState {
      */
     public setBlending(
         blending: number,
-        blendEquation: number = 0,
-        blendSrc: number = 0,
-        blendDst: number = 0,
-        blendEquationAlpha: number = 0,
-        blendSrcAlpha: number = 0,
-        blendDstAlpha: number = 0,
+        blendEquation?: number,
+        blendSrc?: number,
+        blendDst?: number,
+        blendEquationAlpha?: number,
+        blendSrcAlpha?: number,
+        blendDstAlpha?: number,
         premultipliedAlpha: boolean = false,
     ): this {
         const gl: WebGLRenderingContext = this.context;
@@ -569,12 +569,12 @@ export class WebGLState {
                         }
                 }
             }
-            this.currentBlendEquation = 0;
-            this.currentBlendSrc = 0;
-            this.currentBlendDst = 0;
-            this.currentBlendEquationAlpha = 0;
-            this.currentBlendSrcAlpha = 0;
-            this.currentBlendDstAlpha = 0;
+            this.currentBlendEquation = null;
+            this.currentBlendSrc = null;
+            this.currentBlendDst = null;
+            this.currentBlendEquationAlpha = null;
+            this.currentBlendSrcAlpha = null;
+            this.currentBlendDstAlpha = null;
         } else {
             blendEquationAlpha = blendEquationAlpha || blendEquation;
             blendSrcAlpha = blendSrcAlpha || blendSrc;

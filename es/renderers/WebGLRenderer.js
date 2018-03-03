@@ -52,7 +52,6 @@ export class WebGLRenderer {
         this.lightsArray = [];
         this.shadowsArray = [];
         this.spritesArray = [];
-        this.currentRendererTarget = null;
         // clearing
         this.autoClear = true;
         this.autoClearColor = true;
@@ -62,12 +61,19 @@ export class WebGLRenderer {
         this.sortObjects = true;
         // user-defined clipping
         this.clippingPlanes = [];
+        // physically based shading
+        this.gammaInput = false; // for backwards compatibility
+        this.gammaFactor = 2.0;
+        this.gammaOutput = false;
         // physical lights
         this.physicallyCorrectLights = false;
         // tone mapping
         this.toneMapping = LinearToneMapping;
         this.toneMappingExposure = 1.0;
         this.toneMappingWhitePoint = 1.0;
+        // morphs
+        this.maxMorphNormals = 4;
+        this.maxMorphTargets = 8;
         // internal properties
         this.isContextLost = false;
         // internal state cache
@@ -1179,7 +1185,7 @@ export class WebGLRenderer {
         }
     }
     getRenderTarget() {
-        return this.currentRendererTarget;
+        return this.currentRenderTarget;
     }
     setRenderTarget(renderTarget) {
         const properties = this.properties;

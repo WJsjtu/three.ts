@@ -144,7 +144,6 @@ export class WebGLRenderer {
     protected lightsArray: Light[] = [];
     protected shadowsArray: any[] = [];
     protected spritesArray: Sprite[] = [];
-    protected currentRendererTarget: WebGLRenderTarget | null = null;
     protected parameters: IWebGLRendererParameters;
 
     // public properties
@@ -164,9 +163,9 @@ export class WebGLRenderer {
     public clippingPlanes: any[] = [];
 
     // physically based shading
-    public gammaInput: boolean; // for backwards compatibility
-    public gammaFactor: number;
-    public gammaOutput: boolean;
+    public gammaInput: boolean = false; // for backwards compatibility
+    public gammaFactor: number = 2.0;
+    public gammaOutput: boolean = false;
 
     // physical lights
     public physicallyCorrectLights: boolean = false;
@@ -177,8 +176,8 @@ export class WebGLRenderer {
     public toneMappingWhitePoint: number = 1.0;
 
     // morphs
-    public maxMorphNormals: number;
-    public maxMorphTargets: number;
+    public maxMorphNormals: number = 4;
+    public maxMorphTargets: number = 8;
 
     // internal properties
     protected isContextLost: boolean = false;
@@ -1451,7 +1450,7 @@ export class WebGLRenderer {
     }
 
     public getRenderTarget(): WebGLRenderTarget | null {
-        return this.currentRendererTarget;
+        return this.currentRenderTarget;
     }
 
     public setRenderTarget(renderTarget: WebGLRenderTarget | WebGLRenderTargetCube): void {
