@@ -181,9 +181,9 @@ float linearToRelativeLuminance( const in vec3 color ) {
 		uniform mat4 directionalShadowMatrix[ 0 ];
 		varying vec4 vDirectionalShadowCoord[ 0 ];
 	#endif
-	#if 12 > 0
-		uniform mat4 spotShadowMatrix[ 12 ];
-		varying vec4 vSpotShadowCoord[ 12 ];
+	#if 1 > 0
+		uniform mat4 spotShadowMatrix[ 1 ];
+		varying vec4 vSpotShadowCoord[ 1 ];
 	#endif
 	#if 0 > 0
 		uniform mat4 pointShadowMatrix[ 0 ];
@@ -314,31 +314,9 @@ gl_Position = projectionMatrix * mvPosition;
 	#if 0 > 0
 	
 	#endif
-	#if 12 > 0
+	#if 1 > 0
 	
 		vSpotShadowCoord[ 0 ] = spotShadowMatrix[ 0 ] * worldPosition;
-	
-		vSpotShadowCoord[ 1 ] = spotShadowMatrix[ 1 ] * worldPosition;
-	
-		vSpotShadowCoord[ 2 ] = spotShadowMatrix[ 2 ] * worldPosition;
-	
-		vSpotShadowCoord[ 3 ] = spotShadowMatrix[ 3 ] * worldPosition;
-	
-		vSpotShadowCoord[ 4 ] = spotShadowMatrix[ 4 ] * worldPosition;
-	
-		vSpotShadowCoord[ 5 ] = spotShadowMatrix[ 5 ] * worldPosition;
-	
-		vSpotShadowCoord[ 6 ] = spotShadowMatrix[ 6 ] * worldPosition;
-	
-		vSpotShadowCoord[ 7 ] = spotShadowMatrix[ 7 ] * worldPosition;
-	
-		vSpotShadowCoord[ 8 ] = spotShadowMatrix[ 8 ] * worldPosition;
-	
-		vSpotShadowCoord[ 9 ] = spotShadowMatrix[ 9 ] * worldPosition;
-	
-		vSpotShadowCoord[ 10 ] = spotShadowMatrix[ 10 ] * worldPosition;
-	
-		vSpotShadowCoord[ 11 ] = spotShadowMatrix[ 11 ] * worldPosition;
 	
 	#endif
 	#if 0 > 0
