@@ -13,13 +13,10 @@ uniform mat4 spotShadowMatrix[ 1 ];
 varying vec4 vSpotShadowCoord[ 1 ];
 
 void main() {
-	vec3 objectNormal = vec3( normal );
-	vec3 transformedNormal = normalMatrix * objectNormal;
-	vNormal = normalize( transformedNormal );
-	vec3 transformed = vec3( position );
-	vec4 mvPosition = modelViewMatrix * vec4( transformed, 1.0 );
+	vNormal = normalize( normalMatrix * normal );
+	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
 	gl_Position = projectionMatrix * mvPosition;
 	vViewPosition = - mvPosition.xyz;
-	vec4 worldPosition = modelMatrix * vec4( transformed, 1.0 );
+	vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
 	vSpotShadowCoord[ 0 ] = spotShadowMatrix[ 0 ] * worldPosition;
 }

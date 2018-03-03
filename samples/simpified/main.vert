@@ -9,11 +9,8 @@ attribute vec3 normal;
 varying vec3 vViewPosition;
 varying vec3 vNormal;
 void main() {
-	vec3 objectNormal = vec3( normal );
-	vec3 transformedNormal = normalMatrix * objectNormal;
-	vNormal = normalize( transformedNormal );
-	vec3 transformed = vec3( position );
-	vec4 mvPosition = modelViewMatrix * vec4( transformed, 1.0 );
+	vNormal = normalize( normalMatrix * normal );
+	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
 	gl_Position = projectionMatrix * mvPosition;
 	vViewPosition = - mvPosition.xyz;
 }
