@@ -4,7 +4,7 @@ import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
 import { Ray } from "../math/Ray";
 import { Vector2 } from "../math/Vector2";
 import { Vector3 } from "../math/Vector3";
-import { unprojectVector3onCamera } from "../utils";
+import { unprojectVector3OnCamera } from "../utils";
 import { Face3 } from "./Face3";
 import { Object3D } from "./Object3D";
 
@@ -64,11 +64,11 @@ export class Raycaster {
         if (camera && camera instanceof PerspectiveCamera) {
             this.ray.origin.setFromMatrixPosition(camera.matrixWorld);
             this.ray.direction.set(coords.x, coords.y, 0.5);
-            unprojectVector3onCamera(this.ray.direction, camera);
+            unprojectVector3OnCamera(this.ray.direction, camera);
             this.ray.direction.sub(this.ray.origin).normalize();
         } else if (camera && camera instanceof OrthographicCamera) {
             this.ray.origin.set(coords.x, coords.y, (camera.near + camera.far) / (camera.near - camera.far));
-            unprojectVector3onCamera(this.ray.origin, camera); // set origin in plane of camera
+            unprojectVector3OnCamera(this.ray.origin, camera); // set origin in plane of camera
             this.ray.direction.set(0, 0, -1).transformDirection(camera.matrixWorld);
         } else {
             console.error(`THREE.Raycaster: Unsupported camera type.`);

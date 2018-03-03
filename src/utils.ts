@@ -63,7 +63,7 @@ export function setBoxFromBufferAttribute(target: Box3, attribute: BufferAttribu
     target.max.set(maxX, maxY, maxZ);
 }
 
-export function unprojectVector3onCamera(vector: Vector3, camera: Camera): Vector3 {
+export function unprojectVector3OnCamera(vector: Vector3, camera: Camera): Vector3 {
     const matrix: Matrix4 = new Matrix4();
     vector.applyMatrix4(matrix.multiplyMatrices(camera.matrixWorld, matrix.getInverse(camera.projectionMatrix)));
     return vector;
