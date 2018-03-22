@@ -46,6 +46,7 @@ struct GeometricContext {
 	vec3 normal;
 	vec3 viewDir;
 };
+const float UnpackDownscale = 255. / 256.;
 const vec3 PackFactors = vec3( 256. * 256. * 256., 256. * 256.,  256. );
 const vec4 UnpackFactors = UnpackDownscale / vec4( PackFactors, 1. );
 float unpackRGBAToDepth( const in vec4 v ) {
